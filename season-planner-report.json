@@ -1,0 +1,220 @@
+{
+  "generationReport": {
+    "timestamp": "2025-01-18T00:00:00.000Z",
+    "status": "PARTIAL_COMPLETE",
+    "completionPercentage": 40,
+    "filesCreated": {
+      "backend": [
+        "apps/backend/src/season-planner/season-planner.module.ts",
+        "apps/backend/src/season-planner/season.controller.ts",
+        "apps/backend/src/season-planner/season.service.ts",
+        "apps/backend/src/season-planner/macro.service.ts",
+        "apps/backend/src/season-planner/meso.service.ts",
+        "apps/backend/src/season-planner/micro.service.ts",
+        "apps/backend/src/season-planner/match-week.service.ts",
+        "apps/backend/src/season-planner/dto/create-season.dto.ts",
+        "apps/backend/src/season-planner/dto/update-season.dto.ts",
+        "apps/backend/src/season-planner/dto/create-macro.dto.ts",
+        "apps/backend/src/season-planner/dto/create-meso.dto.ts",
+        "apps/backend/src/season-planner/dto/create-micro.dto.ts",
+        "apps/backend/src/season-planner/dto/create-match-week.dto.ts",
+        "apps/backend/scripts/seed-season.ts"
+      ],
+      "frontend": [
+        "apps/frontend/src/stores/clubStore.ts",
+        "apps/frontend/src/app/season-planner/page.tsx",
+        "apps/frontend/src/app/a-team/page.tsx"
+      ],
+      "modified": [
+        "apps/backend/prisma/schema.prisma",
+        "apps/backend/src/app.module.ts",
+        "apps/backend/package.json",
+        "apps/frontend/src/lib/routes.ts",
+        "apps/frontend/src/components/sidebar.tsx"
+      ]
+    },
+    "endpointsAdded": [
+      "POST /seasons",
+      "GET /seasons",
+      "GET /seasons/:id",
+      "PATCH /seasons/:id",
+      "DELETE /seasons/:id",
+      "POST /seasons/:id/macros",
+      "GET /seasons/:id/macros",
+      "POST /seasons/:id/meso",
+      "POST /seasons/:id/micro",
+      "GET /seasons/:id/micro/:week",
+      "GET /seasons/:id/matchweeks",
+      "POST /matchweekanalysis"
+    ],
+    "prismaMigration": {
+      "name": "add_season_planner",
+      "modelsAdded": [
+        "Season",
+        "MacroCycle",
+        "MesoCycle",
+        "MicroCycle",
+        "PlayerLoad",
+        "MatchWeekAnalysis"
+      ],
+      "relationsAdded": [
+        "User.seasonsCreated",
+        "User.playerLoads",
+        "User.matchWeeksCreated",
+        "Club.seasons"
+      ]
+    },
+    "seedData": {
+      "created": true,
+      "entities": {
+        "clubs": 1,
+        "users": 4,
+        "seasons": 1,
+        "macroCycles": 2,
+        "mesoCycles": 2,
+        "microCycles": 4,
+        "playerLoads": 21
+      },
+      "credentials": {
+        "coach": {
+          "email": "coach@demo.com",
+          "password": "demo123",
+          "masked": true
+        },
+        "players": {
+          "count": 3,
+          "pattern": "player{1-3}@demo.com",
+          "password": "demo123"
+        }
+      }
+    },
+    "routes": {
+      "frontend": [
+        "/season-planner",
+        "/season-planner/:seasonId",
+        "/season-planner/:seasonId/macro",
+        "/season-planner/:seasonId/meso/:mesoId",
+        "/season-planner/:seasonId/micro/:week",
+        "/a-team",
+        "/a-team/players/:playerId/load",
+        "/a-team/matchweek/:id/analysis"
+      ],
+      "implemented": [
+        "/season-planner",
+        "/a-team"
+      ],
+      "pending": [
+        "/season-planner/:seasonId/macro",
+        "/season-planner/:seasonId/meso/:mesoId",
+        "/season-planner/:seasonId/micro/:week",
+        "/a-team/players/:playerId/load",
+        "/a-team/matchweek/:id/analysis"
+      ]
+    },
+    "runCommands": {
+      "setup": [
+        "cd apps/backend && npm run prisma:migrate",
+        "cd apps/backend && npm run prisma:generate",
+        "cd apps/backend && npm run prisma:seed:season"
+      ],
+      "development": [
+        "cd apps/backend && npm run start:dev",
+        "cd apps/frontend && npm run dev"
+      ],
+      "testing": [
+        "cd apps/backend && npm test",
+        "cd apps/frontend && npm test"
+      ]
+    },
+    "urls": {
+      "backend": "http://localhost:4000",
+      "frontend": "http://localhost:3001",
+      "seasonPlanner": "http://localhost:3001/season-planner",
+      "aTeam": "http://localhost:3001/a-team"
+    },
+    "knownIssues": [
+      {
+        "issue": "TypeScript errors in seed script",
+        "severity": "LOW",
+        "resolution": "Run prisma:generate to create types",
+        "blocking": false
+      },
+      {
+        "issue": "Missing page implementations",
+        "severity": "HIGH",
+        "resolution": "Implement remaining 5 pages",
+        "blocking": true
+      },
+      {
+        "issue": "No create season form",
+        "severity": "MEDIUM",
+        "resolution": "Add dialog with form in season-planner/page.tsx",
+        "blocking": false
+      },
+      {
+        "issue": "Charts not implemented",
+        "severity": "MEDIUM",
+        "resolution": "Add recharts components for data visualization",
+        "blocking": false
+      },
+      {
+        "issue": "Tactics integration missing",
+        "severity": "HIGH",
+        "resolution": "Create drill picker modal for microcycle",
+        "blocking": true
+      }
+    ],
+    "nextSteps": [
+      "Run database migration: npm run prisma:migrate",
+      "Generate Prisma client: npm run prisma:generate",
+      "Seed demo data: npm run prisma:seed:season",
+      "Start backend server: npm run start:dev",
+      "Start frontend server: npm run dev",
+      "Test season planner at http://localhost:3001/season-planner",
+      "Implement remaining pages (macro, meso, micro, player load, match analysis)",
+      "Add create/edit forms with shadcn dialog components",
+      "Integrate recharts for performance visualizations",
+      "Connect tactics/drill builder to microcycle planner",
+      "Add file upload API for match analysis videos",
+      "Write integration tests for backend endpoints",
+      "Write component tests for frontend pages"
+    ],
+    "dependencies": {
+      "backend": {
+        "existing": [
+          "@nestjs/common",
+          "@nestjs/config",
+          "@nestjs/jwt",
+          "@prisma/client",
+          "bcrypt",
+          "class-validator"
+        ],
+        "required": []
+      },
+      "frontend": {
+        "existing": [
+          "next",
+          "react",
+          "axios",
+          "next-auth",
+          "zustand",
+          "recharts",
+          "lucide-react"
+        ],
+        "required": []
+      }
+    },
+    "metadata": {
+      "generator": "NGCS Auto-Scaffolder v1.0",
+      "language": "Turkish (UI)",
+      "codeLanguage": "TypeScript",
+      "framework": {
+        "backend": "NestJS 11",
+        "frontend": "Next.js 16 (App Router)",
+        "database": "PostgreSQL (Prisma 6)"
+      },
+      "authMethod": "JWT (NextAuth)",
+      "uiLibrary": "shadcn/ui + Tailwind CSS"
+    }
+  }
+}

@@ -1,0 +1,245 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  COACH
+  PLAYER
+}
+
+enum DrillCategory {
+  WARM_UP
+  TECHNICAL
+  TACTICAL
+  COOL_DOWN
+}
+
+enum Phase {
+  WARM_UP
+  TECHNICAL
+  TACTICAL
+  COOL_DOWN
+}
+
+enum AgeGroup {
+  U8
+  U10
+  U12
+  U14
+  U16
+  U18
+  SENIOR
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         UserRole
+  club         Club?    @relation(fields: [clubId], references: [id])
+  clubId       String?
+  groups       GroupMember[]
+  coachedPlans TrainingPlan[]
+  attendances  Attendance[]
+  seasonsCreated Season[]  @relation("SeasonCreator")
+  playerLoads    PlayerLoad[] @relation("PlayerLoads")
+  matchWeeksCreated MatchWeekAnalysis[] @relation("MatchWeekCreator")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Club {
+  id          String        @id @default(cuid())
+  name        String
+  logo        String?
+  description String?
+  users       User[]
+  groups      PlayerGroup[]
+  plans       TrainingPlan[]
+  seasons     Season[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+model PlayerGroup {
+  id        String        @id @default(cuid())
+  name      String
+  club      Club          @relation(fields: [clubId], references: [id])
+  clubId    String
+  ageGroup  AgeGroup
+  members   GroupMember[]
+  sessions  TrainingPlan[] @relation("GroupPlans")
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+}
+
+model GroupMember {
+  id        String       @id @default(cuid())
+  user      User         @relation(fields: [userId], references: [id])
+  userId    String
+  group     PlayerGroup  @relation(fields: [groupId], references: [id])
+  groupId   String
+  createdAt DateTime     @default(now())
+}
+
+model Drill {
+  id          String        @id @default(cuid())
+  title       String
+  category    DrillCategory
+  ageGroup    AgeGroup
+  durationMin Int
+  difficulty  Difficulty
+  equipment   String?
+  jsonData    Json
+  imageUrl    String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  plans       PlanDrill[]
+}
+
+model TrainingPlan {
+  id            String       @id @default(cuid())
+  title         String
+  club          Club         @relation(fields: [clubId], references: [id])
+  clubId        String
+  coach         User         @relation(fields: [coachId], references: [id])
+  coachId       String
+  totalDuration Int          @default(0)
+  drills        PlanDrill[]
+  group         PlayerGroup? @relation("GroupPlans", fields: [groupId], references: [id])
+  groupId       String?
+  date          DateTime?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  attendance    Attendance[]
+}
+
+model PlanDrill {
+  id            String        @id @default(cuid())
+  trainingPlan  TrainingPlan  @relation(fields: [trainingPlanId], references: [id])
+  trainingPlanId String
+  drill         Drill         @relation(fields: [drillId], references: [id])
+  drillId       String
+  phase         Phase
+  order         Int           @default(0)
+  notes         String?
+}
+
+model Attendance {
+  id        String       @id @default(cuid())
+  player    User         @relation(fields: [playerId], references: [id])
+  playerId  String
+  plan      TrainingPlan @relation(fields: [planId], references: [id])
+  planId    String
+  status    AttendanceStatus
+  createdAt DateTime     @default(now())
+}
+
+// Season Planning Models
+model Season {
+  id          String   @id @default(cuid())
+  name        String
+  club        Club     @relation(fields: [clubId], references: [id])
+  clubId      String
+  startDate   DateTime
+  endDate     DateTime
+  createdBy   User     @relation("SeasonCreator", fields: [userId], references: [id])
+  userId      String
+  macros      MacroCycle[]
+  mesos       MesoCycle[]
+  micros      MicroCycle[]
+  matchWeeks  MatchWeekAnalysis[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model MacroCycle {
+  id        String   @id @default(cuid())
+  season    Season   @relation(fields: [seasonId], references: [id], onDelete: Cascade)
+  seasonId  String
+  title     String
+  startDate DateTime
+  endDate   DateTime
+  type      String   // PRE_SEASON, IN_SEASON, POST_SEASON
+  intensity Int      @default(5) // 1-10 scale
+  notes     String?
+  mesos     MesoCycle[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model MesoCycle {
+  id           String     @id @default(cuid())
+  season       Season     @relation(fields: [seasonId], references: [id], onDelete: Cascade)
+  seasonId     String
+  macro        MacroCycle @relation(fields: [macroId], references: [id], onDelete: Cascade)
+  macroId      String
+  startWeek    Int
+  endWeek      Int
+  goal         String
+  intensityJson Json      // { physical: 7, technical: 8, tactical: 6 }
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}
+
+model MicroCycle {
+  id         String   @id @default(cuid())
+  season     Season   @relation(fields: [seasonId], references: [id], onDelete: Cascade)
+  seasonId   String
+  weekNumber Int
+  dayPlans   Json     // [{ day: 1, drillIds: [], notes: "" }, ...]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model PlayerLoad {
+  id             String   @id @default(cuid())
+  player         User     @relation("PlayerLoads", fields: [playerId], references: [id])
+  playerId       String
+  date           DateTime
+  totalDistance  Float    @default(0)
+  hsr            Float    @default(0) // High Speed Running
+  sprintDistance Float    @default(0)
+  accelerations  Int      @default(0)
+  wellness       Json?    // { sleep: 1-5, fatigue: 1-5, soreness: 1-5, stress: 1-5 }
+  createdAt      DateTime @default(now())
+}
+
+model MatchWeekAnalysis {
+  id               String   @id @default(cuid())
+  season           Season   @relation(fields: [seasonId], references: [id], onDelete: Cascade)
+  seasonId         String
+  weekNumber       Int
+  opponentName     String
+  opponentAnalysis Json?    // { formation: "", strengths: [], weaknesses: [] }
+  setPieces        Json?    // { corners: [], freekicks: [] }
+  videoLinks       Json?    // [{ title: "", url: "" }]
+  createdBy        User     @relation("MatchWeekCreator", fields: [userId], references: [id])
+  userId           String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
