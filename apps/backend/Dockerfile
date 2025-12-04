@@ -29,9 +29,10 @@ COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/package*.json ./
+COPY scripts ./scripts
 
 # Expose port
 EXPOSE 4000
 
-# Run migrations and start
-CMD ["sh", "-c", "npx prisma migrate deploy && node dist/main"]
+# Run migrations, seed data, and start
+CMD ["sh", "-c", "npx prisma migrate deploy && node scripts/seed.js && node dist/src/main"]

@@ -18,21 +18,25 @@ export class ClubsController {
   }
 
   @Get()
-  @UseGuards(AuthGuard('jwt'))
   async list(@Request() req) {
-    const user = req.user;
-    // ADMIN: tüm kulüpleri görebilir
-    // COACH/PLAYER: sadece kendi kulübünü görebilir
-    if (user.role === 'ADMIN') {
-      return this.clubs.listClubs();
-    } else {
-      // Kullanıcının kulübü varsa sadece onu döndür
-      if (user.clubId) {
-        const userClub = await this.clubs.getClubById(user.clubId);
-        return userClub ? [userClub] : [];
+    const user = req.user; // Will be undefined if not authenticated
+    
+    // If authenticated, return appropriate clubs
+    if (user) {
+      if (user.role === 'ADMIN') {
+        return this.clubs.listClubs();
+      } else {
+        // COACH/PLAYER: sadece kendi kulübünü görebilir
+        if (user.clubId) {
+          const userClub = await this.clubs.getClubById(user.clubId);
+          return userClub ? [userClub] : [];
+        }
+        return [];
       }
-      return [];
     }
+    
+    // If not authenticated, return empty array
+    return [];
   }
 
   @Post(':id/assign')

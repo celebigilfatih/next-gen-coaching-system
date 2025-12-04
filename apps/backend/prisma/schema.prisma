@@ -163,8 +163,8 @@ model Attendance {
 model Season {
   id          String   @id @default(cuid())
   name        String
-  club        Club     @relation(fields: [clubId], references: [id])
-  clubId      String
+  club        Club?    @relation(fields: [clubId], references: [id])
+  clubId      String?
   startDate   DateTime
   endDate     DateTime
   createdBy   User     @relation("SeasonCreator", fields: [userId], references: [id])

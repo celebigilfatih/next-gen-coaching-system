@@ -9,7 +9,7 @@ services:
       POSTGRES_PASSWORD: ngcs
       POSTGRES_DB: ngcs
     ports:
-      - "5532:5432"
+      - "5433:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -19,6 +19,7 @@ services:
       retries: 5
     networks:
       - ngcs-network
+    restart: unless-stopped
 
   backend:
     build:
@@ -30,36 +31,32 @@ services:
       JWT_SECRET: ${JWT_SECRET:-your-secret-key-change-in-production}
       NODE_ENV: production
     ports:
-      - "4000:4000"
+      - "9001:4000"
     depends_on:
       db:
         condition: service_healthy
     networks:
       - ngcs-network
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.backend.rule=Host(`api.ngcs.local`)"
-      - "traefik.http.services.backend.loadbalancer.server.port=4000"
+    restart: unless-stopped
 
   frontend:
     build:
       context: ./apps/frontend
       dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:9001
     container_name: ngcs-frontend
     environment:
-      NEXT_PUBLIC_API_URL: http://backend:4000
-      NEXTAUTH_URL: http://localhost:3500
+      NEXT_PUBLIC_API_URL: http://localhost:9001
+      NEXTAUTH_URL: http://localhost:9000
       NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:-your-nextauth-secret-change-in-production}
     ports:
-      - "3500:3000"
+      - "9000:3000"
     depends_on:
       - backend
     networks:
       - ngcs-network
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.frontend.rule=Host(`ngcs.local`)"
-      - "traefik.http.services.frontend.loadbalancer.server.port=3000"
+    restart: unless-stopped
 
 volumes:
   pgdata:
