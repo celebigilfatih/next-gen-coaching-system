@@ -36,4 +36,22 @@ export class UsersService {
   async listAll() {
     return this.prisma.user.findMany({ orderBy: { createdAt: 'desc' } });
   }
+
+  async listPlayers(clubId?: string) {
+    const where: any = { role: 'PLAYER' };
+    if (clubId) {
+      where.clubId = clubId;
+    }
+    return this.prisma.user.findMany({
+      where,
+      orderBy: { name: 'asc' },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        clubId: true,
+      },
+    });
+  }
 }

@@ -55,43 +55,24 @@ async function main() {
       }
     }
     
-    // Check and create teams
-    const existingTeams = await prisma.playerGroup.count({
-      where: { clubId: club.id }
+    // Check and create A Takım automatically
+    const existingATeam = await prisma.playerGroup.findFirst({
+      where: { clubId: club.id, category: 'A_TAKIM' }
     });
     
-    if (existingTeams === 0) {
-      // Create teams (formerly groups)
-      const teams = [
-        { name: 'A Takımı', ageGroup: 'SENIOR' },
-        { name: 'U20', ageGroup: 'U18' },
-        { name: 'U19', ageGroup: 'U18' },
-        { name: 'U18', ageGroup: 'U18' },
-        { name: 'U17', ageGroup: 'U16' },
-        { name: 'U16', ageGroup: 'U16' },
-        { name: 'U15', ageGroup: 'U14' },
-        { name: 'U14', ageGroup: 'U14' },
-        { name: 'U13', ageGroup: 'U12' },
-        { name: 'U12', ageGroup: 'U12' },
-        { name: 'U11', ageGroup: 'U10' },
-        { name: 'U10', ageGroup: 'U10' },
-        { name: 'U9', ageGroup: 'U8' },
-        { name: 'U8', ageGroup: 'U8' },
-      ];
+    if (!existingATeam) {
+      await prisma.playerGroup.create({
+        data: {
+          name: club.name,
+          ageGroup: 'SENIOR',
+          category: 'A_TAKIM',
+          clubId: club.id
+        }
+      });
       
-      for (const team of teams) {
-        await prisma.playerGroup.create({
-          data: {
-            name: team.name,
-            clubId: club.id,
-            ageGroup: team.ageGroup
-          }
-        });
-      }
-      
-      console.log(`✅ Created ${teams.length} teams`);
+      console.log(`✅ Created A Takım with name: ${club.name}`);
     } else {
-      console.log(`✅ Teams already exist (${existingTeams} teams)`);
+      console.log(`✅ A Takım already exists: ${existingATeam.name}`);
     }
 
     // Seed drills

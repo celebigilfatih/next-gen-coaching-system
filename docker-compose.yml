@@ -48,6 +48,7 @@ services:
     container_name: ngcs-frontend
     environment:
       NEXT_PUBLIC_API_URL: http://localhost:9001
+      NEXTAUTH_BACKEND_URL: http://backend:4000
       NEXTAUTH_URL: http://localhost:9000
       NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:-your-nextauth-secret-change-in-production}
     ports:

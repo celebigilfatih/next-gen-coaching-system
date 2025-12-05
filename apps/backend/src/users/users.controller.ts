@@ -21,4 +21,11 @@ export class UsersController {
   async byEmail(@Query('email') email: string) {
     return this.users.findByEmail(email);
   }
+
+  @Get('players')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles('ADMIN', 'COACH')
+  async listPlayers(@Query('clubId') clubId?: string) {
+    return this.users.listPlayers(clubId);
+  }
 }

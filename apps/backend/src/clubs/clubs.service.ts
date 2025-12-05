@@ -38,4 +38,14 @@ export class ClubsService {
   async listGroups(clubId: string) {
     return this.prisma.playerGroup.findMany({ where: { clubId } });
   }
+
+  async updateClub(
+    clubId: string,
+    data: { name?: string; logo?: string; description?: string },
+  ) {
+    return this.prisma.club.update({
+      where: { id: clubId },
+      data,
+    });
+  }
 }

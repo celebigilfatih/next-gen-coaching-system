@@ -54,6 +54,11 @@ enum Difficulty {
   HARD
 }
 
+enum TeamCategory {
+  ALT_YAPI
+  A_TAKIM
+}
+
 model User {
   id           String   @id @default(cuid())
   name         String
@@ -91,6 +96,7 @@ model PlayerGroup {
   club      Club          @relation(fields: [clubId], references: [id])
   clubId    String
   ageGroup  AgeGroup
+  category  TeamCategory  @default(ALT_YAPI)
   members   GroupMember[]
   sessions  TrainingPlan[] @relation("GroupPlans")
   createdAt DateTime      @default(now())

@@ -43,7 +43,7 @@ export class GroupsController {
   @Post()
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles('ADMIN')
-  async create(@Body() body: { clubId: string; name: string; ageGroup: any }) {
+  async create(@Body() body: { clubId: string; name: string; ageGroup: any; category?: string }) {
     return this.groups.create(body);
   }
 
@@ -52,5 +52,18 @@ export class GroupsController {
   @Roles('ADMIN', 'COACH')
   async addMember(@Param('id') id: string, @Body() body: { userId: string }) {
     return this.groups.addMember(id, body.userId);
+  }
+
+  @Post(':id/members/delete')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles('ADMIN', 'COACH')
+  async removeMember(@Param('id') id: string, @Body() body: { userId: string }) {
+    return this.groups.removeMember(id, body.userId);
+  }
+
+  @Get(':id/members')
+  @UseGuards(AuthGuard('jwt'))
+  async getMembers(@Param('id') id: string) {
+    return this.groups.getMembers(id);
   }
 }

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, UseGuards, Request } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, UseGuards, Request } from '@nestjs/common';
 import { ClubsService } from './clubs.service';
 import { AuthGuard } from '@nestjs/passport';
 import { Roles } from '../auth/roles.decorator';
@@ -60,5 +60,15 @@ export class ClubsController {
   @UseGuards(AuthGuard('jwt'))
   async listGroups(@Param('id') id: string) {
     return this.clubs.listGroups(id);
+  }
+
+  @Put(':id')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles('ADMIN')
+  async update(
+    @Param('id') id: string,
+    @Body() body: { name?: string; logo?: string; description?: string },
+  ) {
+    return this.clubs.updateClub(id, body);
   }
 }
