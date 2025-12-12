@@ -12,6 +12,8 @@ export class UsersService {
     password: string;
     role: 'ADMIN' | 'COACH' | 'PLAYER';
     clubId?: string;
+    position?: 'KALECI' | 'DEFANS' | 'ORTA_SAHA' | 'FORVET';
+    birthDate?: Date;
   }) {
     const hash = await bcrypt.hash(params.password, 10);
     return this.prisma.user.create({
@@ -21,6 +23,8 @@ export class UsersService {
         passwordHash: hash,
         role: params.role as any,
         clubId: params.clubId || null,
+        position: params.position as any,
+        birthDate: params.birthDate,
       },
     });
   }
@@ -51,6 +55,8 @@ export class UsersService {
         email: true,
         role: true,
         clubId: true,
+        position: true,
+        birthDate: true,
       },
     });
   }

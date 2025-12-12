@@ -19,6 +19,8 @@ export class AuthController {
       password: string;
       role?: 'ADMIN' | 'COACH' | 'PLAYER';
       clubId?: string;
+      position?: 'KALECI' | 'DEFANS' | 'ORTA_SAHA' | 'FORVET';
+      birthDate?: string;
     },
   ) {
     const role = body.role || 'COACH';
@@ -28,6 +30,8 @@ export class AuthController {
       password: body.password,
       role,
       clubId: body.clubId,
+      position: body.position,
+      birthDate: body.birthDate ? new Date(body.birthDate) : undefined,
     });
     return { user };
   }

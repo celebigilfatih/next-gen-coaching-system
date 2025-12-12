@@ -19,6 +19,13 @@ enum UserRole {
   PLAYER
 }
 
+enum Position {
+  KALECI
+  DEFANS
+  ORTA_SAHA
+  FORVET
+}
+
 enum DrillCategory {
   WARM_UP
   TECHNICAL
@@ -60,21 +67,22 @@ enum TeamCategory {
 }
 
 model User {
-  id           String   @id @default(cuid())
+  id           String    @id @default(cuid())
   name         String
-  email        String   @unique
+  email        String    @unique
   passwordHash String
   role         UserRole
-  club         Club?    @relation(fields: [clubId], references: [id])
+  position     Position? // Oyuncu mevkisi
+  birthDate    DateTime? // Doğum tarihi
+  club         Club?     @relation(fields: [clubId], references: [id])
   clubId       String?
   groups       GroupMember[]
   coachedPlans TrainingPlan[]
   attendances  Attendance[]
   seasonsCreated Season[]  @relation("SeasonCreator")
   playerLoads    PlayerLoad[] @relation("PlayerLoads")
-  matchWeeksCreated MatchWeekAnalysis[] @relation("MatchWeekCreator")
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
 }
 
 model Club {
@@ -139,6 +147,7 @@ model TrainingPlan {
   group         PlayerGroup? @relation("GroupPlans", fields: [groupId], references: [id])
   groupId       String?
   date          DateTime?
+  dayPlans      DayPlan[]    // Link to DayPlan
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
   attendance    Attendance[]
@@ -165,7 +174,7 @@ model Attendance {
   createdAt DateTime     @default(now())
 }
 
-// Season Planning Models
+// Season Planning Models - Simplified Weekly Calendar Approach
 model Season {
   id          String   @id @default(cuid())
   name        String
@@ -175,51 +184,71 @@ model Season {
   endDate     DateTime
   createdBy   User     @relation("SeasonCreator", fields: [userId], references: [id])
   userId      String
-  macros      MacroCycle[]
-  mesos       MesoCycle[]
-  micros      MicroCycle[]
-  matchWeeks  MatchWeekAnalysis[]
+  weeks       WeekPlan[]
+  matches     Match[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
 
-model MacroCycle {
-  id        String   @id @default(cuid())
-  season    Season   @relation(fields: [seasonId], references: [id], onDelete: Cascade)
-  seasonId  String
-  title     String
-  startDate DateTime
-  endDate   DateTime
-  type      String   // PRE_SEASON, IN_SEASON, POST_SEASON
-  intensity Int      @default(5) // 1-10 scale
-  notes     String?
-  mesos     MesoCycle[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+enum DayType {
+  TRAINING
+  MATCH
+  REST
+  RECOVERY
+  TACTICAL
 }
 
-model MesoCycle {
-  id           String     @id @default(cuid())
-  season       Season     @relation(fields: [seasonId], references: [id], onDelete: Cascade)
-  seasonId     String
-  macro        MacroCycle @relation(fields: [macroId], references: [id], onDelete: Cascade)
-  macroId      String
-  startWeek    Int
-  endWeek      Int
-  goal         String
-  intensityJson Json      // { physical: 7, technical: 8, tactical: 6 }
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
+model WeekPlan {
+  id          String   @id @default(cuid())
+  season      Season   @relation(fields: [seasonId], references: [id], onDelete: Cascade)
+  seasonId    String
+  weekNumber  Int      // 1-52
+  startDate   DateTime
+  endDate     DateTime
+  notes       String?
+  totalLoad   Int      @default(0) // Weekly training load (0-100)
+  days        DayPlan[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@unique([seasonId, weekNumber])
 }
 
-model MicroCycle {
-  id         String   @id @default(cuid())
-  season     Season   @relation(fields: [seasonId], references: [id], onDelete: Cascade)
-  seasonId   String
-  weekNumber Int
-  dayPlans   Json     // [{ day: 1, drillIds: [], notes: "" }, ...]
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+model DayPlan {
+  id            String        @id @default(cuid())
+  week          WeekPlan      @relation(fields: [weekId], references: [id], onDelete: Cascade)
+  weekId        String
+  dayOfWeek     Int           // 1-7 (Monday-Sunday)
+  date          DateTime
+  type          DayType       @default(TRAINING)
+  title         String?
+  trainingPlan  TrainingPlan? @relation(fields: [trainingPlanId], references: [id])
+  trainingPlanId String?      // Link to TrainingPlan
+  drillIds      Json?         // ["drill1", "drill2"]
+  duration      Int?          // minutes
+  intensity     Int?          // 1-10
+  notes         String?
+  completed     Boolean       @default(false)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+}
+
+model Match {
+  id              String   @id @default(cuid())
+  season          Season   @relation(fields: [seasonId], references: [id], onDelete: Cascade)
+  seasonId        String
+  date            DateTime
+  opponent        String
+  location        String   // HOME, AWAY
+  competition     String?  // League, Cup, Friendly
+  result          String?  // 3-1, 2-2, etc
+  opponentAnalysis Json?   // { formation: "", strengths: [], weaknesses: [] }
+  ourFormation    String?
+  notes           String?
+  videoLinks      Json?    // [{ title: "", url: "" }]
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 model PlayerLoad {
@@ -235,17 +264,4 @@ model PlayerLoad {
   createdAt      DateTime @default(now())
 }
 
-model MatchWeekAnalysis {
-  id               String   @id @default(cuid())
-  season           Season   @relation(fields: [seasonId], references: [id], onDelete: Cascade)
-  seasonId         String
-  weekNumber       Int
-  opponentName     String
-  opponentAnalysis Json?    // { formation: "", strengths: [], weaknesses: [] }
-  setPieces        Json?    // { corners: [], freekicks: [] }
-  videoLinks       Json?    // [{ title: "", url: "" }]
-  createdBy        User     @relation("MatchWeekCreator", fields: [userId], references: [id])
-  userId           String
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-}
+// Deprecated - replaced by Match model

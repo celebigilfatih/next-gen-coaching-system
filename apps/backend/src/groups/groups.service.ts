@@ -31,6 +31,25 @@ export class GroupsService {
     });
   }
 
+  async update(id: string, data: { name?: string; ageGroup?: any; category?: string }) {
+    console.log('GroupsService.update called:', { id, data });
+    return this.prisma.playerGroup.update({
+      where: { id },
+      data: data as any,
+    });
+  }
+
+  async delete(id: string) {
+    // First delete all members
+    await this.prisma.groupMember.deleteMany({
+      where: { groupId: id },
+    });
+    // Then delete the group
+    return this.prisma.playerGroup.delete({
+      where: { id },
+    });
+  }
+
   async addMember(groupId: string, userId: string) {
     // Check if already a member
     const existing = await this.prisma.groupMember.findFirst({

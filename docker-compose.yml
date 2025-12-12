@@ -42,7 +42,7 @@ services:
   frontend:
     build:
       context: ./apps/frontend
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
       args:
         NEXT_PUBLIC_API_URL: http://localhost:9001
     container_name: ngcs-frontend
@@ -51,12 +51,17 @@ services:
       NEXTAUTH_BACKEND_URL: http://backend:4000
       NEXTAUTH_URL: http://localhost:9000
       NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:-your-nextauth-secret-change-in-production}
+      NODE_ENV: development
     ports:
       - "9000:3000"
     depends_on:
       - backend
     networks:
       - ngcs-network
+    volumes:
+      - ./apps/frontend:/app
+      - /app/node_modules
+      - /app/.next
     restart: unless-stopped
 
 volumes:

@@ -11,7 +11,7 @@ import { ClubsModule } from './clubs/clubs.module';
 import { GroupsModule } from './groups/groups.module';
 import { AttendanceModule } from './attendance/attendance.module';
 import { EventsModule } from './events/events.module';
-import { SeasonPlannerModule } from './season-planner/season-planner.module';
+import { SeasonsModule } from './seasons/seasons.module';
 
 @Module({
   imports: [
@@ -25,7 +25,7 @@ import { SeasonPlannerModule } from './season-planner/season-planner.module';
     GroupsModule,
     AttendanceModule,
     EventsModule,
-    SeasonPlannerModule,
+    SeasonsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
