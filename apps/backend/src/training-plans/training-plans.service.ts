@@ -44,9 +44,11 @@ export class TrainingPlansService {
     return plan;
   }
 
-  private async linkPlanToSeasonDay(planId: string, clubId: string, date: Date) {
+  private async linkPlanToSeasonDay(planId: string, clubId: string, date: Date | string) {
     try {
-      console.log('🔗 Linking plan to season day:', { planId, clubId, date: date.toISOString() });
+      // Ensure date is a Date object
+      const dateObj = typeof date === 'string' ? new Date(date) : date;
+      console.log('🔗 Linking plan to season day:', { planId, clubId, date: dateObj.toISOString() });
       
       // Find active season for this club that contains this date
       const seasons = await this.prisma.season.findMany({
@@ -55,14 +57,14 @@ export class TrainingPlansService {
             { clubId }, // Match specific club
             { clubId: null }, // Or match club-independent seasons
           ],
-          startDate: { lte: date },
-          endDate: { gte: date },
+          startDate: { lte: dateObj },
+          endDate: { gte: dateObj },
         },
         include: {
           weeks: {
             where: {
-              startDate: { lte: date },
-              endDate: { gte: date },
+              startDate: { lte: dateObj },
+              endDate: { gte: dateObj },
             },
           },
         },
@@ -71,7 +73,7 @@ export class TrainingPlansService {
       console.log(`📅 Found ${seasons.length} seasons for club ${clubId}`);
       
       if (seasons.length === 0) {
-        console.warn('⚠️  No active season found for this date:', date.toISOString());
+        console.warn('⚠️  No active season found for this date:', dateObj.toISOString());
         console.warn('⚠️  Please create a season that includes this date.');
         // Also search for ANY seasons for this club to help debugging
         const allSeasons = await this.prisma.season.findMany({
@@ -82,10 +84,12 @@ export class TrainingPlansService {
         return;
       }
 
-      if (seasons[0].weeks.length === 0) {
+      // Access the weeks using the correct relation name
+      const seasonWeeks = seasons[0].weeks || [];
+      if (seasonWeeks.length === 0) {
         console.warn('⚠️  Season found but no weeks for this date.');
         console.warn('⚠️  Season:', seasons[0].id, seasons[0].name);
-        console.warn('⚠️  Looking for week containing:', date.toISOString());
+        console.warn('⚠️  Looking for week containing:', dateObj.toISOString());
         // Check if ANY weeks exist for this season
         const allWeeks = await this.prisma.weekPlan.findMany({
           where: { seasonId: seasons[0].id },
@@ -101,8 +105,8 @@ export class TrainingPlansService {
         return;
       }
 
-      const week = seasons[0].weeks[0];
-      const dayOfWeek = date.getDay() === 0 ? 7 : date.getDay();
+      const week = seasonWeeks[0];
+      const dayOfWeek = dateObj.getDay() === 0 ? 7 : dateObj.getDay();
       
       console.log(`📆 Found week: ${week.weekNumber}, day: ${dayOfWeek}`);
       
@@ -126,7 +130,7 @@ export class TrainingPlansService {
         data: {
           weekId: week.id,
           dayOfWeek,
-          date,
+          date: dateObj,
           type: 'TRAINING',
           title: trainingPlan.title,
           trainingPlanId: planId,

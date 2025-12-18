@@ -31,11 +31,13 @@ export class SeasonsController {
     console.log('Creating season, user:', req.user);
     console.log('Body:', body);
     
-    if (!req.user || !req.user.id) {
+    if (!req.user || (!req.user.id && !req.user.userId)) {
       throw new Error('User not authenticated or user ID missing');
     }
     
-    return this.seasons.createSeason(req.user.id, {
+    const userId = req.user.id || req.user.userId;
+    
+    return this.seasons.createSeason(userId, {
       ...body,
       startDate: new Date(body.startDate),
       endDate: new Date(body.endDate),
