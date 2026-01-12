@@ -9,29 +9,31 @@ export declare class ClubsController {
     }): Promise<{
         id: string;
         name: string;
-        logo: string | null;
-        description: string | null;
         createdAt: Date;
         updatedAt: Date;
+        logo: string | null;
+        description: string | null;
     }>;
     list(req: any): Promise<{
         id: string;
         name: string;
-        logo: string | null;
-        description: string | null;
         createdAt: Date;
         updatedAt: Date;
+        logo: string | null;
+        description: string | null;
     }[]>;
     assign(id: string, body: {
         userId: string;
     }): Promise<{
         id: string;
         name: string;
-        createdAt: Date;
-        updatedAt: Date;
         email: string;
         passwordHash: string;
         role: import(".prisma/client").$Enums.UserRole;
+        position: import(".prisma/client").$Enums.Position | null;
+        birthDate: Date | null;
+        createdAt: Date;
+        updatedAt: Date;
         clubId: string | null;
     }>;
     createGroup(id: string, body: {
@@ -43,6 +45,7 @@ export declare class ClubsController {
         createdAt: Date;
         updatedAt: Date;
         clubId: string;
+        category: import(".prisma/client").$Enums.TeamCategory;
         ageGroup: import(".prisma/client").$Enums.AgeGroup;
     }>;
     listGroups(id: string): Promise<{
@@ -51,6 +54,19 @@ export declare class ClubsController {
         createdAt: Date;
         updatedAt: Date;
         clubId: string;
+        category: import(".prisma/client").$Enums.TeamCategory;
         ageGroup: import(".prisma/client").$Enums.AgeGroup;
     }[]>;
+    update(id: string, body: {
+        name?: string;
+        logo?: string;
+        description?: string;
+    }): Promise<{
+        id: string;
+        name: string;
+        createdAt: Date;
+        updatedAt: Date;
+        logo: string | null;
+        description: string | null;
+    }>;
 }

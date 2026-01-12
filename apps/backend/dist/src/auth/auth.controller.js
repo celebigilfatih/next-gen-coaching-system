@@ -30,6 +30,8 @@ let AuthController = class AuthController {
             password: body.password,
             role,
             clubId: body.clubId,
+            position: body.position,
+            birthDate: body.birthDate ? new Date(body.birthDate) : undefined,
         });
         return { user };
     }

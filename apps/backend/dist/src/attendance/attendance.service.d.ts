@@ -13,11 +13,13 @@ export declare class AttendanceService {
         player: {
             id: string;
             name: string;
-            createdAt: Date;
-            updatedAt: Date;
             email: string;
             passwordHash: string;
             role: import(".prisma/client").$Enums.UserRole;
+            position: import(".prisma/client").$Enums.Position | null;
+            birthDate: Date | null;
+            createdAt: Date;
+            updatedAt: Date;
             clubId: string | null;
         };
     } & {

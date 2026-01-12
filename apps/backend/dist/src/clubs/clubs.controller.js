@@ -30,13 +30,11 @@ let ClubsController = class ClubsController {
         if (user.role === 'ADMIN') {
             return this.clubs.listClubs();
         }
-        else {
-            if (user.clubId) {
-                const userClub = await this.clubs.getClubById(user.clubId);
-                return userClub ? [userClub] : [];
-            }
-            return [];
+        if (user.clubId) {
+            const userClub = await this.clubs.getClubById(user.clubId);
+            return userClub ? [userClub] : [];
         }
+        return [];
     }
     async assign(id, body) {
         return this.clubs.addUserToClub(body.userId, id);
@@ -46,6 +44,9 @@ let ClubsController = class ClubsController {
     }
     async listGroups(id) {
         return this.clubs.listGroups(id);
+    }
+    async update(id, body) {
+        return this.clubs.updateClub(id, body);
     }
 };
 exports.ClubsController = ClubsController;
@@ -94,6 +95,16 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], ClubsController.prototype, "listGroups", null);
+__decorate([
+    (0, common_1.Put)(':id'),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt'), roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('ADMIN'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], ClubsController.prototype, "update", null);
 exports.ClubsController = ClubsController = __decorate([
     (0, common_1.Controller)('clubs'),
     __metadata("design:paramtypes", [clubs_service_1.ClubsService])

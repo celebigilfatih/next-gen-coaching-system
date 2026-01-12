@@ -27,10 +27,10 @@ export declare class TrainingPlansController {
         } & {
             id: string;
             notes: string | null;
-            phase: import(".prisma/client").$Enums.Phase;
-            order: number;
             trainingPlanId: string;
             drillId: string;
+            phase: import(".prisma/client").$Enums.Phase;
+            order: number;
         })[];
     } & {
         id: string;
@@ -38,10 +38,10 @@ export declare class TrainingPlansController {
         updatedAt: Date;
         clubId: string;
         title: string;
-        date: Date | null;
         coachId: string;
         totalDuration: number;
         groupId: string | null;
+        date: Date | null;
     })[]>;
     my(req: any): Promise<({
         attendance: {
@@ -68,10 +68,10 @@ export declare class TrainingPlansController {
         } & {
             id: string;
             notes: string | null;
-            phase: import(".prisma/client").$Enums.Phase;
-            order: number;
             trainingPlanId: string;
             drillId: string;
+            phase: import(".prisma/client").$Enums.Phase;
+            order: number;
         })[];
     } & {
         id: string;
@@ -79,21 +79,23 @@ export declare class TrainingPlansController {
         updatedAt: Date;
         clubId: string;
         title: string;
-        date: Date | null;
         coachId: string;
         totalDuration: number;
         groupId: string | null;
+        date: Date | null;
     })[]>;
     get(id: string): Promise<({
         attendance: ({
             player: {
                 id: string;
                 name: string;
-                createdAt: Date;
-                updatedAt: Date;
                 email: string;
                 passwordHash: string;
                 role: import(".prisma/client").$Enums.UserRole;
+                position: import(".prisma/client").$Enums.Position | null;
+                birthDate: Date | null;
+                createdAt: Date;
+                updatedAt: Date;
                 clubId: string | null;
             };
         } & {
@@ -120,28 +122,30 @@ export declare class TrainingPlansController {
         } & {
             id: string;
             notes: string | null;
-            phase: import(".prisma/client").$Enums.Phase;
-            order: number;
             trainingPlanId: string;
             drillId: string;
+            phase: import(".prisma/client").$Enums.Phase;
+            order: number;
         })[];
         group: ({
             members: ({
                 user: {
                     id: string;
                     name: string;
-                    createdAt: Date;
-                    updatedAt: Date;
                     email: string;
                     passwordHash: string;
                     role: import(".prisma/client").$Enums.UserRole;
+                    position: import(".prisma/client").$Enums.Position | null;
+                    birthDate: Date | null;
+                    createdAt: Date;
+                    updatedAt: Date;
                     clubId: string | null;
                 };
             } & {
                 id: string;
                 createdAt: Date;
-                userId: string;
                 groupId: string;
+                userId: string;
             })[];
         } & {
             id: string;
@@ -149,6 +153,7 @@ export declare class TrainingPlansController {
             createdAt: Date;
             updatedAt: Date;
             clubId: string;
+            category: import(".prisma/client").$Enums.TeamCategory;
             ageGroup: import(".prisma/client").$Enums.AgeGroup;
         }) | null;
     } & {
@@ -157,10 +162,10 @@ export declare class TrainingPlansController {
         updatedAt: Date;
         clubId: string;
         title: string;
-        date: Date | null;
         coachId: string;
         totalDuration: number;
         groupId: string | null;
+        date: Date | null;
     }) | null>;
     create(body: any): Promise<{
         id: string;
@@ -168,10 +173,10 @@ export declare class TrainingPlansController {
         updatedAt: Date;
         clubId: string;
         title: string;
-        date: Date | null;
         coachId: string;
         totalDuration: number;
         groupId: string | null;
+        date: Date | null;
     }>;
     addDrill(id: string, body: {
         drillId: string;
@@ -181,10 +186,10 @@ export declare class TrainingPlansController {
     }): Promise<{
         id: string;
         notes: string | null;
-        phase: import(".prisma/client").$Enums.Phase;
-        order: number;
         trainingPlanId: string;
         drillId: string;
+        phase: import(".prisma/client").$Enums.Phase;
+        order: number;
     }>;
     update(id: string, body: any): Promise<{
         id: string;
@@ -192,10 +197,10 @@ export declare class TrainingPlansController {
         updatedAt: Date;
         clubId: string;
         title: string;
-        date: Date | null;
         coachId: string;
         totalDuration: number;
         groupId: string | null;
+        date: Date | null;
     }>;
     remove(id: string): Promise<{
         id: string;
@@ -203,9 +208,9 @@ export declare class TrainingPlansController {
         updatedAt: Date;
         clubId: string;
         title: string;
-        date: Date | null;
         coachId: string;
         totalDuration: number;
         groupId: string | null;
+        date: Date | null;
     }>;
 }

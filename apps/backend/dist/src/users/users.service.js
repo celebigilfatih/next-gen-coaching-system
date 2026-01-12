@@ -59,6 +59,8 @@ let UsersService = class UsersService {
                 passwordHash: hash,
                 role: params.role,
                 clubId: params.clubId || null,
+                position: params.position,
+                birthDate: params.birthDate,
             },
         });
     }
@@ -70,6 +72,25 @@ let UsersService = class UsersService {
     }
     async listAll() {
         return this.prisma.user.findMany({ orderBy: { createdAt: 'desc' } });
+    }
+    async listPlayers(clubId) {
+        const where = { role: 'PLAYER' };
+        if (clubId) {
+            where.clubId = clubId;
+        }
+        return this.prisma.user.findMany({
+            where,
+            orderBy: { name: 'asc' },
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                role: true,
+                clubId: true,
+                position: true,
+                birthDate: true,
+            },
+        });
     }
 };
 exports.UsersService = UsersService;

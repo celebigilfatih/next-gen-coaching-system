@@ -36,6 +36,12 @@ let ClubsService = class ClubsService {
     async listGroups(clubId) {
         return this.prisma.playerGroup.findMany({ where: { clubId } });
     }
+    async updateClub(clubId, data) {
+        return this.prisma.club.update({
+            where: { id: clubId },
+            data,
+        });
+    }
 };
 exports.ClubsService = ClubsService;
 exports.ClubsService = ClubsService = __decorate([

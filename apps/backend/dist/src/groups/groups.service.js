@@ -17,13 +17,23 @@ let GroupsService = class GroupsService {
         this.prisma = prisma;
     }
     async create(data) {
-        return this.prisma.playerGroup.create({
-            data: {
-                clubId: data.clubId,
-                name: data.name,
-                ageGroup: data.ageGroup,
-            },
-        });
+        try {
+            return await this.prisma.playerGroup.create({
+                data: {
+                    clubId: data.clubId,
+                    name: data.name,
+                    ageGroup: data.ageGroup,
+                    category: data.category || 'ALT_YAPI',
+                },
+            });
+        }
+        catch (error) {
+            console.error('Error creating player group:', error);
+            if (error.code === 'P2003') {
+                throw new Error(`Invalid clubId: ${data.clubId}. Club does not exist.`);
+            }
+            throw error;
+        }
     }
     async listByClub(clubId) {
         return this.prisma.playerGroup.findMany({
@@ -31,8 +41,53 @@ let GroupsService = class GroupsService {
             include: { members: true },
         });
     }
+    async update(id, data) {
+        console.log('GroupsService.update called:', { id, data });
+        return this.prisma.playerGroup.update({
+            where: { id },
+            data: data,
+        });
+    }
+    async delete(id) {
+        await this.prisma.groupMember.deleteMany({
+            where: { groupId: id },
+        });
+        return this.prisma.playerGroup.delete({
+            where: { id },
+        });
+    }
     async addMember(groupId, userId) {
+        const existing = await this.prisma.groupMember.findFirst({
+            where: { groupId, userId },
+        });
+        if (existing) {
+            throw new Error('User is already a member of this group');
+        }
         return this.prisma.groupMember.create({ data: { groupId, userId } });
+    }
+    async removeMember(groupId, userId) {
+        const member = await this.prisma.groupMember.findFirst({
+            where: { groupId, userId },
+        });
+        if (!member) {
+            throw new Error('Member not found');
+        }
+        return this.prisma.groupMember.delete({ where: { id: member.id } });
+    }
+    async getMembers(groupId) {
+        return this.prisma.groupMember.findMany({
+            where: { groupId },
+            include: {
+                user: {
+                    select: {
+                        id: true,
+                        name: true,
+                        email: true,
+                        role: true,
+                    },
+                },
+            },
+        });
     }
 };
 exports.GroupsService = GroupsService;

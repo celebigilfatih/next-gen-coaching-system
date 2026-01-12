@@ -10,15 +10,19 @@ export declare class AuthController {
         password: string;
         role?: 'ADMIN' | 'COACH' | 'PLAYER';
         clubId?: string;
+        position?: 'KALECI' | 'DEFANS' | 'ORTA_SAHA' | 'FORVET';
+        birthDate?: string;
     }): Promise<{
         user: {
             id: string;
             name: string;
-            createdAt: Date;
-            updatedAt: Date;
             email: string;
             passwordHash: string;
             role: import(".prisma/client").$Enums.UserRole;
+            position: import(".prisma/client").$Enums.Position | null;
+            birthDate: Date | null;
+            createdAt: Date;
+            updatedAt: Date;
             clubId: string | null;
         };
     }>;
@@ -30,11 +34,13 @@ export declare class AuthController {
         user: {
             id: string;
             name: string;
-            createdAt: Date;
-            updatedAt: Date;
             email: string;
             passwordHash: string;
             role: import(".prisma/client").$Enums.UserRole;
+            position: import(".prisma/client").$Enums.Position | null;
+            birthDate: Date | null;
+            createdAt: Date;
+            updatedAt: Date;
             clubId: string | null;
         };
     }>;

@@ -38,8 +38,21 @@ let GroupsController = class GroupsController {
     async create(body) {
         return this.groups.create(body);
     }
+    async update(id, body) {
+        console.log('Updating group:', id, body);
+        return this.groups.update(id, body);
+    }
+    async delete(id) {
+        return this.groups.delete(id);
+    }
     async addMember(id, body) {
         return this.groups.addMember(id, body.userId);
+    }
+    async removeMember(id, body) {
+        return this.groups.removeMember(id, body.userId);
+    }
+    async getMembers(id) {
+        return this.groups.getMembers(id);
     }
 };
 exports.GroupsController = GroupsController;
@@ -62,6 +75,25 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], GroupsController.prototype, "create", null);
 __decorate([
+    (0, common_1.Put)(':id'),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt'), roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('ADMIN'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], GroupsController.prototype, "update", null);
+__decorate([
+    (0, common_1.Delete)(':id'),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt'), roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('ADMIN'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], GroupsController.prototype, "delete", null);
+__decorate([
     (0, common_1.Post)(':id/members'),
     (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt'), roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)('ADMIN', 'COACH'),
@@ -71,6 +103,24 @@ __decorate([
     __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], GroupsController.prototype, "addMember", null);
+__decorate([
+    (0, common_1.Post)(':id/members/delete'),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt'), roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('ADMIN', 'COACH'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], GroupsController.prototype, "removeMember", null);
+__decorate([
+    (0, common_1.Get)(':id/members'),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], GroupsController.prototype, "getMembers", null);
 exports.GroupsController = GroupsController = __decorate([
     (0, common_1.Controller)('groups'),
     __metadata("design:paramtypes", [groups_service_1.GroupsService])

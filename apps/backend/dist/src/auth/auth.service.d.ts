@@ -7,11 +7,13 @@ export declare class AuthService {
     validateUser(email: string, password: string): Promise<{
         id: string;
         name: string;
-        createdAt: Date;
-        updatedAt: Date;
         email: string;
         passwordHash: string;
         role: import(".prisma/client").$Enums.UserRole;
+        position: import(".prisma/client").$Enums.Position | null;
+        birthDate: Date | null;
+        createdAt: Date;
+        updatedAt: Date;
         clubId: string | null;
     } | null>;
     login(email: string, password: string): Promise<{
@@ -19,11 +21,13 @@ export declare class AuthService {
         user: {
             id: string;
             name: string;
-            createdAt: Date;
-            updatedAt: Date;
             email: string;
             passwordHash: string;
             role: import(".prisma/client").$Enums.UserRole;
+            position: import(".prisma/client").$Enums.Position | null;
+            birthDate: Date | null;
+            createdAt: Date;
+            updatedAt: Date;
             clubId: string | null;
         };
     }>;

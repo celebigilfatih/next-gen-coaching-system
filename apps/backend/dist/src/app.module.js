@@ -20,7 +20,7 @@ const clubs_module_1 = require("./clubs/clubs.module");
 const groups_module_1 = require("./groups/groups.module");
 const attendance_module_1 = require("./attendance/attendance.module");
 const events_module_1 = require("./events/events.module");
-const season_planner_module_1 = require("./season-planner/season-planner.module");
+const seasons_module_1 = require("./seasons/seasons.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -37,7 +37,7 @@ exports.AppModule = AppModule = __decorate([
             groups_module_1.GroupsModule,
             attendance_module_1.AttendanceModule,
             events_module_1.EventsModule,
-            season_planner_module_1.SeasonPlannerModule,
+            seasons_module_1.SeasonsModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

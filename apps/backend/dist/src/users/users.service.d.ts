@@ -8,44 +8,63 @@ export declare class UsersService {
         password: string;
         role: 'ADMIN' | 'COACH' | 'PLAYER';
         clubId?: string;
+        position?: 'KALECI' | 'DEFANS' | 'ORTA_SAHA' | 'FORVET';
+        birthDate?: Date;
     }): Promise<{
         id: string;
         name: string;
-        createdAt: Date;
-        updatedAt: Date;
         email: string;
         passwordHash: string;
         role: import(".prisma/client").$Enums.UserRole;
+        position: import(".prisma/client").$Enums.Position | null;
+        birthDate: Date | null;
+        createdAt: Date;
+        updatedAt: Date;
         clubId: string | null;
     }>;
     findByEmail(email: string): Promise<{
         id: string;
         name: string;
-        createdAt: Date;
-        updatedAt: Date;
         email: string;
         passwordHash: string;
         role: import(".prisma/client").$Enums.UserRole;
+        position: import(".prisma/client").$Enums.Position | null;
+        birthDate: Date | null;
+        createdAt: Date;
+        updatedAt: Date;
         clubId: string | null;
     } | null>;
     findById(id: string): Promise<{
         id: string;
         name: string;
-        createdAt: Date;
-        updatedAt: Date;
         email: string;
         passwordHash: string;
         role: import(".prisma/client").$Enums.UserRole;
+        position: import(".prisma/client").$Enums.Position | null;
+        birthDate: Date | null;
+        createdAt: Date;
+        updatedAt: Date;
         clubId: string | null;
     } | null>;
     listAll(): Promise<{
         id: string;
         name: string;
-        createdAt: Date;
-        updatedAt: Date;
         email: string;
         passwordHash: string;
         role: import(".prisma/client").$Enums.UserRole;
+        position: import(".prisma/client").$Enums.Position | null;
+        birthDate: Date | null;
+        createdAt: Date;
+        updatedAt: Date;
+        clubId: string | null;
+    }[]>;
+    listPlayers(clubId?: string): Promise<{
+        id: string;
+        name: string;
+        email: string;
+        role: import(".prisma/client").$Enums.UserRole;
+        position: import(".prisma/client").$Enums.Position | null;
+        birthDate: Date | null;
         clubId: string | null;
     }[]>;
 }
