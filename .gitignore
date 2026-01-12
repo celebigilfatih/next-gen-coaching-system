@@ -1,5 +1,6 @@
 # Dependencies
 node_modules/
+/node_modules/
 .pnp
 .pnp.js
 
@@ -19,6 +20,7 @@ out/
 .env.development.local
 .env.test.local
 .env.production.local
+.env.sample
 
 # IDE
 .vscode/
@@ -38,8 +40,17 @@ yarn-error.log*
 *.seed
 *.pid.lock
 
+# Prisma
+/apps/backend/src/generated/
+
 # Misc
 .turbo
 .vercel
 *.tsbuildinfo
 next-env.d.ts
+.eslintcache
+
+# OS Files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
