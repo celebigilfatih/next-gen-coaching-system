@@ -21,6 +21,7 @@ const groups_module_1 = require("./groups/groups.module");
 const attendance_module_1 = require("./attendance/attendance.module");
 const events_module_1 = require("./events/events.module");
 const seasons_module_1 = require("./seasons/seasons.module");
+const stats_module_1 = require("./stats/stats.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -38,6 +39,7 @@ exports.AppModule = AppModule = __decorate([
             attendance_module_1.AttendanceModule,
             events_module_1.EventsModule,
             seasons_module_1.SeasonsModule,
+            stats_module_1.StatsModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

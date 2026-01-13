@@ -12,6 +12,7 @@ import { GroupsModule } from './groups/groups.module';
 import { AttendanceModule } from './attendance/attendance.module';
 import { EventsModule } from './events/events.module';
 import { SeasonsModule } from './seasons/seasons.module';
+import { StatsModule } from './stats/stats.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { SeasonsModule } from './seasons/seasons.module';
     AttendanceModule,
     EventsModule,
     SeasonsModule,
+    StatsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
