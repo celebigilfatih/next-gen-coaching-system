@@ -6,17 +6,17 @@ export declare class GroupsController {
         members: {
             id: string;
             createdAt: Date;
-            groupId: string;
             userId: string;
+            groupId: string;
         }[];
     } & {
         id: string;
         name: string;
+        ageGroup: import(".prisma/client").$Enums.AgeGroup;
         createdAt: Date;
         updatedAt: Date;
-        clubId: string;
         category: import(".prisma/client").$Enums.TeamCategory;
-        ageGroup: import(".prisma/client").$Enums.AgeGroup;
+        clubId: string;
     })[]>;
     create(body: {
         clubId: string;
@@ -26,11 +26,11 @@ export declare class GroupsController {
     }): Promise<{
         id: string;
         name: string;
+        ageGroup: import(".prisma/client").$Enums.AgeGroup;
         createdAt: Date;
         updatedAt: Date;
-        clubId: string;
         category: import(".prisma/client").$Enums.TeamCategory;
-        ageGroup: import(".prisma/client").$Enums.AgeGroup;
+        clubId: string;
     }>;
     update(id: string, body: {
         name?: string;
@@ -39,36 +39,36 @@ export declare class GroupsController {
     }): Promise<{
         id: string;
         name: string;
+        ageGroup: import(".prisma/client").$Enums.AgeGroup;
         createdAt: Date;
         updatedAt: Date;
-        clubId: string;
         category: import(".prisma/client").$Enums.TeamCategory;
-        ageGroup: import(".prisma/client").$Enums.AgeGroup;
+        clubId: string;
     }>;
     delete(id: string): Promise<{
         id: string;
         name: string;
+        ageGroup: import(".prisma/client").$Enums.AgeGroup;
         createdAt: Date;
         updatedAt: Date;
-        clubId: string;
         category: import(".prisma/client").$Enums.TeamCategory;
-        ageGroup: import(".prisma/client").$Enums.AgeGroup;
+        clubId: string;
     }>;
     addMember(id: string, body: {
         userId: string;
     }): Promise<{
         id: string;
         createdAt: Date;
-        groupId: string;
         userId: string;
+        groupId: string;
     }>;
     removeMember(id: string, body: {
         userId: string;
     }): Promise<{
         id: string;
         createdAt: Date;
-        groupId: string;
         userId: string;
+        groupId: string;
     }>;
     getMembers(id: string): Promise<({
         user: {
@@ -76,11 +76,12 @@ export declare class GroupsController {
             name: string;
             email: string;
             role: import(".prisma/client").$Enums.UserRole;
+            position: import(".prisma/client").$Enums.Position | null;
         };
     } & {
         id: string;
         createdAt: Date;
-        groupId: string;
         userId: string;
+        groupId: string;
     })[]>;
 }

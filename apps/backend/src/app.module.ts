@@ -13,6 +13,7 @@ import { AttendanceModule } from './attendance/attendance.module';
 import { EventsModule } from './events/events.module';
 import { SeasonsModule } from './seasons/seasons.module';
 import { StatsModule } from './stats/stats.module';
+import { AnalyticsModule } from './analytics/analytics.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { StatsModule } from './stats/stats.module';
     EventsModule,
     SeasonsModule,
     StatsModule,
+    AnalyticsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

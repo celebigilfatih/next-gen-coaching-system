@@ -81,6 +81,7 @@ export class GroupsService {
             name: true,
             email: true,
             role: true,
+            position: true,
           },
         },
       },

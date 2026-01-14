@@ -46,7 +46,8 @@ export class SeasonsController {
 
   @Get()
   async listSeasons(@Request() req) {
-    return this.seasons.listSeasons(req.user.id, req.user.clubId);
+    const userId = req.user.id || req.user.userId;
+    return this.seasons.listSeasons(userId, req.user.clubId);
   }
 
   // Generate weeks for a season - MUST be before :id route
@@ -133,6 +134,7 @@ export class SeasonsController {
       location: string;
       competition?: string;
       notes?: string;
+      groupId?: string;
     },
   ) {
     return this.seasons.createMatch(seasonId, {

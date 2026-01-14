@@ -19,10 +19,10 @@ export declare class AuthController {
             email: string;
             passwordHash: string;
             role: import(".prisma/client").$Enums.UserRole;
-            position: import(".prisma/client").$Enums.Position | null;
-            birthDate: Date | null;
             createdAt: Date;
             updatedAt: Date;
+            birthDate: Date | null;
+            position: import(".prisma/client").$Enums.Position | null;
             clubId: string | null;
         };
     }>;
@@ -37,10 +37,10 @@ export declare class AuthController {
             email: string;
             passwordHash: string;
             role: import(".prisma/client").$Enums.UserRole;
-            position: import(".prisma/client").$Enums.Position | null;
-            birthDate: Date | null;
             createdAt: Date;
             updatedAt: Date;
+            birthDate: Date | null;
+            position: import(".prisma/client").$Enums.Position | null;
             clubId: string | null;
         };
     }>;

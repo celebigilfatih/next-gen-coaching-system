@@ -74,6 +74,9 @@ export class SeasonsService {
           orderBy: { weekNumber: 'asc' },
         },
         matches: {
+          include: {
+            group: true,
+          },
           orderBy: { date: 'asc' },
         },
       },
@@ -188,11 +191,13 @@ export class SeasonsService {
     location: string;
     competition?: string;
     notes?: string;
+    groupId?: string;
   }) {
     return this.prisma.match.create({
       data: {
         ...data,
         seasonId,
+        groupId: data.groupId || null,
       },
     });
   }

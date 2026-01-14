@@ -8,10 +8,10 @@ export declare class UsersController {
         email: string;
         passwordHash: string;
         role: import(".prisma/client").$Enums.UserRole;
-        position: import(".prisma/client").$Enums.Position | null;
-        birthDate: Date | null;
         createdAt: Date;
         updatedAt: Date;
+        birthDate: Date | null;
+        position: import(".prisma/client").$Enums.Position | null;
         clubId: string | null;
     }[]>;
     byEmail(email: string): Promise<{
@@ -20,10 +20,10 @@ export declare class UsersController {
         email: string;
         passwordHash: string;
         role: import(".prisma/client").$Enums.UserRole;
-        position: import(".prisma/client").$Enums.Position | null;
-        birthDate: Date | null;
         createdAt: Date;
         updatedAt: Date;
+        birthDate: Date | null;
+        position: import(".prisma/client").$Enums.Position | null;
         clubId: string | null;
     } | null>;
     listPlayers(clubId?: string): Promise<{
@@ -31,8 +31,8 @@ export declare class UsersController {
         name: string;
         email: string;
         role: import(".prisma/client").$Enums.UserRole;
-        position: import(".prisma/client").$Enums.Position | null;
         birthDate: Date | null;
+        position: import(".prisma/client").$Enums.Position | null;
         clubId: string | null;
     }[]>;
 }

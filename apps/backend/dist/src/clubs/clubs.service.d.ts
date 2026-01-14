@@ -36,10 +36,10 @@ export declare class ClubsService {
         email: string;
         passwordHash: string;
         role: import(".prisma/client").$Enums.UserRole;
-        position: import(".prisma/client").$Enums.Position | null;
-        birthDate: Date | null;
         createdAt: Date;
         updatedAt: Date;
+        birthDate: Date | null;
+        position: import(".prisma/client").$Enums.Position | null;
         clubId: string | null;
     }>;
     createGroup(clubId: string, name: string, ageGroup: 'U8' | 'U10' | 'U12' | 'U14' | 'U16' | 'U18' | 'SENIOR'): Promise<{

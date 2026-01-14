@@ -63,14 +63,14 @@ async function main() {
     if (!existingATeam) {
       await prisma.playerGroup.create({
         data: {
-          name: club.name,
+          name: 'A Takım',
           ageGroup: 'SENIOR',
           category: 'A_TAKIM',
           clubId: club.id
         }
       });
       
-      console.log(`✅ Created A Takım with name: ${club.name}`);
+      console.log('✅ Created A Takım');
     } else {
       console.log(`✅ A Takım already exists: ${existingATeam.name}`);
     }
