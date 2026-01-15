@@ -38,25 +38,55 @@ export declare class TrainingPlansService {
         })[];
     } & {
         id: string;
+        date: Date | null;
+        notes: string | null;
         createdAt: Date;
         updatedAt: Date;
+        groupId: string | null;
         clubId: string;
         title: string;
         coachId: string;
         totalDuration: number;
-        groupId: string | null;
-        date: Date | null;
     })[]>;
     get(id: string): Promise<({
+        group: ({
+            members: ({
+                user: {
+                    id: string;
+                    createdAt: Date;
+                    updatedAt: Date;
+                    name: string;
+                    email: string;
+                    passwordHash: string;
+                    role: import(".prisma/client").$Enums.UserRole;
+                    birthDate: Date | null;
+                    position: import(".prisma/client").$Enums.Position | null;
+                    clubId: string | null;
+                };
+            } & {
+                id: string;
+                createdAt: Date;
+                groupId: string;
+                userId: string;
+            })[];
+        } & {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            name: string;
+            clubId: string;
+            category: import(".prisma/client").$Enums.TeamCategory;
+            ageGroup: import(".prisma/client").$Enums.AgeGroup;
+        }) | null;
         attendance: ({
             player: {
                 id: string;
+                createdAt: Date;
+                updatedAt: Date;
                 name: string;
                 email: string;
                 passwordHash: string;
                 role: import(".prisma/client").$Enums.UserRole;
-                createdAt: Date;
-                updatedAt: Date;
                 birthDate: Date | null;
                 position: import(".prisma/client").$Enums.Position | null;
                 clubId: string | null;
@@ -90,45 +120,17 @@ export declare class TrainingPlansService {
             phase: import(".prisma/client").$Enums.Phase;
             order: number;
         })[];
-        group: ({
-            members: ({
-                user: {
-                    id: string;
-                    name: string;
-                    email: string;
-                    passwordHash: string;
-                    role: import(".prisma/client").$Enums.UserRole;
-                    createdAt: Date;
-                    updatedAt: Date;
-                    birthDate: Date | null;
-                    position: import(".prisma/client").$Enums.Position | null;
-                    clubId: string | null;
-                };
-            } & {
-                id: string;
-                createdAt: Date;
-                groupId: string;
-                userId: string;
-            })[];
-        } & {
-            id: string;
-            name: string;
-            createdAt: Date;
-            updatedAt: Date;
-            clubId: string;
-            category: import(".prisma/client").$Enums.TeamCategory;
-            ageGroup: import(".prisma/client").$Enums.AgeGroup;
-        }) | null;
     } & {
         id: string;
+        date: Date | null;
+        notes: string | null;
         createdAt: Date;
         updatedAt: Date;
+        groupId: string | null;
         clubId: string;
         title: string;
         coachId: string;
         totalDuration: number;
-        groupId: string | null;
-        date: Date | null;
     }) | null>;
     create(data: {
         title: string;
@@ -136,16 +138,18 @@ export declare class TrainingPlansService {
         coachId: string;
         groupId?: string;
         date?: Date;
+        notes?: string;
     }): Promise<{
         id: string;
+        date: Date | null;
+        notes: string | null;
         createdAt: Date;
         updatedAt: Date;
+        groupId: string | null;
         clubId: string;
         title: string;
         coachId: string;
         totalDuration: number;
-        groupId: string | null;
-        date: Date | null;
     }>;
     private linkPlanToSeasonDay;
     addDrill(planId: string, drillId: string, phase: 'WARM_UP' | 'TECHNICAL' | 'TACTICAL' | 'COOL_DOWN', order: number, notes?: string): Promise<{
@@ -162,16 +166,18 @@ export declare class TrainingPlansService {
         totalDuration: number;
         groupId?: string;
         date?: Date;
+        notes?: string;
     }>): Promise<{
         id: string;
+        date: Date | null;
+        notes: string | null;
         createdAt: Date;
         updatedAt: Date;
+        groupId: string | null;
         clubId: string;
         title: string;
         coachId: string;
         totalDuration: number;
-        groupId: string | null;
-        date: Date | null;
     }>;
     listForUser(userId: string): Promise<({
         attendance: {
@@ -205,24 +211,26 @@ export declare class TrainingPlansService {
         })[];
     } & {
         id: string;
+        date: Date | null;
+        notes: string | null;
         createdAt: Date;
         updatedAt: Date;
+        groupId: string | null;
         clubId: string;
         title: string;
         coachId: string;
         totalDuration: number;
-        groupId: string | null;
-        date: Date | null;
     })[]>;
     remove(id: string): Promise<{
         id: string;
+        date: Date | null;
+        notes: string | null;
         createdAt: Date;
         updatedAt: Date;
+        groupId: string | null;
         clubId: string;
         title: string;
         coachId: string;
         totalDuration: number;
-        groupId: string | null;
-        date: Date | null;
     }>;
 }

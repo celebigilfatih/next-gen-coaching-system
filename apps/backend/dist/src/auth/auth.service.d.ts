@@ -6,12 +6,12 @@ export declare class AuthService {
     constructor(users: UsersService, jwt: JwtService);
     validateUser(email: string, password: string): Promise<{
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
         name: string;
         email: string;
         passwordHash: string;
         role: import(".prisma/client").$Enums.UserRole;
-        createdAt: Date;
-        updatedAt: Date;
         birthDate: Date | null;
         position: import(".prisma/client").$Enums.Position | null;
         clubId: string | null;
@@ -20,12 +20,12 @@ export declare class AuthService {
         access_token: string;
         user: {
             id: string;
+            createdAt: Date;
+            updatedAt: Date;
             name: string;
             email: string;
             passwordHash: string;
             role: import(".prisma/client").$Enums.UserRole;
-            createdAt: Date;
-            updatedAt: Date;
             birthDate: Date | null;
             position: import(".prisma/client").$Enums.Position | null;
             clubId: string | null;

@@ -16,12 +16,12 @@ export declare class AttendanceController {
     list(planId: string): Promise<({
         player: {
             id: string;
+            createdAt: Date;
+            updatedAt: Date;
             name: string;
             email: string;
             passwordHash: string;
             role: import(".prisma/client").$Enums.UserRole;
-            createdAt: Date;
-            updatedAt: Date;
             birthDate: Date | null;
             position: import(".prisma/client").$Enums.Position | null;
             clubId: string | null;

@@ -33,6 +33,7 @@ export class TrainingPlansService {
     coachId: string;
     groupId?: string;
     date?: Date;
+    notes?: string;
   }) {
     const plan = await this.prisma.trainingPlan.create({ data: data as any });
     
@@ -135,7 +136,7 @@ export class TrainingPlansService {
           title: trainingPlan.title,
           trainingPlanId: planId,
           duration: trainingPlan.totalDuration,
-          notes: `Kayıtlı Antrenman: ${trainingPlan.drills.length} drill`,
+          notes: trainingPlan.notes || `Kayıtlı Antrenman: ${trainingPlan.drills.length} drill`,
         },
       });
       
@@ -188,6 +189,7 @@ export class TrainingPlansService {
       totalDuration: number;
       groupId?: string;
       date?: Date;
+      notes?: string;
     }>,
   ) {
     return this.prisma.trainingPlan.update({

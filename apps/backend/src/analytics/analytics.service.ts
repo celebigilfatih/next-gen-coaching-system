@@ -7,12 +7,18 @@ export class AnalyticsService {
 
   // Player Performance CRUD
   async createPlayerPerformance(data: any) {
-    return this.prisma.playerPerformance.create({ data });
+    const { id, player, createdAt, updatedAt, ...createData } = data;
+    if (createData.date) createData.date = new Date(createData.date);
+    return this.prisma.playerPerformance.create({ data: createData });
   }
 
-  async getPlayerPerformances(playerId?: string) {
+  async getPlayerPerformances(playerId?: string, analysisType?: string) {
+    const whereClause: any = {};
+    if (playerId) whereClause.playerId = playerId;
+    if (analysisType) whereClause.analysisType = analysisType;
+    
     return this.prisma.playerPerformance.findMany({
-      where: playerId ? { playerId } : {},
+      where: whereClause,
       include: { 
         player: { 
           select: { 
@@ -38,7 +44,13 @@ export class AnalyticsService {
   }
 
   async updatePlayerPerformance(id: string, data: any) {
-    return this.prisma.playerPerformance.update({ where: { id }, data });
+    // Sanitize data to remove non-Prisma fields and ID
+    const { id: _id, player, createdAt, updatedAt, ...sanitizedData } = data;
+    if (sanitizedData.date) sanitizedData.date = new Date(sanitizedData.date);
+    return this.prisma.playerPerformance.update({ 
+      where: { id }, 
+      data: sanitizedData 
+    });
   }
 
   async deletePlayerPerformance(id: string) {
@@ -47,7 +59,9 @@ export class AnalyticsService {
 
   // Video Analysis CRUD
   async createVideoAnalysis(data: any) {
-    return this.prisma.videoAnalysis.create({ data });
+    const { id, createdAt, updatedAt, ...createData } = data;
+    if (createData.date) createData.date = new Date(createData.date);
+    return this.prisma.videoAnalysis.create({ data: createData });
   }
 
   async getVideoAnalyses() {
@@ -57,7 +71,9 @@ export class AnalyticsService {
   }
 
   async updateVideoAnalysis(id: string, data: any) {
-    return this.prisma.videoAnalysis.update({ where: { id }, data });
+    const { id: _id, createdAt, updatedAt, ...sanitizedData } = data;
+    if (sanitizedData.date) sanitizedData.date = new Date(sanitizedData.date);
+    return this.prisma.videoAnalysis.update({ where: { id }, data: sanitizedData });
   }
 
   async deleteVideoAnalysis(id: string) {
@@ -66,7 +82,9 @@ export class AnalyticsService {
 
   // Reports CRUD
   async createReport(data: any) {
-    return this.prisma.analysisReport.create({ data });
+    const { id, createdAt, updatedAt, ...createData } = data;
+    if (createData.date) createData.date = new Date(createData.date);
+    return this.prisma.analysisReport.create({ data: createData });
   }
 
   async getReports() {
@@ -81,7 +99,9 @@ export class AnalyticsService {
 
   // Team Performance CRUD
   async createTeamPerformance(data: any) {
-    return this.prisma.teamPerformance.create({ data });
+    const { id, createdAt, updatedAt, ...createData } = data;
+    if (createData.date) createData.date = new Date(createData.date);
+    return this.prisma.teamPerformance.create({ data: createData });
   }
 
   async getTeamPerformances() {
@@ -91,7 +111,9 @@ export class AnalyticsService {
   }
 
   async updateTeamPerformance(id: string, data: any) {
-    return this.prisma.teamPerformance.update({ where: { id }, data });
+    const { id: _id, createdAt, updatedAt, ...sanitizedData } = data;
+    if (sanitizedData.date) sanitizedData.date = new Date(sanitizedData.date);
+    return this.prisma.teamPerformance.update({ where: { id }, data: sanitizedData });
   }
 
   async deleteTeamPerformance(id: string) {
@@ -100,7 +122,9 @@ export class AnalyticsService {
 
   // Scouting Report CRUD (Rakip Analizi)
   async createScoutingReport(data: any) {
-    return this.prisma.scoutingReport.create({ data });
+    const { id, createdAt, updatedAt, ...createData } = data;
+    if (createData.date) createData.date = new Date(createData.date);
+    return this.prisma.scoutingReport.create({ data: createData });
   }
 
   async getScoutingReports() {
@@ -110,7 +134,9 @@ export class AnalyticsService {
   }
 
   async updateScoutingReport(id: string, data: any) {
-    return this.prisma.scoutingReport.update({ where: { id }, data });
+    const { id: _id, createdAt, updatedAt, ...sanitizedData } = data;
+    if (sanitizedData.date) sanitizedData.date = new Date(sanitizedData.date);
+    return this.prisma.scoutingReport.update({ where: { id }, data: sanitizedData });
   }
 
   async deleteScoutingReport(id: string) {
@@ -119,7 +145,9 @@ export class AnalyticsService {
 
   // Match Analysis CRUD (Standalone)
   async createMatchAnalysis(data: any) {
-    return this.prisma.matchAnalysis.create({ data });
+    const { id, createdAt, updatedAt, ...createData } = data;
+    if (createData.date) createData.date = new Date(createData.date);
+    return this.prisma.matchAnalysis.create({ data: createData });
   }
 
   async getMatchAnalyses() {
@@ -129,7 +157,9 @@ export class AnalyticsService {
   }
 
   async updateMatchAnalysisStandalone(id: string, data: any) {
-    return this.prisma.matchAnalysis.update({ where: { id }, data });
+    const { id: _id, createdAt, updatedAt, ...sanitizedData } = data;
+    if (sanitizedData.date) sanitizedData.date = new Date(sanitizedData.date);
+    return this.prisma.matchAnalysis.update({ where: { id }, data: sanitizedData });
   }
 
   async deleteMatchAnalysis(id: string) {

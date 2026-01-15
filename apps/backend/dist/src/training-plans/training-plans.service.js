@@ -121,7 +121,7 @@ let TrainingPlansService = class TrainingPlansService {
                     title: trainingPlan.title,
                     trainingPlanId: planId,
                     duration: trainingPlan.totalDuration,
-                    notes: `Kayıtlı Antrenman: ${trainingPlan.drills.length} drill`,
+                    notes: trainingPlan.notes || `Kayıtlı Antrenman: ${trainingPlan.drills.length} drill`,
                 },
             });
             console.log('✅ Day plan created successfully:', dayPlan.id);

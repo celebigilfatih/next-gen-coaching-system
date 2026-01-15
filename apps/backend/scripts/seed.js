@@ -40,19 +40,7 @@ async function main() {
       });
       console.log('✅ Club created:', club.name);
     } else {
-      // Update existing club name if needed
-      if (club.name !== 'NGCS Futbol Akademisi') {
-        club = await prisma.club.update({
-          where: { id: club.id },
-          data: {
-            name: 'NGCS Futbol Akademisi',
-            description: 'Futbol takım yönetim sistemi'
-          }
-        });
-        console.log('✅ Club updated:', club.name);
-      } else {
-        console.log('✅ Club already exists:', club.name);
-      }
+      console.log('✅ Club already exists:', club.name);
     }
     
     // Check and create A Takım automatically

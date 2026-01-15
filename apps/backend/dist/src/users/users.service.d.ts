@@ -12,48 +12,48 @@ export declare class UsersService {
         birthDate?: Date;
     }): Promise<{
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
         name: string;
         email: string;
         passwordHash: string;
         role: import(".prisma/client").$Enums.UserRole;
-        createdAt: Date;
-        updatedAt: Date;
         birthDate: Date | null;
         position: import(".prisma/client").$Enums.Position | null;
         clubId: string | null;
     }>;
     findByEmail(email: string): Promise<{
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
         name: string;
         email: string;
         passwordHash: string;
         role: import(".prisma/client").$Enums.UserRole;
-        createdAt: Date;
-        updatedAt: Date;
         birthDate: Date | null;
         position: import(".prisma/client").$Enums.Position | null;
         clubId: string | null;
     } | null>;
     findById(id: string): Promise<{
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
         name: string;
         email: string;
         passwordHash: string;
         role: import(".prisma/client").$Enums.UserRole;
-        createdAt: Date;
-        updatedAt: Date;
         birthDate: Date | null;
         position: import(".prisma/client").$Enums.Position | null;
         clubId: string | null;
     } | null>;
     listAll(): Promise<{
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
         name: string;
         email: string;
         passwordHash: string;
         role: import(".prisma/client").$Enums.UserRole;
-        createdAt: Date;
-        updatedAt: Date;
         birthDate: Date | null;
         position: import(".prisma/client").$Enums.Position | null;
         clubId: string | null;

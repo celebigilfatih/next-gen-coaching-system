@@ -65,6 +65,9 @@ export class StatsService {
       },
       take: 5,
       orderBy: { date: 'asc' },
+      include: {
+        group: { select: { name: true } },
+      },
     });
 
     return {

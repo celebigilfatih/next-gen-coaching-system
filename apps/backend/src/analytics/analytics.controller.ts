@@ -14,8 +14,8 @@ export class AnalyticsController {
   }
 
   @Get('player-performance')
-  getPlayerPerformances(@Query('playerId') playerId?: string) {
-    return this.analyticsService.getPlayerPerformances(playerId);
+  getPlayerPerformances(@Query('playerId') playerId?: string, @Query('analysisType') analysisType?: string) {
+    return this.analyticsService.getPlayerPerformances(playerId, analysisType);
   }
 
   @Put('player-performance/:id')

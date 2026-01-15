@@ -86,6 +86,7 @@ model TrainingPlan {
   totalDuration Int          @default(0)
   groupId       String?
   date          DateTime?
+  notes         String?
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
   attendance    Attendance[]
@@ -160,6 +161,10 @@ model DayPlan {
   duration       Int?
   intensity      Int?
   notes          String?
+  location       String?
+  topic          String?
+  opponent       String?
+  competition    String?
   completed      Boolean       @default(false)
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
@@ -201,7 +206,11 @@ model PlayerLoad {
 
 model PlayerPerformance {
   id                   String   @id @default(cuid())
-  playerId             String
+  playerId             String?
+  externalPlayerName   String?
+  externalPlayerTeam   String?
+  externalPlayerPosition String?
+  analysisType         AnalysisType @default(INTERNAL)
   date                 DateTime @default(now())
   speed                Int      @default(0)
   technique            Int      @default(0)
@@ -222,7 +231,7 @@ model PlayerPerformance {
   summaryDetails       Json?
   tacticalStats        Json?
   technicalStats       Json?
-  player               User     @relation(fields: [playerId], references: [id])
+  player               User?    @relation(fields: [playerId], references: [id], onDelete: SetNull)
 }
 
 model VideoAnalysis {
@@ -300,6 +309,11 @@ model MatchAnalysis {
   updatedAt         DateTime @updatedAt
 }
 
+enum AnalysisType {
+  INTERNAL
+  EXTERNAL
+}
+
 enum UserRole {
   ADMIN
   COACH
@@ -359,4 +373,6 @@ enum DayType {
   REST
   RECOVERY
   TACTICAL
+  TOPLANTI
+  GORUSME
 }

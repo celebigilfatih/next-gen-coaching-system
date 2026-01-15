@@ -101,6 +101,7 @@ export class SeasonsController {
       date: string;
       type: 'TRAINING' | 'MATCH' | 'REST' | 'RECOVERY' | 'TACTICAL';
       title?: string;
+      trainingPlanId?: string;
       drillIds?: string[];
       duration?: number;
       intensity?: number;
@@ -161,17 +162,7 @@ export class SeasonsController {
   // Generic :id routes MUST be last
   @Get(':id')
   async getSeason(@Param('id') id: string) {
-    const season = await this.seasons.getSeason(id);
-    // Debug logging
-    console.log('Season fetch - ID:', id);
-    console.log('Season fetch - Weeks count:', season?.weeks?.length || 0);
-    if (season?.weeks?.[0]) {
-      console.log('Season fetch - First week has days:', season.weeks[0].days?.length || 0);
-      if (season.weeks[0].days?.[0]) {
-        console.log('Season fetch - First day has trainingPlan:', !!season.weeks[0].days[0].trainingPlan);
-      }
-    }
-    return season;
+    return this.seasons.getSeason(id);
   }
 
   @Delete(':id')

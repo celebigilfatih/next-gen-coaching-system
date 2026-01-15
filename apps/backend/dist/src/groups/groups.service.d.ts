@@ -9,28 +9,28 @@ export declare class GroupsService {
         category?: string;
     }): Promise<{
         id: string;
-        name: string;
-        ageGroup: import(".prisma/client").$Enums.AgeGroup;
         createdAt: Date;
         updatedAt: Date;
-        category: import(".prisma/client").$Enums.TeamCategory;
+        name: string;
         clubId: string;
+        category: import(".prisma/client").$Enums.TeamCategory;
+        ageGroup: import(".prisma/client").$Enums.AgeGroup;
     }>;
     listByClub(clubId: string): Promise<({
         members: {
             id: string;
             createdAt: Date;
-            userId: string;
             groupId: string;
+            userId: string;
         }[];
     } & {
         id: string;
-        name: string;
-        ageGroup: import(".prisma/client").$Enums.AgeGroup;
         createdAt: Date;
         updatedAt: Date;
-        category: import(".prisma/client").$Enums.TeamCategory;
+        name: string;
         clubId: string;
+        category: import(".prisma/client").$Enums.TeamCategory;
+        ageGroup: import(".prisma/client").$Enums.AgeGroup;
     })[]>;
     update(id: string, data: {
         name?: string;
@@ -38,33 +38,33 @@ export declare class GroupsService {
         category?: string;
     }): Promise<{
         id: string;
-        name: string;
-        ageGroup: import(".prisma/client").$Enums.AgeGroup;
         createdAt: Date;
         updatedAt: Date;
-        category: import(".prisma/client").$Enums.TeamCategory;
+        name: string;
         clubId: string;
+        category: import(".prisma/client").$Enums.TeamCategory;
+        ageGroup: import(".prisma/client").$Enums.AgeGroup;
     }>;
     delete(id: string): Promise<{
         id: string;
-        name: string;
-        ageGroup: import(".prisma/client").$Enums.AgeGroup;
         createdAt: Date;
         updatedAt: Date;
-        category: import(".prisma/client").$Enums.TeamCategory;
+        name: string;
         clubId: string;
+        category: import(".prisma/client").$Enums.TeamCategory;
+        ageGroup: import(".prisma/client").$Enums.AgeGroup;
     }>;
     addMember(groupId: string, userId: string): Promise<{
         id: string;
         createdAt: Date;
-        userId: string;
         groupId: string;
+        userId: string;
     }>;
     removeMember(groupId: string, userId: string): Promise<{
         id: string;
         createdAt: Date;
-        userId: string;
         groupId: string;
+        userId: string;
     }>;
     getMembers(groupId: string): Promise<({
         user: {
@@ -77,7 +77,7 @@ export declare class GroupsService {
     } & {
         id: string;
         createdAt: Date;
-        userId: string;
         groupId: string;
+        userId: string;
     })[]>;
 }

@@ -4,24 +4,24 @@ export declare class UsersController {
     constructor(users: UsersService);
     list(): Promise<{
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
         name: string;
         email: string;
         passwordHash: string;
         role: import(".prisma/client").$Enums.UserRole;
-        createdAt: Date;
-        updatedAt: Date;
         birthDate: Date | null;
         position: import(".prisma/client").$Enums.Position | null;
         clubId: string | null;
     }[]>;
     byEmail(email: string): Promise<{
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
         name: string;
         email: string;
         passwordHash: string;
         role: import(".prisma/client").$Enums.UserRole;
-        createdAt: Date;
-        updatedAt: Date;
         birthDate: Date | null;
         position: import(".prisma/client").$Enums.Position | null;
         clubId: string | null;

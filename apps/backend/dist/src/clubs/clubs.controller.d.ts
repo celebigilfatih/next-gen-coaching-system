@@ -8,17 +8,17 @@ export declare class ClubsController {
         description?: string;
     }): Promise<{
         id: string;
-        name: string;
         createdAt: Date;
         updatedAt: Date;
+        name: string;
         logo: string | null;
         description: string | null;
     }>;
     list(req: any): Promise<{
         id: string;
-        name: string;
         createdAt: Date;
         updatedAt: Date;
+        name: string;
         logo: string | null;
         description: string | null;
     }[]>;
@@ -26,12 +26,12 @@ export declare class ClubsController {
         userId: string;
     }): Promise<{
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
         name: string;
         email: string;
         passwordHash: string;
         role: import(".prisma/client").$Enums.UserRole;
-        createdAt: Date;
-        updatedAt: Date;
         birthDate: Date | null;
         position: import(".prisma/client").$Enums.Position | null;
         clubId: string | null;
@@ -41,18 +41,18 @@ export declare class ClubsController {
         ageGroup: any;
     }): Promise<{
         id: string;
-        name: string;
         createdAt: Date;
         updatedAt: Date;
+        name: string;
         clubId: string;
         category: import(".prisma/client").$Enums.TeamCategory;
         ageGroup: import(".prisma/client").$Enums.AgeGroup;
     }>;
     listGroups(id: string): Promise<{
         id: string;
-        name: string;
         createdAt: Date;
         updatedAt: Date;
+        name: string;
         clubId: string;
         category: import(".prisma/client").$Enums.TeamCategory;
         ageGroup: import(".prisma/client").$Enums.AgeGroup;
@@ -63,9 +63,9 @@ export declare class ClubsController {
         description?: string;
     }): Promise<{
         id: string;
-        name: string;
         createdAt: Date;
         updatedAt: Date;
+        name: string;
         logo: string | null;
         description: string | null;
     }>;
