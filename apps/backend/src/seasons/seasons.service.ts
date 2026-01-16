@@ -61,6 +61,7 @@ export class SeasonsService {
               include: {
                 trainingPlan: {
                   include: {
+                    group: true,
                     drills: {
                       include: {
                         drill: true,

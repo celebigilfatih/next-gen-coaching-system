@@ -14,8 +14,12 @@ export class AnalyticsController {
   }
 
   @Get('player-performance')
-  getPlayerPerformances(@Query('playerId') playerId?: string, @Query('analysisType') analysisType?: string) {
-    return this.analyticsService.getPlayerPerformances(playerId, analysisType);
+  getPlayerPerformances(
+    @Query('playerId') playerId?: string, 
+    @Query('analysisType') analysisType?: string,
+    @Query('groupId') groupId?: string
+  ) {
+    return this.analyticsService.getPlayerPerformances(playerId, analysisType, groupId);
   }
 
   @Put('player-performance/:id')
@@ -58,6 +62,11 @@ export class AnalyticsController {
   @Get('reports')
   getReports() {
     return this.analyticsService.getReports();
+  }
+
+  @Put('reports/:id')
+  updateReport(@Param('id') id: string, @Body() data: any) {
+    return this.analyticsService.updateReport(id, data);
   }
 
   @Delete('reports/:id')
