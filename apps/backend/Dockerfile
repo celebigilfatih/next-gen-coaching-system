@@ -35,4 +35,4 @@ COPY scripts ./scripts
 EXPOSE 4000
 
 # Run migrations, seed data (ignore seed errors), and start
-CMD ["sh", "-c", "npx prisma migrate deploy && (node scripts/seed.js || echo 'Seed failed, continuing...') && node dist/src/main"]
+CMD ["sh", "-c", "npx prisma migrate deploy && (node scripts/seed.js || echo 'Seed failed, continuing...') && node dist/main"]

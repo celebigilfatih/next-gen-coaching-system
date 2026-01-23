@@ -24,6 +24,9 @@ model User {
   performances   PlayerPerformance[]
   seasonsCreated Season[]            @relation("SeasonCreator")
   coachedPlans   TrainingPlan[]
+  healthLogs     PlayerHealthLog[]   @relation("PlayerHealthLogs")
+  healthStatus   PlayerHealthStatus[]  @relation("PlayerHealthStatus")
+  coachNotes     PlayerCoachNote[]   @relation("PlayerCoachNotes")
   club           Club?               @relation(fields: [clubId], references: [id])
 }
 
@@ -309,6 +312,54 @@ model MatchAnalysis {
   updatedAt         DateTime @updatedAt
 }
 
+model PlayerHealthLog {
+  id               String          @id @default(cuid())
+  playerId         String
+  status           HealthStatus                       // Main health status category
+  severity         HealthSeverity?                    // Severity level if injured
+  bodyPart         String?                            // Affected body part (e.g., "Sol Ayak", "Sağ Dizayn")
+  expectedReturnDate DateTime?                        // Expected return date if injured
+  notes            String?                            // Additional details
+  createdAt        DateTime @default(now())
+  player           User     @relation("PlayerHealthLogs", fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@index([playerId])
+  @@index([createdAt])
+}
+
+model PlayerHealthStatus {
+  id                   String          @id @default(cuid())
+  playerId             String
+  primaryStatus        PrimaryHealthStatus          // 🟢 Sağlıklı, 🟡 Yük Kontrollü, 🟠 Hafif, 🔴 Orta, ⛔ Ciddi, 🏥 Rehabilitasyon, 🧊 Tedavi, 🏠 Maç Dışı, 🔒 Karantina
+  injuryType           InjuryType?                  // Conditional: Muscle, Ligament, Tendon, Bone, Other
+  muscleInjurySubtype  MuscleInjuryType?           // Conditional: if injuryType = MUSCLE
+  ligamentInjurySubtype LigamentInjuryType?        // Conditional: if injuryType = LIGAMENT
+  tendonInjurySubtype  TendonInjuryType?           // Conditional: if injuryType = TENDON
+  boneInjurySubtype    BoneInjuryType?             // Conditional: if injuryType = BONE
+  bodyPart             BodyPart?                    // Affected body part
+  rehabPhase           RehabPhase?                  // Rehab stage: Acute, Light, Strength, Ball, PreMatch, FullClearance
+  trainingParticipation TrainingParticipation?     // Training status: Restricted, Separate, Partial, Full, MatchReady
+  estimatedReturnDays  EstimatedReturnDays?        // Estimated return timeline
+  clinicalNotes        String?                      // Doctor/PT notes (textarea)
+  createdAt            DateTime        @default(now())
+  updatedAt            DateTime        @updatedAt
+  player               User            @relation("PlayerHealthStatus", fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@index([playerId])
+  @@index([createdAt])
+}
+
+model PlayerCoachNote {
+  id        String   @id @default(cuid())
+  playerId  String
+  note      String   // Coach's note text
+  createdAt DateTime @default(now())
+  player    User     @relation("PlayerCoachNotes", fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@index([playerId])
+  @@index([createdAt])
+}
+
 enum AnalysisType {
   INTERNAL
   EXTERNAL
@@ -375,4 +426,106 @@ enum DayType {
   TACTICAL
   TOPLANTI
   GORUSME
+}
+
+enum HealthStatus {
+  SAGLIK       // Healthy (Sağlı)
+  HAREKET_SINIRLAMASI  // Limited Movement (Hareket Sınırlaması)
+  IZOLASYON    // Quarantine (İzolasyon)
+  YARALI       // Injured (Yaralı)
+}
+
+enum HealthSeverity {
+  HAFIF        // Light (Hafif)
+  ORTA         // Medium (Orta)
+  CIDDI        // Severe (Ciddi)
+}
+
+enum PrimaryHealthStatus {
+  SAGLIKLI              // 🟢 Sağlıklı
+  YUK_KONTROLLU         // 🟡 Yük Kontrollü / İzleniyor
+  HAFIF_SAKATILIK       // 🟠 Hafif Sakatlık
+  ORTA_SAKATILIK        // 🔴 Orta Seviye Sakatlık
+  CIDDI_SAKATILIK       // ⛔ Ciddi Sakatlık
+  REHABILITASYON        // 🏥 Rehabilitasyon Sürecinde
+  TEDAVI_ALTINDA        // 🧊 Tedavi Altında
+  MAC_ANTRENMAN_DISI    // 🏠 Maç / Antrenman Dışı
+  KARANTINA_IZOLASYON   // 🔒 Karantina / İzolasyon
+}
+
+enum InjuryType {
+  MUSCLE          // 💪 Kas Sakatlıkları
+  LIGAMENT        // 🦵 Bağ & Eklem Sakatlıkları
+  TENDON          // 🦶 Tendon Sakatlıkları
+  BONE            // 🦴 Kemik & Travmatik
+  OTHER           // 🧠 Diğer
+}
+
+enum MuscleInjuryType {
+  ADALE_ZORLENMASI     // Adale Zorlanması
+  KAS_YIRTIGI_GRADE1   // Kas Yırtığı (Grade 1)
+  KAS_YIRTIGI_GRADE2   // Kas Yırtığı (Grade 2)
+  KAS_YIRTIGI_GRADE3   // Kas Yırtığı (Grade 3)
+  KAS_SERTLIGI_SPAZM   // Kas Sertliği / Spazm
+}
+
+enum LigamentInjuryType {
+  ACL                  // Ön Çapraz Bağ (ACL)
+  PCL                  // Arka Çapraz Bağ (PCL)
+  MCL                  // İç Yan Bağ (MCL)
+  LCL                  // Dış Yan Bağ (LCL)
+  MENISKUS             // Menisküs
+  AYAK_BILEGI_BURKULMASI // Ayak Bileği Burkulması
+}
+
+enum TendonInjuryType {
+  ASIL_TENDONU         // Aşil Tendonu
+  PATELLAR_TENDONU     // Patellar Tendon
+  HAMSTRING_TENDONU    // Hamstring Tendonu
+}
+
+enum BoneInjuryType {
+  KIRIK               // Kırık
+  CATLAK              // Çatlak
+  DARBE_KONTUZYONU    // Darbe (Kontüzyon)
+}
+
+enum BodyPart {
+  AYAK_AYAK_BILEGI      // Ayak / Ayak Bileği
+  DIZ                   // Diz
+  BALDIR                // Baldır
+  HAMSTRING             // Hamstring
+  QUADRICEPS            // Quadriceps
+  KALCA                 // Kalça
+  KASIK                 // Kasık
+  BEL_SIRT              // Bel / Sırt
+  OMUZ                  // Omuz
+  BOYUN                 // Boyun
+}
+
+enum RehabPhase {
+  AKUT_DONEM            // 🧊 Akut Dönem (Dinlenme / Buz / Tedavi)
+  HAFIF_AKTIVITE        // 🏃 Hafif Aktivite
+  KUVVET_MOBILITE       // 🏋️ Kuvvet & Mobilite
+  TOPLA_CALISMA         // ⚽ Topla Çalışma
+  MAC_ONCESI_HAZIRLIGI  // 🧠 Maç Öncesi Hazırlık
+  TAM_KATILIM_ONAY      // ✅ Tam Katılım Onayı
+}
+
+enum TrainingParticipation {
+  ANTRENMANA_KATILAMAZ  // ❌ Antrenmana Katılamaz
+  KISITLI_KATILIM       // ⚠️ Kısıtlı Katılım
+  TAKIMDAN_AYRI         // 🟡 Takımdan Ayrı
+  TAM_KATILIM           // 🟢 Tam Katılım
+  MAC_HAZIR             // 🎯 Maça Hazır
+}
+
+enum EstimatedReturnDays {
+  DAYS_3_5              // 3–5 Gün
+  DAYS_7                // 1 Hafta
+  DAYS_14               // 2 Hafta
+  DAYS_21_28            // 3–4 Hafta
+  DAYS_30_90            // 1–3 Ay
+  DAYS_90_PLUS          // 3+ Ay
+  BELIRSIZ              // Belirsiz
 }

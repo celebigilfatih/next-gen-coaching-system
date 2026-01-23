@@ -60,4 +60,149 @@ export class UsersService {
       },
     });
   }
+
+  // Health Logs
+  async getPlayerHealthLogs(playerId: string) {
+    return this.prisma.playerHealthLog.findMany({
+      where: { playerId },
+      orderBy: { createdAt: 'desc' },
+    });
+  }
+
+  async addPlayerHealthLog(
+    playerId: string,
+    data: {
+      status: 'SAGLIK' | 'HAREKET_SINIRLAMASI' | 'IZOLASYON' | 'YARALI';
+      severity?: 'HAFIF' | 'ORTA' | 'CIDDI';
+      bodyPart?: string;
+      expectedReturnDate?: Date;
+      notes?: string;
+    }
+  ) {
+    return this.prisma.playerHealthLog.create({
+      data: {
+        playerId,
+        status: data.status,
+        severity: data.severity || null,
+        bodyPart: data.bodyPart || null,
+        expectedReturnDate: data.expectedReturnDate || null,
+        notes: data.notes || null,
+      },
+    });
+  }
+
+  async deletePlayerHealthLog(logId: string) {
+    return this.prisma.playerHealthLog.delete({
+      where: { id: logId },
+    });
+  }
+
+  // Coach Notes
+  async getPlayerCoachNotes(playerId: string) {
+    return this.prisma.playerCoachNote.findMany({
+      where: { playerId },
+      orderBy: { createdAt: 'desc' },
+    });
+  }
+
+  async addPlayerCoachNote(
+    playerId: string,
+    data: { note: string }
+  ) {
+    return this.prisma.playerCoachNote.create({
+      data: {
+        playerId,
+        note: data.note,
+      },
+    });
+  }
+
+  async deletePlayerCoachNote(noteId: string) {
+    return this.prisma.playerCoachNote.delete({
+      where: { id: noteId },
+    });
+  }
+
+  // Comprehensive Health Status
+  async getPlayerHealthStatus(playerId: string) {
+    return this.prisma.playerHealthStatus.findMany({
+      where: { playerId },
+      orderBy: { createdAt: 'desc' },
+    });
+  }
+
+  async addPlayerHealthStatus(
+    playerId: string,
+    data: {
+      primaryStatus: string;
+      injuryType?: string;
+      muscleInjurySubtype?: string;
+      ligamentInjurySubtype?: string;
+      tendonInjurySubtype?: string;
+      boneInjurySubtype?: string;
+      bodyPart?: string;
+      rehabPhase?: string;
+      trainingParticipation?: string;
+      estimatedReturnDays?: string;
+      clinicalNotes?: string;
+    }
+  ) {
+    return this.prisma.playerHealthStatus.create({
+      data: {
+        playerId,
+        primaryStatus: data.primaryStatus as any,
+        injuryType: data.injuryType as any || null,
+        muscleInjurySubtype: data.muscleInjurySubtype as any || null,
+        ligamentInjurySubtype: data.ligamentInjurySubtype as any || null,
+        tendonInjurySubtype: data.tendonInjurySubtype as any || null,
+        boneInjurySubtype: data.boneInjurySubtype as any || null,
+        bodyPart: data.bodyPart as any || null,
+        rehabPhase: data.rehabPhase as any || null,
+        trainingParticipation: data.trainingParticipation as any || null,
+        estimatedReturnDays: data.estimatedReturnDays as any || null,
+        clinicalNotes: data.clinicalNotes || null,
+      },
+    });
+  }
+
+  async deletePlayerHealthStatus(statusId: string) {
+    return this.prisma.playerHealthStatus.delete({
+      where: { id: statusId },
+    });
+  }
+
+  async updatePlayerHealthStatus(
+    statusId: string,
+    data: {
+      primaryStatus?: string;
+      injuryType?: string;
+      muscleInjurySubtype?: string;
+      ligamentInjurySubtype?: string;
+      tendonInjurySubtype?: string;
+      boneInjurySubtype?: string;
+      bodyPart?: string;
+      rehabPhase?: string;
+      trainingParticipation?: string;
+      estimatedReturnDays?: string;
+      clinicalNotes?: string;
+    }
+  ) {
+    const updateData: any = {};
+    if (data.primaryStatus !== undefined) updateData.primaryStatus = data.primaryStatus;
+    if (data.injuryType !== undefined) updateData.injuryType = data.injuryType;
+    if (data.muscleInjurySubtype !== undefined) updateData.muscleInjurySubtype = data.muscleInjurySubtype;
+    if (data.ligamentInjurySubtype !== undefined) updateData.ligamentInjurySubtype = data.ligamentInjurySubtype;
+    if (data.tendonInjurySubtype !== undefined) updateData.tendonInjurySubtype = data.tendonInjurySubtype;
+    if (data.boneInjurySubtype !== undefined) updateData.boneInjurySubtype = data.boneInjurySubtype;
+    if (data.bodyPart !== undefined) updateData.bodyPart = data.bodyPart;
+    if (data.rehabPhase !== undefined) updateData.rehabPhase = data.rehabPhase;
+    if (data.trainingParticipation !== undefined) updateData.trainingParticipation = data.trainingParticipation;
+    if (data.estimatedReturnDays !== undefined) updateData.estimatedReturnDays = data.estimatedReturnDays;
+    if (data.clinicalNotes !== undefined) updateData.clinicalNotes = data.clinicalNotes;
+
+    return this.prisma.playerHealthStatus.update({
+      where: { id: statusId },
+      data: updateData,
+    });
+  }
 }
