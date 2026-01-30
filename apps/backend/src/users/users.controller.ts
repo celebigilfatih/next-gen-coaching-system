@@ -15,6 +15,13 @@ export class UsersController {
     return this.users.listAll();
   }
 
+  @Get(':id')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles('ADMIN', 'COACH')
+  async findById(@Param('id') id: string) {
+    return this.users.findById(id);
+  }
+
   @Get('by-email')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles('ADMIN')

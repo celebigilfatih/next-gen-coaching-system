@@ -31,6 +31,33 @@ export class GroupsService {
     });
   }
 
+  async findOne(id: string) {
+    return this.prisma.playerGroup.findUnique({
+      where: { id },
+      include: { 
+        members: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
+                email: true,
+                role: true,
+                position: true,
+              },
+            },
+          },
+        },
+        club: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+    });
+  }
+
   async update(id: string, data: { name?: string; ageGroup?: any; category?: string }) {
     console.log('GroupsService.update called:', { id, data });
     return this.prisma.playerGroup.update({

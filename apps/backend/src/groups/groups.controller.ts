@@ -49,6 +49,12 @@ export class GroupsController {
     return this.groups.create(body);
   }
 
+  @Get(':id')
+  @UseGuards(AuthGuard('jwt'))
+  async findOne(@Param('id') id: string) {
+    return this.groups.findOne(id);
+  }
+
   @Put(':id')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles('ADMIN')
