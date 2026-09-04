@@ -1,0 +1,531 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String              @id @default(cuid())
+  name           String
+  email          String              @unique
+  passwordHash   String
+  role           UserRole
+  clubId         String?
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+  birthDate      DateTime?
+  position       Position?
+  attendances    Attendance[]
+  groups         GroupMember[]
+  playerLoads    PlayerLoad[]        @relation("PlayerLoads")
+  performances   PlayerPerformance[]
+  seasonsCreated Season[]            @relation("SeasonCreator")
+  coachedPlans   TrainingPlan[]
+  healthLogs     PlayerHealthLog[]   @relation("PlayerHealthLogs")
+  healthStatus   PlayerHealthStatus[]  @relation("PlayerHealthStatus")
+  coachNotes     PlayerCoachNote[]   @relation("PlayerCoachNotes")
+  club           Club?               @relation(fields: [clubId], references: [id])
+}
+
+model Club {
+  id          String         @id @default(cuid())
+  name        String
+  logo        String?
+  description String?
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  groups      PlayerGroup[]
+  seasons     Season[]
+  plans       TrainingPlan[]
+  users       User[]
+}
+
+model PlayerGroup {
+  id        String         @id @default(cuid())
+  name      String
+  clubId    String
+  ageGroup  AgeGroup
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+  category  TeamCategory   @default(ALT_YAPI)
+  members   GroupMember[]
+  matches   Match[]        @relation("GroupMatches")
+  club      Club           @relation(fields: [clubId], references: [id])
+  sessions  TrainingPlan[] @relation("GroupPlans")
+}
+
+model GroupMember {
+  id        String      @id @default(cuid())
+  userId    String
+  groupId   String
+  createdAt DateTime    @default(now())
+  group     PlayerGroup @relation(fields: [groupId], references: [id])
+  user      User        @relation(fields: [userId], references: [id])
+}
+
+model Drill {
+  id          String        @id @default(cuid())
+  title       String
+  category    DrillCategory
+  ageGroup    AgeGroup
+  durationMin Int
+  difficulty  Difficulty
+  equipment   String?
+  jsonData    Json
+  imageUrl    String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  plans       PlanDrill[]
+}
+
+model TrainingPlan {
+  id            String       @id @default(cuid())
+  title         String
+  clubId        String
+  coachId       String
+  totalDuration Int          @default(0)
+  groupId       String?
+  date          DateTime?
+  notes         String?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  attendance    Attendance[]
+  dayPlans      DayPlan[]
+  drills        PlanDrill[]
+  club          Club         @relation(fields: [clubId], references: [id])
+  coach         User         @relation(fields: [coachId], references: [id])
+  group         PlayerGroup? @relation("GroupPlans", fields: [groupId], references: [id])
+}
+
+model PlanDrill {
+  id             String       @id @default(cuid())
+  trainingPlanId String
+  drillId        String
+  phase          Phase
+  order          Int          @default(0)
+  notes          String?
+  drill          Drill        @relation(fields: [drillId], references: [id])
+  trainingPlan   TrainingPlan @relation(fields: [trainingPlanId], references: [id])
+}
+
+model Attendance {
+  id        String           @id @default(cuid())
+  playerId  String
+  planId    String
+  status    AttendanceStatus
+  createdAt DateTime         @default(now())
+  plan      TrainingPlan     @relation(fields: [planId], references: [id])
+  player    User             @relation(fields: [playerId], references: [id])
+}
+
+model Season {
+  id        String     @id @default(cuid())
+  name      String
+  clubId    String?
+  startDate DateTime
+  endDate   DateTime
+  userId    String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  matches   Match[]
+  club      Club?      @relation(fields: [clubId], references: [id])
+  createdBy User       @relation("SeasonCreator", fields: [userId], references: [id])
+  weeks     WeekPlan[]
+}
+
+model WeekPlan {
+  id         String    @id @default(cuid())
+  seasonId   String
+  weekNumber Int
+  startDate  DateTime
+  endDate    DateTime
+  notes      String?
+  totalLoad  Int       @default(0)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  days       DayPlan[]
+  season     Season    @relation(fields: [seasonId], references: [id], onDelete: Cascade)
+
+  @@unique([seasonId, weekNumber])
+}
+
+model DayPlan {
+  id             String        @id @default(cuid())
+  weekId         String
+  dayOfWeek      Int
+  date           DateTime
+  type           DayType       @default(TRAINING)
+  title          String?
+  trainingPlanId String?
+  drillIds       Json?
+  duration       Int?
+  intensity      Int?
+  notes          String?
+  location       String?
+  topic          String?
+  opponent       String?
+  competition    String?
+  completed      Boolean       @default(false)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  trainingPlan   TrainingPlan? @relation(fields: [trainingPlanId], references: [id])
+  week           WeekPlan      @relation(fields: [weekId], references: [id], onDelete: Cascade)
+}
+
+model Match {
+  id               String       @id @default(cuid())
+  seasonId         String
+  date             DateTime
+  opponent         String
+  location         String
+  competition      String?
+  result           String?
+  opponentAnalysis Json?
+  ourFormation     String?
+  notes            String?
+  videoLinks       Json?
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+  groupId          String?
+  group            PlayerGroup? @relation("GroupMatches", fields: [groupId], references: [id])
+  season           Season       @relation(fields: [seasonId], references: [id], onDelete: Cascade)
+}
+
+model PlayerLoad {
+  id             String   @id @default(cuid())
+  playerId       String
+  date           DateTime
+  totalDistance  Float    @default(0)
+  hsr            Float    @default(0)
+  sprintDistance Float    @default(0)
+  accelerations  Int      @default(0)
+  wellness       Json?
+  createdAt      DateTime @default(now())
+  player         User     @relation("PlayerLoads", fields: [playerId], references: [id])
+}
+
+model PlayerPerformance {
+  id                   String   @id @default(cuid())
+  playerId             String?
+  externalPlayerName   String?
+  externalPlayerTeam   String?
+  externalPlayerPosition String?
+  analysisType         AnalysisType @default(INTERNAL)
+  date                 DateTime @default(now())
+  speed                Int      @default(0)
+  technique            Int      @default(0)
+  endurance            Int      @default(0)
+  tactical             Int      @default(0)
+  form                 Int      @default(0)
+  rating               Float    @default(0)
+  notes                String?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+  developmentPotential Json?
+  formConsistency      Json?
+  healthStats          Json?
+  matchImpactStats     Json?
+  mentalStats          Json?
+  physicalStats        Json?
+  roleAnalysis         Json?
+  summaryDetails       Json?
+  tacticalStats        Json?
+  technicalStats       Json?
+  player               User?    @relation(fields: [playerId], references: [id], onDelete: SetNull)
+}
+
+model VideoAnalysis {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  videoUrl    String
+  duration    String?
+  clipsCount  Int      @default(0)
+  category    String?
+  tags        Json?
+  date        DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model AnalysisReport {
+  id         String   @id @default(cuid())
+  name       String
+  type       String
+  category   String
+  parameters Json?
+  fileUrl    String?
+  date       DateTime @default(now())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model TeamPerformance {
+  id            String   @id @default(cuid())
+  date          DateTime @default(now())
+  formation     String?
+  passAccuracy  Int?
+  possession    Int?
+  shotsOnTarget Int?
+  goalsScored   Int?
+  goalsConceded Int?
+  rating        Float    @default(0)
+  notes         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model ScoutingReport {
+  id         String   @id @default(cuid())
+  opponent   String
+  date       DateTime @default(now())
+  formation  String?
+  strengths  Json?
+  weaknesses Json?
+  keyPlayers Json?
+  notes      String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model MatchAnalysis {
+  id                String   @id @default(cuid())
+  date              DateTime @default(now())
+  opponent          String
+  location          String?
+  competition       String?
+  result            String?
+  ourFormation      String?
+  opponentFormation String?
+  possession        Int?
+  passAccuracy      Int?
+  shotsOnTarget     Int?
+  goalsScored       Int?
+  goalsConceded     Int?
+  rating            Float    @default(0)
+  notes             String?
+  videoUrl          String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model PlayerHealthLog {
+  id               String          @id @default(cuid())
+  playerId         String
+  status           HealthStatus                       // Main health status category
+  severity         HealthSeverity?                    // Severity level if injured
+  bodyPart         String?                            // Affected body part (e.g., "Sol Ayak", "Sağ Dizayn")
+  expectedReturnDate DateTime?                        // Expected return date if injured
+  notes            String?                            // Additional details
+  createdAt        DateTime @default(now())
+  player           User     @relation("PlayerHealthLogs", fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@index([playerId])
+  @@index([createdAt])
+}
+
+model PlayerHealthStatus {
+  id                   String          @id @default(cuid())
+  playerId             String
+  primaryStatus        PrimaryHealthStatus          // 🟢 Sağlıklı, 🟡 Yük Kontrollü, 🟠 Hafif, 🔴 Orta, ⛔ Ciddi, 🏥 Rehabilitasyon, 🧊 Tedavi, 🏠 Maç Dışı, 🔒 Karantina
+  injuryType           InjuryType?                  // Conditional: Muscle, Ligament, Tendon, Bone, Other
+  muscleInjurySubtype  MuscleInjuryType?           // Conditional: if injuryType = MUSCLE
+  ligamentInjurySubtype LigamentInjuryType?        // Conditional: if injuryType = LIGAMENT
+  tendonInjurySubtype  TendonInjuryType?           // Conditional: if injuryType = TENDON
+  boneInjurySubtype    BoneInjuryType?             // Conditional: if injuryType = BONE
+  bodyPart             BodyPart?                    // Affected body part
+  rehabPhase           RehabPhase?                  // Rehab stage: Acute, Light, Strength, Ball, PreMatch, FullClearance
+  trainingParticipation TrainingParticipation?     // Training status: Restricted, Separate, Partial, Full, MatchReady
+  estimatedReturnDays  EstimatedReturnDays?        // Estimated return timeline
+  clinicalNotes        String?                      // Doctor/PT notes (textarea)
+  createdAt            DateTime        @default(now())
+  updatedAt            DateTime        @updatedAt
+  player               User            @relation("PlayerHealthStatus", fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@index([playerId])
+  @@index([createdAt])
+}
+
+model PlayerCoachNote {
+  id        String   @id @default(cuid())
+  playerId  String
+  note      String   // Coach's note text
+  createdAt DateTime @default(now())
+  player    User     @relation("PlayerCoachNotes", fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@index([playerId])
+  @@index([createdAt])
+}
+
+enum AnalysisType {
+  INTERNAL
+  EXTERNAL
+}
+
+enum UserRole {
+  ADMIN
+  COACH
+  PLAYER
+}
+
+enum Position {
+  KALECI
+  DEFANS
+  ORTA_SAHA
+  FORVET
+}
+
+enum DrillCategory {
+  WARM_UP
+  TECHNICAL
+  TACTICAL
+  COOL_DOWN
+}
+
+enum Phase {
+  WARM_UP
+  TECHNICAL
+  TACTICAL
+  COOL_DOWN
+}
+
+enum AgeGroup {
+  U8
+  U10
+  U12
+  U14
+  U16
+  U18
+  SENIOR
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum TeamCategory {
+  ALT_YAPI
+  A_TAKIM
+}
+
+enum DayType {
+  TRAINING
+  MATCH
+  REST
+  RECOVERY
+  TACTICAL
+  TOPLANTI
+  GORUSME
+}
+
+enum HealthStatus {
+  SAGLIK       // Healthy (Sağlı)
+  HAREKET_SINIRLAMASI  // Limited Movement (Hareket Sınırlaması)
+  IZOLASYON    // Quarantine (İzolasyon)
+  YARALI       // Injured (Yaralı)
+}
+
+enum HealthSeverity {
+  HAFIF        // Light (Hafif)
+  ORTA         // Medium (Orta)
+  CIDDI        // Severe (Ciddi)
+}
+
+enum PrimaryHealthStatus {
+  SAGLIKLI              // 🟢 Sağlıklı
+  YUK_KONTROLLU         // 🟡 Yük Kontrollü / İzleniyor
+  HAFIF_SAKATILIK       // 🟠 Hafif Sakatlık
+  ORTA_SAKATILIK        // 🔴 Orta Seviye Sakatlık
+  CIDDI_SAKATILIK       // ⛔ Ciddi Sakatlık
+  REHABILITASYON        // 🏥 Rehabilitasyon Sürecinde
+  TEDAVI_ALTINDA        // 🧊 Tedavi Altında
+  MAC_ANTRENMAN_DISI    // 🏠 Maç / Antrenman Dışı
+  KARANTINA_IZOLASYON   // 🔒 Karantina / İzolasyon
+}
+
+enum InjuryType {
+  MUSCLE          // 💪 Kas Sakatlıkları
+  LIGAMENT        // 🦵 Bağ & Eklem Sakatlıkları
+  TENDON          // 🦶 Tendon Sakatlıkları
+  BONE            // 🦴 Kemik & Travmatik
+  OTHER           // 🧠 Diğer
+}
+
+enum MuscleInjuryType {
+  ADALE_ZORLENMASI     // Adale Zorlanması
+  KAS_YIRTIGI_GRADE1   // Kas Yırtığı (Grade 1)
+  KAS_YIRTIGI_GRADE2   // Kas Yırtığı (Grade 2)
+  KAS_YIRTIGI_GRADE3   // Kas Yırtığı (Grade 3)
+  KAS_SERTLIGI_SPAZM   // Kas Sertliği / Spazm
+}
+
+enum LigamentInjuryType {
+  ACL                  // Ön Çapraz Bağ (ACL)
+  PCL                  // Arka Çapraz Bağ (PCL)
+  MCL                  // İç Yan Bağ (MCL)
+  LCL                  // Dış Yan Bağ (LCL)
+  MENISKUS             // Menisküs
+  AYAK_BILEGI_BURKULMASI // Ayak Bileği Burkulması
+}
+
+enum TendonInjuryType {
+  ASIL_TENDONU         // Aşil Tendonu
+  PATELLAR_TENDONU     // Patellar Tendon
+  HAMSTRING_TENDONU    // Hamstring Tendonu
+}
+
+enum BoneInjuryType {
+  KIRIK               // Kırık
+  CATLAK              // Çatlak
+  DARBE_KONTUZYONU    // Darbe (Kontüzyon)
+}
+
+enum BodyPart {
+  AYAK_AYAK_BILEGI      // Ayak / Ayak Bileği
+  DIZ                   // Diz
+  BALDIR                // Baldır
+  HAMSTRING             // Hamstring
+  QUADRICEPS            // Quadriceps
+  KALCA                 // Kalça
+  KASIK                 // Kasık
+  BEL_SIRT              // Bel / Sırt
+  OMUZ                  // Omuz
+  BOYUN                 // Boyun
+}
+
+enum RehabPhase {
+  AKUT_DONEM            // 🧊 Akut Dönem (Dinlenme / Buz / Tedavi)
+  HAFIF_AKTIVITE        // 🏃 Hafif Aktivite
+  KUVVET_MOBILITE       // 🏋️ Kuvvet & Mobilite
+  TOPLA_CALISMA         // ⚽ Topla Çalışma
+  MAC_ONCESI_HAZIRLIGI  // 🧠 Maç Öncesi Hazırlık
+  TAM_KATILIM_ONAY      // ✅ Tam Katılım Onayı
+}
+
+enum TrainingParticipation {
+  ANTRENMANA_KATILAMAZ  // ❌ Antrenmana Katılamaz
+  KISITLI_KATILIM       // ⚠️ Kısıtlı Katılım
+  TAKIMDAN_AYRI         // 🟡 Takımdan Ayrı
+  TAM_KATILIM           // 🟢 Tam Katılım
+  MAC_HAZIR             // 🎯 Maça Hazır
+}
+
+enum EstimatedReturnDays {
+  DAYS_3_5              // 3–5 Gün
+  DAYS_7                // 1 Hafta
+  DAYS_14               // 2 Hafta
+  DAYS_21_28            // 3–4 Hafta
+  DAYS_30_90            // 1–3 Ay
+  DAYS_90_PLUS          // 3+ Ay
+  BELIRSIZ              // Belirsiz
+}

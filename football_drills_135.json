@@ -1,0 +1,1352 @@
+[
+    {
+        "id": 1,
+        "age_group": "U8",
+        "category": "Is\u0131nma",
+        "name": "Is\u0131nma Drill 1 (U8)",
+        "description": "U8 ya\u015f grubu i\u00e7in is\u0131nma becerilerini geli\u015ftiren drill 1.",
+        "duration": 11,
+        "equipment": "Toplar, koniler",
+        "purpose": "Is\u0131nma becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 2,
+        "age_group": "U8",
+        "category": "Is\u0131nma",
+        "name": "Is\u0131nma Drill 2 (U8)",
+        "description": "U8 ya\u015f grubu i\u00e7in is\u0131nma becerilerini geli\u015ftiren drill 2.",
+        "duration": 12,
+        "equipment": "Toplar, koniler",
+        "purpose": "Is\u0131nma becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 3,
+        "age_group": "U8",
+        "category": "Is\u0131nma",
+        "name": "Is\u0131nma Drill 3 (U8)",
+        "description": "U8 ya\u015f grubu i\u00e7in is\u0131nma becerilerini geli\u015ftiren drill 3.",
+        "duration": 13,
+        "equipment": "Toplar, koniler",
+        "purpose": "Is\u0131nma becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 4,
+        "age_group": "U8",
+        "category": "Is\u0131nma",
+        "name": "Is\u0131nma Drill 4 (U8)",
+        "description": "U8 ya\u015f grubu i\u00e7in is\u0131nma becerilerini geli\u015ftiren drill 4.",
+        "duration": 14,
+        "equipment": "Toplar, koniler",
+        "purpose": "Is\u0131nma becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 5,
+        "age_group": "U8",
+        "category": "Is\u0131nma",
+        "name": "Is\u0131nma Drill 5 (U8)",
+        "description": "U8 ya\u015f grubu i\u00e7in is\u0131nma becerilerini geli\u015ftiren drill 5.",
+        "duration": 15,
+        "equipment": "Toplar, koniler",
+        "purpose": "Is\u0131nma becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 6,
+        "age_group": "U8",
+        "category": "Is\u0131nma",
+        "name": "Is\u0131nma Drill 6 (U8)",
+        "description": "U8 ya\u015f grubu i\u00e7in is\u0131nma becerilerini geli\u015ftiren drill 6.",
+        "duration": 16,
+        "equipment": "Toplar, koniler",
+        "purpose": "Is\u0131nma becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 7,
+        "age_group": "U8",
+        "category": "Is\u0131nma",
+        "name": "Is\u0131nma Drill 7 (U8)",
+        "description": "U8 ya\u015f grubu i\u00e7in is\u0131nma becerilerini geli\u015ftiren drill 7.",
+        "duration": 17,
+        "equipment": "Toplar, koniler",
+        "purpose": "Is\u0131nma becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 8,
+        "age_group": "U8",
+        "category": "Is\u0131nma",
+        "name": "Is\u0131nma Drill 8 (U8)",
+        "description": "U8 ya\u015f grubu i\u00e7in is\u0131nma becerilerini geli\u015ftiren drill 8.",
+        "duration": 18,
+        "equipment": "Toplar, koniler",
+        "purpose": "Is\u0131nma becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 9,
+        "age_group": "U8",
+        "category": "Is\u0131nma",
+        "name": "Is\u0131nma Drill 9 (U8)",
+        "description": "U8 ya\u015f grubu i\u00e7in is\u0131nma becerilerini geli\u015ftiren drill 9.",
+        "duration": 19,
+        "equipment": "Toplar, koniler",
+        "purpose": "Is\u0131nma becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 10,
+        "age_group": "U8",
+        "category": "Teknik",
+        "name": "Teknik Drill 1 (U8)",
+        "description": "U8 ya\u015f grubu i\u00e7in teknik becerilerini geli\u015ftiren drill 1.",
+        "duration": 11,
+        "equipment": "Toplar, koniler",
+        "purpose": "Teknik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 11,
+        "age_group": "U8",
+        "category": "Teknik",
+        "name": "Teknik Drill 2 (U8)",
+        "description": "U8 ya\u015f grubu i\u00e7in teknik becerilerini geli\u015ftiren drill 2.",
+        "duration": 12,
+        "equipment": "Toplar, koniler",
+        "purpose": "Teknik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 12,
+        "age_group": "U8",
+        "category": "Teknik",
+        "name": "Teknik Drill 3 (U8)",
+        "description": "U8 ya\u015f grubu i\u00e7in teknik becerilerini geli\u015ftiren drill 3.",
+        "duration": 13,
+        "equipment": "Toplar, koniler",
+        "purpose": "Teknik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 13,
+        "age_group": "U8",
+        "category": "Teknik",
+        "name": "Teknik Drill 4 (U8)",
+        "description": "U8 ya\u015f grubu i\u00e7in teknik becerilerini geli\u015ftiren drill 4.",
+        "duration": 14,
+        "equipment": "Toplar, koniler",
+        "purpose": "Teknik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 14,
+        "age_group": "U8",
+        "category": "Teknik",
+        "name": "Teknik Drill 5 (U8)",
+        "description": "U8 ya\u015f grubu i\u00e7in teknik becerilerini geli\u015ftiren drill 5.",
+        "duration": 15,
+        "equipment": "Toplar, koniler",
+        "purpose": "Teknik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 15,
+        "age_group": "U8",
+        "category": "Teknik",
+        "name": "Teknik Drill 6 (U8)",
+        "description": "U8 ya\u015f grubu i\u00e7in teknik becerilerini geli\u015ftiren drill 6.",
+        "duration": 16,
+        "equipment": "Toplar, koniler",
+        "purpose": "Teknik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 16,
+        "age_group": "U8",
+        "category": "Teknik",
+        "name": "Teknik Drill 7 (U8)",
+        "description": "U8 ya\u015f grubu i\u00e7in teknik becerilerini geli\u015ftiren drill 7.",
+        "duration": 17,
+        "equipment": "Toplar, koniler",
+        "purpose": "Teknik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 17,
+        "age_group": "U8",
+        "category": "Teknik",
+        "name": "Teknik Drill 8 (U8)",
+        "description": "U8 ya\u015f grubu i\u00e7in teknik becerilerini geli\u015ftiren drill 8.",
+        "duration": 18,
+        "equipment": "Toplar, koniler",
+        "purpose": "Teknik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 18,
+        "age_group": "U8",
+        "category": "Teknik",
+        "name": "Teknik Drill 9 (U8)",
+        "description": "U8 ya\u015f grubu i\u00e7in teknik becerilerini geli\u015ftiren drill 9.",
+        "duration": 19,
+        "equipment": "Toplar, koniler",
+        "purpose": "Teknik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 19,
+        "age_group": "U8",
+        "category": "Taktik",
+        "name": "Taktik Drill 1 (U8)",
+        "description": "U8 ya\u015f grubu i\u00e7in taktik becerilerini geli\u015ftiren drill 1.",
+        "duration": 11,
+        "equipment": "Toplar, koniler",
+        "purpose": "Taktik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 20,
+        "age_group": "U8",
+        "category": "Taktik",
+        "name": "Taktik Drill 2 (U8)",
+        "description": "U8 ya\u015f grubu i\u00e7in taktik becerilerini geli\u015ftiren drill 2.",
+        "duration": 12,
+        "equipment": "Toplar, koniler",
+        "purpose": "Taktik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 21,
+        "age_group": "U8",
+        "category": "Taktik",
+        "name": "Taktik Drill 3 (U8)",
+        "description": "U8 ya\u015f grubu i\u00e7in taktik becerilerini geli\u015ftiren drill 3.",
+        "duration": 13,
+        "equipment": "Toplar, koniler",
+        "purpose": "Taktik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 22,
+        "age_group": "U8",
+        "category": "Taktik",
+        "name": "Taktik Drill 4 (U8)",
+        "description": "U8 ya\u015f grubu i\u00e7in taktik becerilerini geli\u015ftiren drill 4.",
+        "duration": 14,
+        "equipment": "Toplar, koniler",
+        "purpose": "Taktik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 23,
+        "age_group": "U8",
+        "category": "Taktik",
+        "name": "Taktik Drill 5 (U8)",
+        "description": "U8 ya\u015f grubu i\u00e7in taktik becerilerini geli\u015ftiren drill 5.",
+        "duration": 15,
+        "equipment": "Toplar, koniler",
+        "purpose": "Taktik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 24,
+        "age_group": "U8",
+        "category": "Taktik",
+        "name": "Taktik Drill 6 (U8)",
+        "description": "U8 ya\u015f grubu i\u00e7in taktik becerilerini geli\u015ftiren drill 6.",
+        "duration": 16,
+        "equipment": "Toplar, koniler",
+        "purpose": "Taktik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 25,
+        "age_group": "U8",
+        "category": "Taktik",
+        "name": "Taktik Drill 7 (U8)",
+        "description": "U8 ya\u015f grubu i\u00e7in taktik becerilerini geli\u015ftiren drill 7.",
+        "duration": 17,
+        "equipment": "Toplar, koniler",
+        "purpose": "Taktik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 26,
+        "age_group": "U8",
+        "category": "Taktik",
+        "name": "Taktik Drill 8 (U8)",
+        "description": "U8 ya\u015f grubu i\u00e7in taktik becerilerini geli\u015ftiren drill 8.",
+        "duration": 18,
+        "equipment": "Toplar, koniler",
+        "purpose": "Taktik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 27,
+        "age_group": "U8",
+        "category": "Taktik",
+        "name": "Taktik Drill 9 (U8)",
+        "description": "U8 ya\u015f grubu i\u00e7in taktik becerilerini geli\u015ftiren drill 9.",
+        "duration": 19,
+        "equipment": "Toplar, koniler",
+        "purpose": "Taktik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 28,
+        "age_group": "U10",
+        "category": "Is\u0131nma",
+        "name": "Is\u0131nma Drill 1 (U10)",
+        "description": "U10 ya\u015f grubu i\u00e7in is\u0131nma becerilerini geli\u015ftiren drill 1.",
+        "duration": 11,
+        "equipment": "Toplar, koniler",
+        "purpose": "Is\u0131nma becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 29,
+        "age_group": "U10",
+        "category": "Is\u0131nma",
+        "name": "Is\u0131nma Drill 2 (U10)",
+        "description": "U10 ya\u015f grubu i\u00e7in is\u0131nma becerilerini geli\u015ftiren drill 2.",
+        "duration": 12,
+        "equipment": "Toplar, koniler",
+        "purpose": "Is\u0131nma becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 30,
+        "age_group": "U10",
+        "category": "Is\u0131nma",
+        "name": "Is\u0131nma Drill 3 (U10)",
+        "description": "U10 ya\u015f grubu i\u00e7in is\u0131nma becerilerini geli\u015ftiren drill 3.",
+        "duration": 13,
+        "equipment": "Toplar, koniler",
+        "purpose": "Is\u0131nma becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 31,
+        "age_group": "U10",
+        "category": "Is\u0131nma",
+        "name": "Is\u0131nma Drill 4 (U10)",
+        "description": "U10 ya\u015f grubu i\u00e7in is\u0131nma becerilerini geli\u015ftiren drill 4.",
+        "duration": 14,
+        "equipment": "Toplar, koniler",
+        "purpose": "Is\u0131nma becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 32,
+        "age_group": "U10",
+        "category": "Is\u0131nma",
+        "name": "Is\u0131nma Drill 5 (U10)",
+        "description": "U10 ya\u015f grubu i\u00e7in is\u0131nma becerilerini geli\u015ftiren drill 5.",
+        "duration": 15,
+        "equipment": "Toplar, koniler",
+        "purpose": "Is\u0131nma becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 33,
+        "age_group": "U10",
+        "category": "Is\u0131nma",
+        "name": "Is\u0131nma Drill 6 (U10)",
+        "description": "U10 ya\u015f grubu i\u00e7in is\u0131nma becerilerini geli\u015ftiren drill 6.",
+        "duration": 16,
+        "equipment": "Toplar, koniler",
+        "purpose": "Is\u0131nma becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 34,
+        "age_group": "U10",
+        "category": "Is\u0131nma",
+        "name": "Is\u0131nma Drill 7 (U10)",
+        "description": "U10 ya\u015f grubu i\u00e7in is\u0131nma becerilerini geli\u015ftiren drill 7.",
+        "duration": 17,
+        "equipment": "Toplar, koniler",
+        "purpose": "Is\u0131nma becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 35,
+        "age_group": "U10",
+        "category": "Is\u0131nma",
+        "name": "Is\u0131nma Drill 8 (U10)",
+        "description": "U10 ya\u015f grubu i\u00e7in is\u0131nma becerilerini geli\u015ftiren drill 8.",
+        "duration": 18,
+        "equipment": "Toplar, koniler",
+        "purpose": "Is\u0131nma becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 36,
+        "age_group": "U10",
+        "category": "Is\u0131nma",
+        "name": "Is\u0131nma Drill 9 (U10)",
+        "description": "U10 ya\u015f grubu i\u00e7in is\u0131nma becerilerini geli\u015ftiren drill 9.",
+        "duration": 19,
+        "equipment": "Toplar, koniler",
+        "purpose": "Is\u0131nma becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 37,
+        "age_group": "U10",
+        "category": "Teknik",
+        "name": "Teknik Drill 1 (U10)",
+        "description": "U10 ya\u015f grubu i\u00e7in teknik becerilerini geli\u015ftiren drill 1.",
+        "duration": 11,
+        "equipment": "Toplar, koniler",
+        "purpose": "Teknik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 38,
+        "age_group": "U10",
+        "category": "Teknik",
+        "name": "Teknik Drill 2 (U10)",
+        "description": "U10 ya\u015f grubu i\u00e7in teknik becerilerini geli\u015ftiren drill 2.",
+        "duration": 12,
+        "equipment": "Toplar, koniler",
+        "purpose": "Teknik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 39,
+        "age_group": "U10",
+        "category": "Teknik",
+        "name": "Teknik Drill 3 (U10)",
+        "description": "U10 ya\u015f grubu i\u00e7in teknik becerilerini geli\u015ftiren drill 3.",
+        "duration": 13,
+        "equipment": "Toplar, koniler",
+        "purpose": "Teknik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 40,
+        "age_group": "U10",
+        "category": "Teknik",
+        "name": "Teknik Drill 4 (U10)",
+        "description": "U10 ya\u015f grubu i\u00e7in teknik becerilerini geli\u015ftiren drill 4.",
+        "duration": 14,
+        "equipment": "Toplar, koniler",
+        "purpose": "Teknik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 41,
+        "age_group": "U10",
+        "category": "Teknik",
+        "name": "Teknik Drill 5 (U10)",
+        "description": "U10 ya\u015f grubu i\u00e7in teknik becerilerini geli\u015ftiren drill 5.",
+        "duration": 15,
+        "equipment": "Toplar, koniler",
+        "purpose": "Teknik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 42,
+        "age_group": "U10",
+        "category": "Teknik",
+        "name": "Teknik Drill 6 (U10)",
+        "description": "U10 ya\u015f grubu i\u00e7in teknik becerilerini geli\u015ftiren drill 6.",
+        "duration": 16,
+        "equipment": "Toplar, koniler",
+        "purpose": "Teknik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 43,
+        "age_group": "U10",
+        "category": "Teknik",
+        "name": "Teknik Drill 7 (U10)",
+        "description": "U10 ya\u015f grubu i\u00e7in teknik becerilerini geli\u015ftiren drill 7.",
+        "duration": 17,
+        "equipment": "Toplar, koniler",
+        "purpose": "Teknik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 44,
+        "age_group": "U10",
+        "category": "Teknik",
+        "name": "Teknik Drill 8 (U10)",
+        "description": "U10 ya\u015f grubu i\u00e7in teknik becerilerini geli\u015ftiren drill 8.",
+        "duration": 18,
+        "equipment": "Toplar, koniler",
+        "purpose": "Teknik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 45,
+        "age_group": "U10",
+        "category": "Teknik",
+        "name": "Teknik Drill 9 (U10)",
+        "description": "U10 ya\u015f grubu i\u00e7in teknik becerilerini geli\u015ftiren drill 9.",
+        "duration": 19,
+        "equipment": "Toplar, koniler",
+        "purpose": "Teknik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 46,
+        "age_group": "U10",
+        "category": "Taktik",
+        "name": "Taktik Drill 1 (U10)",
+        "description": "U10 ya\u015f grubu i\u00e7in taktik becerilerini geli\u015ftiren drill 1.",
+        "duration": 11,
+        "equipment": "Toplar, koniler",
+        "purpose": "Taktik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 47,
+        "age_group": "U10",
+        "category": "Taktik",
+        "name": "Taktik Drill 2 (U10)",
+        "description": "U10 ya\u015f grubu i\u00e7in taktik becerilerini geli\u015ftiren drill 2.",
+        "duration": 12,
+        "equipment": "Toplar, koniler",
+        "purpose": "Taktik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 48,
+        "age_group": "U10",
+        "category": "Taktik",
+        "name": "Taktik Drill 3 (U10)",
+        "description": "U10 ya\u015f grubu i\u00e7in taktik becerilerini geli\u015ftiren drill 3.",
+        "duration": 13,
+        "equipment": "Toplar, koniler",
+        "purpose": "Taktik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 49,
+        "age_group": "U10",
+        "category": "Taktik",
+        "name": "Taktik Drill 4 (U10)",
+        "description": "U10 ya\u015f grubu i\u00e7in taktik becerilerini geli\u015ftiren drill 4.",
+        "duration": 14,
+        "equipment": "Toplar, koniler",
+        "purpose": "Taktik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 50,
+        "age_group": "U10",
+        "category": "Taktik",
+        "name": "Taktik Drill 5 (U10)",
+        "description": "U10 ya\u015f grubu i\u00e7in taktik becerilerini geli\u015ftiren drill 5.",
+        "duration": 15,
+        "equipment": "Toplar, koniler",
+        "purpose": "Taktik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 51,
+        "age_group": "U10",
+        "category": "Taktik",
+        "name": "Taktik Drill 6 (U10)",
+        "description": "U10 ya\u015f grubu i\u00e7in taktik becerilerini geli\u015ftiren drill 6.",
+        "duration": 16,
+        "equipment": "Toplar, koniler",
+        "purpose": "Taktik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 52,
+        "age_group": "U10",
+        "category": "Taktik",
+        "name": "Taktik Drill 7 (U10)",
+        "description": "U10 ya\u015f grubu i\u00e7in taktik becerilerini geli\u015ftiren drill 7.",
+        "duration": 17,
+        "equipment": "Toplar, koniler",
+        "purpose": "Taktik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 53,
+        "age_group": "U10",
+        "category": "Taktik",
+        "name": "Taktik Drill 8 (U10)",
+        "description": "U10 ya\u015f grubu i\u00e7in taktik becerilerini geli\u015ftiren drill 8.",
+        "duration": 18,
+        "equipment": "Toplar, koniler",
+        "purpose": "Taktik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 54,
+        "age_group": "U10",
+        "category": "Taktik",
+        "name": "Taktik Drill 9 (U10)",
+        "description": "U10 ya\u015f grubu i\u00e7in taktik becerilerini geli\u015ftiren drill 9.",
+        "duration": 19,
+        "equipment": "Toplar, koniler",
+        "purpose": "Taktik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 55,
+        "age_group": "U12",
+        "category": "Is\u0131nma",
+        "name": "Is\u0131nma Drill 1 (U12)",
+        "description": "U12 ya\u015f grubu i\u00e7in is\u0131nma becerilerini geli\u015ftiren drill 1.",
+        "duration": 11,
+        "equipment": "Toplar, koniler",
+        "purpose": "Is\u0131nma becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 56,
+        "age_group": "U12",
+        "category": "Is\u0131nma",
+        "name": "Is\u0131nma Drill 2 (U12)",
+        "description": "U12 ya\u015f grubu i\u00e7in is\u0131nma becerilerini geli\u015ftiren drill 2.",
+        "duration": 12,
+        "equipment": "Toplar, koniler",
+        "purpose": "Is\u0131nma becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 57,
+        "age_group": "U12",
+        "category": "Is\u0131nma",
+        "name": "Is\u0131nma Drill 3 (U12)",
+        "description": "U12 ya\u015f grubu i\u00e7in is\u0131nma becerilerini geli\u015ftiren drill 3.",
+        "duration": 13,
+        "equipment": "Toplar, koniler",
+        "purpose": "Is\u0131nma becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 58,
+        "age_group": "U12",
+        "category": "Is\u0131nma",
+        "name": "Is\u0131nma Drill 4 (U12)",
+        "description": "U12 ya\u015f grubu i\u00e7in is\u0131nma becerilerini geli\u015ftiren drill 4.",
+        "duration": 14,
+        "equipment": "Toplar, koniler",
+        "purpose": "Is\u0131nma becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 59,
+        "age_group": "U12",
+        "category": "Is\u0131nma",
+        "name": "Is\u0131nma Drill 5 (U12)",
+        "description": "U12 ya\u015f grubu i\u00e7in is\u0131nma becerilerini geli\u015ftiren drill 5.",
+        "duration": 15,
+        "equipment": "Toplar, koniler",
+        "purpose": "Is\u0131nma becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 60,
+        "age_group": "U12",
+        "category": "Is\u0131nma",
+        "name": "Is\u0131nma Drill 6 (U12)",
+        "description": "U12 ya\u015f grubu i\u00e7in is\u0131nma becerilerini geli\u015ftiren drill 6.",
+        "duration": 16,
+        "equipment": "Toplar, koniler",
+        "purpose": "Is\u0131nma becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 61,
+        "age_group": "U12",
+        "category": "Is\u0131nma",
+        "name": "Is\u0131nma Drill 7 (U12)",
+        "description": "U12 ya\u015f grubu i\u00e7in is\u0131nma becerilerini geli\u015ftiren drill 7.",
+        "duration": 17,
+        "equipment": "Toplar, koniler",
+        "purpose": "Is\u0131nma becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 62,
+        "age_group": "U12",
+        "category": "Is\u0131nma",
+        "name": "Is\u0131nma Drill 8 (U12)",
+        "description": "U12 ya\u015f grubu i\u00e7in is\u0131nma becerilerini geli\u015ftiren drill 8.",
+        "duration": 18,
+        "equipment": "Toplar, koniler",
+        "purpose": "Is\u0131nma becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 63,
+        "age_group": "U12",
+        "category": "Is\u0131nma",
+        "name": "Is\u0131nma Drill 9 (U12)",
+        "description": "U12 ya\u015f grubu i\u00e7in is\u0131nma becerilerini geli\u015ftiren drill 9.",
+        "duration": 19,
+        "equipment": "Toplar, koniler",
+        "purpose": "Is\u0131nma becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 64,
+        "age_group": "U12",
+        "category": "Teknik",
+        "name": "Teknik Drill 1 (U12)",
+        "description": "U12 ya\u015f grubu i\u00e7in teknik becerilerini geli\u015ftiren drill 1.",
+        "duration": 11,
+        "equipment": "Toplar, koniler",
+        "purpose": "Teknik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 65,
+        "age_group": "U12",
+        "category": "Teknik",
+        "name": "Teknik Drill 2 (U12)",
+        "description": "U12 ya\u015f grubu i\u00e7in teknik becerilerini geli\u015ftiren drill 2.",
+        "duration": 12,
+        "equipment": "Toplar, koniler",
+        "purpose": "Teknik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 66,
+        "age_group": "U12",
+        "category": "Teknik",
+        "name": "Teknik Drill 3 (U12)",
+        "description": "U12 ya\u015f grubu i\u00e7in teknik becerilerini geli\u015ftiren drill 3.",
+        "duration": 13,
+        "equipment": "Toplar, koniler",
+        "purpose": "Teknik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 67,
+        "age_group": "U12",
+        "category": "Teknik",
+        "name": "Teknik Drill 4 (U12)",
+        "description": "U12 ya\u015f grubu i\u00e7in teknik becerilerini geli\u015ftiren drill 4.",
+        "duration": 14,
+        "equipment": "Toplar, koniler",
+        "purpose": "Teknik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 68,
+        "age_group": "U12",
+        "category": "Teknik",
+        "name": "Teknik Drill 5 (U12)",
+        "description": "U12 ya\u015f grubu i\u00e7in teknik becerilerini geli\u015ftiren drill 5.",
+        "duration": 15,
+        "equipment": "Toplar, koniler",
+        "purpose": "Teknik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 69,
+        "age_group": "U12",
+        "category": "Teknik",
+        "name": "Teknik Drill 6 (U12)",
+        "description": "U12 ya\u015f grubu i\u00e7in teknik becerilerini geli\u015ftiren drill 6.",
+        "duration": 16,
+        "equipment": "Toplar, koniler",
+        "purpose": "Teknik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 70,
+        "age_group": "U12",
+        "category": "Teknik",
+        "name": "Teknik Drill 7 (U12)",
+        "description": "U12 ya\u015f grubu i\u00e7in teknik becerilerini geli\u015ftiren drill 7.",
+        "duration": 17,
+        "equipment": "Toplar, koniler",
+        "purpose": "Teknik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 71,
+        "age_group": "U12",
+        "category": "Teknik",
+        "name": "Teknik Drill 8 (U12)",
+        "description": "U12 ya\u015f grubu i\u00e7in teknik becerilerini geli\u015ftiren drill 8.",
+        "duration": 18,
+        "equipment": "Toplar, koniler",
+        "purpose": "Teknik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 72,
+        "age_group": "U12",
+        "category": "Teknik",
+        "name": "Teknik Drill 9 (U12)",
+        "description": "U12 ya\u015f grubu i\u00e7in teknik becerilerini geli\u015ftiren drill 9.",
+        "duration": 19,
+        "equipment": "Toplar, koniler",
+        "purpose": "Teknik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 73,
+        "age_group": "U12",
+        "category": "Taktik",
+        "name": "Taktik Drill 1 (U12)",
+        "description": "U12 ya\u015f grubu i\u00e7in taktik becerilerini geli\u015ftiren drill 1.",
+        "duration": 11,
+        "equipment": "Toplar, koniler",
+        "purpose": "Taktik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 74,
+        "age_group": "U12",
+        "category": "Taktik",
+        "name": "Taktik Drill 2 (U12)",
+        "description": "U12 ya\u015f grubu i\u00e7in taktik becerilerini geli\u015ftiren drill 2.",
+        "duration": 12,
+        "equipment": "Toplar, koniler",
+        "purpose": "Taktik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 75,
+        "age_group": "U12",
+        "category": "Taktik",
+        "name": "Taktik Drill 3 (U12)",
+        "description": "U12 ya\u015f grubu i\u00e7in taktik becerilerini geli\u015ftiren drill 3.",
+        "duration": 13,
+        "equipment": "Toplar, koniler",
+        "purpose": "Taktik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 76,
+        "age_group": "U12",
+        "category": "Taktik",
+        "name": "Taktik Drill 4 (U12)",
+        "description": "U12 ya\u015f grubu i\u00e7in taktik becerilerini geli\u015ftiren drill 4.",
+        "duration": 14,
+        "equipment": "Toplar, koniler",
+        "purpose": "Taktik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 77,
+        "age_group": "U12",
+        "category": "Taktik",
+        "name": "Taktik Drill 5 (U12)",
+        "description": "U12 ya\u015f grubu i\u00e7in taktik becerilerini geli\u015ftiren drill 5.",
+        "duration": 15,
+        "equipment": "Toplar, koniler",
+        "purpose": "Taktik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 78,
+        "age_group": "U12",
+        "category": "Taktik",
+        "name": "Taktik Drill 6 (U12)",
+        "description": "U12 ya\u015f grubu i\u00e7in taktik becerilerini geli\u015ftiren drill 6.",
+        "duration": 16,
+        "equipment": "Toplar, koniler",
+        "purpose": "Taktik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 79,
+        "age_group": "U12",
+        "category": "Taktik",
+        "name": "Taktik Drill 7 (U12)",
+        "description": "U12 ya\u015f grubu i\u00e7in taktik becerilerini geli\u015ftiren drill 7.",
+        "duration": 17,
+        "equipment": "Toplar, koniler",
+        "purpose": "Taktik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 80,
+        "age_group": "U12",
+        "category": "Taktik",
+        "name": "Taktik Drill 8 (U12)",
+        "description": "U12 ya\u015f grubu i\u00e7in taktik becerilerini geli\u015ftiren drill 8.",
+        "duration": 18,
+        "equipment": "Toplar, koniler",
+        "purpose": "Taktik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 81,
+        "age_group": "U12",
+        "category": "Taktik",
+        "name": "Taktik Drill 9 (U12)",
+        "description": "U12 ya\u015f grubu i\u00e7in taktik becerilerini geli\u015ftiren drill 9.",
+        "duration": 19,
+        "equipment": "Toplar, koniler",
+        "purpose": "Taktik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 82,
+        "age_group": "U14",
+        "category": "Is\u0131nma",
+        "name": "Is\u0131nma Drill 1 (U14)",
+        "description": "U14 ya\u015f grubu i\u00e7in is\u0131nma becerilerini geli\u015ftiren drill 1.",
+        "duration": 11,
+        "equipment": "Toplar, koniler",
+        "purpose": "Is\u0131nma becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 83,
+        "age_group": "U14",
+        "category": "Is\u0131nma",
+        "name": "Is\u0131nma Drill 2 (U14)",
+        "description": "U14 ya\u015f grubu i\u00e7in is\u0131nma becerilerini geli\u015ftiren drill 2.",
+        "duration": 12,
+        "equipment": "Toplar, koniler",
+        "purpose": "Is\u0131nma becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 84,
+        "age_group": "U14",
+        "category": "Is\u0131nma",
+        "name": "Is\u0131nma Drill 3 (U14)",
+        "description": "U14 ya\u015f grubu i\u00e7in is\u0131nma becerilerini geli\u015ftiren drill 3.",
+        "duration": 13,
+        "equipment": "Toplar, koniler",
+        "purpose": "Is\u0131nma becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 85,
+        "age_group": "U14",
+        "category": "Is\u0131nma",
+        "name": "Is\u0131nma Drill 4 (U14)",
+        "description": "U14 ya\u015f grubu i\u00e7in is\u0131nma becerilerini geli\u015ftiren drill 4.",
+        "duration": 14,
+        "equipment": "Toplar, koniler",
+        "purpose": "Is\u0131nma becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 86,
+        "age_group": "U14",
+        "category": "Is\u0131nma",
+        "name": "Is\u0131nma Drill 5 (U14)",
+        "description": "U14 ya\u015f grubu i\u00e7in is\u0131nma becerilerini geli\u015ftiren drill 5.",
+        "duration": 15,
+        "equipment": "Toplar, koniler",
+        "purpose": "Is\u0131nma becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 87,
+        "age_group": "U14",
+        "category": "Is\u0131nma",
+        "name": "Is\u0131nma Drill 6 (U14)",
+        "description": "U14 ya\u015f grubu i\u00e7in is\u0131nma becerilerini geli\u015ftiren drill 6.",
+        "duration": 16,
+        "equipment": "Toplar, koniler",
+        "purpose": "Is\u0131nma becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 88,
+        "age_group": "U14",
+        "category": "Is\u0131nma",
+        "name": "Is\u0131nma Drill 7 (U14)",
+        "description": "U14 ya\u015f grubu i\u00e7in is\u0131nma becerilerini geli\u015ftiren drill 7.",
+        "duration": 17,
+        "equipment": "Toplar, koniler",
+        "purpose": "Is\u0131nma becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 89,
+        "age_group": "U14",
+        "category": "Is\u0131nma",
+        "name": "Is\u0131nma Drill 8 (U14)",
+        "description": "U14 ya\u015f grubu i\u00e7in is\u0131nma becerilerini geli\u015ftiren drill 8.",
+        "duration": 18,
+        "equipment": "Toplar, koniler",
+        "purpose": "Is\u0131nma becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 90,
+        "age_group": "U14",
+        "category": "Is\u0131nma",
+        "name": "Is\u0131nma Drill 9 (U14)",
+        "description": "U14 ya\u015f grubu i\u00e7in is\u0131nma becerilerini geli\u015ftiren drill 9.",
+        "duration": 19,
+        "equipment": "Toplar, koniler",
+        "purpose": "Is\u0131nma becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 91,
+        "age_group": "U14",
+        "category": "Teknik",
+        "name": "Teknik Drill 1 (U14)",
+        "description": "U14 ya\u015f grubu i\u00e7in teknik becerilerini geli\u015ftiren drill 1.",
+        "duration": 11,
+        "equipment": "Toplar, koniler",
+        "purpose": "Teknik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 92,
+        "age_group": "U14",
+        "category": "Teknik",
+        "name": "Teknik Drill 2 (U14)",
+        "description": "U14 ya\u015f grubu i\u00e7in teknik becerilerini geli\u015ftiren drill 2.",
+        "duration": 12,
+        "equipment": "Toplar, koniler",
+        "purpose": "Teknik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 93,
+        "age_group": "U14",
+        "category": "Teknik",
+        "name": "Teknik Drill 3 (U14)",
+        "description": "U14 ya\u015f grubu i\u00e7in teknik becerilerini geli\u015ftiren drill 3.",
+        "duration": 13,
+        "equipment": "Toplar, koniler",
+        "purpose": "Teknik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 94,
+        "age_group": "U14",
+        "category": "Teknik",
+        "name": "Teknik Drill 4 (U14)",
+        "description": "U14 ya\u015f grubu i\u00e7in teknik becerilerini geli\u015ftiren drill 4.",
+        "duration": 14,
+        "equipment": "Toplar, koniler",
+        "purpose": "Teknik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 95,
+        "age_group": "U14",
+        "category": "Teknik",
+        "name": "Teknik Drill 5 (U14)",
+        "description": "U14 ya\u015f grubu i\u00e7in teknik becerilerini geli\u015ftiren drill 5.",
+        "duration": 15,
+        "equipment": "Toplar, koniler",
+        "purpose": "Teknik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 96,
+        "age_group": "U14",
+        "category": "Teknik",
+        "name": "Teknik Drill 6 (U14)",
+        "description": "U14 ya\u015f grubu i\u00e7in teknik becerilerini geli\u015ftiren drill 6.",
+        "duration": 16,
+        "equipment": "Toplar, koniler",
+        "purpose": "Teknik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 97,
+        "age_group": "U14",
+        "category": "Teknik",
+        "name": "Teknik Drill 7 (U14)",
+        "description": "U14 ya\u015f grubu i\u00e7in teknik becerilerini geli\u015ftiren drill 7.",
+        "duration": 17,
+        "equipment": "Toplar, koniler",
+        "purpose": "Teknik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 98,
+        "age_group": "U14",
+        "category": "Teknik",
+        "name": "Teknik Drill 8 (U14)",
+        "description": "U14 ya\u015f grubu i\u00e7in teknik becerilerini geli\u015ftiren drill 8.",
+        "duration": 18,
+        "equipment": "Toplar, koniler",
+        "purpose": "Teknik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 99,
+        "age_group": "U14",
+        "category": "Teknik",
+        "name": "Teknik Drill 9 (U14)",
+        "description": "U14 ya\u015f grubu i\u00e7in teknik becerilerini geli\u015ftiren drill 9.",
+        "duration": 19,
+        "equipment": "Toplar, koniler",
+        "purpose": "Teknik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 100,
+        "age_group": "U14",
+        "category": "Taktik",
+        "name": "Taktik Drill 1 (U14)",
+        "description": "U14 ya\u015f grubu i\u00e7in taktik becerilerini geli\u015ftiren drill 1.",
+        "duration": 11,
+        "equipment": "Toplar, koniler",
+        "purpose": "Taktik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 101,
+        "age_group": "U14",
+        "category": "Taktik",
+        "name": "Taktik Drill 2 (U14)",
+        "description": "U14 ya\u015f grubu i\u00e7in taktik becerilerini geli\u015ftiren drill 2.",
+        "duration": 12,
+        "equipment": "Toplar, koniler",
+        "purpose": "Taktik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 102,
+        "age_group": "U14",
+        "category": "Taktik",
+        "name": "Taktik Drill 3 (U14)",
+        "description": "U14 ya\u015f grubu i\u00e7in taktik becerilerini geli\u015ftiren drill 3.",
+        "duration": 13,
+        "equipment": "Toplar, koniler",
+        "purpose": "Taktik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 103,
+        "age_group": "U14",
+        "category": "Taktik",
+        "name": "Taktik Drill 4 (U14)",
+        "description": "U14 ya\u015f grubu i\u00e7in taktik becerilerini geli\u015ftiren drill 4.",
+        "duration": 14,
+        "equipment": "Toplar, koniler",
+        "purpose": "Taktik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 104,
+        "age_group": "U14",
+        "category": "Taktik",
+        "name": "Taktik Drill 5 (U14)",
+        "description": "U14 ya\u015f grubu i\u00e7in taktik becerilerini geli\u015ftiren drill 5.",
+        "duration": 15,
+        "equipment": "Toplar, koniler",
+        "purpose": "Taktik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 105,
+        "age_group": "U14",
+        "category": "Taktik",
+        "name": "Taktik Drill 6 (U14)",
+        "description": "U14 ya\u015f grubu i\u00e7in taktik becerilerini geli\u015ftiren drill 6.",
+        "duration": 16,
+        "equipment": "Toplar, koniler",
+        "purpose": "Taktik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 106,
+        "age_group": "U14",
+        "category": "Taktik",
+        "name": "Taktik Drill 7 (U14)",
+        "description": "U14 ya\u015f grubu i\u00e7in taktik becerilerini geli\u015ftiren drill 7.",
+        "duration": 17,
+        "equipment": "Toplar, koniler",
+        "purpose": "Taktik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 107,
+        "age_group": "U14",
+        "category": "Taktik",
+        "name": "Taktik Drill 8 (U14)",
+        "description": "U14 ya\u015f grubu i\u00e7in taktik becerilerini geli\u015ftiren drill 8.",
+        "duration": 18,
+        "equipment": "Toplar, koniler",
+        "purpose": "Taktik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 108,
+        "age_group": "U14",
+        "category": "Taktik",
+        "name": "Taktik Drill 9 (U14)",
+        "description": "U14 ya\u015f grubu i\u00e7in taktik becerilerini geli\u015ftiren drill 9.",
+        "duration": 19,
+        "equipment": "Toplar, koniler",
+        "purpose": "Taktik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 109,
+        "age_group": "U16",
+        "category": "Is\u0131nma",
+        "name": "Is\u0131nma Drill 1 (U16)",
+        "description": "U16 ya\u015f grubu i\u00e7in is\u0131nma becerilerini geli\u015ftiren drill 1.",
+        "duration": 11,
+        "equipment": "Toplar, koniler",
+        "purpose": "Is\u0131nma becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 110,
+        "age_group": "U16",
+        "category": "Is\u0131nma",
+        "name": "Is\u0131nma Drill 2 (U16)",
+        "description": "U16 ya\u015f grubu i\u00e7in is\u0131nma becerilerini geli\u015ftiren drill 2.",
+        "duration": 12,
+        "equipment": "Toplar, koniler",
+        "purpose": "Is\u0131nma becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 111,
+        "age_group": "U16",
+        "category": "Is\u0131nma",
+        "name": "Is\u0131nma Drill 3 (U16)",
+        "description": "U16 ya\u015f grubu i\u00e7in is\u0131nma becerilerini geli\u015ftiren drill 3.",
+        "duration": 13,
+        "equipment": "Toplar, koniler",
+        "purpose": "Is\u0131nma becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 112,
+        "age_group": "U16",
+        "category": "Is\u0131nma",
+        "name": "Is\u0131nma Drill 4 (U16)",
+        "description": "U16 ya\u015f grubu i\u00e7in is\u0131nma becerilerini geli\u015ftiren drill 4.",
+        "duration": 14,
+        "equipment": "Toplar, koniler",
+        "purpose": "Is\u0131nma becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 113,
+        "age_group": "U16",
+        "category": "Is\u0131nma",
+        "name": "Is\u0131nma Drill 5 (U16)",
+        "description": "U16 ya\u015f grubu i\u00e7in is\u0131nma becerilerini geli\u015ftiren drill 5.",
+        "duration": 15,
+        "equipment": "Toplar, koniler",
+        "purpose": "Is\u0131nma becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 114,
+        "age_group": "U16",
+        "category": "Is\u0131nma",
+        "name": "Is\u0131nma Drill 6 (U16)",
+        "description": "U16 ya\u015f grubu i\u00e7in is\u0131nma becerilerini geli\u015ftiren drill 6.",
+        "duration": 16,
+        "equipment": "Toplar, koniler",
+        "purpose": "Is\u0131nma becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 115,
+        "age_group": "U16",
+        "category": "Is\u0131nma",
+        "name": "Is\u0131nma Drill 7 (U16)",
+        "description": "U16 ya\u015f grubu i\u00e7in is\u0131nma becerilerini geli\u015ftiren drill 7.",
+        "duration": 17,
+        "equipment": "Toplar, koniler",
+        "purpose": "Is\u0131nma becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 116,
+        "age_group": "U16",
+        "category": "Is\u0131nma",
+        "name": "Is\u0131nma Drill 8 (U16)",
+        "description": "U16 ya\u015f grubu i\u00e7in is\u0131nma becerilerini geli\u015ftiren drill 8.",
+        "duration": 18,
+        "equipment": "Toplar, koniler",
+        "purpose": "Is\u0131nma becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 117,
+        "age_group": "U16",
+        "category": "Is\u0131nma",
+        "name": "Is\u0131nma Drill 9 (U16)",
+        "description": "U16 ya\u015f grubu i\u00e7in is\u0131nma becerilerini geli\u015ftiren drill 9.",
+        "duration": 19,
+        "equipment": "Toplar, koniler",
+        "purpose": "Is\u0131nma becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 118,
+        "age_group": "U16",
+        "category": "Teknik",
+        "name": "Teknik Drill 1 (U16)",
+        "description": "U16 ya\u015f grubu i\u00e7in teknik becerilerini geli\u015ftiren drill 1.",
+        "duration": 11,
+        "equipment": "Toplar, koniler",
+        "purpose": "Teknik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 119,
+        "age_group": "U16",
+        "category": "Teknik",
+        "name": "Teknik Drill 2 (U16)",
+        "description": "U16 ya\u015f grubu i\u00e7in teknik becerilerini geli\u015ftiren drill 2.",
+        "duration": 12,
+        "equipment": "Toplar, koniler",
+        "purpose": "Teknik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 120,
+        "age_group": "U16",
+        "category": "Teknik",
+        "name": "Teknik Drill 3 (U16)",
+        "description": "U16 ya\u015f grubu i\u00e7in teknik becerilerini geli\u015ftiren drill 3.",
+        "duration": 13,
+        "equipment": "Toplar, koniler",
+        "purpose": "Teknik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 121,
+        "age_group": "U16",
+        "category": "Teknik",
+        "name": "Teknik Drill 4 (U16)",
+        "description": "U16 ya\u015f grubu i\u00e7in teknik becerilerini geli\u015ftiren drill 4.",
+        "duration": 14,
+        "equipment": "Toplar, koniler",
+        "purpose": "Teknik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 122,
+        "age_group": "U16",
+        "category": "Teknik",
+        "name": "Teknik Drill 5 (U16)",
+        "description": "U16 ya\u015f grubu i\u00e7in teknik becerilerini geli\u015ftiren drill 5.",
+        "duration": 15,
+        "equipment": "Toplar, koniler",
+        "purpose": "Teknik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 123,
+        "age_group": "U16",
+        "category": "Teknik",
+        "name": "Teknik Drill 6 (U16)",
+        "description": "U16 ya\u015f grubu i\u00e7in teknik becerilerini geli\u015ftiren drill 6.",
+        "duration": 16,
+        "equipment": "Toplar, koniler",
+        "purpose": "Teknik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 124,
+        "age_group": "U16",
+        "category": "Teknik",
+        "name": "Teknik Drill 7 (U16)",
+        "description": "U16 ya\u015f grubu i\u00e7in teknik becerilerini geli\u015ftiren drill 7.",
+        "duration": 17,
+        "equipment": "Toplar, koniler",
+        "purpose": "Teknik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 125,
+        "age_group": "U16",
+        "category": "Teknik",
+        "name": "Teknik Drill 8 (U16)",
+        "description": "U16 ya\u015f grubu i\u00e7in teknik becerilerini geli\u015ftiren drill 8.",
+        "duration": 18,
+        "equipment": "Toplar, koniler",
+        "purpose": "Teknik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 126,
+        "age_group": "U16",
+        "category": "Teknik",
+        "name": "Teknik Drill 9 (U16)",
+        "description": "U16 ya\u015f grubu i\u00e7in teknik becerilerini geli\u015ftiren drill 9.",
+        "duration": 19,
+        "equipment": "Toplar, koniler",
+        "purpose": "Teknik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 127,
+        "age_group": "U16",
+        "category": "Taktik",
+        "name": "Taktik Drill 1 (U16)",
+        "description": "U16 ya\u015f grubu i\u00e7in taktik becerilerini geli\u015ftiren drill 1.",
+        "duration": 11,
+        "equipment": "Toplar, koniler",
+        "purpose": "Taktik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 128,
+        "age_group": "U16",
+        "category": "Taktik",
+        "name": "Taktik Drill 2 (U16)",
+        "description": "U16 ya\u015f grubu i\u00e7in taktik becerilerini geli\u015ftiren drill 2.",
+        "duration": 12,
+        "equipment": "Toplar, koniler",
+        "purpose": "Taktik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 129,
+        "age_group": "U16",
+        "category": "Taktik",
+        "name": "Taktik Drill 3 (U16)",
+        "description": "U16 ya\u015f grubu i\u00e7in taktik becerilerini geli\u015ftiren drill 3.",
+        "duration": 13,
+        "equipment": "Toplar, koniler",
+        "purpose": "Taktik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 130,
+        "age_group": "U16",
+        "category": "Taktik",
+        "name": "Taktik Drill 4 (U16)",
+        "description": "U16 ya\u015f grubu i\u00e7in taktik becerilerini geli\u015ftiren drill 4.",
+        "duration": 14,
+        "equipment": "Toplar, koniler",
+        "purpose": "Taktik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 131,
+        "age_group": "U16",
+        "category": "Taktik",
+        "name": "Taktik Drill 5 (U16)",
+        "description": "U16 ya\u015f grubu i\u00e7in taktik becerilerini geli\u015ftiren drill 5.",
+        "duration": 15,
+        "equipment": "Toplar, koniler",
+        "purpose": "Taktik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 132,
+        "age_group": "U16",
+        "category": "Taktik",
+        "name": "Taktik Drill 6 (U16)",
+        "description": "U16 ya\u015f grubu i\u00e7in taktik becerilerini geli\u015ftiren drill 6.",
+        "duration": 16,
+        "equipment": "Toplar, koniler",
+        "purpose": "Taktik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 133,
+        "age_group": "U16",
+        "category": "Taktik",
+        "name": "Taktik Drill 7 (U16)",
+        "description": "U16 ya\u015f grubu i\u00e7in taktik becerilerini geli\u015ftiren drill 7.",
+        "duration": 17,
+        "equipment": "Toplar, koniler",
+        "purpose": "Taktik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 134,
+        "age_group": "U16",
+        "category": "Taktik",
+        "name": "Taktik Drill 8 (U16)",
+        "description": "U16 ya\u015f grubu i\u00e7in taktik becerilerini geli\u015ftiren drill 8.",
+        "duration": 18,
+        "equipment": "Toplar, koniler",
+        "purpose": "Taktik becerilerini geli\u015ftirme"
+    },
+    {
+        "id": 135,
+        "age_group": "U16",
+        "category": "Taktik",
+        "name": "Taktik Drill 9 (U16)",
+        "description": "U16 ya\u015f grubu i\u00e7in taktik becerilerini geli\u015ftiren drill 9.",
+        "duration": 19,
+        "equipment": "Toplar, koniler",
+        "purpose": "Taktik becerilerini geli\u015ftirme"
+    }
+]

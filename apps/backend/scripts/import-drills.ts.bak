@@ -1,0 +1,64 @@
+import { PrismaClient } from '@prisma/client';
+import { readFileSync } from 'fs';
+import { join } from 'path';
+
+const prisma = new PrismaClient();
+
+async function importDrills() {
+  try {
+    // Read the JSON file from project root
+    const drillsPath = join(process.cwd(), '../../football_drills_135.json');
+    console.log('📁 Reading from:', drillsPath);
+    
+    const drillsData = JSON.parse(readFileSync(drillsPath, 'utf-8'));
+
+    console.log(`📥 Found ${drillsData.length} drills to import...\n`);
+
+    let imported = 0;
+    let skipped = 0;
+
+    for (const drill of drillsData) {
+      // Check if drill already exists by name
+      const existing = await prisma.drill.findFirst({
+        where: { name: drill.name },
+      });
+
+      if (existing) {
+        console.log(`⏭️  Skipping: ${drill.name}`);
+        skipped++;
+        continue;
+      }
+
+      // Create the drill
+      await prisma.drill.create({
+        data: {
+          name: drill.name,
+          description: drill.description,
+          duration: drill.duration,
+          category: drill.category,
+          ageGroup: drill.age_group,
+          equipment: drill.equipment,
+          purpose: drill.purpose,
+        },
+      });
+
+      imported++;
+      if (imported % 10 === 0) {
+        console.log(`✅ Progress: ${imported}/${drillsData.length}...`);
+      }
+    }
+
+    console.log('\n🎉 Import completed!');
+    console.log(`✅ Imported: ${imported} drills`);
+    console.log(`⏭️  Skipped: ${skipped} drills (already exist)`);
+    console.log(`📊 Total: ${drillsData.length} drills`);
+
+  } catch (error) {
+    console.error('❌ Import failed:', error);
+    process.exit(1);
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
+importDrills();

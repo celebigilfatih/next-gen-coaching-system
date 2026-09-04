@@ -1,0 +1,31 @@
+export const routes = {
+  home: "/",
+  signin: "/signin",
+  dashboard: "/dashboard",
+  drills: "/drills",
+  drillBuilder: "/drills/builder",
+  planner: "/planner",
+  sessions: "/sessions",
+  mySessions: "/my/sessions",
+  analytics: "/analytics",
+  seasonPlanner: "/season-planner",
+  aTeam: "/a-team",
+  adminSettings: "/admin/settings",
+  admin: {
+    clubs: "/admin/clubs",
+    groups: "/admin/groups",
+    teams: "/admin/teams",
+    settings: "/admin/settings",
+    attendance: "/admin/attendance",
+    users: "/admin/users",
+  },
+  plans: {
+    print: (id: string) => `/plans/${id}/print`,
+  },
+  season: {
+    detail: (id: string) => `/season-planner/${id}`,
+    macro: (id: string) => `/season-planner/${id}/macro`,
+    meso: (seasonId: string, mesoId?: string) => `/season-planner/${seasonId}/meso`,
+    micro: (seasonId: string, week: number) => `/season-planner/${seasonId}/micro/${week}`,
+  },
+} as const;
