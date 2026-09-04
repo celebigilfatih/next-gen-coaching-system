@@ -277,6 +277,16 @@ export class SeasonsService {
     });
   }
 
+  async updateMatchTacticalBoard(
+    matchId: string,
+    tacticalBoard: Record<string, unknown>,
+  ) {
+    return this.prisma.match.update({
+      where: { id: matchId },
+      data: { tacticalBoard } as never,
+    });
+  }
+
   async deleteMatch(matchId: string) {
     return this.prisma.match.delete({ where: { id: matchId } });
   }

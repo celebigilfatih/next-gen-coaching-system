@@ -17,6 +17,7 @@ import { AuthorizationService } from '../auth/authorization.service';
 import { Roles } from '../auth/roles.decorator';
 import { RolesGuard } from '../auth/roles.guard';
 import { TrainingPlansService } from './training-plans.service';
+import { validateTacticalBoardDocument } from '../tactics/tactical-board';
 
 @Controller('training-plans')
 @UseGuards(AuthGuard('jwt'))
@@ -119,6 +120,7 @@ export class TrainingPlansController {
     },
   ) {
     await this.authorization.assertPlanManage(req.user, id);
+    await this.authorization.assertDrillView(req.user, body.drillId);
     return this.plans.addDrill(
       id,
       body.drillId,
@@ -145,7 +147,31 @@ export class TrainingPlansController {
     },
   ) {
     await this.authorization.assertPlanManage(req.user, id);
+    await Promise.all(
+      [...new Set(body.drills.map((entry) => entry.drillId))].map((drillId) =>
+        this.authorization.assertDrillView(req.user, drillId),
+      ),
+    );
     return this.plans.replaceDrills(id, body.drills);
+  }
+
+  @Put(':planId/drills/:planDrillId/board')
+  @UseGuards(RolesGuard)
+  @Roles('SYSTEM_ADMIN', 'CLUB_ADMIN', 'COACH')
+  async updateBoardSnapshot(
+    @Req() req: { user: AuthPrincipal },
+    @Param('planId') planId: string,
+    @Param('planDrillId') planDrillId: string,
+    @Body() body: { boardSnapshot: unknown },
+  ) {
+    await this.authorization.assertPlanManage(req.user, planId);
+    await this.authorization.assertPlanDrillSourceView(
+      req.user,
+      planId,
+      planDrillId,
+    );
+    const boardSnapshot = validateTacticalBoardDocument(body.boardSnapshot);
+    return this.plans.updateBoardSnapshot(planId, planDrillId, boardSnapshot);
   }
 
   @Put(':id')

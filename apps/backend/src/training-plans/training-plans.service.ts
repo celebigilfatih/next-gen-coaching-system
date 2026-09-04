@@ -322,6 +322,27 @@ export class TrainingPlansService {
     });
   }
 
+  async updateBoardSnapshot(
+    planId: string,
+    planDrillId: string,
+    boardSnapshot: Record<string, unknown>,
+  ) {
+    const planDrill = await this.prisma.planDrill.findFirst({
+      where: { id: planDrillId, trainingPlanId: planId },
+      select: { id: true },
+    });
+    if (!planDrill) {
+      throw new BadRequestException(
+        'Plan drill does not belong to the training plan',
+      );
+    }
+    return this.prisma.planDrill.update({
+      where: { id: planDrillId },
+      data: { boardSnapshot } as never,
+      include: { drill: true },
+    });
+  }
+
   private async recalculateTotalDuration(planId: string) {
     const drills = await this.prisma.planDrill.findMany({
       where: { trainingPlanId: planId },

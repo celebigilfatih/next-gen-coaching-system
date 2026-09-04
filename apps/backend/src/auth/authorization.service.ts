@@ -138,6 +138,35 @@ export class AuthorizationService {
     return this.assertSeasonManage(principal, match.seasonId);
   }
 
+  async assertDrillView(principal: AuthPrincipal, drillId: string) {
+    const drill = await this.prisma.drill.findUnique({
+      where: { id: drillId },
+      select: { id: true, scope: true, clubId: true, groupId: true },
+    });
+    if (!drill) throw new NotFoundException('Drill not found');
+    await this.assertDrillRecordView(principal, drill);
+    return drill;
+  }
+
+  async assertPlanDrillSourceView(
+    principal: AuthPrincipal,
+    planId: string,
+    planDrillId: string,
+  ) {
+    const planDrill = await this.prisma.planDrill.findFirst({
+      where: { id: planDrillId, trainingPlanId: planId },
+      select: {
+        id: true,
+        drill: {
+          select: { id: true, scope: true, clubId: true, groupId: true },
+        },
+      },
+    });
+    if (!planDrill) throw new NotFoundException('Plan drill not found');
+    await this.assertDrillRecordView(principal, planDrill.drill);
+    return planDrill;
+  }
+
   async assertUserView(principal: AuthPrincipal, userId: string) {
     const target = await this.prisma.user.findUnique({
       where: { id: userId },
@@ -196,6 +225,21 @@ export class AuthorizationService {
         select: { id: true },
       }),
     );
+  }
+
+  private async assertDrillRecordView(
+    principal: AuthPrincipal,
+    drill: {
+      id: string;
+      scope: 'GLOBAL' | 'CLUB';
+      clubId: string | null;
+      groupId: string | null;
+    },
+  ) {
+    if (principal.role === 'SYSTEM_ADMIN' || drill.scope === 'GLOBAL') return;
+    if (!principal.clubId || principal.clubId !== drill.clubId) this.deny();
+    if (principal.role === 'CLUB_ADMIN' || !drill.groupId) return;
+    if (!(await this.isGroupMember(principal.id, drill.groupId))) this.deny();
   }
 
   private async assertGroupAccess(

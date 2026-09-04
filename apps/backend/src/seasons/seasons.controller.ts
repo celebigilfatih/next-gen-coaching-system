@@ -16,6 +16,7 @@ import { AuthorizationService } from '../auth/authorization.service';
 import { Roles } from '../auth/roles.decorator';
 import { RolesGuard } from '../auth/roles.guard';
 import { SeasonsService } from './seasons.service';
+import { validateTacticalBoardDocument } from '../tactics/tactical-board';
 
 @Controller('seasons')
 @UseGuards(AuthGuard('jwt'))
@@ -234,6 +235,19 @@ export class SeasonsController {
   ) {
     await this.authorization.assertMatchManage(req.user, matchId);
     return this.seasons.updateMatch(matchId, body);
+  }
+
+  @Put('matches/:matchId/tactical-board')
+  @UseGuards(RolesGuard)
+  @Roles('SYSTEM_ADMIN', 'CLUB_ADMIN', 'COACH')
+  async updateMatchTacticalBoard(
+    @Request() req: { user: AuthPrincipal },
+    @Param('matchId') matchId: string,
+    @Body() body: { tacticalBoard: unknown },
+  ) {
+    await this.authorization.assertMatchManage(req.user, matchId);
+    const tacticalBoard = validateTacticalBoardDocument(body.tacticalBoard);
+    return this.seasons.updateMatchTacticalBoard(matchId, tacticalBoard);
   }
 
   @Delete('matches/:matchId')

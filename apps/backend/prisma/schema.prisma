@@ -35,6 +35,7 @@ model User {
   passwordResetTokens   PasswordResetToken[] @relation("PasswordResetTarget")
   auditEventsAuthored   SecurityAuditEvent[] @relation("AuditActor")
   auditEventsTargeted   SecurityAuditEvent[] @relation("AuditTarget")
+  drillsCreated         Drill[]              @relation("DrillCreator")
   club                  Club?                @relation(fields: [clubId], references: [id])
 }
 
@@ -51,6 +52,7 @@ model Club {
   users       User[]
   invitations AccountInvitation[]
   auditEvents SecurityAuditEvent[]
+  drills      Drill[]
 }
 
 model PlayerGroup {
@@ -66,6 +68,7 @@ model PlayerGroup {
   seasons   Season[]       @relation("GroupSeasons")
   club      Club           @relation(fields: [clubId], references: [id])
   sessions  TrainingPlan[] @relation("GroupPlans")
+  drills    Drill[]
 }
 
 model GroupMember {
@@ -142,9 +145,20 @@ model Drill {
   equipment   String?
   jsonData    Json
   imageUrl    String?
+  scope       DrillScope    @default(GLOBAL)
+  clubId      String?
+  groupId     String?
+  createdById String?
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
   plans       PlanDrill[]
+  club        Club?         @relation(fields: [clubId], references: [id], onDelete: Cascade)
+  group       PlayerGroup?  @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  createdBy   User?         @relation("DrillCreator", fields: [createdById], references: [id], onDelete: Restrict)
+
+  @@index([scope, clubId])
+  @@index([groupId])
+  @@index([createdById])
 }
 
 model TrainingPlan {
@@ -173,6 +187,7 @@ model PlanDrill {
   phase          Phase
   order          Int          @default(0)
   notes          String?
+  boardSnapshot  Json?
   drill          Drill        @relation(fields: [drillId], references: [id])
   trainingPlan   TrainingPlan @relation(fields: [trainingPlanId], references: [id])
 }
@@ -255,6 +270,7 @@ model Match {
   ourFormation     String?
   notes            String?
   videoLinks       Json?
+  tacticalBoard    Json?
   createdAt        DateTime     @default(now())
   updatedAt        DateTime     @updatedAt
   groupId          String?
@@ -471,6 +487,11 @@ enum DrillCategory {
   TECHNICAL
   TACTICAL
   COOL_DOWN
+}
+
+enum DrillScope {
+  GLOBAL
+  CLUB
 }
 
 enum Phase {
