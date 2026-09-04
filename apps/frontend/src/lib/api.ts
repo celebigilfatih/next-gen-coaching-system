@@ -4,6 +4,7 @@ import {
   setSession,
   type SessionUser,
 } from './session';
+import type { TacticalBoardDocumentV1 } from './tactical-board';
 
 const apiBase = (
   import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:4000'
@@ -18,6 +19,7 @@ export type Group = {
   id: string;
   name: string;
   ageGroup: string;
+  clubId?: string;
 };
 
 export type GroupMember = {
@@ -42,6 +44,13 @@ export type Drill = {
   ageGroup: string;
   durationMin: number;
   difficulty: 'EASY' | 'MEDIUM' | 'HARD';
+  equipment?: string | null;
+  jsonData: unknown;
+  imageUrl?: string | null;
+  scope: 'GLOBAL' | 'CLUB';
+  clubId: string | null;
+  groupId: string | null;
+  createdById: string | null;
 };
 
 export type PlanDrill = {
@@ -51,6 +60,7 @@ export type PlanDrill = {
   order: number;
   notes: string | null;
   drill: Drill;
+  boardSnapshot?: TacticalBoardDocumentV1 | null;
 };
 
 export type TrainingPlan = {
@@ -88,6 +98,7 @@ export type Match = {
   opponentAnalysis: unknown;
   ourFormation: string | null;
   notes: string | null;
+  tacticalBoard: TacticalBoardDocumentV1 | null;
 };
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
@@ -141,14 +152,60 @@ export function listMatches(seasonId: string) {
   return request<Match[]>(`/seasons/${seasonId}/matches`);
 }
 
-export function listDrills(ageGroup: string) {
-  const query = new URLSearchParams({ ageGroup });
+export function listDrills(ageGroup?: string, groupId?: string) {
+  const query = new URLSearchParams();
+  if (ageGroup) query.set('ageGroup', ageGroup);
+  if (groupId) query.set('groupId', groupId);
   return request<Drill[]>(`/drills?${query.toString()}`);
+}
+
+export function getDrill(drillId: string) {
+  return request<Drill>(`/drills/${drillId}`);
+}
+
+export function createDrill(input: {
+  title: string;
+  category: DrillPhase;
+  ageGroup: string;
+  durationMin: number;
+  difficulty: 'EASY' | 'MEDIUM' | 'HARD';
+  equipment?: string;
+  jsonData: TacticalBoardDocumentV1;
+  scope?: 'GLOBAL' | 'CLUB';
+  clubId?: string;
+  groupId?: string;
+}) {
+  return request<Drill>('/drills', {
+    method: 'POST',
+    body: JSON.stringify(input),
+  });
+}
+
+export function updateDrill(
+  drillId: string,
+  input: Partial<{
+    title: string;
+    category: DrillPhase;
+    ageGroup: string;
+    durationMin: number;
+    difficulty: 'EASY' | 'MEDIUM' | 'HARD';
+    equipment: string;
+    jsonData: TacticalBoardDocumentV1;
+  }>,
+) {
+  return request<Drill>(`/drills/${drillId}`, {
+    method: 'PUT',
+    body: JSON.stringify(input),
+  });
 }
 
 export function listTrainingPlans(groupId: string) {
   const query = new URLSearchParams({ groupId });
   return request<TrainingPlan[]>(`/training-plans?${query.toString()}`);
+}
+
+export function getTrainingPlan(planId: string) {
+  return request<TrainingPlan>(`/training-plans/${planId}`);
 }
 
 export function listAttendance(planId: string) {
@@ -221,5 +278,29 @@ export function updateMatch(
   return request<Match>(`/seasons/matches/${matchId}`, {
     method: 'PUT',
     body: JSON.stringify(input),
+  });
+}
+
+export function updatePlanDrillBoard(
+  planId: string,
+  planDrillId: string,
+  boardSnapshot: TacticalBoardDocumentV1,
+) {
+  return request<PlanDrill>(
+    `/training-plans/${planId}/drills/${planDrillId}/board`,
+    {
+      method: 'PUT',
+      body: JSON.stringify({ boardSnapshot }),
+    },
+  );
+}
+
+export function updateMatchTacticalBoard(
+  matchId: string,
+  tacticalBoard: TacticalBoardDocumentV1,
+) {
+  return request<Match>(`/seasons/matches/${matchId}/tactical-board`, {
+    method: 'PUT',
+    body: JSON.stringify({ tacticalBoard }),
   });
 }

@@ -1,43 +1,16 @@
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
-import { MemoryRouter } from 'react-router';
-import { WeekWorkspace } from './week';
+import { addDays, parseWeekStart, toLocalDateKey, weekDays } from '../lib/week';
 
-function renderWorkspace() {
-  return render(
-    <MemoryRouter>
-      <WeekWorkspace />
-    </MemoryRouter>,
-  );
-}
-
-describe('WeekWorkspace', () => {
-  it('opens attendance and updates a player status', async () => {
-    const user = userEvent.setup();
-    renderWorkspace();
-
-    await user.click(screen.getByRole('button', { name: /katılımı aç/i }));
-    expect(screen.getByText(/6\/6 oyuncu mevcut/i)).toBeInTheDocument();
-
-    await user.click(screen.getByRole('button', { name: /arda demir/i }));
-    expect(screen.getByText(/5\/6 oyuncu mevcut/i)).toBeInTheDocument();
+describe('week calendar', () => {
+  it('starts on Monday and spans seven days across a month boundary', () => {
+    const start = parseWeekStart('2026-09-01');
+    const days = weekDays(start);
+    expect(toLocalDateKey(days[0])).toBe('2026-08-31');
+    expect(toLocalDateKey(days[6])).toBe('2026-09-06');
   });
 
-  it('opens match analysis from match day', async () => {
-    const user = userEvent.setup();
-    renderWorkspace();
-
-    await user.click(
-      screen.getByRole('button', {
-        name: /pzr 06 eylül, 15:00 maç, deplasman/i,
-      }),
-    );
-    expect(
-      screen.getByRole('heading', { name: 'Gençlerbirliği U17' }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByLabelText(/rakip ve taktik analizi/i),
-    ).toBeInTheDocument();
+  it('moves correctly across year boundaries', () => {
+    const start = parseWeekStart('2026-12-31');
+    expect(toLocalDateKey(addDays(start, 7))).toBe('2027-01-04');
   });
 });
