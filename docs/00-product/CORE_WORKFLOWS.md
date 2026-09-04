@@ -5,7 +5,8 @@
 1. Atanmış `COACH` sezon ve takım/grup bağlamını seçer.
 2. Tarihli antrenman planını oluşturur.
 3. Egzersizleri faz, sıra ve notlarıyla plana ekler.
-4. Plan kaydedilir ve yeniden görüntülenebilir.
+4. Taktik egzersizin o andaki tahta sürümünü plan snapshot'ı olarak kaydeder.
+5. Plan kaydedilir ve yeniden görüntülenebilir.
 
 ### Success
 
@@ -32,8 +33,8 @@ Tekrarlı kayıt, çevrimdışı çalışma ve eşzamanlı güncelleme politikas
 ## Workflow 3 — Taktik analiz
 
 1. Atanmış `COACH` sezon içindeki maç veya rakip bağlamını seçer.
-2. Temel taktik analiz verisini kaydeder.
-3. Analizi daha sonra görüntüler ve günceller.
+2. Temel taktik analiz verisini ve ondan ayrı maç tahtasını kaydeder.
+3. Analizi ve tahtayı daha sonra görüntüler ve günceller.
 
 ### Success
 
@@ -41,4 +42,16 @@ Analiz doğru takım/sezon bağlamında ve yetkili kullanıcılarca erişilebili
 
 ### Failure and Recovery
 
-Analiz şeması, sahiplik ve sürümleme davranışı `TBD`.
+Eşzamanlı güncelleme/çakışma davranışı `TBD`.
+
+## Workflow 4 — Kulüp taktik egzersizi
+
+1. Atanmış `COACH`, taktik kütüphanesinde grup kapsamlı tahta oluşturur veya global
+   egzersizi “Kopyala ve düzenle” ile çoğaltır.
+2. Saha, araç, formasyon ve özellikleri düzenler; değişikliği açıkça kaydeder.
+3. Egzersizi yeniden açar ve yetkili antrenman planına bağlar.
+
+### Success
+
+Global kayıt değişmez; kulüp kopyası doğru owner/grup ile saklanır ve başka kulüp
+tarafından okunamaz.

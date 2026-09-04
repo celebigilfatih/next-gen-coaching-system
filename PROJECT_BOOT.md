@@ -1,8 +1,8 @@
 # Next Generation Coaching System — Project Boot
 
-- **Document version:** 1.7
+- **Document version:** 1.8
 - **CDSK version:** 0.1.0
-- **Last updated:** 2026-09-01
+- **Last updated:** 2026-09-04
 
 > Bu belge güncel çalışma özetidir. Bilinmeyen alan `TBD`, geçersiz alan kısa
 > gerekçeyle `N/A` bırakılır.
@@ -32,9 +32,9 @@
 
 ## 2. Current Status
 
-- **Phase:** Dar MVP teknik kabulü tamamlandı; production kararları bekleniyor.
+- **Phase:** M3 ortak taktik çalışma alanı tamamlandı; production kararları bekleniyor.
 - **Version:** Ürün sürümü `TBD`.
-- **Active milestone:** M0–M2 tamamlandı; sonraki release/production milestone'u `TBD`.
+- **Active milestone:** M0–M3 tamamlandı; sonraki release/production milestone'u `TBD`.
 - **Current focus:** Proposed ADR-0010 içindeki production origin ve kalıcı oturum
   yaklaşımını açık kullanıcı kararına sunmak; uygulama henüz onaylı değildir.
 - **Critical risks:** Production operasyonlarının belirsizliği; sağlık/ileri analitik
@@ -43,7 +43,7 @@
   Prisma CLI dependency advisory'leri.
 - **Blocking decisions:** ADR-0010 seçeneği; ardından exact domain/provider,
   session lifetime/retention ve production operasyon girdileri.
-- **Last status update:** 2026-09-01
+- **Last status update:** 2026-09-04
 
 ## 3. Repository Navigation
 
@@ -62,14 +62,13 @@
 - **Layers:** NestJS controller/service/module yapısı, Prisma erişim katmanı.
 - **Main integrations:** PostgreSQL ve Socket.IO; başka dış servis doğrulanmadı.
 - **AI components:** N/A — repository'de AI çalışma zamanı doğrulanmadı.
-- **Data/storage:** PostgreSQL; güncel Prisma şeması temiz baseline migration ile
-  ephemeral PostgreSQL 16 üzerinde doğrulandı.
+- **Data/storage:** PostgreSQL; baseline ve additive taktik-tahta migration'ı temiz
+  PostgreSQL 16 üzerinde uygulandı ve schema diff boş doğrulandı.
 - **Deployment model:** Docker Compose tanımı var; production modeli `TBD`.
-- **Frontend:** ADR-0003 ile normal monorepo workspace'i; ADR-0009 ile
-  React/TypeScript, React Router Framework Mode SPA, Vite ve npm. Seçilen “Koç
-  Operasyon Masası” yönüyle login, haftalık antrenman, katılım ve maç taktik notu
-  akışları çalışır; login–plan–fazlı egzersiz–katılım ve maç taktik analizi yolları
-  gerçek REST API ve dedicated-DB browser E2E ile doğrulanmıştır.
+- **Frontend:** React 19/React Router Framework Mode SPA, shadcn/Radix, Tailwind,
+  Phosphor ve React-Konva. “Koç Operasyon Masası” kimliğiyle Hafta,
+  Antrenmanlar, Taktik Tahtası, Kadro ve Maçlar rotaları; kulüp egzersizi, plan
+  snapshot'ı ve maç tahtası gerçek REST API'ye bağlıdır.
 
 ## 5. Decision Snapshot
 
@@ -85,6 +84,8 @@
 | Davet tabanlı hesap yaşam döngüsü | Accepted; migration/unit/E2E verified | ADR-0008 |
 | Koç öncelikli web frontend ve ilk akış | Accepted; vertical slice verified | ADR-0009 |
 | Production origin ve kalıcı tarayıcı oturumu | Proposed; explicit approval required | ADR-0010 |
+| Rotalı shadcn koç çalışma alanı | Accepted; implemented | ADR-0011 |
+| Kapsamlı egzersiz ve taktik tahta sözleşmesi | Accepted; implemented | ADR-0012 |
 
 ## 6. AI Context
 
@@ -97,16 +98,18 @@
 - **Recent decisions:** CDSK 0.1.0, dar MVP kapsamı, ADR-0004 auth/bootstrap tabanı,
   ADR-0003 monorepo topolojisi, ADR-0005 rol/tenant sınırı, ADR-0006 migration süreci
   ADR-0007 çekirdek eylem matrisi, ADR-0008 davet tabanlı hesap yaşam döngüsü
-  ve ADR-0009 koç öncelikli frontend kararı kabul edildi. ADR-0010 aynı site
-  origin ve dönen refresh-session yaklaşımını `Proposed` olarak sunar.
+  ADR-0009 koç öncelikli frontend, ADR-0011 rotalı shadcn yüzeyi ve ADR-0012
+  kapsamlı egzersiz/taktik belge kararı kabul edildi. ADR-0010 aynı site origin ve
+  dönen refresh-session yaklaşımını `Proposed` olarak sunar.
 - **Recently completed:** Temiz Prisma baseline; current-database principal; HTTP ve
   Socket.IO kulüp/grup authorization; cross-club negatif testleri; passwordHash,
   throttling ve bounded season generation güvenlik tabanı; kırık frontend gitlink'inin
   framework-neutral monorepo workspace'ine dönüştürülmesi; invitation, suspension,
   password reset, session revocation ve security audit akışları; seçilen görsel
   yönle çalışan ve QA'dan geçen koç frontend dikey dilimi; gerçek API'ye bağlı
-  login–takım/sezon–plan–katılım, sezon maçı taktik analizi ve fazlı egzersiz/not
-  seçimini kalıcılaştıran üç Playwright E2E akışı.
+  beş rotalı responsive frontend; 15 araç/11 saha türü, 6 formasyon, history,
+  import/export ve explicit save içeren ortak tahta; kulüp drill ownership'i;
+  plan snapshot'ı; maç tahtası; iki kulüplü Playwright E2E.
 
 ## 7. Current Priorities
 
@@ -147,33 +150,33 @@
 - [x] Yerel belge bağlantıları ve `git diff --check` geçiyor.
 - [x] Prisma clean baseline ephemeral PostgreSQL 16 üzerinde uygulandı; status güncel
   ve schema diff boş doğrulandı. Frontend topolojisi ADR-0003 ile düzeltildi.
-- [x] Backend bağımlılıkları kuruldu; 12 unit suite / 40 test, 7 dedicated-DB E2E
-  testi ve build geçti.
+- [x] Backend bağımlılıkları kuruldu; 14 unit suite / 48 test ve build geçti.
 - [x] Frontend typecheck, lint, format, unit/component, production build ve Sites
   worker testleri geçti; masaüstü/tablet browser ve görsel QA sonucu `passed`.
-- [x] Dedicated PostgreSQL 16 üzerinde frontend/backend login–plan–fazlı egzersiz–
-  katılım ve maç taktik analizi Playwright E2E testleri 3/3 geçti.
+- [x] Dedicated PostgreSQL 16 üzerinde koç login–kulüp egzersizi–plan snapshot–maç
+  tahtası–cross-tenant ret Playwright E2E ve responsive rota kontrolleri 2/2 geçti.
 - [x] Kök `npm run quality` komutu typecheck, salt-okunur lint/format, unit test,
   build, Sites, Markdown link, CDSK ve diff kontrolleriyle geçti.
 - [x] Kapanış handoff'u güncellendi.
 
 ## 11. AI Handoff
 
-- **Session summary:** Production hosting/origin ve kalıcı browser session için
-  repository kanıtına dayalı ADR-0010 hazırlandı. Öneri aynı site altındaki ayrı
-  frontend/API origin'leri, memory-only access JWT ve dönen server-side refresh
-  session kullanır; henüz uygulama değişikliği yapılmadı.
-- **Documents updated:** Proposed ADR-0010, karar indeksi, mimari/güvenlik/deployment
-  bağlamı, backlog, changelog ve Project Boot.
-- **Decisions recorded:** ADR-0003–ADR-0009 Accepted; ADR-0010 Proposed ve açık
-  kullanıcı onayı bekliyor. Exact domain/provider, token süreleri, retention,
-  secret ve production operasyon sözleşmeleri `TBD`.
+- **Session summary:** `origin/main` tabanında güvenli repository uzlaştırması
+  yapıldı. Beş rotalı shadcn koç masası, React-Konva ortak tahta, kulüp/grup drill
+  yetkisi, plan snapshot ve maç tahtası uygulandı; clean migration, unit/build ve
+  iki kulüplü browser E2E ile doğrulandı.
+- **Documents updated:** ADR-0011/0012, requirements, roadmap/milestones, backlog,
+  mimari/veri/güvenlik/API/test belgeleri, README, changelog ve Project Boot.
+- **Decisions recorded:** ADR-0011 ve ADR-0012 Accepted/implemented. ADR-0010
+  Proposed ve açık kullanıcı onayı bekliyor. Exact domain/provider, token
+  süreleri, retention, secret ve production operasyon sözleşmeleri `TBD`.
 - **Remaining risk:** Backend legacy analytics adapter'ında 41 görünür lint uyarısı;
   memory-only auth nedeniyle reload'da oturum kaybı; e-posta/recovery ve audit
   retention; sağlık/ileri analitik veri politikası; dependency advisory'leri ve
   production operasyon sözleşmesi.
-- **Recommended next step:** ADR-0010 Option 1'i kabul veya reddetmek; kabul edilirse
-  `TBD` production girdilerini kapatmadan migration ya da auth uygulamasına geçmemek.
+- **Recommended next step:** Fast-forward teslim sonrası ADR-0010 Option 1'i kabul
+  veya reddetmek; kabul edilirse `TBD` production girdilerini kapatmadan session
+  migration veya auth uygulamasına geçmemek.
 
 ## Revision History
 
@@ -196,3 +199,4 @@
 | 1.5 | 2026-09-01 | Fazlı drill/not kalıcılığı ve üçüncü browser E2E doğrulandı |
 | 1.6 | 2026-09-01 | Tekrarlanabilir kök kalite kapısı geçti; BL-005/BL-006 tamamlandı |
 | 1.7 | 2026-09-01 | Production origin ve kalıcı session için Proposed ADR-0010 hazırlandı |
+| 1.8 | 2026-09-04 | Rotalı shadcn çalışma alanı, scoped drills ve ortak taktik tahta doğrulandı |

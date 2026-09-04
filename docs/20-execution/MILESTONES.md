@@ -26,3 +26,14 @@
 - **Risks:** Hedef tarih ve başarı metriği `TBD`.
 - **Status:** Completed 2026-09-01 — login/plan/phased drills/attendance and
   tactical persistence plus repository quality gate pass.
+
+## Milestone M3 — Ortak taktik çalışma alanı
+
+- **Outcome:** Beş adreslenebilir koç rotası, etkileşimli taktik tahtası ve
+  kulüp/grup kapsamlı egzersiz kütüphanesi.
+- **Dependencies:** M2, ADR-0011 ve ADR-0012.
+- **Exit criteria:** Clean migration/schema diff; tahta doğrulama ve yetki unit
+  testleri; koç egzersiz → plan snapshot → maç tahtası → cross-tenant ret E2E;
+  1440/1024/390 rota kontrolleri ve repository kalite kapısı.
+- **Risks:** Production session/deployment, formal WCAG ve ürün metrikleri `TBD`.
+- **Status:** Completed 2026-09-04.

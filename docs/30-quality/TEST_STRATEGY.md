@@ -85,3 +85,10 @@ typecheck, salt-okunur lint ve format, 40 backend unit, 2 frontend unit, iki bui
 adımlarını tek akışta geçti. Backend lint 0 hata ve legacy analytics adapter'ında
 41 görünür unused-variable uyarısı raporladı. Backend kalite build'i izlenen `dist`
 yerine `node_modules/.cache/ngcs-quality-build` çıktısını kullanır.
+
+2026-09-04 taktik çalışma alanı doğrulamasında 14 backend unit suite / 48 test ve
+2 frontend Vitest suite / 5 test geçti. Additive migration temiz PostgreSQL 16'da
+uygulandı ve Prisma schema diff boştu. Playwright 2/2 senaryoda koç login → kulüp
+egzersizi → plan snapshot → maç tahtası → ikinci kulüpten `403` zincirini ve beş
+ana rotayı 1440/1024/390 genişliklerinde doğruladı. Frontend typecheck, lint,
+production build ve 4/4 Sites worker testi geçti.

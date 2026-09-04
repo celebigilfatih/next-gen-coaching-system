@@ -23,6 +23,16 @@
 - Plan drill replace işlemi `PUT /training-plans/:id/drills` üzerinden, mevcut
   plan-manage authorization sınırı içinde yürür. En fazla 50 faz kaydı kabul edilir;
   geçersiz phase/order veya bulunmayan drill bütün işlemi reddeder.
+- `GET /drills` ve `GET /drills/:id` authenticated ve principal-scope filtreli
+  çalışır. `POST /drills` ownership alanlarını sunucuda türetir; `PUT`/`DELETE`
+  sahiplik ve tenant kontrolü uygular.
+- `PUT /training-plans/:planId/drills/:planDrillId/board`, doğrulanmış
+  `boardSnapshot` yazar ve plan/faz/kaynak egzersiz yetkisini yeniden kontrol eder.
+- `PUT /seasons/matches/:matchId/tactical-board`, doğrulanmış `tacticalBoard`
+  belgesini mevcut match-manage sınırında `opponentAnalysis` alanından ayrı yazar.
+- `TacticalBoardDocumentV1` yalnız `schemaVersion: 1`, `kind: tactical-board`,
+  canonical pitch ve en fazla 250 kimlikli element kabul eder; bilinmeyen alan/tür
+  fail-closed reddedilir.
 
 ## Errors, Idempotency and Pagination
 

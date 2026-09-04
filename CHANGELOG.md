@@ -41,6 +41,15 @@
 - Aynı site altındaki production frontend/API origin'leri ile dönen, server-side
   revoke edilebilir kalıcı tarayıcı oturumunu seçenekleri ve rollout kapılarıyla
   tanımlayan Proposed ADR-0010.
+- shadcn/Radix, Tailwind, Phosphor ve React-Konva ile beş rotalı koç çalışma
+  alanını kabul eden ADR-0011.
+- `TacticalBoardDocumentV1`, `DrillScope`, kulüp/grup egzersiz sahipliği, plan
+  snapshot'ı ve maç tahtası sınırlarını kabul eden ADR-0012.
+- Tam/yarım/üçte bir/çeyrek, 7v7, 5v5, antrenman, grid, penaltı, korner ve serbest
+  vuruş sahaları; oyuncu/ekipman/çizim araçları; formasyon, Transformer, grid-snap,
+  50 adım undo/redo, açık save ve NGCS JSON/PNG/SVG aktarımı sunan taktik editörü.
+- Kulüp egzersizi, antrenman snapshot'ı, maç tahtası ve çapraz tenant reddini
+  doğrulayan iki kulüplü Playwright E2E.
 
 ### Changed
 
@@ -91,6 +100,12 @@
   türetilip bağlı sezon gününe yansıtılıyor.
 - Backend lint komutu salt-okunur hale getirildi; explicit `lint:fix`, typecheck,
   format check ve izlenen build cache'ine dokunmayan `build:check` ayrıştırıldı.
+- Tek-dosyalı frontend modları ortak `/app` shell ve adreslenebilir Hafta,
+  Antrenmanlar, Taktik Tahtası, Kadro ve Maçlar rotalarına ayrıldı.
+- Haftalık görünüm sabit 2026 dizisi yerine yerel Pazartesi–Pazar, önceki/sonraki,
+  bugün ve tarih seçimiyle gerçek plan/maç verisini eşleştiriyor.
+- Drill okuma ve mutation yolları authentication, tenant, grup ve creator
+  sahipliğiyle sınırlandı; ownership mass-assignment alanları sunucuda türetiliyor.
 
 ### Known issues
 

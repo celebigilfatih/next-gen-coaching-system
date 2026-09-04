@@ -6,6 +6,8 @@
 - Antrenman planı ve egzersiz ilişkilendirmesi.
 - Oyuncu katılım/takip kaydı.
 - Taktik, maç ve rakip analizinin temel kaydı.
+- Kulüp/grup kapsamlı egzersiz kütüphanesi; ortak etkileşimli taktik tahta;
+  antrenman snapshot'ı ve maç tahtası.
 - MVP için gerekli kullanıcı, kulüp, takım/grup ve kimlik doğrulama desteği.
 
 ## Explicit Non-goals
@@ -13,6 +15,7 @@
 - Sağlık/sakatlık yönetimini MVP özelliği olarak tamamlamak.
 - İleri performans analitiği, scouting veya otomatik risk/skor üretimi.
 - Video dosyası yükleme, işleme veya barındırma.
+- PlayDrill uyumluluğu, tahta animasyonu ve çok sahneli/video taktik anlatımı.
 - AI destekli öneri ya da analiz.
 - Native mobil uygulama veya public pazarlama sitesi teslim etmek.
 

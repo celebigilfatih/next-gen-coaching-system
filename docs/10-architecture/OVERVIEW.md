@@ -4,7 +4,8 @@
 
 Repository, futbol kulübü çalışma verisini yöneten NestJS backend ile koç öncelikli
 React/TypeScript frontend prototipini içerir. ADR-0003 normal monorepo topolojisini,
-ADR-0009 frontend teknoloji ve ilk ürün akışını kabul etmiştir.
+ADR-0009 frontend teknoloji ve ilk ürün akışını, ADR-0011 rotalı shadcn çalışma
+alanını ve ADR-0012 ortak taktik belge/yetki sınırını kabul etmiştir.
 
 ## Layers and Responsibilities
 
@@ -17,15 +18,19 @@ ADR-0009 frontend teknoloji ve ilk ürün akışını kabul etmiştir.
 
 - PostgreSQL 16 (`docker-compose.yml`).
 - Socket.IO/WebSocket.
-- Frontend: React/TypeScript, React Router Framework Mode SPA ve Vite. Login,
-  haftalık antrenman planı, katılım ve maç taktik notu çalışma alanları hazırdır;
+- Frontend: React/TypeScript, React Router Framework Mode SPA, shadcn/Radix,
+  Tailwind CSS, Phosphor ve `react-konva`. Login, dinamik hafta, antrenman,
+  etkileşimli taktik, kadro ve maç çalışma alanları ayrı rotalardır;
   bearer JWT yalnız bellekte tutulur ve API tabanı environment ile yapılandırılır.
   Koç oturumu sonrası grup, sezon, plan, takım üyeleri ve katılım REST API'den
   yüklenir; plan/katılım mutation'ları gerçek backend'e yazılır. Sezonun yetkili
   maç kaydı aynı REST sınırından yüklenir; temel rakip/taktik analiz JSON'u, diziliş
-  ve koç notu `PUT /seasons/matches/:matchId` ile kalıcılaştırılır.
+  ve koç notu `PUT /seasons/matches/:matchId` ile kalıcılaştırılır. Maç tahtası
+  dedicated endpoint ve `Match.tacticalBoard` alanında ayrı saklanır.
   Yaş grubuna uygun drill kataloğu `GET /drills` ile yüklenir; faz/sıra/not ilişkisi
-  `PUT /training-plans/:id/drills` ile atomik değiştirilir.
+  `PUT /training-plans/:id/drills` ile atomik değiştirilir. Kulüp taktik egzersizi
+  katı `TacticalBoardDocumentV1` sözleşmesiyle saklanır; plan fazı kendi
+  `boardSnapshot` kopyasını taşır.
 
 ## AI Components
 
@@ -35,8 +40,8 @@ doğrulanmadı.
 ## Data and Storage
 
 Prisma şeması kullanıcı, kulüp, grup, egzersiz, antrenman, katılım, sezon,
-maç, performans, analiz ve sağlık varlıklarını tanımlar. Güncel şema temiz baseline
-migration ile ephemeral PostgreSQL 16 üzerinde doğrulanmıştır.
+maç, performans, analiz ve sağlık varlıklarını tanımlar. Baseline ve additive
+taktik-tahta migration'ı ephemeral PostgreSQL 16 üzerinde doğrulanmıştır.
 
 ## Deployment Model
 
@@ -55,4 +60,5 @@ deployment veya authentication sözleşmesini değiştirmez.
 - Production origin ve kalıcı oturum: ADR-0010 Proposed; açık kullanıcı onayı ve
   production girdileri bekleniyor.
 - Çekirdek yetki: ADR-0005 ve ADR-0007 Accepted.
+- Rotalı UI ve taktik belge/yetki: ADR-0011 ve ADR-0012 Accepted.
 - Hassas veri ve production kararları production öncesi onay kapısıdır.

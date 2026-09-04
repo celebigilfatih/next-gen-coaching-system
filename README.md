@@ -22,10 +22,10 @@ Bu proje **CDSK 0.1.0** standardını kullanır.
 ## Mevcut teknik yapı
 
 - `apps/backend`: NestJS 11, Prisma 6 ve PostgreSQL kullanan backend.
-- `apps/frontend`: ADR-0003 ile normal monorepo workspace'i; ADR-0009 ile onaylanan
-  koç öncelikli React/TypeScript ve React Router SPA. Login, haftalık antrenman,
-  fazlı drill seçimi/notu, katılım ve gerçek season/match API'sine bağlı maç taktik
-  notu dikey dilimi çalışır; görsel QA ve 3/3 browser E2E geçmiştir.
+- `apps/frontend`: React 19/React Router SPA; shadcn/Radix, Tailwind, Phosphor ve
+  React-Konva tabanlı “Koç Operasyon Masası”. Hafta, Antrenmanlar, Taktik Tahtası,
+  Kadro ve Maçlar rotaları ile kulüp egzersizi, plan snapshot'ı ve maç tahtası
+  uçtan uca çalışır.
 - `docker-compose.yml`: Doğrulanmış PostgreSQL ve backend servislerini tanımlar.
 
 ## Doğrulanmış geliştirme komutları

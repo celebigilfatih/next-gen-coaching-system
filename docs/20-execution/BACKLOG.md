@@ -15,3 +15,5 @@
 | BL-011 | E-posta teslimi ve hesap recovery | P1 | Provider/operations owner, ADR-0008 | Davet/reset teslimi, verification ve admin-yok recovery süreci onaylanır | Backlog — input TBD |
 | BL-012 | Koç frontend dikey dilimi | P0 | ADR-0009, görsel yön seçimi, BL-005 | Login, haftalık sezon, antrenman planı ve katılım akışı onaylı görsel hedefle çalışır | Done — real API and browser E2E verified |
 | BL-013 | Production origin ve kalıcı tarayıcı oturumu | P0 | ADR-0009, production/security owner | Origin, hosting ve session sınırı ADR ile onaylanır; domain/provider/süre/retention girdileri production öncesi kapanır | Proposed — ADR-0010 awaiting approval |
+| BL-014 | Beş rotalı shadcn koç çalışma alanı | P0 | ADR-0009, ADR-0011 | Hafta, antrenman, taktik, kadro ve maç rotaları responsive kalite kapılarından geçer | Done — route/browser verified |
+| BL-015 | Kulüp egzersizi ve ortak taktik tahta | P0 | ADR-0012, BL-014 | Sürümlü belge, tenant/sahiplik, plan snapshot ve maç tahtası uçtan uca doğrulanır | Done — unit/migration/E2E verified |

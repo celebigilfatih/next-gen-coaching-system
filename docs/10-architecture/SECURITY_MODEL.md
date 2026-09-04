@@ -20,6 +20,16 @@
   yüklenir; token içindeki eski/oynanmış rol, e-posta veya kulüp iddiası yetki vermez.
 - Çekirdek kulüp, grup, antrenman planı, sezon ve katılım işlemleri ortak
   authorization katmanında kulüp/grup üyeliğiyle sınırlandırılır.
+- Egzersiz okumaları authentication gerektirir. Global katalog görünürdür;
+  kulüp/grup kayıtları tenant ve güncel üyelikle filtrelenir. Koç yalnız atanmış
+  grupta kendi egzersizini, kulüp yöneticisi kendi kulübünü, sistem yöneticisi tüm
+  kayıtları yönetir.
+- Drill create/update body'leri `clubId`, `scope` ve `createdById` ile sahiplik
+  kazanamaz; sunucu bunları güncel principal ve grup atamasından türetir. Global
+  katalog yalnız `SYSTEM_ADMIN` tarafından mutate edilir.
+- Plan snapshot ve maç tahtası 250 element/100 KB sınırı ve katı alan/tür
+  allowlist'iyle doğrulanır; kaynak egzersiz görünürlüğü mutation sırasında yeniden
+  kontrol edilir.
 - `SYSTEM_ADMIN` global; `CLUB_ADMIN` kendi kulübü; `COACH` atanmış grupları;
   `PLAYER` kendi profili, grup görünümü ve kendi katılımı kapsamında çalışır.
 - Socket.IO bağlantısı JWT gerektirir, sunucu tarafından türetilen kulüp odalarına

@@ -3,7 +3,7 @@
 - **Status:** Accepted
 - **Date:** 2026-08-31
 - **Owners / approvers:** Explicit user approval; named security owner TBD
-- **Supersedes / superseded by:** N/A
+- **Supersedes / superseded by:** Global drill kuralı ADR-0012 tarafından kısmen genişletildi
 - **Related:** ADR-0004, ADR-0005, ADR-0006, BL-004
 
 ## Context
@@ -45,7 +45,8 @@ Additional rules:
   the same plan/player checks before broadcasting mutations.
 - Health/clinical routes and advanced analytics remain outside the approved MVP and
   are restricted to `SYSTEM_ADMIN` until a separate access and privacy policy is
-  accepted. Global drill mutations are also `SYSTEM_ADMIN` only.
+  accepted. Global drill mutations `SYSTEM_ADMIN` ile sınırlı kalır; ADR-0012
+  atanmış koç ve kulüp yöneticilerine yalnız `CLUB` kapsamlı egzersiz yetkisi ekler.
 
 ## Consequences
 

@@ -1,8 +1,12 @@
 # NGCS frontend
 
 ADR-0009 ile onaylanan koç öncelikli frontend, React/TypeScript ve React Router
-Framework Mode SPA olarak bu workspace'te uygulanır. İlk görsel hedef Product Design
-seçenek 3, “Koç Operasyon Masası”dır.
+Framework Mode SPA olarak bu workspace'te uygulanır. shadcn/Radix, Tailwind CSS,
+Phosphor ve React-Konva tabanı ADR-0011 ile; taktik tahta sözleşmesi ADR-0012 ile
+kabul edilmiştir. Görsel hedef “Koç Operasyon Masası”dır.
+
+Ana rotalar `/app/week`, `/app/trainings`, `/app/tactics`, `/app/squad` ve
+`/app/matches`; plan, egzersiz ve maç detayları kimlikli alt rotalardır.
 
 ## Yerel çalışma
 
@@ -38,8 +42,9 @@ npm run test:e2e
 ```
 
 Komut migration'ı uygular, deterministik kulüp/takım/sezon fixture'ını kurar,
-backend ile frontend'i geçici portlarda başlatır ve gerçek login → plan → katılım,
-sezon maçı → taktik analiz ve dört fazlı drill/not kalıcılaştırma akışlarını
-doğrular. Credential repository'ye yazılmaz.
+backend ile frontend'i geçici portlarda başlatır ve gerçek login → kulüp taktik
+egzersizi → plan snapshot → maç tahtası → ikinci kulüpten erişim reddi zincirini
+doğrular. Beş ana rota ayrıca 1440, 1024 ve 390 piksel genişlikte kontrol edilir.
+Credential repository'ye yazılmaz.
 
 Production hosting, kalıcı oturum ve ölçülebilir erişilebilirlik hedefi `TBD`.
