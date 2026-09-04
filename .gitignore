@@ -12,7 +12,9 @@ coverage/
 build/
 dist/
 .next/
+.react-router/
 out/
+/output/playwright/
 
 # Environment variables
 .env

@@ -1,9 +1,22 @@
-import { Controller, Get, Post, Body, Param, Put, Delete, UseGuards, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Put,
+  Delete,
+  UseGuards,
+  Query,
+} from '@nestjs/common';
 import { AnalyticsService } from './analytics.service';
 import { AuthGuard } from '@nestjs/passport';
+import { Roles } from '../auth/roles.decorator';
+import { RolesGuard } from '../auth/roles.guard';
 
 @Controller('analytics')
-@UseGuards(AuthGuard('jwt'))
+@UseGuards(AuthGuard('jwt'), RolesGuard)
+@Roles('SYSTEM_ADMIN')
 export class AnalyticsController {
   constructor(private readonly analyticsService: AnalyticsService) {}
 
@@ -15,11 +28,15 @@ export class AnalyticsController {
 
   @Get('player-performance')
   getPlayerPerformances(
-    @Query('playerId') playerId?: string, 
+    @Query('playerId') playerId?: string,
     @Query('analysisType') analysisType?: string,
-    @Query('groupId') groupId?: string
+    @Query('groupId') groupId?: string,
   ) {
-    return this.analyticsService.getPlayerPerformances(playerId, analysisType, groupId);
+    return this.analyticsService.getPlayerPerformances(
+      playerId,
+      analysisType,
+      groupId,
+    );
   }
 
   @Put('player-performance/:id')

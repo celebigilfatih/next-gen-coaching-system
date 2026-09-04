@@ -1,5 +1,12 @@
 # Sezon Planlayıcı & A Takım Modülü - Geliştirici Kılavuzu
 
+> **Tarihsel / doğrulanmamış belge — 2026-08-31:** Bu kılavuz güncel repository
+> gerçeğinin kaynağı değildir. Güncel şemada bulunmayan Macro/Meso/Micro
+> modellerini ve kaynak kodu erişilemeyen frontend'i mevcut gösterir. Güncel
+> bağlam için `PROJECT_BOOT.md`, CDSK belgeleri, Prisma şeması, migration'lar ve
+> uygulama kodu esas alınmalıdır. Buradaki migration/kurulum komutları ayrıca
+> doğrulanıp onaylanmadan çalıştırılmamalıdır.
+
 ## 🎯 Genel Bakış
 
 Bu dokümantasyon, NGCS platformuna eklenen **Sezon Planlayıcı** ve **A Takım Performans Merkezi** modüllerinin kurulum, kullanım ve geliştirme süreçlerini açıklamaktadır.

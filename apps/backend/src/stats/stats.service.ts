@@ -37,7 +37,10 @@ export class StatsService {
       where,
       select: { totalDuration: true },
     });
-    const totalMinutes = trainingPlans.reduce((acc, plan) => acc + (plan.totalDuration || 0), 0);
+    const totalMinutes = trainingPlans.reduce(
+      (acc, plan) => acc + (plan.totalDuration || 0),
+      0,
+    );
     const totalHours = Math.floor(totalMinutes / 60);
     const remainingMinutes = totalMinutes % 60;
 
@@ -83,7 +86,7 @@ export class StatsService {
         athletes: '-3.88%',
         registrations: '+12.5%',
         hours: '-3.98%',
-      }
+      },
     };
   }
 }

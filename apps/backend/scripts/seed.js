@@ -1,5 +1,4 @@
 const { PrismaClient } = require('@prisma/client');
-const bcrypt = require('bcrypt');
 
 const prisma = new PrismaClient();
 
@@ -7,57 +6,35 @@ async function main() {
   console.log('🌱 Seeding database...');
 
   try {
-    // Check if admin already exists
-    const adminExists = await prisma.user.findUnique({
-      where: { email: 'admin@ngcs.com' }
-    });
-
-    if (!adminExists) {
-      // Create admin user
-      const hash = await bcrypt.hash('admin123', 10);
-      const admin = await prisma.user.create({
-        data: {
-          name: 'Admin Kullanıcısı',
-          email: 'admin@ngcs.com',
-          passwordHash: hash,
-          role: 'ADMIN'
-        }
-      });
-
-      console.log('✅ Admin user created:', admin.email);
-    } else {
-      console.log('✅ Admin user already exists');
-    }
-
     // Create the single club
     let club = await prisma.club.findFirst();
     if (!club) {
       club = await prisma.club.create({
         data: {
           name: 'NGCS Futbol Akademisi',
-          description: 'Futbol takım yönetim sistemi'
-        }
+          description: 'Futbol takım yönetim sistemi',
+        },
       });
       console.log('✅ Club created:', club.name);
     } else {
       console.log('✅ Club already exists:', club.name);
     }
-    
+
     // Check and create A Takım automatically
     const existingATeam = await prisma.playerGroup.findFirst({
-      where: { clubId: club.id, category: 'A_TAKIM' }
+      where: { clubId: club.id, category: 'A_TAKIM' },
     });
-    
+
     if (!existingATeam) {
       await prisma.playerGroup.create({
         data: {
           name: 'A Takım',
           ageGroup: 'SENIOR',
           category: 'A_TAKIM',
-          clubId: club.id
-        }
+          clubId: club.id,
+        },
       });
-      
+
       console.log('✅ Created A Takım');
     } else {
       console.log(`✅ A Takım already exists: ${existingATeam.name}`);
@@ -67,7 +44,7 @@ async function main() {
     const drillsExist = await prisma.drill.count();
     if (drillsExist === 0) {
       console.log('🏃 Creating drills...');
-      
+
       const drills = [
         // WARM-UP DRILLS
         {
@@ -84,9 +61,9 @@ async function main() {
               'Kol çevirme - 10 tekrar',
               'Bacak açma ve kapatma - 10 tekrar',
               'Yürüyerek dizleri göğse çekme - 20m',
-              'Yürüyerek topuk kalça - 20m'
-            ]
-          }
+              'Yürüyerek topuk kalça - 20m',
+            ],
+          },
         },
         {
           title: 'Hafif Koşu',
@@ -100,9 +77,9 @@ async function main() {
             steps: [
               'Saha çevresinde hafif koşu - 2 tur',
               'Tempo kademeli artar',
-              'Son turda orta tempoda koşu'
-            ]
-          }
+              'Son turda orta tempoda koşu',
+            ],
+          },
         },
         {
           title: 'Aktivasyon Oyunu - Rondo',
@@ -115,15 +92,15 @@ async function main() {
             description: '6v2 rondo oyunu ile ısınma',
             setup: {
               area: '15x15m kare alan',
-              players: '8 oyuncu (6 dışarıda, 2 ortada)'
+              players: '8 oyuncu (6 dışarıda, 2 ortada)',
             },
             steps: [
               '6 oyuncu dışarıda, 2 oyuncu ortada',
               'Dışarıdakiler 2 dokunuşla pas',
               '5 pas = 1 puan',
-              'Ortadakiler top çalarsa yer değişir'
-            ]
-          }
+              'Ortadakiler top çalarsa yer değişir',
+            ],
+          },
         },
         {
           title: 'Koordinasyon Merdiveni',
@@ -138,9 +115,9 @@ async function main() {
               'Her kareye tek ayak - 2 set',
               'İki ayak içeri-dışarı - 2 set',
               'Yan adımlar - 2 set',
-              'Hop scotch - 2 set'
-            ]
-          }
+              'Hop scotch - 2 set',
+            ],
+          },
         },
         {
           title: 'Pas Üçgeni',
@@ -153,15 +130,15 @@ async function main() {
             description: 'Üçgen formasyonda pas çalışması',
             setup: {
               area: '10x10m üçgen',
-              players: '3 oyuncu'
+              players: '3 oyuncu',
             },
             steps: [
               'Pas yaptıktan sonra koşarak sıradaki koniye git',
               'Hem saat yönünde hem ters yönde',
               'Tek dokunuş, sonra iki dokunuş',
-              '2 dakika her yönde'
-            ]
-          }
+              '2 dakika her yönde',
+            ],
+          },
         },
         {
           title: 'Dinamik Koşu Drilleri',
@@ -177,11 +154,11 @@ async function main() {
               'Topuk kalça - 20m x 2',
               'Yan koşu (her iki yöne) - 20m x 2',
               'Geri koşu - 20m x 2',
-              'Sprint - 20m x 2'
-            ]
-          }
+              'Sprint - 20m x 2',
+            ],
+          },
         },
-        
+
         // TECHNICAL DRILLS
         {
           title: 'Pas Kareleri 4v1',
@@ -194,15 +171,15 @@ async function main() {
             description: 'Dar alanda pas kalitesi ve top kontrolü geliştirme',
             setup: {
               area: '10x10m kare',
-              players: '5 oyuncu (4 dışarıda, 1 ortada)'
+              players: '5 oyuncu (4 dışarıda, 1 ortada)',
             },
             steps: [
               '4 oyuncu köşelerde, 1 ortada',
               'Maksimum 2 dokunuş',
               'Ortadaki oyuncu top çalarsa yer değişir',
-              '3 dakika rotasyon'
-            ]
-          }
+              '3 dakika rotasyon',
+            ],
+          },
         },
         {
           title: 'Şut Çalışması',
@@ -215,15 +192,15 @@ async function main() {
             description: 'Farklı pozisyonlardan şut atma tekniği',
             setup: {
               area: 'Ceza sahası',
-              players: '6-8 oyuncu'
+              players: '6-8 oyuncu',
             },
             steps: [
               'Ceza sahası dışından şut - 10 tekrar',
               '1-2 pas sonrası şut - 10 tekrar',
               'Yan koridordan orta ve şut - 10 tekrar',
-              'Hızlı kombinasyon ve bitiriş'
-            ]
-          }
+              'Hızlı kombinasyon ve bitiriş',
+            ],
+          },
         },
         {
           title: 'İlk Dokunuş Drili',
@@ -239,9 +216,9 @@ async function main() {
               '10m mesafeden pas',
               'İlk dokunuşta topu kontrol et',
               'İkinci dokunuşta geri pas',
-              'Her 2 dakikada partner değiştir'
-            ]
-          }
+              'Her 2 dakikada partner değiştir',
+            ],
+          },
         },
         {
           title: 'Hava Topu Kontrolü',
@@ -257,11 +234,11 @@ async function main() {
               'Göğüs ile kontrol',
               'Ayak ile kontrol',
               'Baş ile kontrol ve pas',
-              'Vole şut çalışması'
-            ]
-          }
+              'Vole şut çalışması',
+            ],
+          },
         },
-        
+
         // TACTICAL DRILLS
         {
           title: 'Pres Tetikleyicileri',
@@ -274,15 +251,15 @@ async function main() {
             description: 'Takım savunması ve pres uygulaması',
             setup: {
               area: 'Yarı saha',
-              players: '11v11'
+              players: '11v11',
             },
             steps: [
               'Rakip yavaş pas yaptığında pres başlat',
               'Yan çizgiye sıkıştırma',
               'Orta saha baskısı',
-              'Topun kazanılması sonrası hızlı geçiş'
-            ]
-          }
+              'Topun kazanılması sonrası hızlı geçiş',
+            ],
+          },
         },
         {
           title: 'Pozisyon Oyunu 8v8+3',
@@ -295,15 +272,15 @@ async function main() {
             description: 'Dar alanda pozisyon bulma ve pas seçenekleri',
             setup: {
               area: '40x30m alan',
-              players: '8v8 + 3 joker'
+              players: '8v8 + 3 joker',
             },
             steps: [
               '3 joker her zaman topa sahip olan takımda',
               'Maksimum 3 dokunuş',
               '10 pas = 1 puan',
-              'Kaleci dahil oyun kurma'
-            ]
-          }
+              'Kaleci dahil oyun kurma',
+            ],
+          },
         },
         {
           title: 'Taktiksel Maç 11v11',
@@ -316,15 +293,15 @@ async function main() {
             description: 'Gerçek maç formatında taktik uygulaması',
             setup: {
               area: 'Tam saha',
-              players: '11v11'
+              players: '11v11',
             },
             steps: [
               'Belirlenen dizilişte oyun',
               'Maç içi taktik değişiklikleri',
               '2 x 15 dakika',
-              'Antrenör düdüğü ile durma ve analiz'
-            ]
-          }
+              'Antrenör düdüğü ile durma ve analiz',
+            ],
+          },
         },
         {
           title: 'Geçiş Oyunu',
@@ -337,17 +314,17 @@ async function main() {
             description: 'Topa sahip olma ve kaybetme anlarında hızlı geçiş',
             setup: {
               area: '40x40m',
-              players: '6v6'
+              players: '6v6',
             },
             steps: [
               'Top kazanımında 5 saniye içinde şut',
               'Top kaybında hemen savunmaya geçiş',
               'Kontra atak organizasyonu',
-              'Mini kalelere gol atma'
-            ]
-          }
+              'Mini kalelere gol atma',
+            ],
+          },
         },
-        
+
         // COOL DOWN DRILLS
         {
           title: 'Statik Germe',
@@ -363,9 +340,9 @@ async function main() {
               'Quadriceps germe - 30 saniye her bacak',
               'Kalf germe - 30 saniye her bacak',
               'Sırt germe - 30 saniye',
-              'Omuz germe - 30 saniye'
-            ]
-          }
+              'Omuz germe - 30 saniye',
+            ],
+          },
         },
         {
           title: 'Yavaş Koşu ve Germe',
@@ -380,9 +357,9 @@ async function main() {
               'Yavaş koşu - 3 dakika',
               'Yürüyüş - 2 dakika',
               'Derin nefes egzersizleri',
-              'Hafif statik germeler'
-            ]
-          }
+              'Hafif statik germeler',
+            ],
+          },
         },
         {
           title: 'Foam Roller',
@@ -398,21 +375,22 @@ async function main() {
               'Quadriceps üzerinde rulo - 2 dakika',
               'IT band üzerinde rulo - 2 dakika',
               'Sırt üzerinde rulo - 2 dakika',
-              'Kalf üzerinde rulo - 2 dakika'
-            ]
-          }
-        }
+              'Kalf üzerinde rulo - 2 dakika',
+            ],
+          },
+        },
       ];
 
       for (const drill of drills) {
         await prisma.drill.create({ data: drill });
       }
 
-      console.log(`✅ Created ${drills.length} drills (Warm-up, Technical, Tactical, Cool-down)`);
+      console.log(
+        `✅ Created ${drills.length} drills (Warm-up, Technical, Tactical, Cool-down)`,
+      );
     } else {
       console.log('✅ Drills already exist, skipping');
     }
-
   } catch (error) {
     console.error('❌ Seeding error:', error);
     process.exit(1);

@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { publicUserSelect } from '../users/user.select';
 
 @Injectable()
 export class AttendanceService {
@@ -20,10 +21,10 @@ export class AttendanceService {
     });
   }
 
-  async listByPlan(planId: string) {
+  async listByPlan(planId: string, playerId?: string) {
     return this.prisma.attendance.findMany({
-      where: { planId },
-      include: { player: true },
+      where: { planId, playerId },
+      include: { player: { select: publicUserSelect } },
     });
   }
 }

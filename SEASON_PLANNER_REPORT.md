@@ -1,5 +1,12 @@
 # Season Planner & A Team Module - Auto-Generation Report
 
+> **Historical / unverified document — 2026-08-31:** This generated report is
+> not a source of current repository truth. It references Macro/Meso/Micro
+> models and frontend files that are not present in the current checked-out
+> source. Use `PROJECT_BOOT.md`, the current Prisma schema, migrations, and
+> application code instead. Do not execute migration or setup instructions here
+> without a separate verification and approval step.
+
 **Generated:** ${new Date().toISOString()}
 **Status:** ✅ Partial Implementation Complete
 

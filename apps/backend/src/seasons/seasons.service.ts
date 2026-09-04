@@ -1,17 +1,50 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import type { AuthPrincipal } from '../auth/auth-principal';
 
 @Injectable()
 export class SeasonsService {
+  private static readonly MAX_SEASON_WEEKS = 80;
+
   constructor(private prisma: PrismaService) {}
 
+  private assertSafeSeasonRange(startDate: Date, endDate: Date) {
+    const startTime = startDate.getTime();
+    const endTime = endDate.getTime();
+
+    if (!Number.isFinite(startTime) || !Number.isFinite(endTime)) {
+      throw new BadRequestException('Season dates must be valid');
+    }
+
+    if (startTime > endTime) {
+      throw new BadRequestException(
+        'Season start date must be before or equal to end date',
+      );
+    }
+
+    const durationWeeks =
+      Math.floor((endTime - startTime) / (7 * 24 * 60 * 60 * 1000)) + 1;
+
+    if (durationWeeks > SeasonsService.MAX_SEASON_WEEKS) {
+      throw new BadRequestException(
+        `Season duration cannot exceed ${SeasonsService.MAX_SEASON_WEEKS} weeks`,
+      );
+    }
+  }
+
   // Season CRUD
-  async createSeason(userId: string, data: {
-    name: string;
-    startDate: Date;
-    endDate: Date;
-    clubId?: string;
-  }) {
+  async createSeason(
+    userId: string,
+    data: {
+      name: string;
+      startDate: Date;
+      endDate: Date;
+      clubId: string;
+      groupId: string;
+    },
+  ) {
+    this.assertSafeSeasonRange(data.startDate, data.endDate);
+
     return this.prisma.season.create({
       data: {
         ...data,
@@ -29,10 +62,15 @@ export class SeasonsService {
     });
   }
 
-  async listSeasons(userId: string, clubId?: string) {
-    const where: any = { userId };
-    if (clubId) {
-      where.clubId = clubId;
+  async listForPrincipal(principal: AuthPrincipal) {
+    const where: any = {};
+    if (principal.role === 'CLUB_ADMIN') {
+      where.clubId = principal.clubId ?? '__unassigned__';
+    } else if (principal.role === 'COACH' || principal.role === 'PLAYER') {
+      where.clubId = principal.clubId ?? '__unassigned__';
+      where.group = { members: { some: { userId: principal.id } } };
+    } else if (principal.role !== 'SYSTEM_ADMIN') {
+      where.id = '__forbidden__';
     }
 
     return this.prisma.season.findMany({
@@ -89,12 +127,15 @@ export class SeasonsService {
   }
 
   // Week Plans
-  async createWeek(seasonId: string, data: {
-    weekNumber: number;
-    startDate: Date;
-    endDate: Date;
-    notes?: string;
-  }) {
+  async createWeek(
+    seasonId: string,
+    data: {
+      weekNumber: number;
+      startDate: Date;
+      endDate: Date;
+      notes?: string;
+    },
+  ) {
     return this.prisma.weekPlan.create({
       data: {
         ...data,
@@ -122,10 +163,13 @@ export class SeasonsService {
     });
   }
 
-  async updateWeek(weekId: string, data: {
-    notes?: string;
-    totalLoad?: number;
-  }) {
+  async updateWeek(
+    weekId: string,
+    data: {
+      notes?: string;
+      totalLoad?: number;
+    },
+  ) {
     return this.prisma.weekPlan.update({
       where: { id: weekId },
       data,
@@ -136,17 +180,20 @@ export class SeasonsService {
   }
 
   // Day Plans
-  async createOrUpdateDay(weekId: string, data: {
-    dayOfWeek: number;
-    date: Date;
-    type: 'TRAINING' | 'MATCH' | 'REST' | 'RECOVERY' | 'TACTICAL';
-    title?: string;
-    trainingPlanId?: string;
-    drillIds?: string[];
-    duration?: number;
-    intensity?: number;
-    notes?: string;
-  }) {
+  async createOrUpdateDay(
+    weekId: string,
+    data: {
+      dayOfWeek: number;
+      date: Date;
+      type: 'TRAINING' | 'MATCH' | 'REST' | 'RECOVERY' | 'TACTICAL';
+      title?: string;
+      trainingPlanId?: string;
+      drillIds?: string[];
+      duration?: number;
+      intensity?: number;
+      notes?: string;
+    },
+  ) {
     // Allow multiple plans per day, so just create
     return this.prisma.dayPlan.create({
       data: {
@@ -168,11 +215,11 @@ export class SeasonsService {
     const day = await this.prisma.dayPlan.findUnique({
       where: { id: dayId },
     });
-    
+
     if (!day) {
       throw new Error('Day plan not found');
     }
-    
+
     return this.prisma.dayPlan.update({
       where: { id: dayId },
       data: { completed: !day.completed },
@@ -186,14 +233,17 @@ export class SeasonsService {
   }
 
   // Matches
-  async createMatch(seasonId: string, data: {
-    date: Date;
-    opponent: string;
-    location: string;
-    competition?: string;
-    notes?: string;
-    groupId?: string;
-  }) {
+  async createMatch(
+    seasonId: string,
+    data: {
+      date: Date;
+      opponent: string;
+      location: string;
+      competition?: string;
+      notes?: string;
+      groupId?: string;
+    },
+  ) {
     return this.prisma.match.create({
       data: {
         ...data,
@@ -213,7 +263,17 @@ export class SeasonsService {
   async updateMatch(matchId: string, data: any) {
     return this.prisma.match.update({
       where: { id: matchId },
-      data,
+      data: {
+        date: data.date ? new Date(data.date) : undefined,
+        opponent: data.opponent,
+        location: data.location,
+        competition: data.competition,
+        result: data.result,
+        opponentAnalysis: data.opponentAnalysis,
+        ourFormation: data.ourFormation,
+        notes: data.notes,
+        videoLinks: data.videoLinks,
+      },
     });
   }
 
@@ -229,6 +289,8 @@ export class SeasonsService {
 
     if (!season) throw new Error('Season not found');
 
+    this.assertSafeSeasonRange(season.startDate, season.endDate);
+
     const weeks: {
       seasonId: string;
       weekNumber: number;
@@ -236,7 +298,7 @@ export class SeasonsService {
       endDate: Date;
       totalLoad: number;
     }[] = [];
-    let currentDate = new Date(season.startDate);
+    const currentDate = new Date(season.startDate);
     const endDate = new Date(season.endDate);
     let weekNumber = 1;
 

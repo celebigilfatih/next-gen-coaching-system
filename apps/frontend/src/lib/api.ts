@@ -1,82 +1,225 @@
-/**
- * API helper functions for making authenticated requests
- */
+import {
+  clearSession,
+  getSession,
+  setSession,
+  type SessionUser,
+} from './session';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
+const apiBase = (
+  import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:4000'
+).replace(/\/$/, '');
 
-interface FetchOptions extends Omit<RequestInit, "headers"> {
-  token?: string;
-  headers?: Record<string, string>;
-}
+type LoginResponse = {
+  access_token: string;
+  user: SessionUser;
+};
 
-/**
- * Makes an authenticated API request
- */
-export async function fetchAPI(endpoint: string, options: FetchOptions = {}) {
-  const { token, headers: customHeaders, ...fetchOptions } = options;
-  
-  const headers: Record<string, string> = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-    ...(customHeaders || {}),
-  };
+export type Group = {
+  id: string;
+  name: string;
+  ageGroup: string;
+};
 
-  if (token) {
-    headers.Authorization = `Bearer ${token}`;
+export type GroupMember = {
+  id: string;
+  user: SessionUser & { position?: string | null };
+};
+
+export type Season = {
+  id: string;
+  name: string;
+  groupId: string;
+  startDate: string;
+  endDate: string;
+};
+
+export type DrillPhase = 'WARM_UP' | 'TECHNICAL' | 'TACTICAL' | 'COOL_DOWN';
+
+export type Drill = {
+  id: string;
+  title: string;
+  category: DrillPhase;
+  ageGroup: string;
+  durationMin: number;
+  difficulty: 'EASY' | 'MEDIUM' | 'HARD';
+};
+
+export type PlanDrill = {
+  id: string;
+  drillId: string;
+  phase: DrillPhase;
+  order: number;
+  notes: string | null;
+  drill: Drill;
+};
+
+export type TrainingPlan = {
+  id: string;
+  title: string;
+  groupId: string | null;
+  date: string | null;
+  notes: string | null;
+  totalDuration: number;
+  attendance?: AttendanceRecord[];
+  drills?: PlanDrill[];
+};
+
+export type AttendanceRecord = {
+  id: string;
+  planId: string;
+  playerId: string;
+  status: 'PRESENT' | 'ABSENT';
+};
+
+export type MatchAnalysis = {
+  summary: string;
+  opponentFormation: string;
+  focus: string;
+};
+
+export type Match = {
+  id: string;
+  seasonId: string;
+  groupId: string | null;
+  date: string;
+  opponent: string;
+  location: string;
+  competition: string | null;
+  opponentAnalysis: unknown;
+  ourFormation: string | null;
+  notes: string | null;
+};
+
+async function request<T>(path: string, init?: RequestInit): Promise<T> {
+  const token = getSession()?.token;
+  const response = await fetch(`${apiBase}${path}`, {
+    ...init,
+    headers: {
+      Accept: 'application/json',
+      ...(init?.body ? { 'Content-Type': 'application/json' } : {}),
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...init?.headers,
+    },
+  });
+
+  if (response.status === 401) clearSession();
+  if (!response.ok) {
+    const payload = (await response.json().catch(() => null)) as {
+      message?: string | string[];
+    } | null;
+    const message = Array.isArray(payload?.message)
+      ? payload.message.join(', ')
+      : payload?.message;
+    throw new Error(message || `İstek başarısız (${response.status})`);
   }
 
-  const response = await fetch(`${API_URL}${endpoint}`, {
-    ...fetchOptions,
-    headers,
-    credentials: "include",
+  return (await response.json()) as T;
+}
+
+export async function login(email: string, password: string) {
+  const response = await request<LoginResponse>('/auth/login', {
+    method: 'POST',
+    body: JSON.stringify({ email, password }),
   });
-
-  return response;
+  setSession({ token: response.access_token, user: response.user });
+  return response.user;
 }
 
-/**
- * Makes a GET request
- */
-export async function getAPI(endpoint: string, token?: string) {
-  return fetchAPI(endpoint, { method: "GET", token });
+export function listGroups() {
+  return request<Group[]>('/groups');
 }
 
-/**
- * Makes a POST request
- */
-export async function postAPI(endpoint: string, data: any, token?: string) {
-  return fetchAPI(endpoint, {
-    method: "POST",
-    body: JSON.stringify(data),
-    token,
+export function listGroupMembers(groupId: string) {
+  return request<GroupMember[]>(`/groups/${groupId}/members`);
+}
+
+export function listSeasons() {
+  return request<Season[]>('/seasons');
+}
+
+export function listMatches(seasonId: string) {
+  return request<Match[]>(`/seasons/${seasonId}/matches`);
+}
+
+export function listDrills(ageGroup: string) {
+  const query = new URLSearchParams({ ageGroup });
+  return request<Drill[]>(`/drills?${query.toString()}`);
+}
+
+export function listTrainingPlans(groupId: string) {
+  const query = new URLSearchParams({ groupId });
+  return request<TrainingPlan[]>(`/training-plans?${query.toString()}`);
+}
+
+export function listAttendance(planId: string) {
+  const query = new URLSearchParams({ planId });
+  return request<AttendanceRecord[]>(`/attendance?${query.toString()}`);
+}
+
+export function createTrainingPlan(input: {
+  title: string;
+  groupId: string;
+  date: string;
+  notes?: string;
+}) {
+  return request<TrainingPlan>('/training-plans', {
+    method: 'POST',
+    body: JSON.stringify(input),
   });
 }
 
-/**
- * Makes a PUT request
- */
-export async function putAPI(endpoint: string, data: any, token?: string) {
-  return fetchAPI(endpoint, {
-    method: "PUT",
-    body: JSON.stringify(data),
-    token,
+export function updateTrainingPlan(
+  planId: string,
+  input: {
+    title?: string;
+    totalDuration?: number;
+    groupId?: string;
+    date?: string;
+    notes?: string;
+  },
+) {
+  return request<TrainingPlan>(`/training-plans/${planId}`, {
+    method: 'PUT',
+    body: JSON.stringify(input),
   });
 }
 
-/**
- * Makes a DELETE request
- */
-export async function deleteAPI(endpoint: string, token?: string) {
-  return fetchAPI(endpoint, { method: "DELETE", token });
+export function replaceTrainingPlanDrills(
+  planId: string,
+  drills: Array<{
+    drillId: string;
+    phase: DrillPhase;
+    order: number;
+    notes?: string;
+  }>,
+) {
+  return request<TrainingPlan>(`/training-plans/${planId}/drills`, {
+    method: 'PUT',
+    body: JSON.stringify({ drills }),
+  });
 }
 
-/**
- * Makes a PATCH request
- */
-export async function patchAPI(endpoint: string, data: any, token?: string) {
-  return fetchAPI(endpoint, {
-    method: "PATCH",
-    body: JSON.stringify(data),
-    token,
+export function markAttendance(input: {
+  planId: string;
+  playerId: string;
+  status: 'PRESENT' | 'ABSENT';
+}) {
+  return request('/attendance', {
+    method: 'POST',
+    body: JSON.stringify(input),
+  });
+}
+
+export function updateMatch(
+  matchId: string,
+  input: {
+    opponentAnalysis: MatchAnalysis;
+    ourFormation: string;
+    notes: string;
+  },
+) {
+  return request<Match>(`/seasons/matches/${matchId}`, {
+    method: 'PUT',
+    body: JSON.stringify(input),
   });
 }

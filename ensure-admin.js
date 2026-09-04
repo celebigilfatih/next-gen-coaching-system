@@ -1,64 +1,71 @@
-const { PrismaClient } = require('./apps/backend/node_modules/@prisma/client');
-const bcrypt = require('./apps/backend/node_modules/bcrypt');
+const { PrismaClient } = require("./apps/backend/node_modules/@prisma/client");
+const bcrypt = require("./apps/backend/node_modules/bcrypt");
 
-const prisma = new PrismaClient({
-  datasources: {
-    db: {
-      url: process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/ngcs'
-    }
-  }
-});
+const databaseUrl = process.env.DATABASE_URL;
+const email = process.env.BOOTSTRAP_ADMIN_EMAIL?.trim();
+const password = process.env.BOOTSTRAP_ADMIN_PASSWORD;
+const name = process.env.BOOTSTRAP_ADMIN_NAME?.trim() || "System Admin";
 
-async function ensureAdminUser() {
-  try {
-    console.log('🔍 Checking for admin user...\n');
-
-    // Check if admin exists
-    const existingAdmin = await prisma.user.findUnique({
-      where: { email: 'admin@ngcs.com' }
-    });
-
-    if (existingAdmin) {
-      console.log('✅ Admin user already exists!');
-      console.log('   Email:', existingAdmin.email);
-      console.log('   Name:', existingAdmin.name);
-      console.log('   Role:', existingAdmin.role);
-      console.log('\n🔑 Login credentials:');
-      console.log('   Email: admin@ngcs.com');
-      console.log('   Password: admin123');
-      console.log('\n🌐 Login URL: http://localhost:3500/signin');
-    } else {
-      console.log('⚠️  Admin user not found. Creating...\n');
-
-      // Create admin user
-      const passwordHash = await bcrypt.hash('admin123', 10);
-      
-      const admin = await prisma.user.create({
-        data: {
-          email: 'admin@ngcs.com',
-          name: 'Admin User',
-          passwordHash: passwordHash,
-          role: 'ADMIN'
-        }
-      });
-
-      console.log('✅ Admin user created successfully!');
-      console.log('   ID:', admin.id);
-      console.log('   Email:', admin.email);
-      console.log('   Name:', admin.name);
-      console.log('   Role:', admin.role);
-      console.log('\n🔑 Login credentials:');
-      console.log('   Email: admin@ngcs.com');
-      console.log('   Password: admin123');
-      console.log('\n🌐 Login URL: http://localhost:3500/signin');
-    }
-
-  } catch (error) {
-    console.error('❌ Error:', error.message);
-    process.exit(1);
-  } finally {
-    await prisma.$disconnect();
-  }
+if (!databaseUrl) {
+  throw new Error("DATABASE_URL is required");
 }
 
-ensureAdminUser();
+if (!email || !password) {
+  throw new Error("BOOTSTRAP_ADMIN_EMAIL and BOOTSTRAP_ADMIN_PASSWORD are required");
+}
+
+if (password.length < 12) {
+  throw new Error("BOOTSTRAP_ADMIN_PASSWORD must be at least 12 characters");
+}
+
+const prisma = new PrismaClient({ datasourceUrl: databaseUrl });
+
+async function ensureSystemAdmin() {
+  const [existingAdmin, systemAdminCount] = await Promise.all([
+    prisma.user.findUnique({ where: { email } }),
+    prisma.user.count({ where: { role: "SYSTEM_ADMIN" } }),
+  ]);
+
+  if (existingAdmin) {
+    if (existingAdmin.role !== "SYSTEM_ADMIN") {
+      throw new Error(`Existing account ${email} is not a SYSTEM_ADMIN; refusing to change its role`);
+    }
+
+    console.log("System admin already exists:", existingAdmin.email);
+    return;
+  }
+
+  if (systemAdminCount > 0) {
+    throw new Error("A SYSTEM_ADMIN already exists; additional system admins must use an authenticated invitation");
+  }
+
+  const passwordHash = await bcrypt.hash(password, 10);
+  const admin = await prisma.$transaction(async (transaction) => {
+    const created = await transaction.user.create({
+      data: {
+        email,
+        name,
+        passwordHash,
+        role: "SYSTEM_ADMIN",
+      },
+    });
+    await transaction.securityAuditEvent.create({
+      data: {
+        action: "SYSTEM_ADMIN_BOOTSTRAPPED",
+        targetUserId: created.id,
+      },
+    });
+    return created;
+  });
+
+  console.log("System admin created:", admin.email);
+}
+
+ensureSystemAdmin()
+  .catch((error) => {
+    console.error("Failed to ensure system admin:", error.message);
+    process.exitCode = 1;
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });

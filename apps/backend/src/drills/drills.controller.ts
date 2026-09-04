@@ -11,6 +11,8 @@ import {
 } from '@nestjs/common';
 import { DrillsService } from './drills.service';
 import { AuthGuard } from '@nestjs/passport';
+import { Roles } from '../auth/roles.decorator';
+import { RolesGuard } from '../auth/roles.guard';
 
 @Controller('drills')
 export class DrillsController {
@@ -30,19 +32,22 @@ export class DrillsController {
     return this.drills.get(id);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles('SYSTEM_ADMIN')
   @Post()
   async create(@Body() body: any) {
     return this.drills.create(body);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles('SYSTEM_ADMIN')
   @Put(':id')
   async update(@Param('id') id: string, @Body() body: any) {
     return this.drills.update(id, body);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles('SYSTEM_ADMIN')
   @Delete(':id')
   async remove(@Param('id') id: string) {
     return this.drills.remove(id);

@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -9,56 +10,83 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
-import { SeasonsService } from './seasons.service';
 import { AuthGuard } from '@nestjs/passport';
+import type { AuthPrincipal } from '../auth/auth-principal';
+import { AuthorizationService } from '../auth/authorization.service';
+import { Roles } from '../auth/roles.decorator';
+import { RolesGuard } from '../auth/roles.guard';
+import { SeasonsService } from './seasons.service';
 
 @Controller('seasons')
 @UseGuards(AuthGuard('jwt'))
 export class SeasonsController {
-  constructor(private seasons: SeasonsService) {}
+  constructor(
+    private readonly seasons: SeasonsService,
+    private readonly authorization: AuthorizationService,
+  ) {}
 
   @Post()
+  @UseGuards(RolesGuard)
+  @Roles('SYSTEM_ADMIN', 'CLUB_ADMIN', 'COACH')
   async createSeason(
-    @Request() req,
+    @Request() req: { user: AuthPrincipal },
     @Body()
     body: {
       name: string;
       startDate: string;
       endDate: string;
       clubId?: string;
+      groupId: string;
     },
   ) {
-    console.log('Creating season, user:', req.user);
-    console.log('Body:', body);
-    
-    if (!req.user || (!req.user.id && !req.user.userId)) {
-      throw new Error('User not authenticated or user ID missing');
+    const clubId =
+      req.user.role === 'SYSTEM_ADMIN' ? body.clubId : req.user.clubId;
+    if (!clubId) throw new BadRequestException('clubId is required');
+    if (req.user.role === 'CLUB_ADMIN') {
+      this.authorization.assertClubManage(req.user, clubId);
     }
-    
-    const userId = req.user.id || req.user.userId;
-    
-    return this.seasons.createSeason(userId, {
-      ...body,
+
+    const group =
+      req.user.role === 'COACH'
+        ? await this.authorization.assertCoachGroupAssignment(
+            req.user,
+            body.groupId,
+          )
+        : await this.authorization.assertGroupView(req.user, body.groupId);
+    if (group.clubId !== clubId) {
+      throw new BadRequestException('Group must belong to the season club');
+    }
+
+    return this.seasons.createSeason(req.user.id, {
+      name: body.name,
+      clubId,
+      groupId: body.groupId,
       startDate: new Date(body.startDate),
       endDate: new Date(body.endDate),
     });
   }
 
   @Get()
-  async listSeasons(@Request() req) {
-    const userId = req.user.id || req.user.userId;
-    return this.seasons.listSeasons(userId, req.user.clubId);
+  async listSeasons(@Request() req: { user: AuthPrincipal }) {
+    return this.seasons.listForPrincipal(req.user);
   }
 
-  // Generate weeks for a season - MUST be before :id route
   @Post(':id/generate-weeks')
-  async generateWeeks(@Param('id') id: string) {
+  @UseGuards(RolesGuard)
+  @Roles('SYSTEM_ADMIN', 'CLUB_ADMIN', 'COACH')
+  async generateWeeks(
+    @Request() req: { user: AuthPrincipal },
+    @Param('id') id: string,
+  ) {
+    await this.authorization.assertSeasonManage(req.user, id);
     return this.seasons.generateWeeks(id);
   }
 
-  // Week Plans - MUST be before :id route
   @Post(':seasonId/weeks')
+  @UseGuards(RolesGuard)
+  @Roles('SYSTEM_ADMIN', 'CLUB_ADMIN', 'COACH')
   async createWeek(
+    @Request() req: { user: AuthPrincipal },
     @Param('seasonId') seasonId: string,
     @Body()
     body: {
@@ -68,6 +96,7 @@ export class SeasonsController {
       notes?: string;
     },
   ) {
+    await this.authorization.assertSeasonManage(req.user, seasonId);
     return this.seasons.createWeek(seasonId, {
       ...body,
       startDate: new Date(body.startDate),
@@ -77,23 +106,31 @@ export class SeasonsController {
 
   @Get(':seasonId/weeks/:weekNumber')
   async getWeek(
+    @Request() req: { user: AuthPrincipal },
     @Param('seasonId') seasonId: string,
     @Param('weekNumber') weekNumber: string,
   ) {
-    return this.seasons.getWeek(seasonId, parseInt(weekNumber));
+    await this.authorization.assertSeasonView(req.user, seasonId);
+    return this.seasons.getWeek(seasonId, Number.parseInt(weekNumber, 10));
   }
 
   @Put('weeks/:weekId')
+  @UseGuards(RolesGuard)
+  @Roles('SYSTEM_ADMIN', 'CLUB_ADMIN', 'COACH')
   async updateWeek(
+    @Request() req: { user: AuthPrincipal },
     @Param('weekId') weekId: string,
     @Body() body: { notes?: string; totalLoad?: number },
   ) {
+    await this.authorization.assertWeekManage(req.user, weekId);
     return this.seasons.updateWeek(weekId, body);
   }
 
-  // Day Plans
   @Post('weeks/:weekId/days')
+  @UseGuards(RolesGuard)
+  @Roles('SYSTEM_ADMIN', 'CLUB_ADMIN', 'COACH')
   async createOrUpdateDay(
+    @Request() req: { user: AuthPrincipal },
     @Param('weekId') weekId: string,
     @Body()
     body: {
@@ -108,6 +145,18 @@ export class SeasonsController {
       notes?: string;
     },
   ) {
+    const season = await this.authorization.assertWeekManage(req.user, weekId);
+    if (body.trainingPlanId) {
+      const plan = await this.authorization.assertPlanManage(
+        req.user,
+        body.trainingPlanId,
+      );
+      if (plan.clubId !== season.clubId) {
+        throw new BadRequestException(
+          'Training plan must belong to the season club',
+        );
+      }
+    }
     return this.seasons.createOrUpdateDay(weekId, {
       ...body,
       date: new Date(body.date),
@@ -115,18 +164,32 @@ export class SeasonsController {
   }
 
   @Post('days/:dayId/toggle-completed')
-  async toggleDayCompleted(@Param('dayId') dayId: string) {
+  @UseGuards(RolesGuard)
+  @Roles('SYSTEM_ADMIN', 'CLUB_ADMIN', 'COACH')
+  async toggleDayCompleted(
+    @Request() req: { user: AuthPrincipal },
+    @Param('dayId') dayId: string,
+  ) {
+    await this.authorization.assertDayManage(req.user, dayId);
     return this.seasons.toggleDayCompleted(dayId);
   }
 
   @Delete('days/:dayId')
-  async deleteDay(@Param('dayId') dayId: string) {
+  @UseGuards(RolesGuard)
+  @Roles('SYSTEM_ADMIN', 'CLUB_ADMIN', 'COACH')
+  async deleteDay(
+    @Request() req: { user: AuthPrincipal },
+    @Param('dayId') dayId: string,
+  ) {
+    await this.authorization.assertDayManage(req.user, dayId);
     return this.seasons.deleteDay(dayId);
   }
 
-  // Matches - MUST be before :id route
   @Post(':seasonId/matches')
+  @UseGuards(RolesGuard)
+  @Roles('SYSTEM_ADMIN', 'CLUB_ADMIN', 'COACH')
   async createMatch(
+    @Request() req: { user: AuthPrincipal },
     @Param('seasonId') seasonId: string,
     @Body()
     body: {
@@ -138,35 +201,69 @@ export class SeasonsController {
       groupId?: string;
     },
   ) {
+    const season = await this.authorization.assertSeasonManage(
+      req.user,
+      seasonId,
+    );
+    if (body.groupId && body.groupId !== season.groupId) {
+      throw new BadRequestException('Match must use the season group');
+    }
     return this.seasons.createMatch(seasonId, {
       ...body,
+      groupId: season.groupId,
       date: new Date(body.date),
     });
   }
 
   @Get(':seasonId/matches')
-  async listMatches(@Param('seasonId') seasonId: string) {
+  async listMatches(
+    @Request() req: { user: AuthPrincipal },
+    @Param('seasonId') seasonId: string,
+  ) {
+    await this.authorization.assertSeasonView(req.user, seasonId);
     return this.seasons.listMatches(seasonId);
   }
 
   @Put('matches/:matchId')
-  async updateMatch(@Param('matchId') matchId: string, @Body() body: any) {
+  @UseGuards(RolesGuard)
+  @Roles('SYSTEM_ADMIN', 'CLUB_ADMIN', 'COACH')
+  async updateMatch(
+    @Request() req: { user: AuthPrincipal },
+    @Param('matchId') matchId: string,
+    @Body() body: any,
+  ) {
+    await this.authorization.assertMatchManage(req.user, matchId);
     return this.seasons.updateMatch(matchId, body);
   }
 
   @Delete('matches/:matchId')
-  async deleteMatch(@Param('matchId') matchId: string) {
+  @UseGuards(RolesGuard)
+  @Roles('SYSTEM_ADMIN', 'CLUB_ADMIN', 'COACH')
+  async deleteMatch(
+    @Request() req: { user: AuthPrincipal },
+    @Param('matchId') matchId: string,
+  ) {
+    await this.authorization.assertMatchManage(req.user, matchId);
     return this.seasons.deleteMatch(matchId);
   }
 
-  // Generic :id routes MUST be last
   @Get(':id')
-  async getSeason(@Param('id') id: string) {
+  async getSeason(
+    @Request() req: { user: AuthPrincipal },
+    @Param('id') id: string,
+  ) {
+    await this.authorization.assertSeasonView(req.user, id);
     return this.seasons.getSeason(id);
   }
 
   @Delete(':id')
-  async deleteSeason(@Param('id') id: string) {
+  @UseGuards(RolesGuard)
+  @Roles('SYSTEM_ADMIN', 'CLUB_ADMIN', 'COACH')
+  async deleteSeason(
+    @Request() req: { user: AuthPrincipal },
+    @Param('id') id: string,
+  ) {
+    await this.authorization.assertSeasonManage(req.user, id);
     return this.seasons.deleteSeason(id);
   }
 }

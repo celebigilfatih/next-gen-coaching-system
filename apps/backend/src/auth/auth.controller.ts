@@ -1,43 +1,32 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Req,
+  UseGuards,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { UsersService } from '../users/users.service';
 import { AuthGuard } from '@nestjs/passport';
+import { Throttle } from '@nestjs/throttler';
+import { LoginDto } from './dto/login.dto';
 
 @Controller('auth')
+@UsePipes(
+  new ValidationPipe({
+    transform: true,
+    whitelist: true,
+    forbidNonWhitelisted: true,
+  }),
+)
 export class AuthController {
-  constructor(
-    private auth: AuthService,
-    private users: UsersService,
-  ) {}
-
-  @Post('register')
-  async register(
-    @Body()
-    body: {
-      name: string;
-      email: string;
-      password: string;
-      role?: 'ADMIN' | 'COACH' | 'PLAYER';
-      clubId?: string;
-      position?: 'KALECI' | 'DEFANS' | 'ORTA_SAHA' | 'FORVET';
-      birthDate?: string;
-    },
-  ) {
-    const role = body.role || 'COACH';
-    const user = await this.users.createUser({
-      name: body.name,
-      email: body.email,
-      password: body.password,
-      role,
-      clubId: body.clubId,
-      position: body.position,
-      birthDate: body.birthDate ? new Date(body.birthDate) : undefined,
-    });
-    return { user };
-  }
+  constructor(private auth: AuthService) {}
 
   @Post('login')
-  async login(@Body() body: { email: string; password: string }) {
+  @Throttle({ default: { limit: 5, ttl: 60_000 } })
+  async login(@Body() body: LoginDto) {
     return this.auth.login(body.email, body.password);
   }
 

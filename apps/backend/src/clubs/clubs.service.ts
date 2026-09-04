@@ -21,10 +21,6 @@ export class ClubsService {
     return this.prisma.club.findUnique({ where: { id: clubId } });
   }
 
-  async addUserToClub(userId: string, clubId: string) {
-    return this.prisma.user.update({ where: { id: userId }, data: { clubId } });
-  }
-
   async createGroup(
     clubId: string,
     name: string,
@@ -39,13 +35,23 @@ export class ClubsService {
     return this.prisma.playerGroup.findMany({ where: { clubId } });
   }
 
+  async listGroupsForUser(clubId: string, userId: string) {
+    return this.prisma.playerGroup.findMany({
+      where: { clubId, members: { some: { userId } } },
+    });
+  }
+
   async updateClub(
     clubId: string,
     data: { name?: string; logo?: string; description?: string },
   ) {
     return this.prisma.club.update({
       where: { id: clubId },
-      data,
+      data: {
+        name: data.name,
+        logo: data.logo,
+        description: data.description,
+      },
     });
   }
 }

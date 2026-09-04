@@ -1,92 +1,127 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
   Put,
-  Delete,
   Query,
-  UseGuards,
   Request,
+  UseGuards,
 } from '@nestjs/common';
-import { GroupsService } from './groups.service';
 import { AuthGuard } from '@nestjs/passport';
+import type { AuthPrincipal } from '../auth/auth-principal';
+import { AuthorizationService } from '../auth/authorization.service';
 import { Roles } from '../auth/roles.decorator';
 import { RolesGuard } from '../auth/roles.guard';
+import { GroupsService } from './groups.service';
 
 @Controller('groups')
+@UseGuards(AuthGuard('jwt'))
 export class GroupsController {
-  constructor(private groups: GroupsService) {}
+  constructor(
+    private readonly groups: GroupsService,
+    private readonly authorization: AuthorizationService,
+  ) {}
 
   @Get()
-  @UseGuards(AuthGuard('jwt'))
-  async list(@Query('clubId') clubId: string, @Request() req) {
-    const user = req.user;
-    
-    // ADMIN: belirtilen kulübün gruplarını veya tüm grupları görebilir
-    if (user.role === 'ADMIN') {
+  async list(
+    @Query('clubId') clubId: string | undefined,
+    @Request() req: { user: AuthPrincipal },
+  ) {
+    if (req.user.role === 'SYSTEM_ADMIN') {
       return this.groups.listByClub(clubId);
     }
-    
-    // COACH/PLAYER: sadece kendi kulübündeki grupları görebilir
-    if (!user.clubId) {
-      return [];
+    if (!req.user.clubId) return [];
+    if (req.user.role === 'CLUB_ADMIN') {
+      return this.groups.listByClub(req.user.clubId);
     }
-    
-    // Eğer clubId parametresi verilmişse ve kullanıcının kulübü değilse, boş dön
-    if (clubId && clubId !== user.clubId) {
-      return [];
-    }
-    
-    return this.groups.listByClub(user.clubId);
+    return this.groups.listForMember(req.user.clubId, req.user.id);
   }
 
   @Post()
-  @UseGuards(AuthGuard('jwt'), RolesGuard)
-  @Roles('ADMIN')
-  async create(@Body() body: { clubId: string; name: string; ageGroup: any; category?: string }) {
+  @UseGuards(RolesGuard)
+  @Roles('SYSTEM_ADMIN', 'CLUB_ADMIN')
+  async create(
+    @Request() req: { user: AuthPrincipal },
+    @Body()
+    body: {
+      clubId: string;
+      name: string;
+      ageGroup: any;
+      category?: string;
+    },
+  ) {
+    this.authorization.assertClubManage(req.user, body.clubId);
     return this.groups.create(body);
   }
 
   @Get(':id')
-  @UseGuards(AuthGuard('jwt'))
-  async findOne(@Param('id') id: string) {
-    return this.groups.findOne(id);
+  async findOne(
+    @Request() req: { user: AuthPrincipal },
+    @Param('id') id: string,
+  ) {
+    await this.authorization.assertGroupView(req.user, id);
+    return this.groups.findOne(id, req.user.role !== 'PLAYER');
   }
 
   @Put(':id')
-  @UseGuards(AuthGuard('jwt'), RolesGuard)
-  @Roles('ADMIN')
-  async update(@Param('id') id: string, @Body() body: { name?: string; ageGroup?: any; category?: string }) {
-    console.log('Updating group:', id, body);
+  @UseGuards(RolesGuard)
+  @Roles('SYSTEM_ADMIN', 'CLUB_ADMIN')
+  async update(
+    @Request() req: { user: AuthPrincipal },
+    @Param('id') id: string,
+    @Body() body: { name?: string; ageGroup?: any; category?: string },
+  ) {
+    await this.authorization.assertGroupManage(req.user, id);
     return this.groups.update(id, body);
   }
 
   @Delete(':id')
-  @UseGuards(AuthGuard('jwt'), RolesGuard)
-  @Roles('ADMIN')
-  async delete(@Param('id') id: string) {
+  @UseGuards(RolesGuard)
+  @Roles('SYSTEM_ADMIN', 'CLUB_ADMIN')
+  async delete(
+    @Request() req: { user: AuthPrincipal },
+    @Param('id') id: string,
+  ) {
+    await this.authorization.assertGroupManage(req.user, id);
     return this.groups.delete(id);
   }
 
   @Post(':id/members')
-  @UseGuards(AuthGuard('jwt'), RolesGuard)
-  @Roles('ADMIN', 'COACH')
-  async addMember(@Param('id') id: string, @Body() body: { userId: string }) {
+  @UseGuards(RolesGuard)
+  @Roles('SYSTEM_ADMIN', 'CLUB_ADMIN')
+  async addMember(
+    @Request() req: { user: AuthPrincipal },
+    @Param('id') id: string,
+    @Body() body: { userId: string },
+  ) {
+    const group = await this.authorization.assertGroupManage(req.user, id);
+    await this.authorization.assertUserInClub(body.userId, group.clubId);
     return this.groups.addMember(id, body.userId);
   }
 
   @Post(':id/members/delete')
-  @UseGuards(AuthGuard('jwt'), RolesGuard)
-  @Roles('ADMIN', 'COACH')
-  async removeMember(@Param('id') id: string, @Body() body: { userId: string }) {
+  @UseGuards(RolesGuard)
+  @Roles('SYSTEM_ADMIN', 'CLUB_ADMIN')
+  async removeMember(
+    @Request() req: { user: AuthPrincipal },
+    @Param('id') id: string,
+    @Body() body: { userId: string },
+  ) {
+    await this.authorization.assertGroupManage(req.user, id);
     return this.groups.removeMember(id, body.userId);
   }
 
   @Get(':id/members')
-  @UseGuards(AuthGuard('jwt'))
-  async getMembers(@Param('id') id: string) {
+  @UseGuards(RolesGuard)
+  @Roles('SYSTEM_ADMIN', 'CLUB_ADMIN', 'COACH')
+  async getMembers(
+    @Request() req: { user: AuthPrincipal },
+    @Param('id') id: string,
+  ) {
+    await this.authorization.assertGroupView(req.user, id);
     return this.groups.getMembers(id);
   }
 }

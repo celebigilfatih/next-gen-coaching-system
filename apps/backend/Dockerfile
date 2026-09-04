@@ -34,5 +34,5 @@ COPY scripts ./scripts
 # Expose port
 EXPOSE 4000
 
-# Run migrations, seed data (ignore seed errors), and start
-CMD ["sh", "-c", "npx prisma migrate deploy && (node scripts/seed.js || echo 'Seed failed, continuing...') && node dist/main"]
+# Database migrations are an explicit, separately observable deployment step.
+CMD ["node", "dist/main"]

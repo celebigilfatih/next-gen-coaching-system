@@ -1,28 +1,73 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { publicUserSelect } from '../users/user.select';
+import type { AuthPrincipal } from '../auth/auth-principal';
 
 @Injectable()
 export class TrainingPlansService {
   constructor(private prisma: PrismaService) {}
 
-  async list(filters: { clubId?: string; coachId?: string; groupId?: string }) {
-    const where: any = {};
-    if (filters.clubId) where.clubId = filters.clubId;
-    if (filters.coachId) where.coachId = filters.coachId;
-    if (filters.groupId) where.groupId = filters.groupId;
+  async listForPrincipal(
+    principal: AuthPrincipal,
+    filters: { clubId?: string; coachId?: string; groupId?: string },
+  ) {
+    const requested: any = {};
+    if (filters.clubId) requested.clubId = filters.clubId;
+    if (filters.coachId) requested.coachId = filters.coachId;
+    if (filters.groupId) requested.groupId = filters.groupId;
+
+    let scope: any = {};
+    if (principal.role === 'CLUB_ADMIN') {
+      scope = { clubId: principal.clubId ?? '__unassigned__' };
+    } else if (principal.role === 'COACH') {
+      scope = {
+        clubId: principal.clubId ?? '__unassigned__',
+        OR: [
+          { coachId: principal.id },
+          { group: { members: { some: { userId: principal.id } } } },
+        ],
+      };
+    } else if (principal.role === 'PLAYER') {
+      scope = {
+        clubId: principal.clubId ?? '__unassigned__',
+        group: { members: { some: { userId: principal.id } } },
+      };
+    }
+
     return this.prisma.trainingPlan.findMany({
-      where,
-      include: { attendance: true, drills: { include: { drill: true } } },
+      where: { AND: [scope, requested] },
+      include: {
+        attendance:
+          principal.role === 'PLAYER'
+            ? { where: { playerId: principal.id } }
+            : true,
+        drills: { include: { drill: true } },
+      },
     });
   }
 
-  async get(id: string) {
+  async get(id: string, principal: AuthPrincipal) {
     return this.prisma.trainingPlan.findUnique({
       where: { id },
       include: {
         drills: { include: { drill: true } },
-        attendance: { include: { player: true } },
-        group: { include: { members: { include: { user: true } } } },
+        attendance: {
+          where:
+            principal.role === 'PLAYER'
+              ? { playerId: principal.id }
+              : undefined,
+          include: { player: { select: publicUserSelect } },
+        },
+        group:
+          principal.role === 'PLAYER'
+            ? true
+            : {
+                include: {
+                  members: {
+                    include: { user: { select: publicUserSelect } },
+                  },
+                },
+              },
       },
     });
   }
@@ -32,32 +77,53 @@ export class TrainingPlansService {
     clubId: string;
     coachId: string;
     groupId?: string;
-    date?: Date;
+    date?: Date | string;
     notes?: string;
   }) {
-    const plan = await this.prisma.trainingPlan.create({ data: data as any });
-    
+    const plan = await this.prisma.trainingPlan.create({
+      data: {
+        title: data.title,
+        clubId: data.clubId,
+        coachId: data.coachId,
+        groupId: data.groupId,
+        date: data.date,
+        notes: data.notes,
+      } as any,
+    });
+
     // If date is provided, try to link it to a season day plan
-    if (data.date) {
-      await this.linkPlanToSeasonDay(plan.id, plan.clubId, data.date);
+    if (data.date && plan.groupId) {
+      await this.linkPlanToSeasonDay(
+        plan.id,
+        plan.clubId,
+        plan.groupId,
+        data.date,
+      );
     }
-    
+
     return plan;
   }
 
-  private async linkPlanToSeasonDay(planId: string, clubId: string, date: Date | string) {
+  private async linkPlanToSeasonDay(
+    planId: string,
+    clubId: string,
+    groupId: string,
+    date: Date | string,
+  ) {
     try {
       // Ensure date is a Date object
       const dateObj = typeof date === 'string' ? new Date(date) : date;
-      console.log('🔗 Linking plan to season day:', { planId, clubId, date: dateObj.toISOString() });
-      
+      console.log('🔗 Linking plan to season day:', {
+        planId,
+        clubId,
+        date: dateObj.toISOString(),
+      });
+
       // Find active season for this club that contains this date
       const seasons = await this.prisma.season.findMany({
         where: {
-          OR: [
-            { clubId }, // Match specific club
-            { clubId: null }, // Or match club-independent seasons
-          ],
+          clubId,
+          groupId,
           startDate: { lte: dateObj },
           endDate: { gte: dateObj },
         },
@@ -72,9 +138,12 @@ export class TrainingPlansService {
       });
 
       console.log(`📅 Found ${seasons.length} seasons for club ${clubId}`);
-      
+
       if (seasons.length === 0) {
-        console.warn('⚠️  No active season found for this date:', dateObj.toISOString());
+        console.warn(
+          '⚠️  No active season found for this date:',
+          dateObj.toISOString(),
+        );
         console.warn('⚠️  Please create a season that includes this date.');
         // Also search for ANY seasons for this club to help debugging
         const allSeasons = await this.prisma.season.findMany({
@@ -99,18 +168,22 @@ export class TrainingPlansService {
         });
         console.log('📋 All weeks in season:', allWeeks);
         if (allWeeks.length === 0) {
-          console.warn('⚠️  No weeks exist at all. Please generate weeks first.');
+          console.warn(
+            '⚠️  No weeks exist at all. Please generate weeks first.',
+          );
         } else {
-          console.warn('⚠️  Weeks exist but date doesn\'t fall within any week range.');
+          console.warn(
+            "⚠️  Weeks exist but date doesn't fall within any week range.",
+          );
         }
         return;
       }
 
       const week = seasonWeeks[0];
       const dayOfWeek = dateObj.getDay() === 0 ? 7 : dateObj.getDay();
-      
+
       console.log(`📆 Found week: ${week.weekNumber}, day: ${dayOfWeek}`);
-      
+
       // Get training plan details
       const trainingPlan = await this.prisma.trainingPlan.findUnique({
         where: { id: planId },
@@ -124,7 +197,9 @@ export class TrainingPlansService {
         return;
       }
 
-      console.log(`📋 Creating day plan with ${trainingPlan.drills.length} drills`);
+      console.log(
+        `📋 Creating day plan with ${trainingPlan.drills.length} drills`,
+      );
 
       // Create a day plan linked to this training plan
       const dayPlan = await this.prisma.dayPlan.create({
@@ -136,10 +211,12 @@ export class TrainingPlansService {
           title: trainingPlan.title,
           trainingPlanId: planId,
           duration: trainingPlan.totalDuration,
-          notes: trainingPlan.notes || `Kayıtlı Antrenman: ${trainingPlan.drills.length} drill`,
+          notes:
+            trainingPlan.notes ||
+            `Kayıtlı Antrenman: ${trainingPlan.drills.length} drill`,
         },
       });
-      
+
       console.log('✅ Day plan created successfully:', dayPlan.id);
     } catch (error) {
       console.error('❌ Error linking plan to season day:', error);
@@ -167,6 +244,84 @@ export class TrainingPlansService {
     return pd;
   }
 
+  async replaceDrills(
+    planId: string,
+    entries: Array<{
+      drillId: string;
+      phase: 'WARM_UP' | 'TECHNICAL' | 'TACTICAL' | 'COOL_DOWN';
+      order: number;
+      notes?: string;
+    }>,
+  ) {
+    const phases = new Set(['WARM_UP', 'TECHNICAL', 'TACTICAL', 'COOL_DOWN']);
+    if (!Array.isArray(entries) || entries.length > 50) {
+      throw new BadRequestException('drills must contain at most 50 entries');
+    }
+    if (
+      entries.some(
+        (entry) =>
+          !entry ||
+          typeof entry.drillId !== 'string' ||
+          !entry.drillId ||
+          !phases.has(entry.phase) ||
+          !Number.isInteger(entry.order) ||
+          entry.order < 0 ||
+          (entry.notes !== undefined && typeof entry.notes !== 'string'),
+      )
+    ) {
+      throw new BadRequestException('Invalid plan drill entry');
+    }
+
+    const drillIds = [...new Set(entries.map((entry) => entry.drillId))];
+    const drills = await this.prisma.drill.findMany({
+      where: { id: { in: drillIds } },
+      select: { id: true, durationMin: true },
+    });
+    if (drills.length !== drillIds.length) {
+      throw new BadRequestException('One or more drills do not exist');
+    }
+
+    const durationByDrill = new Map(
+      drills.map((drill) => [drill.id, drill.durationMin]),
+    );
+    const totalDuration = entries.reduce(
+      (total, entry) => total + (durationByDrill.get(entry.drillId) ?? 0),
+      0,
+    );
+
+    return this.prisma.$transaction(async (transaction) => {
+      await transaction.planDrill.deleteMany({
+        where: { trainingPlanId: planId },
+      });
+      if (entries.length > 0) {
+        await transaction.planDrill.createMany({
+          data: entries.map((entry) => ({
+            trainingPlanId: planId,
+            drillId: entry.drillId,
+            phase: entry.phase,
+            order: entry.order,
+            notes: entry.notes,
+          })),
+        });
+      }
+      await transaction.dayPlan.updateMany({
+        where: { trainingPlanId: planId },
+        data: { duration: totalDuration },
+      });
+      return transaction.trainingPlan.update({
+        where: { id: planId },
+        data: { totalDuration },
+        include: {
+          attendance: true,
+          drills: {
+            include: { drill: true },
+            orderBy: [{ phase: 'asc' }, { order: 'asc' }],
+          },
+        },
+      });
+    });
+  }
+
   private async recalculateTotalDuration(planId: string) {
     const drills = await this.prisma.planDrill.findMany({
       where: { trainingPlanId: planId },
@@ -188,25 +343,19 @@ export class TrainingPlansService {
       title: string;
       totalDuration: number;
       groupId?: string;
-      date?: Date;
+      date?: Date | string;
       notes?: string;
     }>,
   ) {
     return this.prisma.trainingPlan.update({
       where: { id },
-      data: data as any,
-    });
-  }
-
-  async listForUser(userId: string) {
-    const groups = await this.prisma.groupMember.findMany({
-      where: { userId },
-      select: { groupId: true },
-    });
-    const groupIds = groups.map((g) => g.groupId);
-    return this.prisma.trainingPlan.findMany({
-      where: { OR: [{ groupId: { in: groupIds } }, { coachId: userId }] },
-      include: { attendance: true, drills: { include: { drill: true } } },
+      data: {
+        title: data.title,
+        totalDuration: data.totalDuration,
+        groupId: data.groupId,
+        date: data.date,
+        notes: data.notes,
+      } as any,
     });
   }
 

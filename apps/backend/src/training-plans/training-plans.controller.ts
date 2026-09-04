@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -7,45 +8,107 @@ import {
   Post,
   Put,
   Query,
-  UseGuards,
   Req,
+  UseGuards,
 } from '@nestjs/common';
-import { TrainingPlansService } from './training-plans.service';
 import { AuthGuard } from '@nestjs/passport';
+import type { AuthPrincipal } from '../auth/auth-principal';
+import { AuthorizationService } from '../auth/authorization.service';
+import { Roles } from '../auth/roles.decorator';
+import { RolesGuard } from '../auth/roles.guard';
+import { TrainingPlansService } from './training-plans.service';
 
 @Controller('training-plans')
+@UseGuards(AuthGuard('jwt'))
 export class TrainingPlansController {
-  constructor(private plans: TrainingPlansService) {}
+  constructor(
+    private readonly plans: TrainingPlansService,
+    private readonly authorization: AuthorizationService,
+  ) {}
 
   @Get()
   async list(
-    @Query('clubId') clubId: string,
-    @Query('coachId') coachId: string,
-    @Query('groupId') groupId: string,
+    @Req() req: { user: AuthPrincipal },
+    @Query('clubId') clubId?: string,
+    @Query('coachId') coachId?: string,
+    @Query('groupId') groupId?: string,
   ) {
-    return this.plans.list({ clubId, coachId, groupId });
+    return this.plans.listForPrincipal(req.user, {
+      clubId,
+      coachId,
+      groupId,
+    });
   }
 
-  @UseGuards(AuthGuard('jwt'))
   @Get('my')
-  async my(@Req() req: any) {
-    return this.plans.listForUser(req.user.userId);
+  async my(@Req() req: { user: AuthPrincipal }) {
+    return this.plans.listForPrincipal(req.user, {});
   }
 
   @Get(':id')
-  async get(@Param('id') id: string) {
-    return this.plans.get(id);
+  async get(@Req() req: { user: AuthPrincipal }, @Param('id') id: string) {
+    await this.authorization.assertPlanView(req.user, id);
+    return this.plans.get(id, req.user);
   }
 
-  @UseGuards(AuthGuard('jwt'))
   @Post()
-  async create(@Body() body: any) {
-    return this.plans.create(body);
+  @UseGuards(RolesGuard)
+  @Roles('SYSTEM_ADMIN', 'CLUB_ADMIN', 'COACH')
+  async create(
+    @Req() req: { user: AuthPrincipal },
+    @Body()
+    body: {
+      title: string;
+      clubId?: string;
+      coachId?: string;
+      groupId?: string;
+      date?: string | Date;
+      notes?: string;
+    },
+  ) {
+    const principal = req.user;
+    const clubId =
+      principal.role === 'SYSTEM_ADMIN' ? body.clubId : principal.clubId;
+    const coachId = principal.role === 'COACH' ? principal.id : body.coachId;
+    if (!clubId || !coachId) {
+      throw new BadRequestException('clubId and coachId are required');
+    }
+
+    if (principal.role === 'CLUB_ADMIN') {
+      this.authorization.assertClubManage(principal, clubId);
+    }
+    await this.authorization.assertCoachInClub(coachId, clubId);
+
+    if (body.groupId) {
+      const group =
+        principal.role === 'COACH'
+          ? await this.authorization.assertCoachGroupAssignment(
+              principal,
+              body.groupId,
+            )
+          : await this.authorization.assertGroupView(principal, body.groupId);
+      if (group.clubId !== clubId) {
+        throw new BadRequestException('Group must belong to the plan club');
+      }
+    } else if (principal.role === 'COACH') {
+      throw new BadRequestException('COACH plans require an assigned group');
+    }
+
+    return this.plans.create({
+      title: body.title,
+      clubId,
+      coachId,
+      groupId: body.groupId,
+      date: body.date,
+      notes: body.notes,
+    });
   }
 
-  @UseGuards(AuthGuard('jwt'))
   @Post(':id/drills')
+  @UseGuards(RolesGuard)
+  @Roles('SYSTEM_ADMIN', 'CLUB_ADMIN', 'COACH')
   async addDrill(
+    @Req() req: { user: AuthPrincipal },
     @Param('id') id: string,
     @Body()
     body: {
@@ -55,6 +118,7 @@ export class TrainingPlansController {
       notes?: string;
     },
   ) {
+    await this.authorization.assertPlanManage(req.user, id);
     return this.plans.addDrill(
       id,
       body.drillId,
@@ -64,15 +128,62 @@ export class TrainingPlansController {
     );
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @Put(':id/drills')
+  @UseGuards(RolesGuard)
+  @Roles('SYSTEM_ADMIN', 'CLUB_ADMIN', 'COACH')
+  async replaceDrills(
+    @Req() req: { user: AuthPrincipal },
+    @Param('id') id: string,
+    @Body()
+    body: {
+      drills: Array<{
+        drillId: string;
+        phase: 'WARM_UP' | 'TECHNICAL' | 'TACTICAL' | 'COOL_DOWN';
+        order: number;
+        notes?: string;
+      }>;
+    },
+  ) {
+    await this.authorization.assertPlanManage(req.user, id);
+    return this.plans.replaceDrills(id, body.drills);
+  }
+
   @Put(':id')
-  async update(@Param('id') id: string, @Body() body: any) {
+  @UseGuards(RolesGuard)
+  @Roles('SYSTEM_ADMIN', 'CLUB_ADMIN', 'COACH')
+  async update(
+    @Req() req: { user: AuthPrincipal },
+    @Param('id') id: string,
+    @Body()
+    body: {
+      title?: string;
+      totalDuration?: number;
+      groupId?: string;
+      date?: string | Date;
+      notes?: string;
+    },
+  ) {
+    const plan = await this.authorization.assertPlanManage(req.user, id);
+    if (body.groupId) {
+      const group =
+        req.user.role === 'COACH'
+          ? await this.authorization.assertCoachGroupAssignment(
+              req.user,
+              body.groupId,
+            )
+          : await this.authorization.assertGroupView(req.user, body.groupId);
+      if (group.clubId !== plan.clubId) {
+        throw new BadRequestException('Group must belong to the plan club');
+      }
+    }
     return this.plans.update(id, body);
   }
 
-  @UseGuards(AuthGuard('jwt'))
   @Delete(':id')
-  async remove(@Param('id') id: string) {
+  @UseGuards(RolesGuard)
+  @Roles('SYSTEM_ADMIN', 'CLUB_ADMIN', 'COACH')
+  async remove(@Req() req: { user: AuthPrincipal }, @Param('id') id: string) {
+    await this.authorization.assertPlanManage(req.user, id);
     return this.plans.remove(id);
   }
 }

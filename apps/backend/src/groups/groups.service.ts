@@ -5,7 +5,12 @@ import { PrismaService } from '../prisma/prisma.service';
 export class GroupsService {
   constructor(private prisma: PrismaService) {}
 
-  async create(data: { clubId: string; name: string; ageGroup: any; category?: string }) {
+  async create(data: {
+    clubId: string;
+    name: string;
+    ageGroup: any;
+    category?: string;
+  }) {
     try {
       return await this.prisma.playerGroup.create({
         data: {
@@ -24,30 +29,38 @@ export class GroupsService {
     }
   }
 
-  async listByClub(clubId: string) {
+  async listByClub(clubId?: string) {
     return this.prisma.playerGroup.findMany({
       where: { clubId },
       include: { members: true },
     });
   }
 
-  async findOne(id: string) {
+  async listForMember(clubId: string, userId: string) {
+    return this.prisma.playerGroup.findMany({
+      where: { clubId, members: { some: { userId } } },
+    });
+  }
+
+  async findOne(id: string, includeMembers = true) {
     return this.prisma.playerGroup.findUnique({
       where: { id },
-      include: { 
-        members: {
-          include: {
-            user: {
-              select: {
-                id: true,
-                name: true,
-                email: true,
-                role: true,
-                position: true,
+      include: {
+        members: includeMembers
+          ? {
+              include: {
+                user: {
+                  select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                    role: true,
+                    position: true,
+                  },
+                },
               },
-            },
-          },
-        },
+            }
+          : false,
         club: {
           select: {
             id: true,
@@ -58,11 +71,17 @@ export class GroupsService {
     });
   }
 
-  async update(id: string, data: { name?: string; ageGroup?: any; category?: string }) {
-    console.log('GroupsService.update called:', { id, data });
+  async update(
+    id: string,
+    data: { name?: string; ageGroup?: any; category?: string },
+  ) {
     return this.prisma.playerGroup.update({
       where: { id },
-      data: data as any,
+      data: {
+        name: data.name,
+        ageGroup: data.ageGroup,
+        category: data.category,
+      } as any,
     });
   }
 

@@ -1,0 +1,7 @@
+{
+  "extends": "./tsconfig.build.json",
+  "compilerOptions": {
+    "incremental": false,
+    "outDir": "./node_modules/.cache/ngcs-quality-build"
+  }
+}
