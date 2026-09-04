@@ -2,96 +2,51 @@
 
 ## Karşılaştırma hedefi
 
-- **Görsel kaynak:** `qa/source-coach-operations-desk.png`
-- **Uygulama:** `http://127.0.0.1:4173/app/week`
-- **Uygulama ekran görüntüsü:** `qa/implementation-week-1487x1058.jpg`
-- **Durum:** Masaüstü, haftalık çalışma alanı, 2 Eylül antrenman planı açık.
-- **Viewport:** 1487 × 1058 CSS px.
-- **Piksel/density normalizasyonu:** Kaynak 1487 × 1058 px; kaynak için CSS
-  boyutu ve üretim DPR değeri N/A. Uygulama 1487 × 1058 CSS px ve 1487 × 1058
-  çıktı px olarak yakalandı. İki kanıt da 1:1 piksel boyutunda, kırpma veya yeniden
-  örnekleme olmadan aynı karşılaştırma girdisinde incelendi.
+- **Kaynak:** `qa/source-coach-operations-desk.png` (1487 × 1058).
+- **Yeni kanıt:** `qa/implementation-week-1440x1024.png`,
+  `qa/implementation-week-1024x900.png`, `qa/implementation-week-390x844.png` ve
+  `qa/implementation-tactics-1440x1024.png`.
+- **Tarih:** 2026-09-04.
+- **Durum:** Playwright tarafından dedicated PostgreSQL fixture'ıyla yakalandı;
+  görseller native CSS viewport boyutundadır.
 
-## Bulgular
+## Sonuç
 
-- Actionable P0/P1/P2 fark bulunmadı. Üç panelli kompozisyon, bilgi hiyerarşisi,
-  içerik sırası ve ana görev kontrolleri kaynakla aynı görsel yönü koruyor.
+Mevcut kimlik korunmuştur: koyu lacivert navigasyon, açık çalışma düzlemi, mavi
+aktif/primary durumlar, amber maç kartı, Inter gövde ve Barlow Condensed başlıklar.
+Kaynağın görev hiyerarşisi yeni adreslenebilir rotalara uygulanmıştır. Yeni hafta
+kartları kaynak üç-panelli ekranın bire bir kopyası değildir; ADR-0011 ile onaylanan
+dinamik hafta/çoklu görev yapısının bilinçli sonucudur.
 
-## Zorunlu fidelity yüzeyleri
+## Viewport kontrolleri
 
-- **Font ve tipografi:** Kaynaktaki dar başlık karakteri Barlow Condensed;
-  açıklama ve kontrol metinleri Inter ile karşılandı. Ağırlık, satır yüksekliği,
-  hiyerarşi ve taşma masaüstü ile tablet görünümünde okunaklı ve tutarlı.
-- **Boşluk ve yerleşim ritmi:** Lacivert navigasyon rayı, dikey hafta seçici ve
-  beyaz çalışma düzlemi aynı sırada ve benzer oranlarda. Bölüm ayraçları, satır
-  aralıkları ve alt eylem alanı kaynak yoğunluğunu koruyor. 900 × 1024 kontrolde
-  yatay taşma yok (`scrollWidth = innerWidth = 900`).
-- **Renkler ve tokenlar:** Lacivert yüzey, açık gri hafta kolonu, beyaz çalışma
-  alanı, mavi aktif/primary ve amber maç vurgusu kaynakla eşleşen semantik tokenlara
-  bağlandı. Kontrast ve aktif durum ayrımı korunuyor.
-- **Görsel/asset kalitesi:** Kaynakta fotoğraf, illüstrasyon veya logo asset'i yok.
-  Görünen UI ikonları tek bir Phosphor icon ailesinden, keskin ve tutarlı stroke ile
-  üretildi; CSS çizimi, emoji veya placeholder asset kullanılmadı.
-- **Kopya ve içerik:** Takım, sezon, tarihler, antrenman amacı, dört aşamalı akış,
-  süreler ve CTA metinleri kaynakla aynı. Ek katılım ve maç analizi durumları ürün
-  bağlamına uygun Türkçe kopya kullanıyor.
+- **1440 × 1024 masaüstü:** Beş etiketli navigasyon öğesi, yedi gün, gerçek plan ve
+  maç kartı aynı çalışma düzleminde görünür. Taktik editöründe metadata, komut çubuğu,
+  araç rayı, saha, klavye katman listesi ve özellik sekmesi birlikte kullanılabilir.
+- **1024 × 900 tablet:** Navigasyon ikon rayına daralır; erişilebilir isimler
+  korunur. Hafta yatay kaydırılabilir; üst kontroller ve içerik çakışmaz.
+- **390 × 844 mobil:** Beşli alt navigasyon, hafta özeti ve yatay gün kartları
+  okunur. Taktik tahta mobilde yatay kaydırma ile görüntülenebilir; masaüstü editör
+  yoğunluğunu küçük ekrana zorla sıkıştırmaz.
 
-## Tam görünüm karşılaştırma kanıtı
+## Etkileşim kanıtı
 
-Kaynak ve uygulama kanıtı 1487 × 1058 boyutunda aynı karşılaştırma girdisinde
-açıldı. Ana bölgelerin oranı, üst hizalar, antrenman akışı, süre kolonu ve alt CTA
-grubu görsel hedefle aynı kompozisyonu taşıyor. Kalıcı kontrolü örten taşma,
-çakışma, kırpılma veya hiyerarşi kaybı görülmedi.
-
-## Odaklı bölge karşılaştırması
-
-Ayrı kırpılmış odak karşılaştırması gerekmedi: native boyuttaki tam görünümde
-başlık, küçük gün etiketleri, ikon stroke'ları, satır ayraçları ve CTA metinleri
-okunabilir durumdaydı. Kritik kontroller ayrıca tarayıcı DOM ve etkileşim
-kontrolleriyle doğrulandı.
-
-## Etkileşim ve dayanıklılık kanıtı
-
-- `Katılımı aç` katılım görünümünü açtı; Bora Aydın durumu değiştirilince özet
-  `5/6 oyuncu mevcut` oldu ve kaydetme sonrası `Katılım listesi kaydedildi` durumu
-  gösterildi.
-- 6 Eylül maç satırı taktik analiz görünümünü açtı; koç notu düzenlendi ve
-  `Maç analizi kaydedildi` durumu gösterildi.
-- `Hesap değiştir` `/login` rotasına geçti; etiketli e-posta/parola alanları ve
-  giriş kontrolü render edildi.
-- 900 × 1024 tablet görünümünde navigasyon kompakt raya dönüştü; içerik ve alt
-  eylemler kullanılabilir kaldı, yatay taşma oluşmadı.
-- Masaüstü, tablet, katılım, maç ve login kontrollerinde console error/warning yok.
+Playwright 2/2 geçti: koç kulüp tahtası oluşturdu, egzersizi yeniden açtı, antrenman
+fazına snapshot kaydetti, maç tahtasını kaydetti ve ikinci kulüp erişimi `403` aldı.
+Aynı suite beş ana rotayı üç viewport'ta açtı, başlık ve aktif navigasyonu doğruladı.
+Test sırasında console kaynaklı uygulama hatası kalmadı.
 
 ## Açık sorular
 
-- Kalıcı oturum, production hosting ve ölçülebilir erişilebilirlik hedefi ADR-0009
-  dışında kaldığı için `TBD`; bunlar bu görsel eşleşmeyi engellemiyor.
-
-## Karşılaştırma geçmişi
-
-### İterasyon 1 — 2026-09-01
-
-- **Önceki P0/P1/P2 bulguları:** Yok.
-- **Uygulanan görsel düzeltme:** Yok; ilk normalize edilmiş karşılaştırma actionable
-  P0/P1/P2 fark olmadan geçti.
-- **Sonraki kanıt:** `qa/implementation-week-1487x1058.jpg`, kaynakla aynı 1487 ×
-  1058 viewport ve aynı haftalık antrenman durumu.
-
-## Takip cilası
-
-- [P3] Phosphor ikonları kaynakta görünen ikonlara anlam ve stroke açısından
-  yakındır; özel marka ikon seti ileride sağlanırsa optik eşleşme artırılabilir.
-- [P3] Production tarayıcı/font rasterizasyonu farklı işletim sistemlerinde küçük
-  metrik sapmaları yaratabilir; release tarayıcı matrisi tanımlanınca yeniden
-  örneklenebilir.
+- Formal WCAG hedefi, browser matrisi ve özel marka ikon seti `TBD`.
+- Production hosting ve kalıcı oturum ADR-0010 `Proposed` kapsamındadır.
 
 ## Uygulama kontrol listesi
 
-- [x] Kaynak ve uygulama aynı viewport/state ile karşılaştırıldı.
-- [x] Zorunlu fidelity yüzeyleri incelendi.
-- [x] Ana görev etkileşimleri ve başarı durumları test edildi.
-- [x] Masaüstü/tablet taşma ve console kontrolleri yapıldı.
-- [x] Actionable P0/P1/P2 bulgu kalmadı.
+- [x] Kaynak görsel kimlik ve yeni uygulama kanıtları karşılaştırıldı.
+- [x] 1440 masaüstü, 1024 tablet ve 390 mobil görünüm kontrol edildi.
+- [x] Ortak taktik editörü masaüstünde görsel ve işlevsel doğrulandı.
+- [x] Kritik görev akışı ve tenant reddi gerçek API ile test edildi.
+- [x] Actionable P0/P1/P2 görsel bulgu kalmadı.
 
 final result: passed

@@ -55,6 +55,9 @@ async function main() {
   const club = await prisma.club.create({
     data: { name: 'NGCS Browser E2E Kulübü' },
   });
+  const secondClub = await prisma.club.create({
+    data: { name: 'NGCS İkinci E2E Kulübü' },
+  });
   const group = await prisma.playerGroup.create({
     data: {
       name: 'E2E U17 Takımı',
@@ -63,7 +66,7 @@ async function main() {
       category: 'ALT_YAPI',
     },
   });
-  const [coach, arda, bora] = await Promise.all([
+  const [coach, secondCoach, arda, bora] = await Promise.all([
     prisma.user.create({
       data: {
         name: 'E2E Koçu',
@@ -71,6 +74,15 @@ async function main() {
         passwordHash,
         role: 'COACH',
         clubId: club.id,
+      },
+    }),
+    prisma.user.create({
+      data: {
+        name: 'İkinci E2E Koçu',
+        email: 'coach.second.e2e@example.test',
+        passwordHash,
+        role: 'COACH',
+        clubId: secondClub.id,
       },
     }),
     prisma.user.create({
@@ -98,6 +110,18 @@ async function main() {
       groupId: group.id,
       userId: user.id,
     })),
+  });
+
+  const secondGroup = await prisma.playerGroup.create({
+    data: {
+      name: 'İkinci E2E Takımı',
+      clubId: secondClub.id,
+      ageGroup: 'U18',
+      category: 'ALT_YAPI',
+    },
+  });
+  await prisma.groupMember.create({
+    data: { groupId: secondGroup.id, userId: secondCoach.id },
   });
 
   await prisma.drill.createMany({

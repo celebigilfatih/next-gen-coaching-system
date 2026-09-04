@@ -1,182 +1,162 @@
 import { expect, test, type Page } from '@playwright/test';
+import { fileURLToPath } from 'node:url';
 
 const coachEmail = process.env.E2E_COACH_EMAIL ?? 'coach.e2e@example.test';
 const coachPassword = process.env.E2E_COACH_PASSWORD;
+const captureQa = process.env.E2E_CAPTURE_QA === 'true';
 
 async function loginAsCoach(page: Page) {
-  await page.goto('/login');
+  // Prime all lazy editor dependencies before relying on the intentionally
+  // memory-only prototype session; Vite may reload once while optimizing them.
+  await page.goto('/app/tactics/new');
+  await expect(page).toHaveURL(/\/login$/);
+  await page.waitForLoadState('networkidle');
   await page.getByLabel('E-posta').fill(coachEmail);
   await page.getByLabel('Parola').fill(coachPassword!);
   await page.getByRole('button', { name: 'Giriş yap' }).click();
-
   await expect(page).toHaveURL(/\/app\/week$/);
   await expect(
-    page.getByRole('heading', { name: 'E2E U17 Takımı' }).first(),
+    page.locator('.page-header').getByText(/E2E U17 Takımı/),
   ).toBeVisible();
-  await expect(page.getByText('2026–27 Test Sezonu').first()).toBeVisible();
+  await expect(
+    page.locator('.page-header').getByText(/2026–27 Test Sezonu/),
+  ).toBeVisible();
 }
 
-test('coach logs in, creates a plan and persists attendance', async ({
+test('coach creates a club board, snapshots it into training, saves a match board, and cross-tenant access is denied', async ({
   page,
+  request,
 }) => {
   test.skip(!coachPassword, 'E2E_COACH_PASSWORD is required');
-
+  await page.setViewportSize({ width: 1440, height: 1024 });
   await loginAsCoach(page);
 
-  await page.getByRole('button', { name: 'Antrenmanlar' }).click();
-  await page
-    .getByLabel('Antrenman amacı')
-    .fill('E2E pas kalitesi ve geçiş oyunu çalışması.');
-
-  const planCreated = page.waitForResponse(
+  await page.getByRole('link', { name: 'Taktik Tahtası' }).click();
+  await page.getByRole('link', { name: 'Yeni egzersiz' }).click();
+  await page.getByLabel('Başlık').fill('E2E Ön Alan Pres Tahtası');
+  await page.getByRole('button', { name: 'Oyuncu' }).click();
+  const drillCreated = page.waitForResponse(
     (response) =>
-      response.url().endsWith('/training-plans') &&
+      response.url().endsWith('/drills') &&
       response.request().method() === 'POST',
   );
-  await page.getByRole('button', { name: 'Planı kaydet' }).click();
-  await expect((await planCreated).status()).toBe(201);
-  await expect(page.getByRole('status')).toContainText(
-    'Antrenman planı kaydedildi',
-  );
+  await page.getByRole('button', { name: 'Kaydet' }).click();
+  const drillResponse = await drillCreated;
+  expect(drillResponse.status()).toBe(201);
+  const drill = (await drillResponse.json()) as {
+    id: string;
+    scope: string;
+    groupId: string;
+    jsonData: { kind: string; elements: unknown[] };
+  };
+  expect(drill).toMatchObject({
+    scope: 'CLUB',
+    jsonData: { kind: 'tactical-board' },
+  });
+  expect(drill.jsonData.elements).toHaveLength(1);
+  await expect(page).toHaveURL(new RegExp(`/app/tactics/${drill.id}$`));
+  if (captureQa) {
+    await page.screenshot({
+      path: fileURLToPath(
+        new URL(
+          '../../qa/implementation-tactics-1440x1024.png',
+          import.meta.url,
+        ),
+      ),
+      fullPage: true,
+    });
+  }
 
-  await page.getByRole('button', { name: 'Katılımı aç' }).click();
-  await expect(page.getByText(/2\/2 oyuncu mevcut/)).toBeVisible();
-  await page.getByRole('button', { name: /Bora E2E/ }).click();
-  await expect(page.getByText(/1\/2 oyuncu mevcut/)).toBeVisible();
+  await page.getByRole('link', { name: 'Antrenmanlar' }).click();
+  await page.getByRole('button', { name: 'Yeni plan' }).click();
+  await page.getByLabel('Başlık').fill('E2E Cuma Antrenmanı');
+  await page.getByLabel('Tarih ve saat').fill('2026-09-04T18:00');
+  await page.getByLabel('Amaç').fill('Ön alan baskısı ve geçiş savunması.');
+  await page.getByRole('button', { name: 'Planı oluştur' }).click();
+  await expect(page).toHaveURL(/\/app\/trainings\/.+$/);
 
-  const attendanceReloaded = page.waitForResponse(
+  await page.getByLabel('Egzersiz ekle').selectOption(drill.id);
+  await page.getByRole('button', { name: 'Plana ekle' }).click();
+  await expect(page.getByText('Egzersiz plana eklendi')).toBeVisible();
+  await page.getByRole('tab', { name: 'Taktik snapshot' }).click();
+  const snapshotSaved = page.waitForResponse(
     (response) =>
-      response.url().includes('/attendance?planId=') &&
-      response.request().method() === 'GET',
-  );
-  await page.getByRole('button', { name: 'Katılımı kaydet' }).click();
-
-  const persistedAttendance = (await attendanceReloaded).json() as Promise<
-    Array<{
-      playerId: string;
-      status: 'PRESENT' | 'ABSENT';
-      player: { name: string };
-    }>
-  >;
-  await expect(persistedAttendance).resolves.toEqual(
-    expect.arrayContaining([
-      expect.objectContaining({
-        status: 'ABSENT',
-        player: expect.objectContaining({ name: 'Bora E2E' }),
-      }),
-    ]),
-  );
-  await expect(page.getByRole('status')).toContainText(
-    'Katılım listesi kaydedildi',
-  );
-});
-
-test('coach updates and persists match tactical analysis', async ({ page }) => {
-  test.skip(!coachPassword, 'E2E_COACH_PASSWORD is required');
-
-  await loginAsCoach(page);
-  await page.getByRole('button', { name: 'Maçlar' }).click();
-  await expect(
-    page.getByRole('heading', { name: 'E2E Rakibi U17' }),
-  ).toBeVisible();
-
-  const analysis =
-    'E2E rakip analizi: merkezde daralıyor, ters kanat geçişi öncelikli.';
-  const coachNote =
-    'E2E koç notu: top kaybı sonrası beş saniye baskı uygulanacak.';
-  await page.getByLabel('Rakip ve taktik analizi').fill(analysis);
-  await page.getByLabel('Koç notu').fill(coachNote);
-
-  const matchUpdated = page.waitForResponse(
-    (response) =>
-      response.url().includes('/seasons/matches/') &&
+      /\/training-plans\/[^/]+\/drills\/[^/]+\/board$/.test(response.url()) &&
       response.request().method() === 'PUT',
   );
-  await page.getByRole('button', { name: 'Analizi kaydet' }).click();
+  await page.getByRole('button', { name: 'Kaydet' }).click();
+  expect((await snapshotSaved).status()).toBe(200);
 
-  const response = await matchUpdated;
-  expect(response.status()).toBe(200);
-  const persistedMatch = (await response.json()) as {
-    opponent: string;
-    ourFormation: string;
-    notes: string;
-    opponentAnalysis: {
-      summary: string;
-      opponentFormation: string;
-      focus: string;
-    };
+  await page.getByRole('link', { name: 'Maçlar' }).click();
+  await page.getByRole('link', { name: /E2E Rakibi U17/ }).click();
+  await page.getByRole('tab', { name: 'Taktik tahtası' }).click();
+  await page.getByRole('button', { name: 'Top' }).click();
+  const matchBoardSaved = page.waitForResponse(
+    (response) =>
+      /\/seasons\/matches\/[^/]+\/tactical-board$/.test(response.url()) &&
+      response.request().method() === 'PUT',
+  );
+  await page.getByRole('button', { name: 'Kaydet' }).click();
+  const matchBoardResponse = await matchBoardSaved;
+  expect(matchBoardResponse.status()).toBe(200);
+  await expect(matchBoardResponse.json()).resolves.toMatchObject({
+    tacticalBoard: {
+      kind: 'tactical-board',
+      elements: [expect.objectContaining({ type: 'ball' })],
+    },
+  });
+
+  const secondLogin = await request.post('http://localhost:4000/auth/login', {
+    data: { email: 'coach.second.e2e@example.test', password: coachPassword },
+  });
+  expect(secondLogin.status()).toBe(201);
+  const { access_token: secondToken } = (await secondLogin.json()) as {
+    access_token: string;
   };
-  expect(persistedMatch).toEqual(
-    expect.objectContaining({
-      opponent: 'E2E Rakibi U17',
-      ourFormation: '4-3-3',
-      notes: coachNote,
-      opponentAnalysis: {
-        summary: analysis,
-        opponentFormation: '4-4-2',
-        focus: 'İlk bölge baskısı',
-      },
-    }),
+  const crossTenantRead = await request.get(
+    `http://localhost:4000/drills/${drill.id}`,
+    { headers: { Authorization: `Bearer ${secondToken}` } },
   );
-  await expect(page.getByRole('status')).toContainText(
-    'Maç analizi kaydedildi',
-  );
+  expect(crossTenantRead.status()).toBe(403);
 });
 
-test('coach selects phased drills and persists plan drill notes', async ({
+test('all five task routes stay addressable on desktop, tablet, and mobile', async ({
   page,
 }) => {
   test.skip(!coachPassword, 'E2E_COACH_PASSWORD is required');
-
   await loginAsCoach(page);
-  await page.getByRole('button', { name: 'Antrenmanlar' }).click();
-
-  await page
-    .getByLabel('Isınma egzersizi')
-    .selectOption({ label: 'E2E Dinamik Isınma' });
-  await page
-    .getByLabel('Teknik egzersizi')
-    .selectOption({ label: 'E2E Yön Değiştirme' });
-  await page
-    .getByLabel('Taktik egzersizi')
-    .selectOption({ label: 'E2E Ön Alan Baskısı' });
-  await page
-    .getByLabel('Soğuma egzersizi')
-    .selectOption({ label: 'E2E Aktif Soğuma' });
-  const technicalNote = 'E2E teknik notu: iki temas ve açık vücut açısı.';
-  await page.getByLabel('Teknik notu').fill(technicalNote);
-
-  const drillsReplaced = page.waitForResponse(
-    (response) =>
-      /\/training-plans\/[^/]+\/drills$/.test(response.url()) &&
-      response.request().method() === 'PUT',
-  );
-  await page.getByRole('button', { name: 'Planı kaydet' }).click();
-
-  const response = await drillsReplaced;
-  expect(response.status()).toBe(200);
-  const persistedPlan = (await response.json()) as {
-    totalDuration: number;
-    drills: Array<{
-      phase: string;
-      notes: string | null;
-      drill: { title: string; durationMin: number };
-    }>;
-  };
-  expect(persistedPlan.totalDuration).toBe(75);
-  expect(persistedPlan.drills).toEqual(
-    expect.arrayContaining([
-      expect.objectContaining({
-        phase: 'TECHNICAL',
-        notes: technicalNote,
-        drill: expect.objectContaining({
-          title: 'E2E Yön Değiştirme',
-          durationMin: 24,
-        }),
-      }),
-    ]),
-  );
-  await expect(page.getByRole('status')).toContainText(
-    'Antrenman planı kaydedildi',
-  );
+  for (const viewport of [
+    { width: 1440, height: 1024 },
+    { width: 1024, height: 900 },
+    { width: 390, height: 844 },
+  ]) {
+    await page.setViewportSize(viewport);
+    for (const [path, heading] of [
+      ['week', 'Hafta'],
+      ['trainings', 'Antrenmanlar'],
+      ['tactics', 'Taktik Tahtası'],
+      ['squad', 'Kadro'],
+      ['matches', 'Maçlar'],
+    ] as const) {
+      await page.getByRole('link', { name: heading }).click();
+      await expect(page).toHaveURL(new RegExp(`/app/${path}$`));
+      await expect(
+        page.getByRole('heading', { name: heading, exact: true }),
+      ).toBeVisible();
+      await expect(page.getByRole('link', { name: heading })).toHaveClass(
+        /active/,
+      );
+      if (captureQa && path === 'week') {
+        await page.screenshot({
+          path: fileURLToPath(
+            new URL(
+              `../../qa/implementation-week-${viewport.width}x${viewport.height}.png`,
+              import.meta.url,
+            ),
+          ),
+          fullPage: true,
+        });
+      }
+    }
+  }
 });
