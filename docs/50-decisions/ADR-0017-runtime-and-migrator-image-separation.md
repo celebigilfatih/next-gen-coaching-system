@@ -1,9 +1,9 @@
 # ADR-0017: Runtime and migrator image separation
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-09-05
-- **Owners / approvers:** Preparation approved by user; implementation approval and named operations owner `TBD`
-- **Supersedes / superseded by:** Would refine the current backend Dockerfile and ADR-0006 deployment boundary
+- **Owners / approvers:** Option 2 explicitly approved by user on 2026-09-05; named operations owner `TBD`
+- **Supersedes / superseded by:** Refines the current backend Dockerfile and ADR-0006 deployment boundary
 - **Related:** ADR-0006, ADR-0010, ADR-0016, BL-026, CR-012
 
 ## Context
@@ -33,9 +33,9 @@ runtime-only dependency posture.
    from the same source, lockfile, schema and migration set.
 3. Keep Prisma CLI in the runtime image but rely only on entrypoint restrictions.
 
-## Proposed Decision
+## Decision
 
-Choose Option 2 after explicit implementation approval:
+Choose Option 2:
 
 - The runtime image contains compiled application output, generated Prisma Client
   and only required runtime dependencies/engines. It does not contain Prisma CLI,
@@ -56,15 +56,23 @@ The serving image becomes smaller and excludes the known advisory chain from its
 runtime dependency surface. Delivery gains a second artifact/job and therefore
 needs explicit orchestration, credentials, failure handling and ownership.
 
+The repository-local `npm audit --omit=dev` command still follows Prisma's
+optional-peer metadata and reports the accepted three-entry advisory chain. The
+actual runtime stage installs with both development and optional packages omitted;
+its install reported zero vulnerabilities and its image inventory proves that
+`prisma`, `@prisma/config` and `deepmerge-ts` are absent. These two measurements
+answer different questions and must not be conflated.
+
 ## Rollout and Rollback
 
-1. Confirm provider/build platform, registry, deployment orchestrator and owner.
-2. Implement named runtime and migrator targets without changing application or
+1. Confirm provider/build platform, registry, deployment orchestrator and owner
+   before production rollout.
+2. Build named runtime and migrator targets without changing application or
    Prisma schema behavior.
 3. Verify runtime startup cannot invoke Prisma CLI and migrator cannot serve the
    application.
 4. Apply migrations in a disposable PostgreSQL 16 environment, then run the full
-   repository and E2E quality gates against the runtime image.
+   repository and E2E quality gates.
 5. Rollback uses the previous immutable application image only when schema
    compatibility is proven; destructive migration rollback is not implied.
 
@@ -78,6 +86,29 @@ needs explicit orchestration, credentials, failure handling and ownership.
 - Image build, startup, migration status/schema diff, backend E2E, frontend E2E,
   `npm run quality`, CDSK and Markdown links pass.
 - Production implementation and rollout receive explicit user approval.
+
+## Verification Evidence
+
+Verified on 2026-09-05 from the same working revision and lockfile:
+
+- `runtime` and `migrator` Docker targets build successfully on Node 20 Alpine and
+  both run as the unprivileged `node` user.
+- Runtime inventory contains `dist/main.js`, `@prisma/client` and the generated
+  `.prisma/client`; it contains no Prisma CLI, `@prisma/config`, `deepmerge-ts`,
+  Nest CLI, Jest, source tree, migration tree or seed scripts.
+- Migrator inventory contains the pinned Prisma CLI and the two tracked
+  migrations, but no application `dist` or `src` tree and no HTTP entrypoint.
+- The migrator applied both migrations to a clean disposable PostgreSQL 16
+  database; a second run returned `No pending migrations to apply`.
+- The runtime-only image started against that database, responded HTTP 200 on its
+  current root smoke endpoint and reported Prisma Client `6.19.3` while the Prisma
+  CLI remained unavailable.
+- `docker compose --profile operations config --quiet`, root `npm run quality`,
+  backend E2E 9/9 and frontend Playwright E2E 3/3 passed.
+
+This evidence validates repository artifact separation, not production rollout.
+Health/readiness, signing/SBOM, registry, credentials and orchestration remain
+production gates.
 
 ## Open Questions
 

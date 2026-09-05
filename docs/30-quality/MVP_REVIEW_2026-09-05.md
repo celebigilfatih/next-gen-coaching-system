@@ -21,6 +21,8 @@
   kullanıcı onaylı kod ve sözleşme değişikliklerini ayrıca doğrular.
 - M4 production hosting/session/retention/observability/backup kararları MVP
   hükmüne katılmamış, ayrı production riski olarak tutulmuştur.
+- Review sonrasında onaylanan ADR-0017 runtime/migrator artifact ayrımı aynı kalite
+  ve E2E kapılarıyla doğrulanmıştır; production rollout girdileri hâlâ M4 riskidir.
 
 ## Kapsam ve yöntem
 
@@ -28,7 +30,7 @@
 |---|---|
 | Baseline | `origin/main` ve çalışma revision'ı aynı: `1b831e0`; başlangıçta çalışma ağacı temiz |
 | Ürün | Constitution, Product Spec, Scope, Roadmap, REQ-001–011, M0–M4 |
-| Kararlar | Accepted ADR-0001–0009 ve ADR-0011–0013; ADR-0010'ın M4 sınırı |
+| Kararlar | Accepted ADR-0001–0017; ADR-0010'ın M4 sınırı ve ADR-0016/0017 production koşulları |
 | Backend | Bütün controller'lar, Socket.IO gateway, authorization service, lifecycle akışları, tactical validator |
 | Veri | Prisma schema, iki migration, foreign key/unique ilişkileri, transaction yolları |
 | Frontend | Dokuz rota, shell/guard/workspace, kritik formlar, taktik editörü ve responsive runtime |
@@ -55,7 +57,8 @@ güncel kapanış durumu “Review sonrası kabul kontrolü” bölümündedir.
 | Backend E2E | Pass | 9 / 9; yalnız disposable DB; tenant/group/reset concurrency dahil |
 | Frontend Playwright E2E | Pass | 3 / 3; tactical zincir, responsive rotalar ve dirty navigation |
 | Frontend production dependencies | Pass | `npm audit --omit=dev`: 0 |
-| Backend production dependencies | Accepted risk | ADR-0016: hosted runtime `not_actionable`; 3 scanner entry görünür, otomatik çözüm uygulanmadı |
+| Backend production dependencies | Pass for runtime artifact; accepted repository risk | ADR-0016: repository-local audit optional-peer zincirinde 3 entry gösterir; ADR-0017 runtime install'i 0 ve image inventory zinciri içermez |
+| Runtime/migrator artifact ayrımı | Pass | Ayrı target'lar; runtime CLI/config/test/source içermez, migrator HTTP uygulaması içermez; clean apply + idempotency + HTTP 200 smoke geçti |
 | Secret örüntüleri | Pass | İzlenen gerçek key/token bulunmadı; yalnız örnek ve test denylist değerleri |
 | Browser console | Pass | Denetlenen akışlarda error/warn görülmedi |
 
@@ -288,9 +291,15 @@ seçeneklerini zorunlu kılar; F-004 Playwright ile kapalıdır.
 - Backend audit'inde Prisma → `@prisma/config` → `deepmerge-ts` zincirinde 3 high
   advisory vardır. ADR-0016 triyajı bunu hosted runtime için `not_actionable`
   sınıflandırmış ve production öncesi yeniden inceleme koşuluyla geçici kabul
-  etmiştir; otomatik breaking downgrade uygulanmamıştır.
-- Production image least-privilege, runtime-only dependency, secret injection,
-  readiness, centralized redaction, backup/restore ve observability modeli `TBD`.
+  etmiştir; otomatik breaking downgrade uygulanmamıştır. Repository-local
+  `npm audit --omit=dev` optional-peer metadata nedeniyle bu girdileri göstermeye
+  devam eder. ADR-0017 runtime install'i development/optional paketleri dışarıda
+  bırakarak sıfır audit bulgusu vermiş ve image inventory zincirin yokluğunu
+  doğrulamıştır.
+- Runtime-only ve migrator artifact ayrımı uygulanmış, clean migration/idempotency,
+  runtime startup ve aynı disposable DB üzerinde E2E ile doğrulanmıştır. Production
+  secret injection, ayrı DB rolleri, registry/orchestrator, readiness, centralized
+  redaction, backup/restore ve observability modeli `TBD`.
 - Sağlık, scouting ve ileri analitik yolları yalnız SYSTEM_ADMIN ile fail-closed;
   privacy, retention, audit sahibi ve kullanım politikası onaylanmadan MVP'ye
   alınmamalıdır.

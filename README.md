@@ -29,7 +29,9 @@ Bu proje **CDSK 0.1.0** standardını kullanır.
   React-Konva tabanlı “Koç Operasyon Masası”. Genel Bakış, Hafta, Antrenmanlar,
   Egzersiz Kütüphanesi, Taktik Tahtası, Maçlar, Kadro, Yoklama ve Ayarlar rotaları
   ile kulüp egzersizi, plan snapshot'ı ve maç tahtası uçtan uca çalışır.
-- `docker-compose.yml`: Doğrulanmış PostgreSQL ve backend servislerini tanımlar.
+- `docker-compose.yml`: Doğrulanmış PostgreSQL ve runtime-only backend servisini;
+  açık `operations` profili altında ayrı migrator job'unu tanımlar. İki artifact
+  aynı backend Dockerfile, revision ve lockfile'dan üretilir.
 
 ## Doğrulanmış geliştirme komutları
 

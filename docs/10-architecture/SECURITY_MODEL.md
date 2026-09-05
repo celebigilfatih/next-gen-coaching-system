@@ -56,8 +56,11 @@
   cookie sözleşmesi uygulanmış kabul edilemez.
 - Prisma CLI → `@prisma/config` → `deepmerge-ts` advisory zinciri ADR-0016 ile
   hosted runtime için `not_actionable` sınıflanmış ve production öncesi yeniden
-  inceleme koşuluyla geçici kabul edilmiştir. Runtime/migrator image ayrımı
-  ADR-0017 altında `Proposed`; uygulanmış kabul edilemez.
+  inceleme koşuluyla geçici kabul edilmiştir. ADR-0017 kabul edilmiş ve Docker
+  artifact'larında uygulanmıştır: serving runtime development/optional paketleri,
+  Prisma CLI, `@prisma/config` ve `deepmerge-ts` zincirini içermez; CLI ve migration
+  ağacı HTTP uygulaması içermeyen ayrı migrator target'ındadır. Production DB rolü,
+  credential delivery ve orchestrator sınırı `TBD` kalır.
 
 Kalan maddeler sonraki güvenlik ve production dalgaları için karar girdileridir.
 

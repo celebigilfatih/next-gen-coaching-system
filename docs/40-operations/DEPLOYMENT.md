@@ -18,9 +18,27 @@ dağıtık auth throttling, secret delivery, readiness, observability ve backup/
 kapıları kapanmadan production rollout yapılamaz.
 
 ADR-0016 mevcut Prisma CLI advisory zincirini hosted runtime için `not_actionable`
-ve geçici kabul edilmiş dependency-hygiene riski olarak kaydeder. ADR-0017,
-runtime-only backend image ile ayrı migrator artifact/job modelini önerir; henüz
-uygulanmamıştır. Mevcut Dockerfile production release kanıtı sayılmaz.
+ve geçici kabul edilmiş dependency-hygiene riski olarak kaydeder. ADR-0017 kabul
+edilmiş ve backend Dockerfile'ında uygulanmıştır: serving `runtime` ve yalnız
+`prisma migrate deploy` çalıştıran `migrator` target'ları aynı lockfile ve revision
+üzerinden üretilir. Bu doğrulama production release veya rollout kanıtı sayılmaz.
+
+Repository artifact'ları şu komutlarla ayrı oluşturulur:
+
+```bash
+docker build --target runtime -t ngcs-backend-runtime:local ./apps/backend
+docker build --target migrator -t ngcs-backend-migrator:local ./apps/backend
+```
+
+Yerel Compose backend için `runtime` target'ını kullanır. Migrator varsayılan
+servis setine dahil değildir; açık operations profiliyle ayrı çalıştırılır:
+
+```bash
+docker compose --profile operations run --rm migrator
+```
+
+Production registry, immutable tag/digest politikası, image signing/SBOM,
+orchestrator, ayrı runtime/migrator DB rolleri ve credential delivery `TBD`.
 
 ## Verification
 
@@ -29,7 +47,9 @@ uygulanmamıştır. Mevcut Dockerfile production release kanıtı sayılmaz.
 - Veritabanı migration durumu, secret varlığı ve temel kullanıcı akışları
   release öncesi doğrulanmalıdır.
 - Runtime image dependency inventory'si ile migrator revision/lockfile/migration
-  eşleşmesi ADR-0017 kabul edilirse ayrı release kapılarıdır.
+  eşleşmesi ayrı release kapılarıdır. Yerel doğrulamada runtime install audit'i
+  sıfır bulgu verdi ve Prisma CLI/config/advisory zincirinin image'da bulunmadığı
+  inventory ile kanıtlandı.
 
 ## Rollback
 

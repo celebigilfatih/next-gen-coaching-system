@@ -23,6 +23,7 @@ services:
     build:
       context: ./apps/backend
       dockerfile: Dockerfile
+      target: runtime
     container_name: ngcs-backend
     environment:
       DATABASE_URL: postgresql://ngcs:ngcs@db:5432/ngcs
@@ -36,6 +37,22 @@ services:
     networks:
       - ngcs-network
     restart: unless-stopped
+
+  migrator:
+    build:
+      context: ./apps/backend
+      dockerfile: Dockerfile
+      target: migrator
+    environment:
+      DATABASE_URL: postgresql://ngcs:ngcs@db:5432/ngcs
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - ngcs-network
+    profiles:
+      - operations
+    restart: "no"
 
 volumes:
   pgdata:

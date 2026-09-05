@@ -26,8 +26,10 @@ dosyası belirtilir. E2E bu komuta dahil değildir; dedicated database ve açık
 onayı gerektiren `npm run test:e2e` ayrı çalıştırılır.
 
 Varsayılan backend portu `4000`. Uygulama container'ı migration çalıştırmaz.
-Mevcut image builder'ın tam `node_modules` ağacını taşır; ADR-0017 kabul edilene
-kadar runtime-only production artifact olarak değerlendirilmez.
+ADR-0017 uyarınca Compose backend servisi Dockerfile'ın `runtime` target'ını
+kullanır. Bu target yalnız production/serving bağımlılıklarını, derlenmiş uygulamayı
+ve üretilmiş Prisma Client'ı taşır; Prisma CLI, migration/source ağacı, test/build
+araçları ve seed scriptlerini taşımaz.
 
 İlk `SYSTEM_ADMIN`, yalnız veritabanında hiç sistem yöneticisi yokken ve migration
 uygulandıktan sonra explicit operator adımıyla oluşturulur. Credential komut
@@ -50,9 +52,17 @@ deployment adımı olarak çalıştırılır. Ön koşullar:
 - migration SQL'i review edilmiş ve izole PostgreSQL üzerinde denenmiş;
 - rollback/uyumluluk penceresi onaylanmış.
 
-ADR-0017 uygulanırsa komut yalnız aynı immutable revision ve lockfile'dan üretilen
-migrator artifact/job içinde çalıştırılır; serving runtime'a migration credential
-ve Prisma CLI verilmez.
+ADR-0017 kapsamında komut aynı revision ve lockfile'dan üretilen ayrı `migrator`
+artifact/job içinde çalıştırılır; serving runtime'a migration credential ve Prisma
+CLI verilmez. Yerel Compose doğrulaması için:
+
+```bash
+docker compose --profile operations run --rm migrator
+```
+
+Migrator'ın ikinci çalışması beklenen biçimde `No pending migrations to apply`
+döndürmelidir. Production'da runtime ve migrator için ayrı en-az-yetkili DB rolleri,
+job retry/failure politikası ve gözlemlenebilirlik sahibi `TBD`.
 
 Bu koşullar sağlanmadan aşağıdaki komut çalıştırılmaz:
 

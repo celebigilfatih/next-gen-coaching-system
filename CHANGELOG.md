@@ -73,8 +73,8 @@
   eşzamanlı reset, güvenli SVG ve dirty-navigation regresyon testleri.
 - Prisma CLI advisory zincirini hosted runtime için `not_actionable` sınıflandıran
   ve production öncesi yeniden incelemeli geçici risk kabulünü kaydeden ADR-0016.
-- Runtime-only backend image ile ayrı migrator artifact/job modelini seçenekleri,
-  rollout ve kabul kapılarıyla hazırlayan Proposed ADR-0017 ve CR-012.
+- Runtime-only backend image ile ayrı migrator artifact/job modelini kabul eden
+  ADR-0017 ve doğrulanmış CR-012.
 
 ### Changed
 
@@ -152,6 +152,13 @@
 - BL-025, Prisma `6.19.3` → `@prisma/config` `6.19.3` → `deepmerge-ts` `7.1.5`
   zincirinin source/control/sink triyajı ve açık risk kabulüyle tamamlandı; paket,
   lockfile ve runtime davranışı değiştirilmedi.
+- Prisma CLI development/build bağımlılığına taşındı. Backend Dockerfile aynı
+  lockfile'dan runtime-only `runtime` ve HTTP uygulaması içermeyen `migrator`
+  target'ları üretecek şekilde ayrıldı; Compose migrator'ı yalnız açık
+  `operations` profiliyle çalıştırır.
+- Runtime production install'i optional/development paketleri dışarıda bırakır;
+  üretilmiş Prisma Client korunurken Prisma CLI, `@prisma/config`, `deepmerge-ts`,
+  Nest CLI, Jest, migration/source ağacı ve seed scriptleri image'dan çıkarıldı.
 
 ### Known issues
 
@@ -167,8 +174,10 @@
 - `npm audit --omit=dev` Prisma CLI / `@prisma/config` / `deepmerge-ts` zincirinde
   3 high advisory raporluyor. ADR-0016 bunu hosted runtime için `not_actionable`
   ve production öncesi yeniden incelemeli geçici kabul olarak kaydeder; otomatik
-  Prisma 6.12.0 breaking downgrade uygulanmadı. Runtime image hardening'i Proposed
-  ADR-0017/BL-026 kapsamındadır.
+  Prisma 6.12.0 breaking downgrade uygulanmadı. ADR-0017/BL-026 uygulanmıştır:
+  gerçek runtime-stage install audit'i sıfır bulgu verir ve image inventory bu
+  zinciri içermez; repository-local audit optional-peer metadata nedeniyle ayrı
+  bir accepted-risk sinyali olarak görünür kalır.
 - 2026-09-05 ilk tam MVP review hükmü tarihsel olarak **Fail** idi; A–D
   stabilizasyonuyla F-001–F-006 kapatıldı ve güncel remediation hükmü **Pass** oldu.
   Ayrıntı ve yeniden doğrulama kanıtı `docs/30-quality/MVP_REVIEW_2026-09-05.md`

@@ -59,17 +59,19 @@
 - **Exit criteria:** Root quality; disposable PostgreSQL migration/status/diff;
   backend 9/9 E2E; frontend 3/3 Playwright E2E; CDSK ve diff kontrolleri geçer.
 - **Risks:** Production session/deployment, formal WCAG, ADR-0016 ile geçici kabul
-  edilen dependency advisory, log/DTO borcu ve ürün metrikleri `TBD` kalır.
+  edilen dependency advisory'nin production re-review'u, log/DTO borcu ve ürün
+  metrikleri `TBD` kalır. Runtime/migrator ayrımı ADR-0017 ile tamamlanmıştır.
 - **Status:** Completed 2026-09-05 — remediation review Pass.
 
 ## Milestone M4 — Production session hazırlığı
 
 - **Outcome:** ADR-0010 sınırında güvenli ve kalıcı tarayıcı oturumu.
 - **Dependencies:** Exact domain/provider, session lifetime/retention ve production
-  operasyon girdileri; ADR-0017 runtime/migrator artifact kararı.
+  operasyon girdileri. ADR-0017 runtime/migrator artifact kararı ve repository
+  uygulaması tamamlanmıştır.
 - **Exit criteria:** Migration/API sözleşmesi ve operasyon kapıları onaylanır;
-  runtime image dependency inventory ve migrator isolation doğrulanır; staging
-  doğrulamaları geçer.
+  doğrulanmış artifact'lar seçilen registry/orchestrator'da ayrı DB yetkileriyle
+  çalışır; staging doğrulamaları geçer.
 - **Risks:** Zorunlu girdiler `TBD`; ADR-0016 advisory kabulü production öncesi
   yeniden incelenmelidir.
 - **Status:** Planned — required inputs TBD.
