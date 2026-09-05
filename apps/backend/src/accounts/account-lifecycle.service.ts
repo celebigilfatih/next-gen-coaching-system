@@ -216,6 +216,10 @@ export class AccountLifecycleService {
         where: { id: principal.id },
         data: { passwordHash, authVersion: { increment: 1 } },
       }),
+      this.prisma.refreshSession.updateMany({
+        where: { userId: principal.id, revokedAt: null },
+        data: { revokedAt: new Date(), revocationReason: 'PASSWORD_CHANGED' },
+      }),
       this.prisma.passwordResetToken.updateMany({
         where: { userId: principal.id, consumedAt: null, revokedAt: null },
         data: { revokedAt: new Date() },
@@ -302,6 +306,10 @@ export class AccountLifecycleService {
       await transaction.user.update({
         where: { id: reset.userId },
         data: { passwordHash, authVersion: { increment: 1 } },
+      });
+      await transaction.refreshSession.updateMany({
+        where: { userId: reset.userId, revokedAt: null },
+        data: { revokedAt: new Date(), revocationReason: 'PASSWORD_RESET' },
       });
       await transaction.securityAuditEvent.create({
         data: {
@@ -402,6 +410,10 @@ export class AccountLifecycleService {
           },
         },
       });
+      await transaction.refreshSession.updateMany({
+        where: { userId, revokedAt: null },
+        data: { revokedAt: new Date(), revocationReason: 'ACCESS_CHANGED' },
+      });
       return updated;
     });
     return user;
@@ -429,6 +441,10 @@ export class AccountLifecycleService {
         data: { status, authVersion: { increment: 1 } },
         select: publicUserSelect,
       });
+      await transaction.refreshSession.updateMany({
+        where: { userId, revokedAt: null },
+        data: { revokedAt: new Date(), revocationReason: 'STATUS_CHANGED' },
+      });
       await transaction.securityAuditEvent.create({
         data: {
           action,
@@ -450,6 +466,10 @@ export class AccountLifecycleService {
       this.prisma.user.update({
         where: { id: userId },
         data: { authVersion: { increment: 1 } },
+      }),
+      this.prisma.refreshSession.updateMany({
+        where: { userId, revokedAt: null },
+        data: { revokedAt: new Date(), revocationReason: 'GLOBAL_REVOCATION' },
       }),
       this.prisma.securityAuditEvent.create({
         data: {

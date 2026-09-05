@@ -6,7 +6,7 @@ Doğrulanmış Prisma şeması şu kümeleri içerir:
 
 - Kimlik ve organizasyon: `User`, `Club`, `PlayerGroup`, `GroupMember`.
 - Hesap yaşam döngüsü: `AccountInvitation`, `PasswordResetToken`,
-  `SecurityAuditEvent`.
+  `SecurityAuditEvent`, `RefreshSession`.
 - Antrenman: `Drill`, `TrainingPlan`, `PlanDrill`, `Attendance`.
 - Sezon: `Season`, `WeekPlan`, `DayPlan`, `Match`.
 - Analiz ve performans: `PlayerLoad`, `PlayerPerformance`, `VideoAnalysis`,
@@ -25,6 +25,11 @@ Doğrulanmış Prisma şeması şu kümeleri içerir:
   `authVersion` değerine sahiptir.
 - Davet/reset ham tokenları saklanmaz; yalnız benzersiz SHA-256 hash, expiry ve
   consume/revoke zamanları tutulur.
+- ADR-0018 `RefreshSession` yalnız SHA-256 credential hash'i, user/family id,
+  authVersion, lifecycle zamanları ve kontrollü revoke nedeni taşır. Her refresh
+  eski satırı tüketip aynı family altında yeni satır oluşturur; user-row lock login,
+  rotation ve logout'u sıralar. Idle expiry absolute expiry'yi aşamaz. En fazla beş
+  aktif family vardır; password/access/status ve global revoke bunları iptal eder.
 - İlişkilerin çoğu foreign key ile tanımlıdır.
 - `TrainingPlan.totalDuration`, atomik drill replace işleminde ilişkili
   `Drill.durationMin` toplamından yeniden hesaplanır ve bağlı `DayPlan.duration`
@@ -45,8 +50,10 @@ Doğrulanmış Prisma şeması şu kümeleri içerir:
 
 ## Lifecycle and Retention
 
-Silme, arşivleme, sağlık verisi saklama ve anonimleştirme politikası `TBD` ve
-güvenlik/gizlilik onayı gerektirir.
+Refresh kayıtları iptal veya expiry'den 30 gün sonra silinmeye uygun hale gelir;
+özellik açıkken startup, saatlik ve login cleanup çalışır. Ham token, IP ve
+user-agent tutulmaz. Security audit, sağlık verisi, arşivleme ve anonimleştirme
+politikası `TBD` ve ayrı güvenlik/gizlilik onayı gerektirir.
 
 ## Migration Policy
 
@@ -59,10 +66,20 @@ güvenlik/gizlilik onayı gerektirir.
   Temiz PostgreSQL 16 üzerinde deploy edilmiş ve schema diff boş doğrulanmıştır.
 - Migration dosyaları Git tarafından izlenir ve uygulama başlangıcında otomatik
   çalıştırılmaz.
+- `20260905000000_add_refresh_sessions`, session tablosu/index/expiry check ve
+  dört audit enum değeri için additive migration'dır; lifecycle revocation bu
+  tabloyu kullandığından özellik kapalıyken de yeni backend'den önce uygulanır.
 - Yeni migration SQL'i review, izole PostgreSQL provası ve rollback kanıtı olmadan
   retained environment'a uygulanmaz.
 - Tarihsel fark ve doğrulama kanıtı `SCHEMA_MIGRATION_DRIFT.md`, süreç ADR-0006
   içindedir.
+
+### Refresh-session rollback
+
+ADR-0018 için backend/frontend flag'lerini kapat, yeniden açmadan önce aktif
+refresh kayıtlarını revoke et veya ilgili kullanıcıların authVersion'ını artır.
+Tablo ve enum değerleri korunur; destructive schema rollback gerekmez. Provider
+ve gerçek ortam belirlenmeden production rollout/rollback gerçekleştirilmez.
 
 ### Tactical-board migration rollback
 

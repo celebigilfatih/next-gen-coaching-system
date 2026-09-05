@@ -108,6 +108,10 @@ test('coach creates a club board, snapshots it into training, saves a match boar
   });
 
   const secondLogin = await request.post(`${apiBaseUrl}/auth/login`, {
+    headers: {
+      Origin: `http://localhost:${process.env.E2E_FRONTEND_PORT ?? '3001'}`,
+      'X-NGCS-CSRF': '1',
+    },
     data: { email: 'coach.second.e2e@example.test', password: coachPassword },
   });
   expect(secondLogin.status()).toBe(201);
@@ -119,6 +123,63 @@ test('coach creates a club board, snapshots it into training, saves a match boar
     { headers: { Authorization: `Bearer ${secondToken}` } },
   );
   expect(crossTenantRead.status()).toBe(403);
+});
+
+test('persistent session survives reload and new tab, then server logout denies the old access token', async ({
+  page,
+  context,
+}) => {
+  test.skip(
+    process.env.E2E_PERSISTENT_SESSIONS !== 'true' || !coachPassword,
+    'Persistent sessions opt-in suite',
+  );
+  await loginAsCoach(page);
+  const refreshResponse = page.waitForResponse(
+    (response) =>
+      response.url().endsWith('/auth/refresh') && response.status() === 200,
+  );
+  await page.reload();
+  const token = (
+    (await (await refreshResponse).json()) as { access_token: string }
+  ).access_token;
+  await expect(page).toHaveURL(/\/app\/week$/);
+  await expect(
+    page.getByRole('heading', { name: 'Hafta', exact: true }),
+  ).toBeVisible();
+  const cookies = await context.cookies();
+  expect(
+    cookies.find((cookie) => cookie.name === 'ngcs_refresh'),
+  ).toMatchObject({ httpOnly: true, sameSite: 'Lax', path: '/' });
+  expect(await page.evaluate(() => document.cookie)).not.toContain(
+    'ngcs_refresh',
+  );
+  const stored = await page.evaluate(() => ({
+    local: { ...localStorage },
+    session: { ...sessionStorage },
+  }));
+  expect(stored.local).toEqual({});
+  // React Router stores scroll positions, which are not authentication data.
+  expect(
+    Object.keys(stored.session).every(
+      (key) => key === 'react-router-scroll-positions',
+    ),
+  ).toBe(true);
+  expect(JSON.stringify(stored)).not.toContain(token);
+  const second = await context.newPage();
+  await second.goto('/app/week');
+  await expect(
+    second.getByRole('heading', { name: 'Hafta', exact: true }),
+  ).toBeVisible();
+  await second.getByRole('link', { name: 'Ayarlar' }).click();
+  await second.getByRole('button', { name: 'Çıkış yap' }).click();
+  await expect(second).toHaveURL(/\/login$/);
+  const denied = await context.request.get(`${apiBaseUrl}/auth/me`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  expect(denied.status()).toBe(401);
+  await page.reload();
+  await expect(page).toHaveURL(/\/login$/);
+  await second.close();
 });
 
 test('all five task routes stay addressable on desktop, tablet, and mobile', async ({

@@ -12,6 +12,8 @@ import {
 } from 'react-router';
 import type { Route } from './+types/root';
 import './styles.css';
+import { useEffect, useState } from 'react';
+import { bootstrapSession, persistentSessionsEnabled } from './lib/api';
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -32,6 +34,41 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
+  const [ready, setReady] = useState(!persistentSessionsEnabled);
+  const [error, setError] = useState(false);
+  const [attempt, setAttempt] = useState(0);
+  useEffect(() => {
+    let active = true;
+    void bootstrapSession()
+      .then(() => {
+        if (active) setReady(true);
+      })
+      .catch(() => {
+        if (active) setError(true);
+      });
+    return () => {
+      active = false;
+    };
+  }, [attempt]);
+  if (!ready)
+    return (
+      <main className="error-screen" aria-live="polite">
+        <h1>
+          {error ? 'Oturum kontrol edilemedi' : 'Oturum kontrol ediliyor…'}
+        </h1>
+        {error && (
+          <button
+            className="button button-primary"
+            onClick={() => {
+              setError(false);
+              setAttempt(attempt + 1);
+            }}
+          >
+            Tekrar dene
+          </button>
+        )}
+      </main>
+    );
   return <Outlet />;
 }
 

@@ -159,6 +159,7 @@ describe('AccountLifecycleService authorization', () => {
 
   it('changes the password only after atomically claiming the reset token', async () => {
     const transaction = {
+      refreshSession: { updateMany: jest.fn() },
       passwordResetToken: {
         updateMany: jest.fn().mockResolvedValue({ count: 1 }),
       },

@@ -3,6 +3,12 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { AuthService } from './auth.service';
 import { UsersService } from '../users/users.service';
+import { RefreshSessionService } from './refresh-session.service';
+
+const disabledSessions = {
+  enabled: false,
+  configuration: { accessTokenTtl: '7d' },
+} as RefreshSessionService;
 
 describe('AuthService', () => {
   it('returns a token and user without passwordHash', async () => {
@@ -26,7 +32,7 @@ describe('AuthService', () => {
     const jwt = {
       signAsync: jest.fn().mockResolvedValue('signed-token'),
     } as unknown as JwtService;
-    const service = new AuthService(users, jwt);
+    const service = new AuthService(users, jwt, disabledSessions);
 
     const result = await service.login('player@example.com', password);
 
@@ -35,6 +41,7 @@ describe('AuthService', () => {
     expect(result.user).toMatchObject({ id: 'user-1', role: 'PLAYER' });
     expect(jwt.signAsync).toHaveBeenCalledWith(
       expect.objectContaining({ sub: 'user-1', ver: 3 }),
+      { expiresIn: '7d' },
     );
   });
 
@@ -47,7 +54,11 @@ describe('AuthService', () => {
         status: 'SUSPENDED',
       }),
     } as unknown as UsersService;
-    const service = new AuthService(users, { signAsync: jest.fn() } as any);
+    const service = new AuthService(
+      users,
+      { signAsync: jest.fn() } as any,
+      disabledSessions,
+    );
 
     await expect(
       service.login('player@example.com', password),

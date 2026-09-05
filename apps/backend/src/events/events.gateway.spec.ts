@@ -5,6 +5,7 @@ import { EventsGateway } from './events.gateway';
 describe('EventsGateway authorization', () => {
   const jwt = { verifyAsync: jest.fn() };
   const prisma = {
+    refreshSession: { findFirst: jest.fn() },
     user: { findUnique: jest.fn(), findMany: jest.fn() },
     playerGroup: { findMany: jest.fn(), findUnique: jest.fn() },
     groupMember: { findMany: jest.fn() },
@@ -45,6 +46,103 @@ describe('EventsGateway authorization', () => {
 
     expect(client.disconnect).toHaveBeenCalledWith(true);
     expect(client.join).not.toHaveBeenCalled();
+  });
+
+  it('rejects revoked family reconnects and connected sender operations', async () => {
+    const previous = process.env.PERSISTENT_SESSIONS_ENABLED;
+    const previousOrigin = process.env.FRONTEND_ORIGIN;
+    process.env.PERSISTENT_SESSIONS_ENABLED = 'true';
+    process.env.FRONTEND_ORIGIN = 'http://localhost:3500';
+    try {
+      const user = {
+        id: 'session-user',
+        name: 'Coach',
+        email: 'coach@example.test',
+        role: 'COACH',
+        status: 'ACTIVE',
+        clubId: 'club-a',
+        authVersion: 1,
+      };
+      prisma.user.findUnique.mockResolvedValue(user);
+      prisma.refreshSession.findFirst.mockResolvedValue(null);
+      jwt.verifyAsync.mockResolvedValue({
+        sub: user.id,
+        ver: 1,
+        sid: 'revoked-family',
+        exp: Math.floor(Date.now() / 1000) + 900,
+      });
+      const client = {
+        id: 'session-socket',
+        handshake: {
+          auth: { token: 'token' },
+          headers: { origin: 'http://localhost:3500' },
+        },
+        data: {
+          user: {
+            ...user,
+            userId: user.id,
+            familyId: 'revoked-family',
+            groupIds: ['group-a'],
+          },
+        },
+        disconnect: jest.fn(),
+        join: jest.fn(),
+      };
+      await gateway.handleConnection(client as any);
+      expect(client.disconnect).toHaveBeenCalledWith(true);
+      expect(client.join).not.toHaveBeenCalled();
+      await expect(
+        gateway.handleUserJoin({}, client as any),
+      ).rejects.toBeInstanceOf(WsException);
+    } finally {
+      if (previous === undefined)
+        delete process.env.PERSISTENT_SESSIONS_ENABLED;
+      else process.env.PERSISTENT_SESSIONS_ENABLED = previous;
+      if (previousOrigin === undefined) delete process.env.FRONTEND_ORIGIN;
+      else process.env.FRONTEND_ORIGIN = previousOrigin;
+    }
+  });
+
+  it('omits revoked family and expired access tokens from Socket recipients', async () => {
+    const previous = process.env.PERSISTENT_SESSIONS_ENABLED;
+    process.env.PERSISTENT_SESSIONS_ENABLED = 'true';
+    try {
+      const user = {
+        id: 'session-user',
+        name: 'Coach',
+        role: 'COACH',
+        authVersion: 1,
+      };
+      prisma.user.findMany.mockResolvedValue([user]);
+      (gateway as any).connectedUsers.set('revoked', {
+        ...user,
+        familyId: 'revoked-family',
+      });
+      (gateway as any).connectedUsers.set('expired', {
+        ...user,
+        familyId: 'active-family',
+        expiresAt: 1,
+      });
+      (gateway as any).connectedUsers.set('active', {
+        ...user,
+        familyId: 'active-family',
+        expiresAt: Date.now() / 1000 + 900,
+      });
+      prisma.refreshSession.findFirst.mockImplementation(({ where }) =>
+        Promise.resolve(
+          where.familyId === 'active-family' ? { id: 'active-row' } : null,
+        ),
+      );
+      const recipients = await (gateway as any).authorizedRecipientSockets(
+        'group-a',
+        'club-a',
+      );
+      expect(recipients.map((entry) => entry.socketId)).toEqual(['active']);
+    } finally {
+      if (previous === undefined)
+        delete process.env.PERSISTENT_SESSIONS_ENABLED;
+      else process.env.PERSISTENT_SESSIONS_ENABLED = previous;
+    }
   });
 
   it('derives socket identity from JWT plus current database state', async () => {

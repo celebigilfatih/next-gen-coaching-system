@@ -51,9 +51,13 @@
 - Authentication throttling in-memory ve instance-local'dir; proxy/topoloji ve
   dağıtık rate-limit storage kararı production deployment ile birlikte `TBD`.
 - Kalıcı tarayıcı oturumu ve production origin sınırı ADR-0010 Option 1 olarak
-  `Accepted` durumundadır ancak uygulanmamıştır. Zorunlu implementation girdileri
-  kapanana kadar memory-only bearer davranışı geçerlidir; refresh credential veya
-  cookie sözleşmesi uygulanmış kabul edilemez.
+  `Accepted`; ADR-0018 provider-neutral implementation kapısını açmıştır.
+  Backend/frontend flag'leri varsayılan kapalıdır. Açık modda 15m access JWT,
+  7d idle/30d absolute refresh, beş aktif family, host-only HttpOnly cookie, exact
+  origin ve zorunlu custom CSRF header uygulanır. PostgreSQL user-row lock ile
+  rotation tek kazananlıdır; replay/logout/eviction family erişimini HTTP ve Socket
+  alıcı/gönderici kontrollerinde keser. Lifecycle revocation authVersion'a ek olarak
+  refresh kayıtlarını iptal eder. Production rollout girdileri `TBD` kalır.
 - Prisma CLI → `@prisma/config` → `deepmerge-ts` advisory zinciri ADR-0016 ile
   hosted runtime için `not_actionable` sınıflanmış ve production öncesi yeniden
   inceleme koşuluyla geçici kabul edilmiştir. ADR-0017 kabul edilmiş ve Docker

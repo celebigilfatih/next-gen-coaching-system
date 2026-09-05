@@ -14,3 +14,4 @@
 | CR-010 | Password reset token tüketimini single-winner atomik yap | Güvenlik ve transaction davranışı | ADR-0015 | Explicit user approval; named security/data owner TBD | Approved and verified |
 | CR-011 | Prisma CLI advisory için kanıtlı geçici risk kabulü | Dependency security ve production gate | ADR-0016 | Explicit user approval; named security/operations owner TBD | Approved |
 | CR-012 | Backend runtime image ile migrator artifact/job'u ayır | Deployment mimarisi, image içeriği ve DB yetkileri | ADR-0017 | Explicit user approval; named operations owner TBD | Approved and verified |
+| CR-013 | Provider-neutral kalıcı oturum ve onaylı süre/retention politikası | Auth API, frontend, additive migration ve güvenlik | ADR-0018 | Explicit user approval; named security/operations owner TBD | Approved and verified — production rollout TBD |

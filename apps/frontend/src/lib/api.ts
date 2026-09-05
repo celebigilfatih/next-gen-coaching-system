@@ -1,6 +1,7 @@
 import {
   clearSession,
   getSession,
+  getSessionGeneration,
   setSession,
   type SessionUser,
 } from './session';
@@ -13,7 +14,91 @@ const apiBase = (
 type LoginResponse = {
   access_token: string;
   user: SessionUser;
+  persistent_session?: boolean;
 };
+
+export const persistentSessionsEnabled =
+  import.meta.env.VITE_PERSISTENT_SESSIONS_ENABLED === 'true';
+let refreshFlight: Promise<boolean> | null = null;
+let bootstrapFlight: Promise<void> | null = null;
+let loggingOut = false;
+
+async function withSessionLock<T>(action: () => Promise<T>): Promise<T> {
+  if (typeof navigator !== 'undefined' && navigator.locks)
+    return navigator.locks.request('ngcs-browser-session', action);
+  return action();
+}
+
+async function sessionRequest(path: string, body?: object) {
+  return fetch(`${apiBase}/auth/${path}`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'X-NGCS-CSRF': '1',
+    },
+    body: JSON.stringify(body ?? {}),
+  });
+}
+
+function remember(response: LoginResponse) {
+  setSession({
+    token: response.access_token,
+    user: response.user,
+    persistent: response.persistent_session === true,
+  });
+}
+
+export function refreshSession(): Promise<boolean> {
+  if (!persistentSessionsEnabled || loggingOut) return Promise.resolve(false);
+  if (refreshFlight) return refreshFlight;
+  const generation = getSessionGeneration();
+  refreshFlight = withSessionLock(async () => {
+    const response = await sessionRequest('refresh');
+    if (generation !== getSessionGeneration()) return false;
+    if (response.status === 401 || response.status === 404) {
+      clearSession();
+      return false;
+    }
+    if (!response.ok)
+      throw new Error('Oturum yenilenemedi. Lütfen tekrar deneyin.');
+    const result = (await response.json()) as LoginResponse;
+    if (generation !== getSessionGeneration()) return false;
+    remember(result);
+    return true;
+  }).finally(() => {
+    refreshFlight = null;
+  });
+  return refreshFlight;
+}
+
+export function bootstrapSession(): Promise<void> {
+  if (!persistentSessionsEnabled || getSession()) return Promise.resolve();
+  if (!bootstrapFlight)
+    bootstrapFlight = refreshSession()
+      .then(() => undefined)
+      .catch((error: unknown) => {
+        bootstrapFlight = null;
+        throw error;
+      });
+  return bootstrapFlight;
+}
+
+export async function logout() {
+  loggingOut = true;
+  try {
+    if (refreshFlight) await refreshFlight;
+    if (persistentSessionsEnabled && getSession()?.persistent) {
+      const response = await withSessionLock(() => sessionRequest('logout'));
+      if (!response.ok)
+        throw new Error('Çıkış tamamlanamadı. Lütfen tekrar deneyin.');
+    }
+    clearSession();
+  } finally {
+    loggingOut = false;
+  }
+}
 
 export type Group = {
   id: string;
@@ -101,7 +186,12 @@ export type Match = {
   tacticalBoard: TacticalBoardDocumentV1 | null;
 };
 
-async function request<T>(path: string, init?: RequestInit): Promise<T> {
+async function request<T>(
+  path: string,
+  init?: RequestInit,
+  retried = false,
+): Promise<T> {
+  const generation = getSessionGeneration();
   const token = getSession()?.token;
   const response = await fetch(`${apiBase}${path}`, {
     ...init,
@@ -113,6 +203,16 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
     },
   });
 
+  if (response.status === 401 && generation !== getSessionGeneration())
+    throw new Error('Oturum değişti. Lütfen işlemi tekrar deneyin.');
+  if (response.status === 401 && !retried && getSession()?.persistent) {
+    // Another request may already have refreshed this exact rejected token.
+    if (
+      (getSession()?.token !== token || (await refreshSession())) &&
+      getSession()
+    )
+      return request<T>(path, init, true);
+  }
   if (response.status === 401) clearSession();
   if (!response.ok) {
     const payload = (await response.json().catch(() => null)) as {
@@ -128,11 +228,22 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 }
 
 export async function login(email: string, password: string) {
+  if (persistentSessionsEnabled) {
+    if (refreshFlight) await refreshFlight;
+    const response = await withSessionLock(() =>
+      sessionRequest('login', { email, password }),
+    );
+    if (!response.ok)
+      throw new Error('Giriş yapılamadı. E-posta ve parolanızı kontrol edin.');
+    const result = (await response.json()) as LoginResponse;
+    remember(result);
+    return result.user;
+  }
   const response = await request<LoginResponse>('/auth/login', {
     method: 'POST',
     body: JSON.stringify({ email, password }),
   });
-  setSession({ token: response.access_token, user: response.user });
+  remember(response);
   return response.user;
 }
 

@@ -22,7 +22,9 @@ type AuthenticationUser = Prisma.UserGetPayload<{
   select: typeof authenticationUserSelect;
 }>;
 
-export function toPublicUser(user: AuthenticationUser) {
+export function toPublicUser<
+  T extends Omit<AuthenticationUser, 'passwordHash' | 'authVersion'>,
+>(user: T) {
   return {
     id: user.id,
     email: user.email,

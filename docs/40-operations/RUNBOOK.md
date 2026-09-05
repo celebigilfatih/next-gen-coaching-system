@@ -73,6 +73,38 @@ npm run prisma:migrate:deploy
 
 ## Stop and Recovery
 
+### Opt-in persistent sessions (ADR-0018)
+
+Önce `20260905000000_add_refresh_sessions` migration'ını ayrı migrator adımıyla
+uygula. Yeni backend, feature kapalı olsa da lifecycle revocation için bu tabloyu
+kullanır. Her iki flag varsayılan kapalıdır. Yalnız doğrulanmış yerel/test ortamında:
+
+```bash
+# Backend ortamı (örnek development origin):
+PERSISTENT_SESSIONS_ENABLED=true
+FRONTEND_ORIGIN=http://localhost:3001
+# Frontend build/dev ortamı:
+VITE_PERSISTENT_SESSIONS_ENABLED=true
+```
+
+Production `FRONTEND_ORIGIN` tam HTTPS origin olmalıdır; path, wildcard ve eksik
+origin reddedilir. Production cookie `__Host-ngcs_refresh`, localhost test cookie
+`ngcs_refresh` adını kullanır. Aynı localhost host'undaki farklı portlar cookie
+paylaşır; E2E ayrı browser context kullanır, kişisel browser oturumuyla karıştırma.
+
+Access 15 dakika, refresh idle 7 gün ve absolute 30 gündür. Yeni login beş aktif
+family sınırında en eskiyi düşürür. İptal/expiry kayıtları 30 gün sonra startup,
+saatlik ve login temizliğine girer; başarısız cleanup yalnız sabit hata mesajı
+yazar. Scheduler süreç içidir, kalıcı merkezi job değildir; operations rollout
+monitoring'i ayrıca tanımlanmalıdır. Security audit retention `TBD` kalır.
+
+Rollback iki flag'i kapatıp frontend'i yeniden build etmektir; family-bound JWT
+kapalı modda reddedilir. Sonraki re-enable öncesi retained family'leri revoke et
+veya ilgili kullanıcıların authVersion'ını artır. Additive tablo/enum korunur.
+Refresh transport hatasında kullanıcıya retry gösterilir; logout transport hatası
+başarılı çıkış gibi sunulmaz. Web Locks olmayan tarayıcılarda eşzamanlı sekme
+refresh'i güvenli ret ve yeniden girişle sonuçlanabilir.
+
 Yerel geliştirme süreci terminalden durdurulur. Servis recovery, veri restore ve
 production rollback prosedürleri `TBD`.
 
@@ -93,8 +125,8 @@ plan-drill kalıcılığını aynı izole test veritabanında doğrular.
 - `jest: command not found`: backend bağımlılıklarını `npm ci` ile kur.
 - Frontend login sonrası veri yükleme hatası: backend'in `4000` portunda çalıştığını,
   `VITE_API_BASE_URL` değerini ve tarayıcı origin'inin backend CORS listesinde
-  bulunduğunu doğrula. JWT bellekte tutulduğu için reload sonrası yeniden giriş
-  beklenen geçici davranıştır.
+  bulunduğunu doğrula. Kalıcı oturum flag'leri kapalıysa reload sonrası yeniden
+  giriş beklenir; açıksa exact origin/header ve migration durumunu doğrula.
 - Prisma tablo/model hatası: temiz baseline status ve schema diff'ini dedicated
   PostgreSQL üzerinde doğrula; retained veritabanına doğrudan `db push` uygulama.
 

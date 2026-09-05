@@ -67,11 +67,11 @@
 
 - **Outcome:** ADR-0010 sınırında güvenli ve kalıcı tarayıcı oturumu.
 - **Dependencies:** Exact domain/provider, session lifetime/retention ve production
-  operasyon girdileri. ADR-0017 runtime/migrator artifact kararı ve repository
-  uygulaması tamamlanmıştır.
+  operasyon girdileri. Session lifetime/refresh-record retention ADR-0018 ile
+  onaylanmıştır. ADR-0017 artifact ayrımı ve ADR-0018 opt-in uygulaması tamamlanmıştır.
 - **Exit criteria:** Migration/API sözleşmesi ve operasyon kapıları onaylanır;
   doğrulanmış artifact'lar seçilen registry/orchestrator'da ayrı DB yetkileriyle
   çalışır; staging doğrulamaları geçer.
 - **Risks:** Zorunlu girdiler `TBD`; ADR-0016 advisory kabulü production öncesi
   yeniden incelenmelidir.
-- **Status:** Planned — required inputs TBD.
+- **Status:** In progress — provider-neutral sessions implemented, production inputs TBD.

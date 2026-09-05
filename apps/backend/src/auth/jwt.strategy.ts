@@ -4,6 +4,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { JwtConfiguration } from './jwt-configuration.module';
 import { PrismaService } from '../prisma/prisma.service';
 import { UnauthorizedException } from '@nestjs/common';
+import { hasActiveSessionFamily } from './session-access';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -36,6 +37,16 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
     if (!user) throw new UnauthorizedException('User no longer exists');
     if (user.status !== 'ACTIVE' || payload.ver !== user.authVersion) {
+      throw new UnauthorizedException('Session is no longer valid');
+    }
+    if (
+      !(await hasActiveSessionFamily(
+        this.prisma,
+        user.id,
+        user.authVersion,
+        payload.sid,
+      ))
+    ) {
       throw new UnauthorizedException('Session is no longer valid');
     }
 

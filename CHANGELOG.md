@@ -4,6 +4,13 @@
 
 ### Added
 
+- Accepted ADR-0018: varsayılan kapalı, provider-neutral kalıcı oturum; 15m access,
+  7d idle/30d absolute refresh, beş aktif family ve 30d refresh-record retention.
+- Additive RefreshSession migration'ı, hash-only credential lineage, atomik rotation,
+  replay audit'i ve login/refresh/logout origin/header kontrolleri.
+- Reload bootstrap, tek refresh isteği ve sekmeler arası Web Locks, güvenli logout
+  ve family-bound HTTP/Socket revocation için unit/PostgreSQL/browser regresyonları.
+
 - CDSK 0.1.0 proje manifesti, çalışma protokolü ve zorunlu bilgi mimarisi.
 - Doğrulanmış mevcut durum, dar MVP kapsamı, riskler ve AI handoff kaydı.
 - CDSK benimsenmesi ve MVP kapsamı için kabul edilmiş ADR'ler.
@@ -77,6 +84,12 @@
   ADR-0017 ve doğrulanmış CR-012.
 
 ### Changed
+
+- ADR-0010 implementation gate'i ADR-0018 ile provider-neutral çalışma için
+  genişletildi; production domain/provider/proxy/secret/rollout girdileri TBD kalır.
+- Opt-in modda frontend login/refresh/logout credentialed cookie kullanır; business
+  API bearer sözleşmesi korunur. Hesap lifecycle değişiklikleri aktif refresh
+  kayıtlarını authVersion artışıyla birlikte revoke eder.
 
 - Eski sezon planlama belgeleri güncel kaynak olmadıklarını belirten uyarılar
   taşıyacak şekilde sınıflandırıldı.
@@ -162,9 +175,9 @@
 
 ### Known issues
 
-- Frontend kalıcı oturum implementation'ı, ölçülebilir erişilebilirlik hedefi ve
-  production deployment modeli ADR-0010 tarafından kabul edilen zorunlu
-  domain/provider, süre, retention ve operasyon girdilerini beklediği için `TBD`.
+- Frontend kalıcı oturum ADR-0018 ile opt-in uygulanmıştır; production rollout,
+  ölçülebilir erişilebilirlik hedefi, domain/provider ve operasyon girdileri `TBD`.
+  Refresh record retention onaylıdır; security-audit retention ayrı `TBD` kalır.
 - E-posta teslimi/account recovery, production migration otoritesi ve sağlık/ileri
   analitik veri politikası açık karar kapılarıdır.
 - E2E suite tablo temizliği yaptığı için yalnız caller-supplied dedicated ve

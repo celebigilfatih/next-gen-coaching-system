@@ -25,6 +25,9 @@ Bu proje **CDSK 0.1.0** standardını kullanır.
 ## Mevcut teknik yapı
 
 - `apps/backend`: NestJS 11, Prisma 6 ve PostgreSQL kullanan backend.
+- ADR-0018 kalıcı oturumu varsayılan kapalı flag'lerle uygular. Opt-in modda reload
+  oturumu yeniler ve çıkış server family'yi revoke eder; yerel kurulum ve migration
+  sırası [runbook](docs/40-operations/RUNBOOK.md) içindedir.
 - `apps/frontend`: React 19/React Router SPA; shadcn/Radix, Tailwind, Phosphor ve
   React-Konva tabanlı “Koç Operasyon Masası”. Genel Bakış, Hafta, Antrenmanlar,
   Egzersiz Kütüphanesi, Taktik Tahtası, Maçlar, Kadro, Yoklama ve Ayarlar rotaları

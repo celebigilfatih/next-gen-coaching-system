@@ -102,3 +102,19 @@ tenant izolasyonu, kesin group aggregate sınırı ve concurrent reset single-wi
 davranışını doğruladı. Playwright 3/3 ile mevcut tactical zinciri ve responsive
 rotalara ek olarak sidebar, browser back ve 390 px mobil dirty-navigation
 korumasını doğruladı.
+
+2026-09-05 ADR-0018 opt-in kalıcı oturum doğrulamasında root `npm run quality`
+geçti: backend 17 suite / 68 unit, frontend 4 dosya / 13 test, 4/4 Sites, iki
+build, typecheck/lint/format, CDSK, yerel bağlantılar ve diff kontrolleri.
+Bilinen analytics 41 lint warning'i devam eder. Disposable PostgreSQL 16'da üç
+migration deploy edildi; ikinci deploy no-op, status güncel ve canlı schema diff
+boştu. Backend E2E 18/18; replay/family revoke, concurrent single-winner rotation,
+idle/absolute expiry, logout izolasyonu, beş-session sınırı, status/access/password
+revocation ve 30-day retention doğrulandı. Socket family revoke için sender ve
+recipient unit testleri vardır. Browser suite aynı dedicated DB'de
+`E2E_PERSISTENT_SESSIONS=true` ile 4/4, kapalı modda 3/3 (opt-in testi skipped)
+geçti. Reload, yeni sekme, HttpOnly cookie, storage'da token yokluğu ve server
+logout doğrulandı. React Router'ın sessionStorage scroll-position verisi credential
+değildir; buna izin verilir. Runtime/migrator image build'leri de geçti; runtime
+image RefreshSession sorgusu başarılı, migrator image tekrar deploy sonucu no-op.
+Yerel uygulama veya production DB'sine migration uygulanmadı.

@@ -13,17 +13,24 @@ import type { Server, Socket } from 'socket.io';
 import type { AuthPrincipal } from '../auth/auth-principal';
 import { AuthorizationService } from '../auth/authorization.service';
 import { PrismaService } from '../prisma/prisma.service';
+import { hasActiveSessionFamily } from '../auth/session-access';
+import { resolveBrowserOrigins } from '../auth/persistent-session.config';
 
-type SocketPrincipal = AuthPrincipal & { name: string; authVersion: number };
+type SocketPrincipal = AuthPrincipal & {
+  name: string;
+  authVersion: number;
+  familyId?: string;
+  expiresAt?: number;
+};
 type ConnectedUser = SocketPrincipal & { groupIds: string[] };
 
 @WebSocketGateway({
   cors: {
-    origin: [
-      'http://localhost:3000',
-      'http://localhost:3001',
-      'http://localhost:3500',
-    ],
+    origin: (origin, callback) =>
+      callback(
+        null,
+        Boolean(origin && resolveBrowserOrigins().includes(origin)),
+      ),
     credentials: true,
   },
 })
@@ -41,10 +48,19 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   async handleConnection(client: Socket) {
     try {
+      if (
+        process.env.PERSISTENT_SESSIONS_ENABLED === 'true' &&
+        !resolveBrowserOrigins().includes(client.handshake.headers.origin ?? '')
+      ) {
+        throw new WsException('Socket origin is not allowed');
+      }
       const token = this.extractToken(client);
-      const payload = await this.jwt.verifyAsync<{ sub: string; ver?: number }>(
-        token,
-      );
+      const payload = await this.jwt.verifyAsync<{
+        sub: string;
+        ver?: number;
+        sid?: string;
+        exp?: number;
+      }>(token);
       const user = await this.prisma.user.findUnique({
         where: { id: payload.sub },
         select: {
@@ -64,6 +80,15 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
       ) {
         throw new WsException('Session is no longer valid');
       }
+      if (
+        !(await hasActiveSessionFamily(
+          this.prisma,
+          user.id,
+          user.authVersion,
+          payload.sid,
+        ))
+      )
+        throw new WsException('Session is no longer valid');
 
       const principal: SocketPrincipal = {
         id: user.id,
@@ -73,6 +98,9 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
         role: user.role,
         clubId: user.clubId,
         authVersion: user.authVersion,
+        ...(payload.sid
+          ? { familyId: payload.sid, expiresAt: payload.exp }
+          : {}),
       };
       const groupIds = await this.groupIdsForPrincipal(principal);
       const connected = { ...principal, groupIds };
@@ -212,7 +240,15 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     if (
       !user ||
       user.status !== 'ACTIVE' ||
-      user.authVersion !== connected.authVersion
+      user.authVersion !== connected.authVersion ||
+      (connected.expiresAt !== undefined &&
+        connected.expiresAt * 1000 <= Date.now()) ||
+      !(await hasActiveSessionFamily(
+        this.prisma,
+        connected.id,
+        connected.authVersion,
+        connected.familyId,
+      ))
     ) {
       client.disconnect(true);
       throw new WsException('Socket session is no longer valid');
@@ -225,6 +261,9 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
       role: user.role,
       clubId: user.clubId,
       authVersion: user.authVersion,
+      ...(connected.familyId
+        ? { familyId: connected.familyId, expiresAt: connected.expiresAt }
+        : {}),
     };
     this.connectedUsers.set(client.id, {
       ...current,
@@ -306,12 +345,24 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
       select: { id: true, name: true, role: true, authVersion: true },
     });
     const currentById = new Map(currentUsers.map((user) => [user.id, user]));
-    return connected.flatMap(([socketId, user]) => {
-      const current = currentById.get(user.id);
-      return current && current.authVersion === user.authVersion
-        ? [{ socketId, user: current }]
-        : [];
-    });
+    const candidates = await Promise.all(
+      connected.map(async ([socketId, user]) => {
+        const current = currentById.get(user.id);
+        return current &&
+          current.authVersion === user.authVersion &&
+          (user.expiresAt === undefined ||
+            user.expiresAt * 1000 > Date.now()) &&
+          (await hasActiveSessionFamily(
+            this.prisma,
+            user.id,
+            user.authVersion,
+            user.familyId,
+          ))
+          ? [{ socketId, user: current }]
+          : [];
+      }),
+    );
+    return candidates.flat();
   }
 
   private groupRoom(groupId: string) {

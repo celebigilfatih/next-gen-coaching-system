@@ -7,6 +7,8 @@ import { UsersModule } from '../users/users.module';
 import { PrismaModule } from '../prisma/prisma.module';
 import { JwtStrategy } from './jwt.strategy';
 import { Reflector } from '@nestjs/core';
+import { PersistentSessionConfigurationModule } from './persistent-session-configuration.module';
+import { RefreshSessionService } from './refresh-session.service';
 import {
   JwtConfiguration,
   JwtConfigurationModule,
@@ -17,6 +19,7 @@ import {
     PrismaModule,
     UsersModule,
     PassportModule,
+    PersistentSessionConfigurationModule,
     JwtConfigurationModule,
     JwtModule.registerAsync({
       global: true,
@@ -29,6 +32,7 @@ import {
     }),
   ],
   providers: [
+    RefreshSessionService,
     AuthService,
     JwtStrategy,
     Reflector,

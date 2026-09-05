@@ -5,8 +5,8 @@
 - Yerel Docker Compose tanımı mevcuttur.
 - Development, staging ve production ortam sözleşmeleri `TBD`.
 - ADR-0010 aynı site altındaki ayrı HTTPS frontend/API origin'lerini kabul eder.
-  Domain, provider, TLS/proxy ve secret ownership `TBD`; bunlar kapanmadan
-  implementation veya rollout başlamaz.
+  ADR-0018 provider-neutral session uygulamasını onaylar. Domain, provider,
+  TLS/proxy ve secret ownership `TBD`; bunlar kapanmadan production rollout başlamaz.
 
 ## Release Steps
 
@@ -41,6 +41,13 @@ Production registry, immutable tag/digest politikası, image signing/SBOM,
 orchestrator, ayrı runtime/migrator DB rolleri ve credential delivery `TBD`.
 
 ## Verification
+
+Kalıcı oturum migration'ı backend güncellemesinden önce ayrı migrator ile
+uygulanır. Varsayılan `PERSISTENT_SESSIONS_ENABLED=false` ve
+`VITE_PERSISTENT_SESSIONS_ENABLED=false`; production'da açılması bu teslimin parçası
+değildir. Frontend flag'i build-time, backend flag'i process-start girdisidir.
+Production'da özellik açıkken eksik/HTTP/path içeren `FRONTEND_ORIGIN` startup'ı
+reddeder; aynı site API origin eşleşmesi ve TLS deployment kapısında doğrulanır.
 
 - Backend sağlık/readiness endpoint'i `TBD`; kök `Hello World!` gerçek health
   sözleşmesi sayılmaz.

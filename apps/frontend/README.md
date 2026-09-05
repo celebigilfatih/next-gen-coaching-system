@@ -19,8 +19,11 @@ npm run dev
 ```
 
 Varsayılan backend adresi `http://localhost:4000`; farklı bir ortam için
-`VITE_API_BASE_URL` kullanılır. JWT yalnız process belleğinde tutulur ve sayfa
-yenilendiğinde oturum sona erer.
+`VITE_API_BASE_URL` kullanılır. JWT yalnız bellekte tutulur. Varsayılan memory-only
+modda reload oturumu sonlandırır. ADR-0018 opt-in modu için backend migration ve
+`PERSISTENT_SESSIONS_ENABLED=true`, exact `FRONTEND_ORIGIN`; frontend'de
+`VITE_PERSISTENT_SESSIONS_ENABLED=true` gerekir. Reload bootstrap HttpOnly cookie
+ile yeniler; çıkış sunucuda family'yi iptal eder. Ayrıntı kök runbook'tadır.
 
 ## Kalite kapıları
 
@@ -51,4 +54,9 @@ doğrular. Ana rotalar ayrıca 1440, 1024 ve 390 piksel genişlikte kontrol edil
 genişletilmiş shell ve destek rotaları browser/design QA ile doğrulanır.
 Credential repository'ye yazılmaz.
 
-Production hosting, kalıcı oturum ve ölçülebilir erişilebilirlik hedefi `TBD`.
+Kalıcı oturum browser testi aynı disposable komuta `E2E_PERSISTENT_SESSIONS=true`
+eklenerek çalıştırılır. Kapalı modda üç koç testi geçer ve opt-in testi atlanır;
+açık modda reload/new-tab/logout dahil dört test çalışır. React Router kaydırma
+konumlarını sessionStorage'da tutabilir; authentication credential'ları saklanmaz.
+
+Production hosting/rollout ve ölçülebilir erişilebilirlik hedefi `TBD`.

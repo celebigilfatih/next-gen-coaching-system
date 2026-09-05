@@ -11,7 +11,9 @@ import {
   CardTitle,
 } from '../components/ui/card';
 import { Separator } from '../components/ui/separator';
-import { clearSession, getSession } from '../lib/session';
+import { getSession } from '../lib/session';
+import { logout as endSession } from '../lib/api';
+import { toast } from 'sonner';
 import { useWorkspace } from '../lib/workspace-context';
 
 export function meta() {
@@ -22,9 +24,15 @@ export default function SettingsRoute() {
   const navigate = useNavigate();
   const user = getSession()?.user;
   const { group, season } = useWorkspace();
-  function logout() {
-    clearSession();
-    navigate('/login');
+  async function logout() {
+    try {
+      await endSession();
+      navigate('/login');
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : 'Çıkış tamamlanamadı.',
+      );
+    }
   }
   return (
     <div className="page-shell settings-page">
@@ -70,11 +78,13 @@ export default function SettingsRoute() {
       </div>
       <Alert className="session-alert">
         <ShieldCheck />
-        <AlertTitle>Yerel ve geçici oturum</AlertTitle>
+        <AlertTitle>
+          {getSession()?.persistent ? 'Güvenli oturum' : 'Geçici oturum'}
+        </AlertTitle>
         <AlertDescription>
-          Access token yalnız tarayıcı belleğinde tutulur. Sayfa yenilendiğinde
-          yeniden giriş gerekir; kalıcı session ADR-0010 implementation
-          girdilerini bekliyor.
+          {getSession()?.persistent
+            ? 'Sayfayı yenilediğinizde oturumunuz güvenli bir çerezle yenilenir. Çıkış yaptığınızda bu cihazın oturumu sunucuda kapatılır.'
+            : 'Sayfa yenilendiğinde yeniden giriş gerekir.'}
         </AlertDescription>
       </Alert>
       <Button variant="destructive" onClick={logout}>

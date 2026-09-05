@@ -51,6 +51,9 @@ export default defineConfig({
         JWT_SECRET: jwtSecret,
         NODE_ENV: 'test',
         PORT: backendPort,
+        PERSISTENT_SESSIONS_ENABLED:
+          process.env.E2E_PERSISTENT_SESSIONS ?? 'false',
+        FRONTEND_ORIGIN: frontendBaseUrl,
       },
       url: backendBaseUrl,
       reuseExistingServer: false,
@@ -61,6 +64,8 @@ export default defineConfig({
       cwd: frontendRoot,
       env: {
         VITE_API_BASE_URL: backendBaseUrl,
+        VITE_PERSISTENT_SESSIONS_ENABLED:
+          process.env.E2E_PERSISTENT_SESSIONS ?? 'false',
       },
       url: `${frontendBaseUrl}/login`,
       reuseExistingServer: false,

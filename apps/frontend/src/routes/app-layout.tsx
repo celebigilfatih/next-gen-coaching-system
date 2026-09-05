@@ -14,7 +14,11 @@ import {
   Strategy,
   UsersThree,
 } from '@phosphor-icons/react';
-import { type ComponentType, type FormEvent } from 'react';
+import {
+  type ComponentType,
+  type FormEvent,
+  useSyncExternalStore,
+} from 'react';
 import { NavLink, Navigate, Outlet, useNavigate } from 'react-router';
 import { toast } from 'sonner';
 import { Avatar, AvatarFallback } from '../components/ui/avatar';
@@ -43,7 +47,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '../components/ui/tooltip';
-import { clearSession, getSession, type SessionUser } from '../lib/session';
+import { getSession, subscribeSession, type SessionUser } from '../lib/session';
+import { logout as endSession } from '../lib/api';
 import { WorkspaceProvider, useWorkspace } from '../lib/workspace-context';
 import '../workspace.css';
 
@@ -90,7 +95,11 @@ const mobileNavigation = [
 ].map((path) => navigation.find(({ to }) => to === path)!);
 
 export default function AppLayout() {
-  const session = getSession();
+  const session = useSyncExternalStore(
+    subscribeSession,
+    getSession,
+    () => null,
+  );
   if (!session) return <Navigate to="/login" replace />;
   return (
     <WorkspaceProvider>
@@ -124,9 +133,15 @@ function Shell({ user }: { user: SessionUser }) {
     }
   }
 
-  function logout() {
-    clearSession();
-    navigate('/login');
+  async function logout() {
+    try {
+      await endSession();
+      navigate('/login');
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : 'Çıkış tamamlanamadı.',
+      );
+    }
   }
 
   return (

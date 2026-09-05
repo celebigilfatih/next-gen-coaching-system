@@ -36,6 +36,7 @@ model User {
   auditEventsAuthored   SecurityAuditEvent[] @relation("AuditActor")
   auditEventsTargeted   SecurityAuditEvent[] @relation("AuditTarget")
   drillsCreated         Drill[]              @relation("DrillCreator")
+  refreshSessions       RefreshSession[]
   club                  Club?                @relation(fields: [clubId], references: [id])
 }
 
@@ -133,6 +134,26 @@ model SecurityAuditEvent {
   @@index([targetUserId])
   @@index([clubId])
   @@index([createdAt])
+}
+
+model RefreshSession {
+  id                String    @id @default(cuid())
+  userId            String
+  familyId          String
+  tokenHash         String    @unique
+  authVersion       Int
+  idleExpiresAt     DateTime
+  absoluteExpiresAt DateTime
+  revokedAt         DateTime?
+  revocationReason  String?
+  createdAt         DateTime  @default(now())
+  lastUsedAt        DateTime  @default(now())
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, revokedAt])
+  @@index([familyId])
+  @@index([idleExpiresAt])
+  @@index([absoluteExpiresAt])
 }
 
 model Drill {
@@ -473,6 +494,10 @@ enum SecurityAuditAction {
   PASSWORD_RESET_ISSUED
   PASSWORD_RESET_COMPLETED
   SESSIONS_REVOKED
+  SESSION_CREATED
+  SESSION_REFRESHED
+  SESSION_LOGGED_OUT
+  SESSION_REUSE_DETECTED
 }
 
 enum Position {

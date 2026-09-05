@@ -19,7 +19,8 @@
   JWT, rol ve target-scope kontrolü gerektirir.
 - ADR-0009 frontend'i mevcut bearer JWT'yi bellekte tutar, REST isteklerinde
   `Authorization: Bearer` başlığı ve Socket.IO handshake'inde `auth.token` kullanır.
-  Kalıcı oturum/refresh/cookie modeli production topolojisine kadar `TBD`.
+  ADR-0018 ile opt-in kalıcı oturum uygulanmıştır; varsayılan memory-only davranış
+  korunur. Frontend Socket consumer'ı henüz yoktur; bearer alanı backend yeteneğidir.
 - Plan drill replace işlemi `PUT /training-plans/:id/drills` üzerinden, mevcut
   plan-manage authorization sınırı içinde yürür. En fazla 50 faz kaydı kabul edilir;
   geçersiz phase/order veya bulunmayan drill bütün işlemi reddeder.
@@ -40,6 +41,21 @@
   kimliği gönderir.
 - ADR-0015 ile password reset completion tokenı koşullu tek-kazanan claim olmadan
   parola veya audit mutation'ına geçmez.
+
+## Browser-session contract (ADR-0018)
+
+- `POST /auth/login` aynı email/password DTO'sunu kullanır; JSON yalnız access
+  token, public user ve `persistent_session` göstergesi taşır. Özellik açıkken
+  refresh credential yalnız HttpOnly cookie'ye yazılır.
+- `POST /auth/refresh` ve `/auth/logout` yalnız flag açıkken kullanılabilir;
+  kapalı durumda 404 döner. Açık modda login/refresh/logout için exact
+  `FRONTEND_ORIGIN` ve `X-NGCS-CSRF: 1` zorunludur. Missing/malformed/unapproved
+  origin veya header 401; invalid/expired/replayed refresh 401 döner.
+- Başarılı refresh/logout 200; login 201. Yanıtlar `Cache-Control: no-store` taşır.
+  Refresh credential body/URL/JSON/log içinde gösterilmez. Replay family revoke'u
+  hata yanıtından önce commit edilir. Logout tekrarı idempotenttir.
+- Family-bound access JWT HTTP ve Socket sender/recipient kontrollerinde güncel
+  aktif family gerektirir. Business REST uçları cookie ile authorize edilmez.
 
 ## Errors, Idempotency and Pagination
 

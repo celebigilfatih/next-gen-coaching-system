@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { ArrowRight, LockKey, SoccerBall } from '@phosphor-icons/react';
-import { useNavigate } from 'react-router';
+import { Navigate, useNavigate } from 'react-router';
+import { getSession } from '../lib/session';
 import { login } from '../lib/api';
 
 export function meta() {
@@ -13,6 +14,7 @@ export default function LoginRoute() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
+  if (getSession()) return <Navigate to="/app/week" replace />;
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();

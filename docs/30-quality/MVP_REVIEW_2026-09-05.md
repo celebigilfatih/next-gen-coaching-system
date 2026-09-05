@@ -286,8 +286,10 @@ seçeneklerini zorunlu kılar; F-004 Playwright ile kapalıdır.
 
 ## Production riskleri — M4, MVP hükmü dışında
 
-- Frontend bearer JWT yalnız bellekte; reload oturumu kaybeder. Kalıcı session,
-  lifetime, rotation, CSRF, exact domain/provider ve retention girdileri `TBD`.
+- Varsayılan kapalı modda bearer JWT yalnız bellekte; reload oturumu kaybeder.
+  ADR-0018 opt-in kalıcı session, lifetime, rotation, CSRF ve refresh-record
+  retention uygulamasını doğruladı. Exact production domain/provider, rollout
+  ve security-audit retention girdileri hâlâ `TBD`.
 - Backend audit'inde Prisma → `@prisma/config` → `deepmerge-ts` zincirinde 3 high
   advisory vardır. ADR-0016 triyajı bunu hosted runtime için `not_actionable`
   sınıflandırmış ve production öncesi yeniden inceleme koşuluyla geçici kabul
@@ -336,3 +338,16 @@ Sonuç **PASS**: F-001–F-006'nın özgün tetikleyicileri artık yeniden üret
 global/same-tenant, same-group, normal save ve tek reset-kazanan davranışları
 korunuyor. Production/M4 riskleri ve F-008 kapsamındaki log/DTO/lint borcu bu MVP
 hükmünün dışında kalmaya devam eder.
+
+## ADR-0018 sonrası doğrulama eki
+
+2026-09-05: Default-disabled provider-neutral kalıcı session uygulamasından sonra
+root quality geçti (backend 68 unit, frontend 13 test, Sites 4/4, build, lint,
+typecheck/format, CDSK/link/diff). Disposable PostgreSQL 16'da üçüncü additive
+migration ve tekrar deploy başarılı; status güncel, canlı schema diff boş.
+Backend E2E 18/18, browser opt-in 4/4 ve flag-off 3/3 geçti. Rotation/replay,
+concurrent refresh/login, lifecycle revoke, expiry/retention, reload/yeni sekme ve
+server logout doğrulandı. Runtime ve migrator artifact'ları yeniden build edildi.
+Önceki review bulguları yeniden açılmadı; bu ek production güvenlik onayı veya yeni
+bir tam repository audit'i değildir. Production rollout yapılmadı. Bilinen
+41 analytics warning'i ve ayrı operasyon onay kapıları açık kalır.

@@ -1,6 +1,6 @@
 # Next Generation Coaching System — Project Boot
 
-- **Document version:** 2.6
+- **Document version:** 2.7
 - **CDSK version:** 0.1.0
 - **Last updated:** 2026-09-05
 
@@ -11,9 +11,8 @@
 
 - **North star:** Futbol sezonu, antrenman ve taktik çalışma akışlarını tek bir
   izlenebilir dijital çalışma alanında toplamak.
-- **Current mission:** M3.2 stabilizasyonundan geçen dar MVP'yi ve ayrıştırılmış
-  runtime/migrator artifact'larını koruyup M4 production/session girdilerini
-  görünür biçimde toplamak.
+- **Current mission:** Dar MVP'yi, runtime/migrator artifact'larını ve ADR-0018
+  opt-in kalıcı oturumu doğrulayarak M4 production girdilerini toplamak.
 - **Success signal:** Antrenörün sezon bağlamında antrenman planlayabilmesi,
   katılımı takip edebilmesi ve taktik analiz kaydı oluşturabilmesi.
 - **Accepted trade-offs:** Mevcut sağlık, ileri analitik ve scouting modülleri
@@ -33,21 +32,22 @@
 
 ## 2. Current Status
 
-- **Phase:** M3.2 stabilizasyonu ve ADR-0017 artifact hardening tamamlandı;
+- **Phase:** M3.2 stabilizasyonu, ADR-0017 artifact ayrımı ve ADR-0018 opt-in oturum tamamlandı;
   2026-09-05 remediation review hükmü **Pass**.
 - **Version:** Ürün sürümü `TBD`.
 - **Active milestone:** M4 production session hazırlığı; zorunlu girdiler, owner ve
   hedef tarih `TBD`.
-- **Current focus:** ADR-0010 production/session girdileri ve BL-024 log/DTO/lint
+- **Current focus:** ADR-0010/0018 production rollout girdileri ve BL-024 log/DTO/lint
   borcunu hazırlamak; doğrulanmış artifact'lar için production registry,
   orchestrator ve DB rol sınırlarını belirlemek.
-- **Critical risks:** Memory-only frontend session; production deployment, ayrı
+- **Critical risks:** Kalıcı oturum varsayılan kapalı; production deployment, ayrı
   runtime/migrator DB rolleri, secret, readiness, backup ve observability modeli;
   sağlık/ileri analitik gizlilik politikası. Prisma advisory'si ADR-0016
   koşullarıyla geçici kabul edilmiştir; ADR-0017 runtime image bu CLI/config
   zincirini taşımaz.
-- **Blocking decisions:** Exact production domain/provider, session lifetime ve
-  retention, operasyon sahibi, sağlık verisi retention/audit politikası `TBD`.
+- **Blocking decisions:** Exact production domain/provider, proxy/secret modeli,
+  operasyon sahibi, security audit ve sağlık verisi retention politikası `TBD`.
+  Session lifetime ve refresh-record retention ADR-0018 ile onaylanmıştır.
 - **Last status update:** 2026-09-05
 
 ## 3. Repository Navigation
@@ -68,7 +68,8 @@
 - **Main integrations:** PostgreSQL ve Socket.IO; başka dış servis doğrulanmadı.
 - **AI components:** N/A — repository'de AI çalışma zamanı doğrulanmadı.
 - **Data/storage:** PostgreSQL; baseline ve additive taktik-tahta migration'ı temiz
-  PostgreSQL 16 üzerinde uygulandı ve schema diff boş doğrulandı.
+  PostgreSQL 16 üzerinde uygulandı. ADR-0018 üçüncü additive RefreshSession
+  migration'ını ekler; deploy/status ve canlı schema diff doğrulandı.
 - **Deployment model:** Docker Compose backend için runtime-only target, açık
   operations profili için ayrı migrator target kullanır; production registry,
   orchestrator ve credential modeli `TBD`.
@@ -92,7 +93,7 @@
 | Çekirdek kaynak yetkilendirme matrisi | Accepted; unit/E2E verified | ADR-0007 |
 | Davet tabanlı hesap yaşam döngüsü | Accepted; migration/unit/E2E verified | ADR-0008 |
 | Koç öncelikli web frontend ve ilk akış | Accepted; vertical slice verified | ADR-0009 |
-| Production origin ve kalıcı tarayıcı oturumu | Accepted; implementation inputs TBD | ADR-0010 |
+| Production origin ve kalıcı tarayıcı oturumu | Accepted; rollout inputs TBD; amended by ADR-0018 | ADR-0010 |
 | Rotalı shadcn koç çalışma alanı | Accepted; implemented | ADR-0011 |
 | Kapsamlı egzersiz ve taktik tahta sözleşmesi | Accepted; implemented | ADR-0012 |
 | Genişletilmiş koç navigasyonu ve shadcn shell | Accepted; implemented | ADR-0013 |
@@ -100,6 +101,7 @@
 | Atomik recovery ve güvenli SVG serialization | Accepted; verified | ADR-0015 |
 | Prisma CLI advisory risk disposition | Accepted; production re-review required | ADR-0016 |
 | Runtime ve migrator image ayrımı | Accepted; image/migration/runtime/E2E verified | ADR-0017 |
+| Provider-neutral kalıcı oturum | Accepted; opt-in implementation; default disabled | ADR-0018 |
 
 ## 6. AI Context
 
@@ -107,7 +109,7 @@
 - **Constraints:** Bilinmeyeni tahmin etme; kritik kararı onaysız uygulama; secret
   veya kişisel veriyi kalıcı bağlama alma.
 - **Open questions:** Başarı metrikleri, ölçülebilir erişilebilirlik hedefi,
-  ADR-0010 implementation girdileri, e-posta delivery/recovery, production
+  ADR-0010 production rollout girdileri, e-posta delivery/recovery, production
   migration sahibi, sağlık retention/audit ve production modeli.
 - **Recent decisions:** CDSK 0.1.0, dar MVP kapsamı, ADR-0004 auth/bootstrap tabanı,
   ADR-0003 monorepo topolojisi, ADR-0005 rol/tenant sınırı, ADR-0006 migration süreci
@@ -117,8 +119,9 @@
   ADR-0014 kesin group/recipient sınırı, ADR-0015 atomik reset/güvenli SVG ve
   ADR-0016 Prisma advisory geçici risk disposition ve ADR-0017 runtime/migrator
   artifact ayrımı kabul edildi. ADR-0010
-  aynı site origin ve dönen refresh-session yaklaşımı olarak Option 1'i kabul eder;
-  implementation girdileri `TBD` kalır.
+  aynı site origin ve dönen refresh-session yaklaşımı olarak Option 1'i kabul eder.
+  ADR-0018 provider-neutral uygulamayı ve 15m access/7d idle/30d absolute,
+  beş family/30d refresh-record retention politikasını kabul eder; rollout `TBD`.
 - **Recently completed:** Temiz Prisma baseline; current-database principal; HTTP ve
   Socket.IO kulüp/grup authorization; cross-club negatif testleri; passwordHash,
   throttling ve bounded season generation güvenlik tabanı; kırık frontend gitlink'inin
@@ -142,16 +145,22 @@
   taşımayan runtime-only image ile yalnız migration ağacını ve CLI'yi taşıyan ayrı
   migrator target oluşturuldu. Clean PostgreSQL 16 migration/idempotency, runtime
   HTTP 200 smoke, unprivileged user ve dependency inventory doğrulandı.
+  ADR-0018 ile hash-only RefreshSession, atomik rotation/replay, exact origin/CSRF
+  header, family-bound HTTP/Socket erişimi, lifecycle revoke, frontend reload ve
+  server logout uygulandı. Flag'ler varsayılan kapalıdır.
 - **Latest review:** `1b831e0` tabanlı stabilizasyon çalışma ağacında root quality,
   PostgreSQL 16 migration/schema diff, backend 9/9 E2E ve frontend 3/3 Playwright
   E2E geçti; açık P0/P1 kalmadığı için remediation hükmü **Pass**. ADR-0017
   sonrasında aynı root quality ve E2E kapıları tekrar geçti. Kanıt:
   `docs/30-quality/MVP_REVIEW_2026-09-05.md`.
+  ADR-0018 sonrasında root quality, 68 backend / 13 frontend unit, backend 18/18
+  E2E, browser opt-in 4/4 ve flag-off 3/3 tekrar geçti; üç migration deploy/status
+  güncel ve canlı schema diff boştur. Runtime/migrator image build'leri geçti.
 
 ## 7. Current Priorities
 
-1. ADR-0010 için exact domain/provider, session lifetime/retention ve operasyon
-   sahibini belirlemek.
+1. ADR-0010/0018 için exact domain/provider, proxy/secret, staging ve operasyon
+   sahibini belirlemek; onaylı session politikasıyla rollout hazırlamak.
 2. Kabul edilmiş runtime/migrator artifact'ları için provider, registry,
    orchestrator, signing/SBOM ve ayrı DB-role girdilerini tamamlamak.
 3. BL-024 structured/redacted logging, DTO ve analytics lint borcunu planlamak.
@@ -161,7 +170,8 @@
 ## 8. Known Constraints
 
 - `apps/frontend` çalışan prototiptir; bearer JWT bellekle sınırlı olduğu için sayfa
-  yenilemede oturum kaybı kabul edilmiş geçici kısıttır.
+  yenilemede oturum kaybı varsayılan flag-off davranışıdır. Opt-in modda HttpOnly
+  refresh cookie ile oturum yenilenir; production için açılmamıştır.
 - Production, gizlilik ve sağlık verisi kararları açık onay gerektirir.
 - Backend unit test/build çalışır. E2E suite destructive cleanup yaptığı için yalnız
   caller-supplied dedicated ve silinebilir veritabanında çalıştırılır.
@@ -189,11 +199,12 @@
 - [x] Yerel belge bağlantıları ve `git diff --check` geçiyor.
 - [x] Prisma clean baseline ephemeral PostgreSQL 16 üzerinde uygulandı; status güncel
   ve schema diff boş doğrulandı. Frontend topolojisi ADR-0003 ile düzeltildi.
-- [x] Backend bağımlılıkları kuruldu; 15 unit suite / 54 test ve build geçti.
+- [x] Backend bağımlılıkları kuruldu; 17 unit suite / 68 test ve build geçti.
 - [x] Frontend typecheck, lint, format, unit/component, production build ve Sites
   worker testleri geçti; masaüstü/tablet browser ve görsel QA sonucu `passed`.
-- [x] Dedicated PostgreSQL 16 üzerinde backend tenant/group/reset E2E 9/9 ve koç
-  akışlarıyla dirty-navigation kontrollerini içeren Playwright E2E 3/3 geçti.
+- [x] Frontend 4 Vitest dosyası / 13 test geçti.
+- [x] Dedicated PostgreSQL 16 üzerinde backend tenant/group/reset/session E2E
+  18/18 ve koç/dirty-navigation/session Playwright opt-in 4/4, flag-off 3/3 geçti.
 - [x] Kök `npm run quality` komutu typecheck, salt-okunur lint/format, unit test,
   build, Sites, Markdown link, CDSK ve diff kontrolleriyle geçti.
 - [x] Kapanış handoff'u güncellendi.
@@ -203,23 +214,24 @@
 
 ## 11. AI Handoff
 
-- **Session summary:** `origin/main` üzerindeki `1b831e0` tabanında A–D
-  stabilizasyonu ve kullanıcı onaylı ADR-0017 Option 2 uygulandı. Runtime-only ve
-  migrator artifact'ları ayrıldı; clean migration/idempotency, runtime smoke,
-  quality, backend 9/9 E2E ve frontend 3/3 Playwright E2E geçti. Güncel MVP review
-  hükmü **Pass**.
+- **Session summary:** Kullanıcı onaylı ADR-0018 provider-neutral kalıcı oturum
+  paketi uygulandı. Additive migration, rotation/replay ve family revoke, frontend
+  bootstrap/logout doğrulandı. Backend E2E 18/18; browser opt-in 4/4 ve flag-off
+  3/3 (opt-in testi skipped). Production rollout yapılmadı; flag'ler kapalıdır.
 - **Documents updated:** ADR-0014–0017, review raporu, BL-017–BL-026, CR-009–012,
   requirements, mimari güvenlik/veri/API/entegrasyon belgeleri, operations,
-  roadmap, milestone, changelog ve handoff.
+  roadmap, milestone, changelog ve handoff; ADR-0018, BL-027, CR-013 ve session
+  API/veri/operations sözleşmesi eklendi.
 - **Decisions recorded:** Dashboard `GLOBAL + own club`; aggregate'lerde kesin
   group sınırı; Socket operasyon olaylarında güncel group/resource alıcısı;
   password reset'te transaction içi conditional single-winner claim; Prisma CLI
   advisory'si hosted runtime için geçici `not_actionable` risk kabulü; serving
-  runtime ile migration artifact'ının ayrılması.
-- **Remaining risk:** Memory-only auth, log/DTO/lint borcu, production provider,
+  runtime ile migration artifact'ının ayrılması; default-disabled persistent
+  session, 15m/7d/30d/beş-family ve 30d refresh-record retention.
+- **Remaining risk:** Log/DTO/lint borcu, production provider,
   registry/orchestrator, ayrı DB rolleri, readiness ve operasyon sözleşmesi M4
   riski olarak sürer.
-- **Recommended next step:** ADR-0010 implementation girdilerini ve doğrulanmış
+- **Recommended next step:** ADR-0010/0018 rollout girdilerini ve doğrulanmış
   artifact'ların production registry/orchestrator/DB-role sözleşmesini tamamlamak.
 
 ## Revision History
@@ -252,3 +264,4 @@
 | 2.4 | 2026-09-05 | A–D stabilizasyonu tamamlandı; F-001–F-006 kapandı ve remediation review Pass oldu |
 | 2.5 | 2026-09-05 | Prisma advisory geçici risk kabulü kaydedildi; runtime/migrator ayrımı Proposed oldu |
 | 2.6 | 2026-09-05 | ADR-0017 kabul edildi; runtime-only backend ve ayrı migrator artifact'ı doğrulandı |
+| 2.7 | 2026-09-05 | ADR-0018 opt-in kalıcı oturum, additive migration ve browser reload/logout doğrulandı |
