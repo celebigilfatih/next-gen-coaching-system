@@ -81,15 +81,13 @@ const navigationSections: { label: string; items: NavigationItem[] }[] = [
 ];
 
 const navigation = navigationSections.flatMap((section) => section.items);
-const mobileNavigation = navigation.filter(({ to }) =>
-  [
-    '/app/week',
-    '/app/trainings',
-    '/app/tactics',
-    '/app/squad',
-    '/app/matches',
-  ].includes(to),
-);
+const mobileNavigation = [
+  '/app/week',
+  '/app/trainings',
+  '/app/tactics',
+  '/app/squad',
+  '/app/matches',
+].map((path) => navigation.find(({ to }) => to === path)!);
 
 export default function AppLayout() {
   const session = getSession();

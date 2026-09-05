@@ -1,6 +1,6 @@
 # Next Generation Coaching System — Project Boot
 
-- **Document version:** 2.0
+- **Document version:** 2.1
 - **CDSK version:** 0.1.0
 - **Last updated:** 2026-09-05
 
@@ -117,6 +117,8 @@
   plan snapshot'ı; maç tahtası; iki kulüplü Playwright E2E; shadcn üst çubuk ve
   gruplu dokuz masaüstü menüsü; gerçek workspace verisiyle Genel Bakış, Egzersiz
   Kütüphanesi, Yoklama ve Ayarlar destek rotaları; 390 px mobil tam menü.
+  Dokuz rotalı masaüstü UI audit'i ve düzeltilmiş mobil kütüphane kanıtı ayrıca
+  kaydedildi; mobil ana görev sırası ADR-0011 ile bire bir hizalandı.
 
 ## 7. Current Priorities
 
@@ -167,13 +169,12 @@
 
 ## 11. AI Handoff
 
-- **Session summary:** Eski frontend navigasyonu ve görsel dili güncel çalışma
-  alanıyla karşılaştırıldı. Kullanıcının açık onayıyla dört MVP destek rotası ve
-  dokuz girişli shadcn shell eklendi; beş ana görev mobil alt navigasyonda korundu.
-  Genel Bakış, Egzersiz Kütüphanesi, Yoklama ve Ayarlar gerçek workspace verisiyle
-  browser/responsive QA'dan geçti; backend ve veri modeli değişmedi.
-- **Documents updated:** ADR-0013, requirements, scope, roadmap, frontend/root
-  README, root design QA, changelog ve Project Boot.
+- **Session summary:** Dokuz koç rotası gerçek yerel fixture ile 1440 × 1024'te
+  ekran ekran denetlendi. Mobil ana görev sırası kabul edilmiş düzene sabitlendi ve
+  Egzersiz Kütüphanesi faz sekmelerinin 390 px'de ikinci satıra taşması giderildi;
+  backend ve veri modeli değişmedi.
+- **Documents updated:** UI audit kanıtı, changelog ve Project Boot; önceki ADR-0013
+  karar sınırı değişmedi.
 - **Decisions recorded:** ADR-0010 Option 1, ADR-0011, ADR-0012 ve ADR-0013 Accepted.
   ADR-0010 henüz implemented değildir. Exact domain/provider, token
   süreleri, retention, secret ve production operasyon sözleşmeleri `TBD`.
@@ -209,3 +210,4 @@
 | 1.8 | 2026-09-04 | Rotalı shadcn çalışma alanı, scoped drills ve ortak taktik tahta doğrulandı |
 | 1.9 | 2026-09-05 | ADR-0010 Option 1 kabul edildi; M4 zorunlu girdileri görünürleştirildi |
 | 2.0 | 2026-09-05 | shadcn shell dokuz masaüstü menüsü ve dört MVP destek rotasıyla genişletildi |
+| 2.1 | 2026-09-05 | dokuz rota UI audit'i tamamlandı; mobil sıra ve kütüphane sekmeleri düzeltildi |

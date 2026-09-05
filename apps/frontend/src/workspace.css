@@ -1189,6 +1189,16 @@
   .loading-grid {
     grid-template-columns: 1fr;
   }
+  .library-tabs {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+  .library-tabs [role='tab'] {
+    min-width: 0;
+    padding-inline: 4px;
+    font-size: 11px;
+  }
   .catalog-grid,
   .squad-grid,
   .dashboard-stat-grid,

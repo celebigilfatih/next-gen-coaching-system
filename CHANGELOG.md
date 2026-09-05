@@ -117,6 +117,9 @@
 - `/app` varsayılanı Genel Bakış'a yönlendirildi; masaüstü navigasyonu Genel,
   Planlama ve Takım başlıkları altında dokuz girişe genişletildi. Mobil alt çubuk
   ADR-0011'deki beş ana görevi korur.
+- Mobil ana görev sırası ADR-0011 ile aynı Hafta → Antrenmanlar → Taktik Tahtası →
+  Kadro → Maçlar düzenine sabitlendi; Egzersiz Kütüphanesi faz sekmelerinin 390 px
+  görünümde ikinci satıra taşması giderildi.
 
 ### Known issues
 
