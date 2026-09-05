@@ -48,8 +48,9 @@ taktik-tahta migration'ı ephemeral PostgreSQL 16 üzerinde doğrulanmıştır.
 Docker Compose yalnız doğrulanmış PostgreSQL ve backend servislerini tanımlar.
 Frontend yerel Vite/Sites-ready build ile doğrulanmıştır; production hosting ve
 release modeli `TBD`. ADR-0010, aynı site altındaki ayrı frontend/API origin'leri
-ve kalıcı tarayıcı oturumu için bağlayıcı olmayan bir öneridir; onaylanmadan mevcut
-deployment veya authentication sözleşmesini değiştirmez.
+ve kalıcı tarayıcı oturumu sınırını kabul eder; zorunlu girdiler tamamlanıp ayrı
+migration/API onayı verilmeden mevcut deployment veya authentication sözleşmesini
+değiştirmez.
 
 ## Key Risks and ADR Links
 
@@ -57,7 +58,7 @@ deployment veya authentication sözleşmesini değiştirmez.
 - Dar MVP: ADR-0002.
 - Frontend monorepo topolojisi: ADR-0003 Accepted; koç öncelikli teknoloji ve ilk
   akış ADR-0009 Accepted.
-- Production origin ve kalıcı oturum: ADR-0010 Proposed; açık kullanıcı onayı ve
+- Production origin ve kalıcı oturum: ADR-0010 Accepted; implementation ve
   production girdileri bekleniyor.
 - Çekirdek yetki: ADR-0005 ve ADR-0007 Accepted.
 - Rotalı UI ve taktik belge/yetki: ADR-0011 ve ADR-0012 Accepted.

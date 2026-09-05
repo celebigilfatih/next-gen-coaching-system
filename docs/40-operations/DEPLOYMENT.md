@@ -4,15 +4,16 @@
 
 - Yerel Docker Compose tanımı mevcuttur.
 - Development, staging ve production ortam sözleşmeleri `TBD`.
-- ADR-0010 aynı site altındaki ayrı HTTPS frontend/API origin'lerini önerir ancak
-  `Proposed` durumundadır. Domain, provider, TLS/proxy ve secret ownership `TBD`.
+- ADR-0010 aynı site altındaki ayrı HTTPS frontend/API origin'lerini kabul eder.
+  Domain, provider, TLS/proxy ve secret ownership `TBD`; bunlar kapanmadan
+  implementation veya rollout başlamaz.
 
 ## Release Steps
 
 TBD. Mevcut Compose yalnız PostgreSQL ve backend'i kapsar; frontend veya production
 deployment prosedürü olarak kullanılamaz.
 
-ADR-0010 kabul edilse dahi provider/domain, WebSocket routing, trusted proxy,
+ADR-0010 kabul edilmiştir; ancak provider/domain, WebSocket routing, trusted proxy,
 dağıtık auth throttling, secret delivery, readiness, observability ve backup/restore
 kapıları kapanmadan production rollout yapılamaz.
 

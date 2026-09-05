@@ -1,8 +1,8 @@
 # ADR-0010: Production origin topology and persistent browser session
 
-- **Status:** Proposed
-- **Date:** 2026-09-01
-- **Owners / approvers:** Explicit user approval required; production/security owner TBD
+- **Status:** Accepted
+- **Date:** 2026-09-05
+- **Owners / approvers:** User approved Option 1 on 2026-09-05; production/security owner TBD
 - **Supersedes / superseded by:** Extends the temporary session decision in ADR-0009
 - **Related:** ADR-0004, ADR-0006, ADR-0007, ADR-0008, ADR-0009, BL-013
 
@@ -19,9 +19,9 @@ CORS. This is development evidence, not a production origin contract. The exact
 frontend/API domains, hosting providers, TLS edge, secret store, proxy trust model,
 backup owner and observability platform are not known and remain `TBD`.
 
-This ADR proposes the target boundary only. It does not authorize a Prisma
-migration, API/client change or production deployment while its status is
-`Proposed`.
+This ADR accepts the target boundary only. It authorizes implementation planning,
+but does not authorize a Prisma migration, API/client change or production
+deployment until the explicit pre-implementation inputs below are resolved.
 
 ## Decision Drivers
 
@@ -66,9 +66,9 @@ has no verified product requirement.
 This requires the least implementation but signs the user out on every reload and
 does not meet the requested persistent production-session outcome.
 
-## Proposed Decision
+## Decision
 
-Adopt **Option 1** after explicit approval, with the following binding boundaries:
+Adopt **Option 1**, with the following binding boundaries:
 
 ### Origin and hosting boundary
 
@@ -189,11 +189,11 @@ no destructive schema rollback is implied.
 - [NestJS CORS documentation](https://docs.nestjs.com/v11/security/cors) confirms
   that the application can supply an explicit CORS configuration.
 
-## Approval Required
+## Approval Record
 
-Explicit approval is required for the recommended Option 1 and its session
-boundary. Approval may leave providers, exact domains, lifetimes and retention as
-`TBD`, but those fields become mandatory gates before implementation/production.
+The user explicitly approved Option 1 and its session boundary on 2026-09-05.
+Providers, exact domains, lifetimes and retention remain `TBD` and are mandatory
+gates before migration, API/client implementation or production rollout.
 
 ## Open Questions
 

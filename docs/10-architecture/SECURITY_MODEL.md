@@ -39,9 +39,10 @@
   `SYSTEM_ADMIN` ile sınırlıdır.
 - Authentication throttling in-memory ve instance-local'dir; proxy/topoloji ve
   dağıtık rate-limit storage kararı production deployment ile birlikte `TBD`.
-- Kalıcı tarayıcı oturumu ve production origin sınırı ADR-0010'da `Proposed`
-  durumundadır. Onaylanana kadar memory-only bearer davranışı geçerlidir; refresh
-  credential veya cookie sözleşmesi uygulanmış kabul edilemez.
+- Kalıcı tarayıcı oturumu ve production origin sınırı ADR-0010 Option 1 olarak
+  `Accepted` durumundadır ancak uygulanmamıştır. Zorunlu implementation girdileri
+  kapanana kadar memory-only bearer davranışı geçerlidir; refresh credential veya
+  cookie sözleşmesi uygulanmış kabul edilemez.
 
 Kalan maddeler sonraki güvenlik ve production dalgaları için karar girdileridir.
 

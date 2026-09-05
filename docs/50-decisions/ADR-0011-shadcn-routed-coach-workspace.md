@@ -30,8 +30,10 @@ modüler alan bileşeni ve ortak taktik çalışma yüzeyi sağlamıyordu.
 ## Consequences
 
 Rotalar paylaşılabilir ve alanlar ayrı test edilebilir hale gelir. Konva editörü
-istemci paketini büyütür; rota bazlı chunk olarak yüklenir. Mevcut memory-only JWT
-davranışı değişmez ve ADR-0010 `Proposed` kalır.
+istemci paketini büyütür; rota bazlı chunk olarak yüklenir. Bu kararın kabul
+edildiği tarihte mevcut memory-only JWT davranışı değişmemiş ve ADR-0010
+`Proposed` kalmıştır; ADR-0010 daha sonra 2026-09-05'te kabul edilmiştir ancak henüz
+uygulanmamıştır.
 
 ## Verification
 

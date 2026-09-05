@@ -41,7 +41,7 @@
 - Fresh clone kalite akışında typecheck öncesi Prisma Client üreten explicit kapı.
 - Aynı site altındaki production frontend/API origin'leri ile dönen, server-side
   revoke edilebilir kalıcı tarayıcı oturumunu seçenekleri ve rollout kapılarıyla
-  tanımlayan Proposed ADR-0010.
+  tanımlayan Accepted ADR-0010.
 - shadcn/Radix, Tailwind, Phosphor ve React-Konva ile beş rotalı koç çalışma
   alanını kabul eden ADR-0011.
 - `TacticalBoardDocumentV1`, `DrillScope`, kulüp/grup egzersiz sahipliği, plan
@@ -110,9 +110,9 @@
 
 ### Known issues
 
-- Frontend kalıcı oturumu, ölçülebilir erişilebilirlik hedefi ve production
-  deployment modeli ADR-0010 onayı ve açık production girdileri beklediği için
-  `TBD`.
+- Frontend kalıcı oturum implementation'ı, ölçülebilir erişilebilirlik hedefi ve
+  production deployment modeli ADR-0010 tarafından kabul edilen zorunlu
+  domain/provider, süre, retention ve operasyon girdilerini beklediği için `TBD`.
 - E-posta teslimi/account recovery, production migration otoritesi ve sağlık/ileri
   analitik veri politikası açık karar kapılarıdır.
 - E2E suite tablo temizliği yaptığı için yalnız caller-supplied dedicated ve

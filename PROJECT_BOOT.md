@@ -1,8 +1,8 @@
 # Next Generation Coaching System — Project Boot
 
-- **Document version:** 1.8
+- **Document version:** 1.9
 - **CDSK version:** 0.1.0
-- **Last updated:** 2026-09-04
+- **Last updated:** 2026-09-05
 
 > Bu belge güncel çalışma özetidir. Bilinmeyen alan `TBD`, geçersiz alan kısa
 > gerekçeyle `N/A` bırakılır.
@@ -32,18 +32,19 @@
 
 ## 2. Current Status
 
-- **Phase:** M3 ortak taktik çalışma alanı tamamlandı; production kararları bekleniyor.
+- **Phase:** M3 tamamlandı; M4 production session hazırlığı girdileri bekleniyor.
 - **Version:** Ürün sürümü `TBD`.
-- **Active milestone:** M0–M3 tamamlandı; sonraki release/production milestone'u `TBD`.
-- **Current focus:** Proposed ADR-0010 içindeki production origin ve kalıcı oturum
-  yaklaşımını açık kullanıcı kararına sunmak; uygulama henüz onaylı değildir.
+- **Active milestone:** M4 production session hazırlığı planlandı; zorunlu girdiler `TBD`.
+- **Current focus:** Accepted ADR-0010 için exact origin/provider, session
+  lifetime/retention ve production operasyon girdilerini implementation öncesi
+  karara bağlamak.
 - **Critical risks:** Production operasyonlarının belirsizliği; sağlık/ileri analitik
   için onaysız veri politikası; frontend kalıcı oturum kararının bulunmaması;
   analytics adapter'ındaki 41 görünür lint uyarısı, e-posta/recovery eksikliği ve
   Prisma CLI dependency advisory'leri.
-- **Blocking decisions:** ADR-0010 seçeneği; ardından exact domain/provider,
-  session lifetime/retention ve production operasyon girdileri.
-- **Last status update:** 2026-09-04
+- **Blocking decisions:** Exact domain/provider, session lifetime/retention,
+  secret/CSRF ve production operasyon girdileri.
+- **Last status update:** 2026-09-05
 
 ## 3. Repository Navigation
 
@@ -83,7 +84,7 @@
 | Çekirdek kaynak yetkilendirme matrisi | Accepted; unit/E2E verified | ADR-0007 |
 | Davet tabanlı hesap yaşam döngüsü | Accepted; migration/unit/E2E verified | ADR-0008 |
 | Koç öncelikli web frontend ve ilk akış | Accepted; vertical slice verified | ADR-0009 |
-| Production origin ve kalıcı tarayıcı oturumu | Proposed; explicit approval required | ADR-0010 |
+| Production origin ve kalıcı tarayıcı oturumu | Accepted; implementation inputs TBD | ADR-0010 |
 | Rotalı shadcn koç çalışma alanı | Accepted; implemented | ADR-0011 |
 | Kapsamlı egzersiz ve taktik tahta sözleşmesi | Accepted; implemented | ADR-0012 |
 
@@ -93,14 +94,15 @@
 - **Constraints:** Bilinmeyeni tahmin etme; kritik kararı onaysız uygulama; secret
   veya kişisel veriyi kalıcı bağlama alma.
 - **Open questions:** Başarı metrikleri, ölçülebilir erişilebilirlik hedefi,
-  ADR-0010 kararı, e-posta delivery/recovery, production
+  ADR-0010 implementation girdileri, e-posta delivery/recovery, production
   migration sahibi, sağlık retention/audit ve production modeli.
 - **Recent decisions:** CDSK 0.1.0, dar MVP kapsamı, ADR-0004 auth/bootstrap tabanı,
   ADR-0003 monorepo topolojisi, ADR-0005 rol/tenant sınırı, ADR-0006 migration süreci
   ADR-0007 çekirdek eylem matrisi, ADR-0008 davet tabanlı hesap yaşam döngüsü
   ADR-0009 koç öncelikli frontend, ADR-0011 rotalı shadcn yüzeyi ve ADR-0012
   kapsamlı egzersiz/taktik belge kararı kabul edildi. ADR-0010 aynı site origin ve
-  dönen refresh-session yaklaşımını `Proposed` olarak sunar.
+  dönen refresh-session yaklaşımı olarak Option 1'i kabul eder; implementation
+  girdileri `TBD` kalır.
 - **Recently completed:** Temiz Prisma baseline; current-database principal; HTTP ve
   Socket.IO kulüp/grup authorization; cross-club negatif testleri; passwordHash,
   throttling ve bounded season generation güvenlik tabanı; kırık frontend gitlink'inin
@@ -113,10 +115,9 @@
 
 ## 7. Current Priorities
 
-1. ADR-0010'daki aynı site frontend/API origin ve kalıcı session önerisini açık
-   kullanıcı kararıyla kabul veya reddetmek.
-2. Kabul edilirse exact domain/provider, session lifetime/retention, secret,
+1. ADR-0010 için exact domain/provider, session lifetime/retention, secret/CSRF,
    readiness, observability ve backup girdilerini implementation öncesi kapatmak.
+2. Bu girdilerden sonra Prisma migration ve API sözleşmesini ayrı onaya sunmak.
 3. E-posta operasyonlarını ve sağlık veri politikasını karara bağlamak.
 
 ## 8. Known Constraints
@@ -161,22 +162,23 @@
 
 ## 11. AI Handoff
 
-- **Session summary:** `origin/main` tabanında güvenli repository uzlaştırması
+- **Session summary:** ADR-0010 Option 1 kullanıcı tarafından açıkça kabul edildi.
+  Önceki teslimde `origin/main` tabanında güvenli repository uzlaştırması
   yapıldı. Beş rotalı shadcn koç masası, React-Konva ortak tahta, kulüp/grup drill
   yetkisi, plan snapshot ve maç tahtası uygulandı; clean migration, unit/build ve
   iki kulüplü browser E2E ile doğrulandı.
 - **Documents updated:** ADR-0011/0012, requirements, roadmap/milestones, backlog,
   mimari/veri/güvenlik/API/test belgeleri, README, changelog ve Project Boot.
-- **Decisions recorded:** ADR-0011 ve ADR-0012 Accepted/implemented. ADR-0010
-  Proposed ve açık kullanıcı onayı bekliyor. Exact domain/provider, token
+- **Decisions recorded:** ADR-0010 Option 1, ADR-0011 ve ADR-0012 Accepted.
+  ADR-0010 henüz implemented değildir. Exact domain/provider, token
   süreleri, retention, secret ve production operasyon sözleşmeleri `TBD`.
 - **Remaining risk:** Backend legacy analytics adapter'ında 41 görünür lint uyarısı;
   memory-only auth nedeniyle reload'da oturum kaybı; e-posta/recovery ve audit
   retention; sağlık/ileri analitik veri politikası; dependency advisory'leri ve
   production operasyon sözleşmesi.
-- **Recommended next step:** Fast-forward teslim sonrası ADR-0010 Option 1'i kabul
-  veya reddetmek; kabul edilirse `TBD` production girdilerini kapatmadan session
-  migration veya auth uygulamasına geçmemek.
+- **Recommended next step:** ADR-0010 zorunlu production/session girdilerini
+  karara bağlamak; bunlar kapanmadan session migration veya auth uygulamasına
+  geçmemek.
 
 ## Revision History
 
@@ -200,3 +202,4 @@
 | 1.6 | 2026-09-01 | Tekrarlanabilir kök kalite kapısı geçti; BL-005/BL-006 tamamlandı |
 | 1.7 | 2026-09-01 | Production origin ve kalıcı session için Proposed ADR-0010 hazırlandı |
 | 1.8 | 2026-09-04 | Rotalı shadcn çalışma alanı, scoped drills ve ortak taktik tahta doğrulandı |
+| 1.9 | 2026-09-05 | ADR-0010 Option 1 kabul edildi; M4 zorunlu girdileri görünürleştirildi |
