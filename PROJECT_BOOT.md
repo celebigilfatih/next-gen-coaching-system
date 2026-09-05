@@ -1,6 +1,6 @@
 # Next Generation Coaching System — Project Boot
 
-- **Document version:** 2.2
+- **Document version:** 2.4
 - **CDSK version:** 0.1.0
 - **Last updated:** 2026-09-05
 
@@ -11,8 +11,8 @@
 
 - **North star:** Futbol sezonu, antrenman ve taktik çalışma akışlarını tek bir
   izlenebilir dijital çalışma alanında toplamak.
-- **Current mission:** Dar MVP sınırını ve mevcut backend prototipini güvenilir
-  repository bağlamına oturtmak.
+- **Current mission:** M3.2 stabilizasyonundan geçen dar MVP'yi koruyup M4
+  production/session kararları için eksik girdileri görünür biçimde toplamak.
 - **Success signal:** Antrenörün sezon bağlamında antrenman planlayabilmesi,
   katılımı takip edebilmesi ve taktik analiz kaydı oluşturabilmesi.
 - **Accepted trade-offs:** Mevcut sağlık, ileri analitik ve scouting modülleri
@@ -32,18 +32,18 @@
 
 ## 2. Current Status
 
-- **Phase:** M3 tamamlandı; M4 production session hazırlığı girdileri bekleniyor.
+- **Phase:** M3.2 stabilizasyonu tamamlandı; 2026-09-05 remediation review hükmü
+  **Pass**.
 - **Version:** Ürün sürümü `TBD`.
-- **Active milestone:** M4 production session hazırlığı planlandı; zorunlu girdiler `TBD`.
-- **Current focus:** Accepted ADR-0010 için exact origin/provider, session
-  lifetime/retention ve production operasyon girdilerini implementation öncesi
-  karara bağlamak.
-- **Critical risks:** Production operasyonlarının belirsizliği; sağlık/ileri analitik
-  için onaysız veri politikası; frontend kalıcı oturum kararının bulunmaması;
-  analytics adapter'ındaki 41 görünür lint uyarısı, e-posta/recovery eksikliği ve
-  Prisma CLI dependency advisory'leri.
-- **Blocking decisions:** Exact domain/provider, session lifetime/retention,
-  secret/CSRF ve production operasyon girdileri.
+- **Active milestone:** M4 production session hazırlığı; zorunlu girdiler, owner ve
+  hedef tarih `TBD`.
+- **Current focus:** BL-024 log/DTO/lint borcu, BL-025 Prisma advisory kararı ve
+  ADR-0010 implementation girdilerini hazırlamak.
+- **Critical risks:** Memory-only frontend session; Prisma production dependency
+  advisory'leri; production deployment, secret, backup ve observability modeli;
+  sağlık/ileri analitik gizlilik politikası. Bunlar M4 veya MVP dışı risklerdir.
+- **Blocking decisions:** Exact production domain/provider, session lifetime ve
+  retention, operasyon sahibi, sağlık verisi retention/audit politikası `TBD`.
 - **Last status update:** 2026-09-05
 
 ## 3. Repository Navigation
@@ -90,6 +90,8 @@
 | Rotalı shadcn koç çalışma alanı | Accepted; implemented | ADR-0011 |
 | Kapsamlı egzersiz ve taktik tahta sözleşmesi | Accepted; implemented | ADR-0012 |
 | Genişletilmiş koç navigasyonu ve shadcn shell | Accepted; implemented | ADR-0013 |
+| Grup izolasyonu ve gerçek zamanlı olay alıcıları | Accepted; verified | ADR-0014 |
+| Atomik recovery ve güvenli SVG serialization | Accepted; verified | ADR-0015 |
 
 ## 6. AI Context
 
@@ -103,7 +105,8 @@
   ADR-0003 monorepo topolojisi, ADR-0005 rol/tenant sınırı, ADR-0006 migration süreci
   ADR-0007 çekirdek eylem matrisi, ADR-0008 davet tabanlı hesap yaşam döngüsü
   ADR-0009 koç öncelikli frontend, ADR-0011 rotalı shadcn yüzeyi ve ADR-0012
-  kapsamlı egzersiz/taktik belge kararı ve ADR-0013 genişletilmiş koç navigasyonu
+  kapsamlı egzersiz/taktik belge kararı, ADR-0013 genişletilmiş koç navigasyonu,
+  ADR-0014 kesin group/recipient sınırı ve ADR-0015 atomik reset/güvenli SVG
   kabul edildi. ADR-0010 aynı site origin ve dönen refresh-session yaklaşımı olarak
   Option 1'i kabul eder; implementation girdileri `TBD` kalır.
 - **Recently completed:** Temiz Prisma baseline; current-database principal; HTTP ve
@@ -121,13 +124,23 @@
   kaydedildi; mobil ana görev sırası ADR-0011 ile bire bir hizalandı. Bu kanıtlar
   sıralı ve düzenlenebilir bir [Figma audit panosuna](https://www.figma.com/design/SsL9HvCQTqzyM0z3nbriMW)
   da taşındı; on ekran görüntüsü ile ürün fontları yerleştirme sonrasında doğrulandı.
+  F-001–F-006; tenant-safe dashboard, kesin group aggregate sınırı, güncel
+  recipient Socket yayını, dirty-navigation koruması, single-winner reset ve
+  güvenli SVG serialization ile kapatıldı.
+- **Latest review:** `1b831e0` tabanlı stabilizasyon çalışma ağacında root quality,
+  PostgreSQL 16 migration/schema diff, backend 9/9 E2E ve frontend 3/3 Playwright
+  E2E geçti; açık P0/P1 kalmadığı için remediation hükmü **Pass**. Kanıt:
+  `docs/30-quality/MVP_REVIEW_2026-09-05.md`.
 
 ## 7. Current Priorities
 
-1. ADR-0010 için exact domain/provider, session lifetime/retention, secret/CSRF,
-   readiness, observability ve backup girdilerini implementation öncesi kapatmak.
-2. Bu girdilerden sonra Prisma migration ve API sözleşmesini ayrı onaya sunmak.
-3. E-posta operasyonlarını ve sağlık veri politikasını karara bağlamak.
+1. ADR-0010 için exact domain/provider, session lifetime/retention ve operasyon
+   sahibini belirlemek.
+2. BL-025 Prisma production advisory reachability ve upgrade/downgrade kararını
+   kanıtlamak.
+3. BL-024 structured/redacted logging, DTO ve analytics lint borcunu planlamak.
+4. Sağlık/ileri analitik politikası ile formal WCAG ve başarı metriklerini ayrı
+   onay kapılarında karara bağlamak.
 
 ## 8. Known Constraints
 
@@ -160,34 +173,34 @@
 - [x] Yerel belge bağlantıları ve `git diff --check` geçiyor.
 - [x] Prisma clean baseline ephemeral PostgreSQL 16 üzerinde uygulandı; status güncel
   ve schema diff boş doğrulandı. Frontend topolojisi ADR-0003 ile düzeltildi.
-- [x] Backend bağımlılıkları kuruldu; 14 unit suite / 48 test ve build geçti.
+- [x] Backend bağımlılıkları kuruldu; 15 unit suite / 54 test ve build geçti.
 - [x] Frontend typecheck, lint, format, unit/component, production build ve Sites
   worker testleri geçti; masaüstü/tablet browser ve görsel QA sonucu `passed`.
-- [x] Dedicated PostgreSQL 16 üzerinde koç login–kulüp egzersizi–plan snapshot–maç
-  tahtası–cross-tenant ret Playwright E2E ve responsive rota kontrolleri 2/2 geçti.
+- [x] Dedicated PostgreSQL 16 üzerinde backend tenant/group/reset E2E 9/9 ve koç
+  akışlarıyla dirty-navigation kontrollerini içeren Playwright E2E 3/3 geçti.
 - [x] Kök `npm run quality` komutu typecheck, salt-okunur lint/format, unit test,
   build, Sites, Markdown link, CDSK ve diff kontrolleriyle geçti.
 - [x] Kapanış handoff'u güncellendi.
+- [x] Tam MVP review için aynı revision'da quality, disposable migration/schema
+  diff, backend/frontend E2E ve responsive runtime audit tekrarlandı.
+- [x] MVP kabul kapısı geçiyor; F-001–F-006 kapalı ve remediation hükmü **Pass**.
 
 ## 11. AI Handoff
 
-- **Session summary:** Dokuz koç rotası gerçek yerel fixture ile 1440 × 1024'te
-  ekran ekran denetlendi. Mobil ana görev sırası kabul edilmiş düzene sabitlendi ve
-  Egzersiz Kütüphanesi faz sekmelerinin 390 px'de ikinci satıra taşması giderildi;
-  kanıtlar düzenlenebilir Figma audit panosunda sıralandı; backend ve veri modeli
-  değişmedi.
-- **Documents updated:** UI audit kanıtı/Figma bağlantısı, changelog ve Project
-  Boot; önceki ADR-0013 karar sınırı değişmedi.
-- **Decisions recorded:** ADR-0010 Option 1, ADR-0011, ADR-0012 ve ADR-0013 Accepted.
-  ADR-0010 henüz implemented değildir. Exact domain/provider, token
-  süreleri, retention, secret ve production operasyon sözleşmeleri `TBD`.
-- **Remaining risk:** Backend legacy analytics adapter'ında 41 görünür lint uyarısı;
-  memory-only auth nedeniyle reload'da oturum kaybı; e-posta/recovery ve audit
-  retention; sağlık/ileri analitik veri politikası; dependency advisory'leri ve
-  production operasyon sözleşmesi.
-- **Recommended next step:** ADR-0010 zorunlu production/session girdilerini
-  karara bağlamak; bunlar kapanmadan session migration veya auth uygulamasına
-  geçmemek.
+- **Session summary:** `origin/main` üzerindeki `1b831e0` tabanında A–D kararları
+  uygulandı. F-001–F-006 kapatıldı; quality, clean PostgreSQL 16 migration/diff,
+  backend 9/9 E2E ve frontend 3/3 Playwright E2E geçti. Güncel MVP review hükmü
+  **Pass**.
+- **Documents updated:** ADR-0014/0015, review raporu, BL-017–BL-025, CR-009/010,
+  requirements, mimari güvenlik/veri/API/entegrasyon belgeleri, roadmap,
+  milestone, changelog ve handoff.
+- **Decisions recorded:** Dashboard `GLOBAL + own club`; aggregate'lerde kesin
+  group sınırı; Socket operasyon olaylarında güncel group/resource alıcısı;
+  password reset'te transaction içi conditional single-winner claim.
+- **Remaining risk:** Memory-only auth, Prisma production dependency advisory'leri,
+  log/DTO/lint borcu ve production operasyon sözleşmesi M4 riski olarak sürer.
+- **Recommended next step:** ADR-0010 implementation girdilerini ve BL-025
+  dependency kararını owner bilgisiyle tamamlamak.
 
 ## Revision History
 
@@ -215,3 +228,5 @@
 | 2.0 | 2026-09-05 | shadcn shell dokuz masaüstü menüsü ve dört MVP destek rotasıyla genişletildi |
 | 2.1 | 2026-09-05 | dokuz rota UI audit'i tamamlandı; mobil sıra ve kütüphane sekmeleri düzeltildi |
 | 2.2 | 2026-09-05 | doğrulanmış UI audit kanıtı düzenlenebilir Figma panosuna taşındı |
+| 2.3 | 2026-09-05 | tam MVP review Fail hükmü, bulgular ve remediation backlog'u kaydedildi |
+| 2.4 | 2026-09-05 | A–D stabilizasyonu tamamlandı; F-001–F-006 kapandı ve remediation review Pass oldu |

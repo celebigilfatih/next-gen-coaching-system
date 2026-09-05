@@ -63,6 +63,9 @@ export type TacticalBoardDocumentV1 = {
   elements: BoardElement[];
 };
 
+const tacticalColorPattern =
+  /^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/;
+
 export function emptyBoard(type: PitchType = 'full'): TacticalBoardDocumentV1 {
   const pitch = pitchConfigs[type];
   return {
@@ -139,6 +142,28 @@ export function validateBoard(value: unknown): TacticalBoardDocumentV1 {
       element.y > config.height
     ) {
       throw new Error('Eleman saha sınırları dışında.');
+    }
+    if (
+      element.rotation !== undefined &&
+      (!Number.isFinite(element.rotation) ||
+        element.rotation < -360 ||
+        element.rotation > 360)
+    ) {
+      throw new Error('Eleman dönüş değeri geçersiz.');
+    }
+    if (
+      element.radius !== undefined &&
+      (!Number.isFinite(element.radius) ||
+        element.radius < 4 ||
+        element.radius > 80)
+    ) {
+      throw new Error('Eleman yarıçapı geçersiz.');
+    }
+    if (
+      element.color !== undefined &&
+      !tacticalColorPattern.test(element.color)
+    ) {
+      throw new Error('Eleman rengi hexadecimal formatta olmalı.');
     }
     ids.add(element.id);
   }

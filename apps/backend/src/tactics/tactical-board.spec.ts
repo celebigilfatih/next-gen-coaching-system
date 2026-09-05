@@ -52,4 +52,22 @@ describe('validateTacticalBoardDocument', () => {
       }),
     ).toThrow(BadRequestException);
   });
+
+  it('rejects colors that can escape an SVG attribute', () => {
+    expect(() =>
+      validateTacticalBoardDocument({
+        ...document,
+        elements: [
+          {
+            id: 'unsafe-color',
+            type: 'cone',
+            x: 100,
+            y: 100,
+            color: 'red" onclick="alert(1)',
+            size: 20,
+          },
+        ],
+      }),
+    ).toThrow(/hexadecimal color/);
+  });
 });

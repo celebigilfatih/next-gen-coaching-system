@@ -10,3 +10,5 @@
 | CR-006 | Sağlık ve ileri analitik veri politikasını onayla | Güvenlik ve gizlilik | Evet, TBD | Product owner / security owner TBD | Proposed |
 | CR-007 | Frontend teknoloji ve ilk ekran akışını seç | Ürün ve frontend mimarisi | ADR-0009 | Product owner approval; named frontend owner TBD | Approved |
 | CR-008 | Davet tabanlı hesap yaşam döngüsünü uygula | Auth, veri modeli ve audit | ADR-0008 | Product owner approval; named security owner TBD | Approved |
+| CR-009 | Same-club cross-group aggregate ve Socket recipient sınırını kapat | Güvenlik, API/event sözleşmesi ve veri ilişkileri | ADR-0014 | Explicit user approval; named security owner TBD | Approved and verified |
+| CR-010 | Password reset token tüketimini single-winner atomik yap | Güvenlik ve transaction davranışı | ADR-0015 | Explicit user approval; named security/data owner TBD | Approved and verified |

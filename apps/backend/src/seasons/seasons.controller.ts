@@ -152,9 +152,9 @@ export class SeasonsController {
         req.user,
         body.trainingPlanId,
       );
-      if (plan.clubId !== season.clubId) {
+      if (plan.clubId !== season.clubId || plan.groupId !== season.groupId) {
         throw new BadRequestException(
-          'Training plan must belong to the season club',
+          'Training plan must belong to the season group',
         );
       }
     }

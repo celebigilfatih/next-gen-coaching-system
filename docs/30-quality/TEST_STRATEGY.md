@@ -94,3 +94,11 @@ uygulandı ve Prisma schema diff boştu. Playwright 2/2 senaryoda koç login →
 egzersizi → plan snapshot → maç tahtası → ikinci kulüpten `403` zincirini ve beş
 ana rotayı 1440/1024/390 genişliklerinde doğruladı. Frontend typecheck, lint,
 production build ve 4/4 Sites worker testi geçti.
+
+2026-09-05 MVP stabilizasyon doğrulamasında backend 15 unit suite / 54 test,
+frontend 3 Vitest dosyası / 7 test ve 4/4 Sites testi geçti. Disposable PostgreSQL
+16 üzerinde migration/status/schema diff temiz; backend E2E 9/9 ile dashboard
+tenant izolasyonu, kesin group aggregate sınırı ve concurrent reset single-winner
+davranışını doğruladı. Playwright 3/3 ile mevcut tactical zinciri ve responsive
+rotalara ek olarak sidebar, browser back ve 390 px mobil dirty-navigation
+korumasını doğruladı.

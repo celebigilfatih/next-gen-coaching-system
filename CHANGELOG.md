@@ -60,6 +60,17 @@
   `design-qa.md` karşılaştırması.
 - Dokuz masaüstü rota ve düzeltilmiş mobil kanıtı sıralı, düzenlenebilir kartlarda
   birleştiren doğrulanmış Figma UI audit panosu.
+- `1b831e0` revision'ını ürün, backend, yetki, Prisma, frontend, taktik tahta,
+  test ve CDSK katmanlarında doğrulayan tam MVP review raporu; endpoint matrisi,
+  requirement izlenebilirliği ve önceliklendirilmiş BL-017–BL-025 backlog'u.
+- Group/event sharing ve password-reset transaction karar kapıları için Proposed
+  CR-009 ve CR-010.
+- Disposable PostgreSQL 16 migration/status/schema diff, backend 7/7 E2E,
+  frontend 2/2 Playwright E2E ve 1440/1024/390 runtime audit kanıtı.
+- Dashboard/aggregate/Socket group izolasyonunu kabul eden ADR-0014 ve atomik
+  password recovery/güvenli SVG serialization kararını kabul eden ADR-0015.
+- İki-kulüplü dashboard, iki-gruplu aggregate, current-recipient Socket,
+  eşzamanlı reset, güvenli SVG ve dirty-navigation regresyon testleri.
 
 ### Changed
 
@@ -87,8 +98,8 @@
   içindeki rol ve kulüp iddiaları tek başına yetki vermiyor.
 - Kulüp, grup, antrenman planı, sezon ve katılım akışları kulüp/grup üyeliğine göre
   sınırlandı; `Season` zorunlu kulüp ve grup ilişkisi kazandı.
-- Socket.IO handshake JWT zorunlu hale geldi; kimlik sunucudan türetiliyor ve olaylar
-  authorization kontrolünden sonra yalnız ilgili kulüp odasına yayınlanıyor.
+- Socket.IO handshake JWT zorunlu hale geldi; kimlik sunucudan türetiliyor. İlk
+  kulüp-odası sınırı ADR-0014 ile kesin group/current-recipient modeline daraltıldı.
 - Sağlık/klinik yolları ve tenant sahibi henüz tanımlanmamış ileri analitik yolları
   ayrı politika onaylanana kadar `SYSTEM_ADMIN` ile sınırlandı.
 - Kurtarılamayan frontend gitlink'i normal monorepo dizinine dönüştürüldü; çalışan
@@ -122,6 +133,18 @@
 - Mobil ana görev sırası ADR-0011 ile aynı Hafta → Antrenmanlar → Taktik Tahtası →
   Kadro → Maçlar düzenine sabitlendi; Egzersiz Kütüphanesi faz sekmelerinin 390 px
   görünümde ikinci satıra taşması giderildi.
+- Tam MVP review sonucunda REQ-005 ve REQ-009, doğrulanan açık bulgular nedeniyle
+  `Implemented` yerine `Partial` olarak kanıtla hizalandı; uygulama davranışı
+  değiştirilmedi.
+- F-001–F-006 remediation ile dashboard görünürlüğü `GLOBAL + own club` ve güvenli
+  projection'a; plan/drill/season bileşimleri kesin group sınırına; Socket olayları
+  güncel yetkili alıcılara ve minimum payload'a taşındı.
+- Taktik editörüne iç route/back/mobile navigasyonunu kapsayan kaydet/at/iptal
+  koruması eklendi; SVG renkleri canonical hex allowlist ve XML escaping ile
+  sınırlandı.
+- Password reset completion transaction içi conditional claim ile single-winner
+  hale getirildi. REQ-005 ve REQ-009 remediation kanıtıyla yeniden `Implemented`
+  durumuna getirildi.
 
 ### Known issues
 
@@ -138,3 +161,7 @@
   `deepmerge-ts` zincirinde 3 high advisory bırakıyor. Önerilen otomatik çözüm
   Prisma 6.12.0'a breaking downgrade olduğu için uygulanmadı; reachability ve
   güvenli Prisma upgrade/downgrade kararı ayrıca incelenecek.
+- 2026-09-05 ilk tam MVP review hükmü tarihsel olarak **Fail** idi; A–D
+  stabilizasyonuyla F-001–F-006 kapatıldı ve güncel remediation hükmü **Pass** oldu.
+  Ayrıntı ve yeniden doğrulama kanıtı `docs/30-quality/MVP_REVIEW_2026-09-05.md`
+  içindedir.

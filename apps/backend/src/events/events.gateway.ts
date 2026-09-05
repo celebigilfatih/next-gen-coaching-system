@@ -15,6 +15,7 @@ import { AuthorizationService } from '../auth/authorization.service';
 import { PrismaService } from '../prisma/prisma.service';
 
 type SocketPrincipal = AuthPrincipal & { name: string; authVersion: number };
+type ConnectedUser = SocketPrincipal & { groupIds: string[] };
 
 @WebSocketGateway({
   cors: {
@@ -30,7 +31,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Server;
 
-  private readonly connectedUsers = new Map<string, SocketPrincipal>();
+  private readonly connectedUsers = new Map<string, ConnectedUser>();
 
   constructor(
     private readonly jwt: JwtService,
@@ -73,21 +74,27 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
         clubId: user.clubId,
         authVersion: user.authVersion,
       };
-      client.data.user = principal;
-      this.connectedUsers.set(client.id, principal);
-      if (principal.clubId) {
-        await client.join(this.clubRoom(principal.clubId));
-        this.emitUsers(principal.clubId);
-      }
+      const groupIds = await this.groupIdsForPrincipal(principal);
+      const connected = { ...principal, groupIds };
+      client.data.user = connected;
+      this.connectedUsers.set(client.id, connected);
+      await Promise.all(
+        groupIds.map((groupId) => client.join(this.groupRoom(groupId))),
+      );
+      await Promise.all(groupIds.map((groupId) => this.emitUsers(groupId)));
     } catch {
       client.disconnect(true);
     }
   }
 
-  handleDisconnect(client: Socket) {
+  async handleDisconnect(client: Socket) {
     const principal = this.connectedUsers.get(client.id);
     this.connectedUsers.delete(client.id);
-    if (principal?.clubId) this.emitUsers(principal.clubId);
+    if (principal) {
+      await Promise.all(
+        principal.groupIds.map((groupId) => this.emitUsers(groupId)),
+      );
+    }
   }
 
   @SubscribeMessage('user:join')
@@ -119,9 +126,14 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
         plan,
         data.playerId,
       );
-      this.server
-        .to(this.clubRoom(plan.clubId))
-        .emit('attendance:updated', data);
+      if (!['PRESENT', 'ABSENT'].includes(data.status)) {
+        throw new WsException('Invalid attendance status');
+      }
+      await this.emitToGroup(plan.groupId, plan.clubId, 'attendance:updated', {
+        planId: data.planId,
+        playerId: data.playerId,
+        status: data.status,
+      });
       return { success: true };
     } catch {
       throw new WsException('Not authorized for this training plan');
@@ -139,7 +151,9 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
         principal,
         data.planId,
       );
-      this.server.to(this.clubRoom(plan.clubId)).emit('plan:updated', data);
+      await this.emitToGroup(plan.groupId, plan.clubId, 'plan:updated', {
+        planId: data.planId,
+      });
       return { success: true };
     } catch {
       throw new WsException('Not authorized for this training plan');
@@ -157,7 +171,9 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
         principal,
         data.planId,
       );
-      this.server.to(this.clubRoom(plan.clubId)).emit('drill:added', data);
+      await this.emitToGroup(plan.groupId, plan.clubId, 'drill:added', {
+        planId: data.planId,
+      });
       return { success: true };
     } catch {
       throw new WsException('Not authorized for this training plan');
@@ -179,7 +195,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   private async requirePrincipal(client: Socket): Promise<SocketPrincipal> {
-    const connected = client.data.user as SocketPrincipal | undefined;
+    const connected = client.data.user as ConnectedUser | undefined;
     if (!connected) throw new WsException('Socket is not authenticated');
     const user = await this.prisma.user.findUnique({
       where: { id: connected.id },
@@ -201,7 +217,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
       client.disconnect(true);
       throw new WsException('Socket session is no longer valid');
     }
-    return {
+    const current = {
       id: user.id,
       userId: user.id,
       name: user.name,
@@ -210,16 +226,95 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
       clubId: user.clubId,
       authVersion: user.authVersion,
     };
+    this.connectedUsers.set(client.id, {
+      ...current,
+      groupIds: connected.groupIds,
+    });
+    return current;
   }
 
-  private emitUsers(clubId: string) {
-    const users = Array.from(this.connectedUsers.values())
-      .filter((user) => user.clubId === clubId)
-      .map((user) => ({ id: user.id, name: user.name, role: user.role }));
-    this.server.to(this.clubRoom(clubId)).emit('users:update', users);
+  private async groupIdsForPrincipal(principal: SocketPrincipal) {
+    if (!principal.clubId || principal.role === 'SYSTEM_ADMIN') return [];
+    if (principal.role === 'CLUB_ADMIN') {
+      const groups = await this.prisma.playerGroup.findMany({
+        where: { clubId: principal.clubId },
+        select: { id: true },
+      });
+      return groups.map((group) => group.id);
+    }
+    const memberships = await this.prisma.groupMember.findMany({
+      where: {
+        userId: principal.id,
+        group: { clubId: principal.clubId },
+      },
+      select: { groupId: true },
+    });
+    return memberships.map((membership) => membership.groupId);
   }
 
-  private clubRoom(clubId: string) {
-    return `club:${clubId}`;
+  private async emitUsers(groupId: string) {
+    const group = await this.prisma.playerGroup.findUnique({
+      where: { id: groupId },
+      select: { clubId: true },
+    });
+    if (!group) return;
+    const recipients = await this.authorizedRecipientSockets(
+      groupId,
+      group.clubId,
+    );
+    if (!recipients.length) return;
+    const users = Array.from(
+      new Map(
+        recipients.map(({ user }) => [
+          user.id,
+          { id: user.id, name: user.name, role: user.role },
+        ]),
+      ).values(),
+    );
+    this.server
+      .to(recipients.map((entry) => entry.socketId))
+      .emit('users:update', users);
+  }
+
+  private async emitToGroup(
+    groupId: string | null,
+    clubId: string,
+    event: string,
+    payload: Record<string, unknown>,
+  ) {
+    if (!groupId) return;
+    const recipients = await this.authorizedRecipientSockets(groupId, clubId);
+    if (!recipients.length) return;
+    this.server
+      .to(recipients.map((entry) => entry.socketId))
+      .emit(event, payload);
+  }
+
+  private async authorizedRecipientSockets(groupId: string, clubId: string) {
+    const connected = Array.from(this.connectedUsers.entries());
+    if (!connected.length) return [];
+    const currentUsers = await this.prisma.user.findMany({
+      where: {
+        id: { in: connected.map(([, user]) => user.id) },
+        status: 'ACTIVE',
+        OR: [
+          { role: 'SYSTEM_ADMIN' },
+          { role: 'CLUB_ADMIN', clubId },
+          { clubId, groups: { some: { groupId } } },
+        ],
+      },
+      select: { id: true, name: true, role: true, authVersion: true },
+    });
+    const currentById = new Map(currentUsers.map((user) => [user.id, user]));
+    return connected.flatMap(([socketId, user]) => {
+      const current = currentById.get(user.id);
+      return current && current.authVersion === user.authVersion
+        ? [{ socketId, user: current }]
+        : [];
+    });
+  }
+
+  private groupRoom(groupId: string) {
+    return `group:${groupId}`;
   }
 }

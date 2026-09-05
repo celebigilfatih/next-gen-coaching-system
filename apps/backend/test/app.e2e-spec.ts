@@ -20,6 +20,7 @@ describe('NGCS authorization boundaries (e2e)', () => {
   let planAId: string;
   let planBId: string;
   let coachAId: string;
+  let coachBId: string;
   let playerAId: string;
   let playerBId: string;
   let seasonAId: string;
@@ -144,6 +145,7 @@ describe('NGCS authorization boundaries (e2e)', () => {
         }),
       ]);
     coachAId = coachA.id;
+    coachBId = coachB.id;
     playerAId = playerA.id;
     playerBId = playerB.id;
 
@@ -279,6 +281,158 @@ describe('NGCS authorization boundaries (e2e)', () => {
       .query({ email: 'player-b@example.com' })
       .set(bearer(clubAdminAToken))
       .expect(404);
+  });
+
+  it('isolates dashboard drills while preserving the global catalog', async () => {
+    const [clubADrill, clubBDrill] = await Promise.all([
+      prisma.drill.create({
+        data: {
+          title: 'Club A Dashboard Drill',
+          category: 'TACTICAL',
+          ageGroup: 'SENIOR',
+          durationMin: 15,
+          difficulty: 'MEDIUM',
+          jsonData: {},
+          scope: 'CLUB',
+          clubId: clubAId,
+          groupId: groupAId,
+          createdById: coachAId,
+          createdAt: new Date('2026-09-05T10:00:00.000Z'),
+        },
+      }),
+      prisma.drill.create({
+        data: {
+          title: 'Club B Dashboard Drill',
+          category: 'TACTICAL',
+          ageGroup: 'SENIOR',
+          durationMin: 15,
+          difficulty: 'MEDIUM',
+          jsonData: { private: 'club-b' },
+          scope: 'CLUB',
+          clubId: clubBId,
+          groupId: groupBId,
+          createdById: coachBId,
+          createdAt: new Date('2026-09-05T11:00:00.000Z'),
+        },
+      }),
+    ]);
+
+    const response = await request(app.getHttpServer())
+      .get('/stats/dashboard')
+      .set(bearer(clubAdminAToken))
+      .expect(200);
+
+    expect(response.body.recentDrills).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ id: drillId, scope: 'GLOBAL' }),
+        expect.objectContaining({ id: clubADrill.id, clubId: clubAId }),
+      ]),
+    );
+    expect(
+      response.body.recentDrills.some(
+        (drill: { id: string }) => drill.id === clubBDrill.id,
+      ),
+    ).toBe(false);
+    expect(response.body.recentDrills[0]).not.toHaveProperty('jsonData');
+    expect(response.body.recentDrills[0]).not.toHaveProperty('createdById');
+  });
+
+  it('rejects same-club cross-group aggregate links and preserves same-group links', async () => {
+    const groupA2 = await prisma.playerGroup.create({
+      data: { name: 'Group A2', clubId: clubAId, ageGroup: 'SENIOR' },
+    });
+    const [planA2, groupA2Drill, weekA] = await Promise.all([
+      prisma.trainingPlan.create({
+        data: {
+          title: 'Plan A2',
+          clubId: clubAId,
+          coachId: coachAId,
+          groupId: groupA2.id,
+        },
+      }),
+      prisma.drill.create({
+        data: {
+          title: 'Group A2 Private Drill',
+          category: 'TACTICAL',
+          ageGroup: 'SENIOR',
+          durationMin: 25,
+          difficulty: 'MEDIUM',
+          jsonData: {},
+          scope: 'CLUB',
+          clubId: clubAId,
+          groupId: groupA2.id,
+          createdById: coachAId,
+        },
+      }),
+      prisma.weekPlan.create({
+        data: {
+          seasonId: seasonAId,
+          weekNumber: 70,
+          startDate: new Date('2026-09-07T00:00:00.000Z'),
+          endDate: new Date('2026-09-13T23:59:59.000Z'),
+        },
+      }),
+    ]);
+
+    await request(app.getHttpServer())
+      .post(`/training-plans/${planAId}/drills`)
+      .set(bearer(clubAdminAToken))
+      .send({
+        drillId: groupA2Drill.id,
+        phase: 'TACTICAL',
+        order: 0,
+      })
+      .expect(400);
+
+    await request(app.getHttpServer())
+      .put(`/training-plans/${planAId}/drills`)
+      .set(bearer(clubAdminAToken))
+      .send({
+        drills: [{ drillId: groupA2Drill.id, phase: 'TACTICAL', order: 0 }],
+      })
+      .expect(400);
+
+    await request(app.getHttpServer())
+      .put(`/training-plans/${planA2.id}/drills`)
+      .set(bearer(clubAdminAToken))
+      .send({
+        drills: [{ drillId: groupA2Drill.id, phase: 'TACTICAL', order: 0 }],
+      })
+      .expect(200);
+
+    await request(app.getHttpServer())
+      .put(`/training-plans/${planA2.id}`)
+      .set(bearer(clubAdminAToken))
+      .send({ groupId: groupAId })
+      .expect(400);
+
+    await request(app.getHttpServer())
+      .post(`/seasons/weeks/${weekA.id}/days`)
+      .set(bearer(clubAdminAToken))
+      .send({
+        dayOfWeek: 1,
+        date: '2026-09-07T10:00:00.000Z',
+        type: 'TRAINING',
+        trainingPlanId: planA2.id,
+      })
+      .expect(400);
+
+    await request(app.getHttpServer())
+      .post(`/seasons/weeks/${weekA.id}/days`)
+      .set(bearer(clubAdminAToken))
+      .send({
+        dayOfWeek: 2,
+        date: '2026-09-08T10:00:00.000Z',
+        type: 'TRAINING',
+        trainingPlanId: planAId,
+      })
+      .expect(201);
+
+    await request(app.getHttpServer())
+      .put(`/training-plans/${planAId}`)
+      .set(bearer(clubAdminAToken))
+      .send({ groupId: groupA2.id })
+      .expect(400);
   });
 
   it('does not allow mass-assignment to move a group across clubs', async () => {
@@ -455,14 +609,21 @@ describe('NGCS authorization boundaries (e2e)', () => {
       .post(`/accounts/${userId}/password-reset`)
       .set(bearer(clubAdminAToken))
       .expect(201);
-    await request(app.getHttpServer())
-      .post('/accounts/password-resets/complete')
-      .send({ token: reset.body.token, newPassword: 'replacement-password' })
-      .expect(201);
-    await request(app.getHttpServer())
-      .post('/accounts/password-resets/complete')
-      .send({ token: reset.body.token, newPassword: 'replayed-password' })
-      .expect(400);
+    const resetAttempts = await Promise.all([
+      request(app.getHttpServer())
+        .post('/accounts/password-resets/complete')
+        .send({ token: reset.body.token, newPassword: 'replacement-password' }),
+      request(app.getHttpServer())
+        .post('/accounts/password-resets/complete')
+        .send({ token: reset.body.token, newPassword: 'competing-password' }),
+    ]);
+    expect(resetAttempts.map((attempt) => attempt.status).sort()).toEqual([
+      201, 400,
+    ]);
+    const winningPassword =
+      resetAttempts[0].status === 201
+        ? 'replacement-password'
+        : 'competing-password';
     const changedPassword = await prisma.user.findUniqueOrThrow({
       where: { id: userId },
       select: { passwordHash: true },
@@ -471,7 +632,7 @@ describe('NGCS authorization boundaries (e2e)', () => {
       bcrypt.compare('initial-safe-password', changedPassword.passwordHash),
     ).resolves.toBe(false);
     await expect(
-      bcrypt.compare('replacement-password', changedPassword.passwordHash),
+      bcrypt.compare(winningPassword, changedPassword.passwordHash),
     ).resolves.toBe(true);
 
     await request(app.getHttpServer())

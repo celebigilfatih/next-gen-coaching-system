@@ -48,6 +48,19 @@
   menü Sheet'i browser/design QA'dan geçer.
 - **Risks:** Formal WCAG hedefi, browser matrisi ve tasarım owner'ı `TBD`.
 - **Status:** Completed 2026-09-05.
+- **Review status:** İlk tam MVP review hükmü **Fail** idi; M3.2 remediation sonrası
+  kabul kapısı 2026-09-05 tarihinde **Pass** olarak yeniden doğrulandı.
+
+## Milestone M3.2 — MVP stabilizasyonu
+
+- **Outcome:** Tam MVP review'da bulunan tenant, group, Socket recipient,
+  kaydedilmemiş veri, reset concurrency ve SVG enjeksiyon riskleri kapalıdır.
+- **Dependencies:** M3.1, ADR-0014 ve ADR-0015.
+- **Exit criteria:** Root quality; disposable PostgreSQL migration/status/diff;
+  backend 9/9 E2E; frontend 3/3 Playwright E2E; CDSK ve diff kontrolleri geçer.
+- **Risks:** Production session/deployment, formal WCAG, dependency advisory,
+  log/DTO borcu ve ürün metrikleri `TBD` kalır.
+- **Status:** Completed 2026-09-05 — remediation review Pass.
 
 ## Milestone M4 — Production session hazırlığı
 

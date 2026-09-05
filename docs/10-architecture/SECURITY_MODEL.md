@@ -32,9 +32,20 @@
   kontrol edilir.
 - `SYSTEM_ADMIN` global; `CLUB_ADMIN` kendi kulübü; `COACH` atanmış grupları;
   `PLAYER` kendi profili, grup görünümü ve kendi katılımı kapsamında çalışır.
-- Socket.IO bağlantısı JWT gerektirir, sunucu tarafından türetilen kulüp odalarına
+- Socket.IO bağlantısı JWT gerektirir, sunucu tarafından türetilen grup odalarına
   katılır, her olayda güncel status/authVersion doğrular ve plan/oyuncu
   mutation'larından önce aynı kaynak kontrollerini uygular.
+- ADR-0014 ile Socket alıcı listesi her yayında güncel DB rolü, kulüp/grup üyeliği,
+  account status ve authVersion üzerinden yeniden türetilir; operasyon payload'ı
+  minimum kaynak kimliğiyle sınırlandırılır. Grup sahibi olmayan plan yayınlanmaz.
+- Dashboard drill görünürlüğü `GLOBAL + principal.clubId` predicate'i ve minimum
+  projection uygular. Plan/drill ile season-day/plan aggregate'leri group sınırını
+  mutation transaction'ı içinde korur; plan grup değişikliği mevcut ilişkileri
+  sınır dışına taşıyamaz.
+- Password reset completion, ADR-0015 uyarınca koşullu token claim'i kazanmadan
+  parola, authVersion veya audit kaydı yazamaz.
+- Tactical renkleri canonical hexadecimal değerlerle sınırlıdır; SVG serializer
+  bütün dinamik XML attribute/text değerlerini escape eder.
 - Sağlık/klinik endpoint'leri ile ileri analitik tenant modeli onaylanana kadar
   `SYSTEM_ADMIN` ile sınırlıdır.
 - Authentication throttling in-memory ve instance-local'dir; proxy/topoloji ve
@@ -54,6 +65,8 @@ Kalan maddeler sonraki güvenlik ve production dalgaları için karar girdilerid
   constraint'i uygular.
 - Çekirdek eylem matrisi ADR-0007 ile bağlayıcıdır ve negatif cross-club testleriyle
   doğrulanır.
+- Dashboard, aggregate ve Socket recipient istisnaları ADR-0014 remediation'ıyla
+  kapatılmış ve REQ-005 yeniden `Implemented` durumunda doğrulanmıştır.
 - Invitation, acceptance, suspension/reactivation, access, password/reset, session
   revocation ve bootstrap güvenlik audit olayları kalıcıdır. Audit retention/export
   ile ileri analitik tenant modeli `TBD`.

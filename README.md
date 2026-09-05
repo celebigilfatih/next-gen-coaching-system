@@ -10,6 +10,9 @@ Bu proje **CDSK 0.1.0** standardını kullanır.
   analiz için dar bir MVP oluşturmak.
 - **Mevcut durum:** NestJS/Prisma backend prototipi mevcuttur. Güncel çalışma
   bağlamı için [`PROJECT_BOOT.md`](PROJECT_BOOT.md) okunmalıdır.
+- **MVP review:** `1b831e0` tabanlı stabilizasyon için 2026-09-05 remediation
+  hükmü **Pass**; F-001–F-006 kapalı, açık P0/P1 yoktur. Kanıt için
+  [`MVP_REVIEW_2026-09-05.md`](docs/30-quality/MVP_REVIEW_2026-09-05.md) okunmalıdır.
 
 ## Repository başlangıç sırası
 

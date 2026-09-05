@@ -34,6 +34,10 @@ Doğrulanmış Prisma şeması şu kümeleri içerir:
   taşır. Database check constraint'i bu ayrımı doğrular.
 - `PlanDrill.boardSnapshot`, planlama anındaki doğrulanmış taktik belge kopyasıdır;
   kaynak `Drill.jsonData` değişikliğinden etkilenmez.
+- Grup kapsamlı `CLUB` drill yalnız aynı grup planına; club-wide `groupId = null`
+  drill yalnız aynı kulüp planına bağlanabilir. `GLOBAL` drill bütün planlarda
+  kullanılabilir. Season day ve training plan kulüp/grup kimliği eşleşir; bağlı
+  plan sonradan farklı gruba taşınamaz. Bu kontroller serializable transaction'dadır.
 - `Match.tacticalBoard`, `opponentAnalysis` metin/JSON alanından ayrı doğrulanmış
   maç tahtasıdır.
 - Çekirdek kaynakların tenant/kulüp sahipliği ADR-0007 authorization katmanında

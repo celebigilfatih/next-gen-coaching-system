@@ -194,21 +194,54 @@ export class SeasonsService {
       notes?: string;
     },
   ) {
-    // Allow multiple plans per day, so just create
-    return this.prisma.dayPlan.create({
-      data: {
-        weekId,
-        dayOfWeek: data.dayOfWeek,
-        date: data.date,
-        type: data.type,
-        title: data.title,
-        trainingPlanId: data.trainingPlanId,
-        drillIds: data.drillIds || [],
-        duration: data.duration,
-        intensity: data.intensity,
-        notes: data.notes,
+    return this.prisma.$transaction(
+      async (transaction) => {
+        if (data.trainingPlanId) {
+          const [week, plan] = await Promise.all([
+            transaction.weekPlan.findUnique({
+              where: { id: weekId },
+              select: {
+                season: { select: { clubId: true, groupId: true } },
+              },
+            }),
+            transaction.trainingPlan.findUnique({
+              where: { id: data.trainingPlanId },
+              select: { clubId: true, groupId: true },
+            }),
+          ]);
+          if (!week || !plan) {
+            throw new BadRequestException(
+              'Week and training plan must both exist',
+            );
+          }
+          if (
+            plan.clubId !== week.season.clubId ||
+            plan.groupId !== week.season.groupId
+          ) {
+            throw new BadRequestException(
+              'Training plan must belong to the season group',
+            );
+          }
+        }
+
+        // Multiple plans per day remain supported.
+        return transaction.dayPlan.create({
+          data: {
+            weekId,
+            dayOfWeek: data.dayOfWeek,
+            date: data.date,
+            type: data.type,
+            title: data.title,
+            trainingPlanId: data.trainingPlanId,
+            drillIds: data.drillIds || [],
+            duration: data.duration,
+            intensity: data.intensity,
+            notes: data.notes,
+          },
+        });
       },
-    });
+      { isolationLevel: 'Serializable' },
+    );
   }
 
   async toggleDayCompleted(dayId: string) {

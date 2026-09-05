@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 const coachEmail = process.env.E2E_COACH_EMAIL ?? 'coach.e2e@example.test';
 const coachPassword = process.env.E2E_COACH_PASSWORD;
 const captureQa = process.env.E2E_CAPTURE_QA === 'true';
+const apiBaseUrl = `http://localhost:${process.env.E2E_BACKEND_PORT ?? '4000'}`;
 
 async function loginAsCoach(page: Page) {
   // Prime all lazy editor dependencies before relying on the intentionally
@@ -106,7 +107,7 @@ test('coach creates a club board, snapshots it into training, saves a match boar
     },
   });
 
-  const secondLogin = await request.post('http://localhost:4000/auth/login', {
+  const secondLogin = await request.post(`${apiBaseUrl}/auth/login`, {
     data: { email: 'coach.second.e2e@example.test', password: coachPassword },
   });
   expect(secondLogin.status()).toBe(201);
@@ -114,7 +115,7 @@ test('coach creates a club board, snapshots it into training, saves a match boar
     access_token: string;
   };
   const crossTenantRead = await request.get(
-    `http://localhost:4000/drills/${drill.id}`,
+    `${apiBaseUrl}/drills/${drill.id}`,
     { headers: { Authorization: `Bearer ${secondToken}` } },
   );
   expect(crossTenantRead.status()).toBe(403);
@@ -159,4 +160,41 @@ test('all five task routes stay addressable on desktop, tablet, and mobile', asy
       }
     }
   }
+});
+
+test('dirty tactical work blocks sidebar, browser-back, and mobile navigation until confirmed', async ({
+  page,
+}) => {
+  test.skip(!coachPassword, 'E2E_COACH_PASSWORD is required');
+  await page.setViewportSize({ width: 1440, height: 1024 });
+  await loginAsCoach(page);
+
+  await page.getByRole('link', { name: 'Taktik Tahtası' }).click();
+  await page.getByRole('link', { name: 'Yeni egzersiz' }).click();
+  await page.getByLabel('Başlık').fill('Kaydedilmemiş E2E Tahtası');
+
+  await page.getByRole('link', { name: 'Kütüphane', exact: true }).click();
+  await expect(
+    page.getByRole('heading', { name: 'Kaydedilmemiş değişiklikler var' }),
+  ).toBeVisible();
+  await page.getByRole('button', { name: 'İptal' }).click();
+  await expect(page).toHaveURL(/\/app\/tactics\/new$/);
+
+  await page.evaluate(() => window.history.back());
+  await expect(
+    page.getByRole('heading', { name: 'Kaydedilmemiş değişiklikler var' }),
+  ).toBeVisible();
+  await page.getByRole('button', { name: 'İptal' }).click();
+  await expect(page).toHaveURL(/\/app\/tactics\/new$/);
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page
+    .locator('.ngcs-mobile-nav')
+    .getByRole('link', { name: 'Antrenmanlar' })
+    .click();
+  await expect(
+    page.getByRole('heading', { name: 'Kaydedilmemiş değişiklikler var' }),
+  ).toBeVisible();
+  await page.getByRole('button', { name: 'Değişiklikleri at' }).click();
+  await expect(page).toHaveURL(/\/app\/trainings$/);
 });

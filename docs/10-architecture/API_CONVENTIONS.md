@@ -32,7 +32,14 @@
   belgesini mevcut match-manage sınırında `opponentAnalysis` alanından ayrı yazar.
 - `TacticalBoardDocumentV1` yalnız `schemaVersion: 1`, `kind: tactical-board`,
   canonical pitch ve en fazla 250 kimlikli element kabul eder; bilinmeyen alan/tür
-  fail-closed reddedilir.
+  fail-closed reddedilir. Color yalnız canonical hexadecimal formattadır; SVG
+  serialization dinamik XML değerlerini escape eder.
+- ADR-0014 ile plan/drill ve season-day/plan group invariant'ı mutation
+  transaction'ında uygulanır. Socket operasyonları kulüp-geneli payload yerine
+  her emit'te güncel üyelikle türetilen group recipient'larına minimum kaynak
+  kimliği gönderir.
+- ADR-0015 ile password reset completion tokenı koşullu tek-kazanan claim olmadan
+  parola veya audit mutation'ına geçmez.
 
 ## Errors, Idempotency and Pagination
 

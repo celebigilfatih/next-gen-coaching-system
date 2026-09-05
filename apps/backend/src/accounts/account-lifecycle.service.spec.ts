@@ -156,4 +156,74 @@ describe('AccountLifecycleService authorization', () => {
       }),
     ).rejects.toBeInstanceOf(ConflictException);
   });
+
+  it('changes the password only after atomically claiming the reset token', async () => {
+    const transaction = {
+      passwordResetToken: {
+        updateMany: jest.fn().mockResolvedValue({ count: 1 }),
+      },
+      user: { update: jest.fn() },
+      securityAuditEvent: { create: jest.fn() },
+    };
+    const prisma = {
+      passwordResetToken: {
+        findUnique: jest.fn().mockResolvedValue({
+          id: 'reset-1',
+          userId: 'player-a',
+          expiresAt: new Date(Date.now() + 60_000),
+          consumedAt: null,
+          revokedAt: null,
+          user: { clubId: 'club-a' },
+        }),
+      },
+      $transaction: jest.fn((callback) => callback(transaction)),
+    };
+    const service = new AccountLifecycleService(prisma as any);
+
+    await expect(
+      service.completePasswordReset('valid-token', 'replacement-password'),
+    ).resolves.toEqual({ success: true });
+
+    expect(transaction.passwordResetToken.updateMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          id: 'reset-1',
+          consumedAt: null,
+          revokedAt: null,
+          expiresAt: { gt: expect.any(Date) },
+        }),
+      }),
+    );
+    expect(transaction.user.update).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not change the password when another request won the reset claim', async () => {
+    const transaction = {
+      passwordResetToken: {
+        updateMany: jest.fn().mockResolvedValue({ count: 0 }),
+      },
+      user: { update: jest.fn() },
+      securityAuditEvent: { create: jest.fn() },
+    };
+    const prisma = {
+      passwordResetToken: {
+        findUnique: jest.fn().mockResolvedValue({
+          id: 'reset-1',
+          userId: 'player-a',
+          expiresAt: new Date(Date.now() + 60_000),
+          consumedAt: null,
+          revokedAt: null,
+          user: { clubId: 'club-a' },
+        }),
+      },
+      $transaction: jest.fn((callback) => callback(transaction)),
+    };
+    const service = new AccountLifecycleService(prisma as any);
+
+    await expect(
+      service.completePasswordReset('valid-token', 'losing-password'),
+    ).rejects.toBeInstanceOf(BadRequestException);
+    expect(transaction.user.update).not.toHaveBeenCalled();
+    expect(transaction.securityAuditEvent.create).not.toHaveBeenCalled();
+  });
 });

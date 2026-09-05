@@ -1,6 +1,6 @@
 import { ArrowLeft, Copy, FloppyDisk } from '@phosphor-icons/react';
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router';
+import { Link } from 'react-router';
 import { toast } from 'sonner';
 import { TacticalBoardEditor } from '../components/tactics/tactical-board-editor';
 import { Alert, AlertDescription, AlertTitle } from '../components/ui/alert';
@@ -30,7 +30,6 @@ import {
 import { useWorkspace } from '../lib/workspace-context';
 
 export function TacticsEditorPage({ drillId }: { drillId?: string }) {
-  const navigate = useNavigate();
   const { group, reload } = useWorkspace();
   const principal = getSession()?.user;
   const [drill, setDrill] = useState<Drill>();
@@ -102,13 +101,14 @@ export function TacticsEditorPage({ drillId }: { drillId?: string }) {
     setDrill(saved);
     setDocument(validateBoard(saved.jsonData));
     await reload();
-    if (!drillId || shouldCopy)
-      navigate(`/app/tactics/${saved.id}`, { replace: true });
     toast.success(
       shouldCopy
         ? 'Global egzersiz kulüp kopyası olarak kaydedildi'
         : 'Egzersiz kaydedildi',
     );
+    return !drillId || shouldCopy
+      ? { redirectTo: `/app/tactics/${saved.id}`, replace: true }
+      : undefined;
   }
 
   if (loading)
@@ -235,6 +235,14 @@ export function TacticsEditorPage({ drillId }: { drillId?: string }) {
         key={drill?.id ?? 'new'}
         initialDocument={document}
         onSave={save}
+        changeKey={JSON.stringify({
+          title,
+          category,
+          duration,
+          difficulty,
+          equipment,
+          scope,
+        })}
       />
       <p className="shortcut-note">
         <FloppyDisk /> Kaydet: ⌘/Ctrl+S · Geri al: ⌘/Ctrl+Z · Çoğalt: ⌘/Ctrl+D ·

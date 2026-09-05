@@ -231,17 +231,60 @@ export class TrainingPlansService {
     order: number,
     notes?: string,
   ) {
-    const pd = await this.prisma.planDrill.create({
-      data: {
-        trainingPlanId: planId,
-        drillId,
-        phase: phase as any,
-        order,
-        notes,
+    return this.prisma.$transaction(
+      async (transaction) => {
+        const [plan, drill] = await Promise.all([
+          transaction.trainingPlan.findUnique({
+            where: { id: planId },
+            select: { id: true, clubId: true, groupId: true },
+          }),
+          transaction.drill.findUnique({
+            where: { id: drillId },
+            select: {
+              id: true,
+              durationMin: true,
+              scope: true,
+              clubId: true,
+              groupId: true,
+            },
+          }),
+        ]);
+        if (!plan)
+          throw new BadRequestException('Training plan does not exist');
+        if (!drill) throw new BadRequestException('Drill does not exist');
+        this.assertDrillFitsPlan(plan, drill);
+
+        const planDrill = await transaction.planDrill.create({
+          data: {
+            trainingPlanId: planId,
+            drillId,
+            phase: phase as any,
+            order,
+            notes,
+          },
+        });
+        const planDrills = await transaction.planDrill.findMany({
+          where: { trainingPlanId: planId },
+          include: { drill: true },
+        });
+        const totalDuration = planDrills.reduce(
+          (sum, entry) => sum + entry.drill.durationMin,
+          0,
+        );
+        await Promise.all([
+          transaction.trainingPlan.update({
+            where: { id: planId },
+            data: { totalDuration },
+          }),
+          transaction.dayPlan.updateMany({
+            where: { trainingPlanId: planId },
+            data: { duration: totalDuration },
+          }),
+        ]);
+        return planDrill;
       },
-    });
-    await this.recalculateTotalDuration(planId);
-    return pd;
+      { isolationLevel: 'Serializable' },
+    );
   }
 
   async replaceDrills(
@@ -272,54 +315,72 @@ export class TrainingPlansService {
       throw new BadRequestException('Invalid plan drill entry');
     }
 
-    const drillIds = [...new Set(entries.map((entry) => entry.drillId))];
-    const drills = await this.prisma.drill.findMany({
-      where: { id: { in: drillIds } },
-      select: { id: true, durationMin: true },
-    });
-    if (drills.length !== drillIds.length) {
-      throw new BadRequestException('One or more drills do not exist');
-    }
+    return this.prisma.$transaction(
+      async (transaction) => {
+        const drillIds = [...new Set(entries.map((entry) => entry.drillId))];
+        const [plan, drills] = await Promise.all([
+          transaction.trainingPlan.findUnique({
+            where: { id: planId },
+            select: { id: true, clubId: true, groupId: true },
+          }),
+          transaction.drill.findMany({
+            where: { id: { in: drillIds } },
+            select: {
+              id: true,
+              durationMin: true,
+              scope: true,
+              clubId: true,
+              groupId: true,
+            },
+          }),
+        ]);
+        if (!plan)
+          throw new BadRequestException('Training plan does not exist');
+        if (drills.length !== drillIds.length) {
+          throw new BadRequestException('One or more drills do not exist');
+        }
+        drills.forEach((drill) => this.assertDrillFitsPlan(plan, drill));
 
-    const durationByDrill = new Map(
-      drills.map((drill) => [drill.id, drill.durationMin]),
-    );
-    const totalDuration = entries.reduce(
-      (total, entry) => total + (durationByDrill.get(entry.drillId) ?? 0),
-      0,
-    );
+        const durationByDrill = new Map(
+          drills.map((drill) => [drill.id, drill.durationMin]),
+        );
+        const totalDuration = entries.reduce(
+          (total, entry) => total + (durationByDrill.get(entry.drillId) ?? 0),
+          0,
+        );
 
-    return this.prisma.$transaction(async (transaction) => {
-      await transaction.planDrill.deleteMany({
-        where: { trainingPlanId: planId },
-      });
-      if (entries.length > 0) {
-        await transaction.planDrill.createMany({
-          data: entries.map((entry) => ({
-            trainingPlanId: planId,
-            drillId: entry.drillId,
-            phase: entry.phase,
-            order: entry.order,
-            notes: entry.notes,
-          })),
+        await transaction.planDrill.deleteMany({
+          where: { trainingPlanId: planId },
         });
-      }
-      await transaction.dayPlan.updateMany({
-        where: { trainingPlanId: planId },
-        data: { duration: totalDuration },
-      });
-      return transaction.trainingPlan.update({
-        where: { id: planId },
-        data: { totalDuration },
-        include: {
-          attendance: true,
-          drills: {
-            include: { drill: true },
-            orderBy: [{ phase: 'asc' }, { order: 'asc' }],
+        if (entries.length > 0) {
+          await transaction.planDrill.createMany({
+            data: entries.map((entry) => ({
+              trainingPlanId: planId,
+              drillId: entry.drillId,
+              phase: entry.phase,
+              order: entry.order,
+              notes: entry.notes,
+            })),
+          });
+        }
+        await transaction.dayPlan.updateMany({
+          where: { trainingPlanId: planId },
+          data: { duration: totalDuration },
+        });
+        return transaction.trainingPlan.update({
+          where: { id: planId },
+          data: { totalDuration },
+          include: {
+            attendance: true,
+            drills: {
+              include: { drill: true },
+              orderBy: [{ phase: 'asc' }, { order: 'asc' }],
+            },
           },
-        },
-      });
-    });
+        });
+      },
+      { isolationLevel: 'Serializable' },
+    );
   }
 
   async updateBoardSnapshot(
@@ -343,21 +404,6 @@ export class TrainingPlansService {
     });
   }
 
-  private async recalculateTotalDuration(planId: string) {
-    const drills = await this.prisma.planDrill.findMany({
-      where: { trainingPlanId: planId },
-      include: { drill: true },
-    });
-    const total = drills.reduce(
-      (sum, d) => sum + (d.drill?.durationMin ?? 0),
-      0,
-    );
-    await this.prisma.trainingPlan.update({
-      where: { id: planId },
-      data: { totalDuration: total },
-    });
-  }
-
   async update(
     id: string,
     data: Partial<{
@@ -368,16 +414,98 @@ export class TrainingPlansService {
       notes?: string;
     }>,
   ) {
-    return this.prisma.trainingPlan.update({
-      where: { id },
-      data: {
-        title: data.title,
-        totalDuration: data.totalDuration,
-        groupId: data.groupId,
-        date: data.date,
-        notes: data.notes,
-      } as any,
-    });
+    return this.prisma.$transaction(
+      async (transaction) => {
+        if (data.groupId !== undefined) {
+          const plan = await transaction.trainingPlan.findUnique({
+            where: { id },
+            select: {
+              id: true,
+              clubId: true,
+              drills: {
+                select: {
+                  drill: {
+                    select: {
+                      id: true,
+                      scope: true,
+                      clubId: true,
+                      groupId: true,
+                    },
+                  },
+                },
+              },
+              dayPlans: {
+                select: {
+                  week: {
+                    select: {
+                      season: { select: { clubId: true, groupId: true } },
+                    },
+                  },
+                },
+              },
+            },
+          });
+          if (!plan) {
+            throw new BadRequestException('Training plan does not exist');
+          }
+          plan.drills.forEach(({ drill }) =>
+            this.assertDrillFitsPlan(
+              {
+                id: plan.id,
+                clubId: plan.clubId,
+                groupId: data.groupId ?? null,
+              },
+              drill,
+            ),
+          );
+          if (
+            plan.dayPlans.some(
+              ({ week }) =>
+                week.season.clubId !== plan.clubId ||
+                week.season.groupId !== data.groupId,
+            )
+          ) {
+            throw new BadRequestException(
+              'Training plan group must match every linked season day',
+            );
+          }
+        }
+
+        return transaction.trainingPlan.update({
+          where: { id },
+          data: {
+            title: data.title,
+            totalDuration: data.totalDuration,
+            groupId: data.groupId,
+            date: data.date,
+            notes: data.notes,
+          } as any,
+        });
+      },
+      { isolationLevel: 'Serializable' },
+    );
+  }
+
+  private assertDrillFitsPlan(
+    plan: { id: string; clubId: string; groupId: string | null },
+    drill: {
+      id: string;
+      scope: 'GLOBAL' | 'CLUB';
+      clubId: string | null;
+      groupId: string | null;
+    },
+  ) {
+    if (drill.scope === 'GLOBAL') return;
+    if (drill.clubId !== plan.clubId) {
+      throw new BadRequestException(
+        'Club drill must belong to the training plan club',
+      );
+    }
+    if (drill.groupId && drill.groupId !== plan.groupId) {
+      throw new BadRequestException(
+        'Group-scoped drill must use the training plan group',
+      );
+    }
   }
 
   async remove(id: string) {

@@ -284,18 +284,24 @@ export class AccountLifecycleService {
     const passwordHash = await bcrypt.hash(newPassword, 10);
 
     await this.prisma.$transaction(async (transaction) => {
-      const current = await transaction.passwordResetToken.findUnique({
-        where: { id: reset.id },
-        select: { consumedAt: true, revokedAt: true, expiresAt: true },
+      const consumedAt = new Date();
+      const claim = await transaction.passwordResetToken.updateMany({
+        where: {
+          id: reset.id,
+          consumedAt: null,
+          revokedAt: null,
+          expiresAt: { gt: consumedAt },
+        },
+        data: { consumedAt },
       });
-      this.assertUsableToken(current, 'password reset');
+      if (claim.count !== 1) {
+        throw new BadRequestException(
+          'Password reset token is invalid, expired, revoked or consumed',
+        );
+      }
       await transaction.user.update({
         where: { id: reset.userId },
         data: { passwordHash, authVersion: { increment: 1 } },
-      });
-      await transaction.passwordResetToken.update({
-        where: { id: reset.id },
-        data: { consumedAt: new Date() },
       });
       await transaction.securityAuditEvent.create({
         data: {

@@ -16,6 +16,7 @@ import {
 } from '@phosphor-icons/react';
 import Konva from 'konva';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useBlocker, useNavigate } from 'react-router';
 import {
   Arrow,
   Circle as KCircle,
@@ -60,11 +61,18 @@ import {
   type TacticalBoardDocumentV1,
   type Team,
 } from '../../lib/tactical-board';
+import { boardSvg } from '../../lib/tactical-board-svg';
 
 type Props = {
   initialDocument?: TacticalBoardDocumentV1 | null;
-  onSave?: (document: TacticalBoardDocumentV1) => Promise<void> | void;
+  onSave?: (
+    document: TacticalBoardDocumentV1,
+  ) =>
+    | Promise<void | { redirectTo: string; replace?: boolean }>
+    | void
+    | { redirectTo: string; replace?: boolean };
   readOnly?: boolean;
+  changeKey?: string;
 };
 
 const tools: Array<{
@@ -162,7 +170,9 @@ export function TacticalBoardEditor({
   initialDocument,
   onSave,
   readOnly = false,
+  changeKey = '',
 }: Props) {
+  const navigate = useNavigate();
   const seed = useMemo(
     () => initialDocument ?? emptyBoard(),
     [initialDocument],
@@ -180,8 +190,15 @@ export function TacticalBoardEditor({
   const stageRef = useRef<Konva.Stage>(null);
   const transformerRef = useRef<Konva.Transformer>(null);
   const importRef = useRef<HTMLInputElement>(null);
+  const allowNavigationRef = useRef(false);
   const [containerWidth, setContainerWidth] = useState(900);
-  const dirty = JSON.stringify(document) !== saved;
+  const [savedChangeKey, setSavedChangeKey] = useState(changeKey);
+  const [saving, setSaving] = useState(false);
+  const dirty =
+    JSON.stringify(document) !== saved || changeKey !== savedChangeKey;
+  const blocker = useBlocker(
+    () => dirty && !readOnly && !allowNavigationRef.current,
+  );
 
   const commit = useCallback(
     (next: TacticalBoardDocumentV1) => {
@@ -272,17 +289,28 @@ export function TacticalBoardEditor({
   );
 
   const save = useCallback(async () => {
+    setSaving(true);
     try {
       const valid = validateBoard(document);
-      await onSave?.(valid);
+      const result = await onSave?.(valid);
       setSaved(JSON.stringify(valid));
+      setSavedChangeKey(changeKey);
+      if (result?.redirectTo && blocker.state !== 'blocked') {
+        allowNavigationRef.current = true;
+        navigate(result.redirectTo, { replace: result.replace });
+      }
       toast.success('Taktik tahtası kaydedildi');
+      return true;
     } catch (cause) {
       toast.error(
         cause instanceof Error ? cause.message : 'Tahta kaydedilemedi.',
       );
+      return false;
+    } finally {
+      allowNavigationRef.current = false;
+      setSaving(false);
     }
-  }, [document, onSave]);
+  }, [blocker.state, changeKey, document, navigate, onSave]);
 
   useEffect(() => {
     const keydown = (event: KeyboardEvent) => {
@@ -463,6 +491,48 @@ export function TacticalBoardEditor({
 
   return (
     <div className="board-editor">
+      <Dialog
+        open={blocker.state === 'blocked'}
+        onOpenChange={(open) => {
+          if (!open && blocker.state === 'blocked') blocker.reset();
+        }}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Kaydedilmemiş değişiklikler var</DialogTitle>
+            <DialogDescription>
+              Bu sayfadan ayrılırsanız taktik tahtasındaki son değişiklikler
+              kaybolacak.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => blocker.state === 'blocked' && blocker.reset()}
+              disabled={saving}
+            >
+              İptal
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={() => blocker.state === 'blocked' && blocker.proceed()}
+              disabled={saving}
+            >
+              Değişiklikleri at
+            </Button>
+            <Button
+              onClick={async () => {
+                if ((await save()) && blocker.state === 'blocked') {
+                  blocker.proceed();
+                }
+              }}
+              disabled={saving}
+            >
+              {saving ? 'Kaydediliyor…' : 'Kaydet ve çık'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
       <div className="board-commandbar">
         <Select
           value={document.pitch.type}
@@ -1188,13 +1258,4 @@ function exportPng(stage: Konva.Stage | null) {
   link.download = 'ngcs-tactical-board.png';
   link.href = stage.toDataURL({ pixelRatio: 2 });
   link.click();
-}
-function boardSvg(document: TacticalBoardDocumentV1) {
-  const elements = document.elements
-    .map(
-      (element) =>
-        `<g transform="translate(${element.x} ${element.y}) rotate(${element.rotation ?? 0})"><circle r="${element.radius ?? 14}" fill="${element.team === 'away' ? '#ef4444' : (element.color ?? '#1687ff')}"/><title>${labelFor(element)}</title></g>`,
-    )
-    .join('');
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${document.pitch.width}" height="${document.pitch.height}" viewBox="0 0 ${document.pitch.width} ${document.pitch.height}"><rect width="100%" height="100%" fill="#16844e"/><rect x="12" y="12" width="${document.pitch.width - 24}" height="${document.pitch.height - 24}" fill="none" stroke="#fff" stroke-width="4"/>${elements}</svg>`;
 }
