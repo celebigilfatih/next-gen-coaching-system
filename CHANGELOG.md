@@ -38,6 +38,7 @@
 - Backend/frontend typecheck, salt-okunur lint/format, unit test, izole-output build,
   Sites, Markdown link, CDSK ve diff adımlarını birleştiren kök `npm run quality`
   kapısı.
+- Fresh clone kalite akışında typecheck öncesi Prisma Client üreten explicit kapı.
 - Aynı site altındaki production frontend/API origin'leri ile dönen, server-side
   revoke edilebilir kalıcı tarayıcı oturumunu seçenekleri ve rollout kapılarıyla
   tanımlayan Proposed ADR-0010.

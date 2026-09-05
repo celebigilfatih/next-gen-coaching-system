@@ -52,6 +52,8 @@ PostgreSQL 16 kullanıldı ve container testten sonra kaldırıldı.
 `npm run quality` non-destructive, fail-fast varsayılan kapıdır. Dedicated
 PostgreSQL gerektiren backend/browser E2E testleri yalnız açık reset onayı ve ilgili
 environment değişkenleriyle ayrı `npm run test:e2e` komutunda çalıştırılır.
+Kapı backend typecheck öncesinde `prisma generate` çalıştırır; bu nedenle temiz
+clone yalnız bağımlılık kurulumu sonrası önceden üretilmiş client'a güvenmez.
 
 2026-09-01 doğrulamasında 12 unit suite / 40 test geçti. Dedicated veritabanı E2E
 suite'indeki 7 test; önceki cross-club ve meşru aynı-grup akışlarına ek olarak

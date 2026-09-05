@@ -6,6 +6,7 @@ const repositoryRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url))
 
 const steps = [
   ["Repository script format", "npm", ["run", "format:repo"]],
+  ["Backend Prisma client", "npm", ["--prefix", "apps/backend", "run", "prisma:generate"]],
   ["Backend typecheck", "npm", ["--prefix", "apps/backend", "run", "typecheck"]],
   ["Backend lint", "npm", ["--prefix", "apps/backend", "run", "lint"]],
   ["Backend format", "npm", ["--prefix", "apps/backend", "run", "format:check"]],
