@@ -1,4 +1,4 @@
 import { Navigate } from 'react-router';
 export default function AppIndex() {
-  return <Navigate to="/app/week" replace />;
+  return <Navigate to="/app/dashboard" replace />;
 }

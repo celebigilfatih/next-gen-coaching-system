@@ -6,7 +6,7 @@ import {
   UsersThree,
 } from '@phosphor-icons/react';
 import { useEffect, useMemo, useState } from 'react';
-import { Link, useParams } from 'react-router';
+import { Link, useParams, useSearchParams } from 'react-router';
 import { toast } from 'sonner';
 import { TacticalBoardEditor } from '../components/tactics/tactical-board-editor';
 import { Alert, AlertDescription, AlertTitle } from '../components/ui/alert';
@@ -43,6 +43,7 @@ export function meta() {
 }
 export default function TrainingDetailRoute() {
   const { planId } = useParams();
+  const [searchParams] = useSearchParams();
   const { members, drills } = useWorkspace();
   const [plan, setPlan] = useState<TrainingPlan>();
   const [selected, setSelected] = useState<PlanDrill>();
@@ -173,7 +174,11 @@ export default function TrainingDetailRoute() {
           </Link>
         </Button>
       </header>
-      <Tabs defaultValue="flow">
+      <Tabs
+        defaultValue={
+          searchParams.get('tab') === 'attendance' ? 'attendance' : 'flow'
+        }
+      >
         <TabsList>
           <TabsTrigger value="flow">Akış</TabsTrigger>
           <TabsTrigger value="board">Taktik snapshot</TabsTrigger>
