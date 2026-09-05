@@ -25,3 +25,4 @@
 | [ADR-0010](ADR-0010-production-origin-and-persistent-session.md) | Production origin topolojisi ve kalıcı tarayıcı oturumu | Accepted |
 | [ADR-0011](ADR-0011-shadcn-routed-coach-workspace.md) | shadcn tabanlı rotalı koç çalışma alanı | Accepted |
 | [ADR-0012](ADR-0012-scoped-drills-and-tactical-board-contract.md) | Kapsamlı egzersizler ve taktik tahta sözleşmesi | Accepted |
+| [ADR-0013](ADR-0013-expanded-coach-navigation.md) | Genişletilmiş koç navigasyonu ve shadcn shell | Accepted |

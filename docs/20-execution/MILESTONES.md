@@ -37,3 +37,24 @@
   1440/1024/390 rota kontrolleri ve repository kalite kapısı.
 - **Risks:** Production session/deployment, formal WCAG ve ürün metrikleri `TBD`.
 - **Status:** Completed 2026-09-04.
+
+## Milestone M3.1 — Koç navigasyonunu genişletme
+
+- **Outcome:** Eski arayüzdeki MVP destek girişleri ortak shadcn shell içinde
+  gerçek workspace bağlamıyla erişilebilir.
+- **Dependencies:** M3, ADR-0013.
+- **Exit criteria:** Genel Bakış, Egzersiz Kütüphanesi, Yoklama ve Ayarlar rotaları;
+  dokuz girişli masaüstü navigasyonu; beş ana görevli mobil alt navigasyon ve tam
+  menü Sheet'i browser/design QA'dan geçer.
+- **Risks:** Formal WCAG hedefi, browser matrisi ve tasarım owner'ı `TBD`.
+- **Status:** Completed 2026-09-05.
+
+## Milestone M4 — Production session hazırlığı
+
+- **Outcome:** ADR-0010 sınırında güvenli ve kalıcı tarayıcı oturumu.
+- **Dependencies:** Exact domain/provider, session lifetime/retention ve production
+  operasyon girdileri.
+- **Exit criteria:** Migration/API sözleşmesi ve operasyon kapıları onaylanır;
+  staging doğrulamaları geçer.
+- **Risks:** Zorunlu girdiler `TBD`.
+- **Status:** Planned — required inputs TBD.

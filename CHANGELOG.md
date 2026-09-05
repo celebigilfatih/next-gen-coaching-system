@@ -51,6 +51,13 @@
   50 adım undo/redo, açık save ve NGCS JSON/PNG/SVG aktarımı sunan taktik editörü.
 - Kulüp egzersizi, antrenman snapshot'ı, maç tahtası ve çapraz tenant reddini
   doğrulayan iki kulüplü Playwright E2E.
+- Eski “Koç Operasyon Masası” arayüzündeki MVP destek girişlerini güncel shadcn
+  shell'e taşıyan Accepted ADR-0013; Genel Bakış, Egzersiz Kütüphanesi, Yoklama ve
+  Ayarlar rotaları.
+- Üst menü araması, takım/sezon bağlamı, bildirim, shadcn Avatar/DropdownMenu ve
+  mobil tam navigasyon Sheet'i.
+- Genişletilmiş shell için masaüstü/mobil browser kanıtı ve kaynakla birleşik
+  `design-qa.md` karşılaştırması.
 
 ### Changed
 
@@ -107,6 +114,9 @@
   bugün ve tarih seçimiyle gerçek plan/maç verisini eşleştiriyor.
 - Drill okuma ve mutation yolları authentication, tenant, grup ve creator
   sahipliğiyle sınırlandı; ownership mass-assignment alanları sunucuda türetiliyor.
+- `/app` varsayılanı Genel Bakış'a yönlendirildi; masaüstü navigasyonu Genel,
+  Planlama ve Takım başlıkları altında dokuz girişe genişletildi. Mobil alt çubuk
+  ADR-0011'deki beş ana görevi korur.
 
 ### Known issues
 

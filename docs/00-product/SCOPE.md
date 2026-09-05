@@ -8,6 +8,8 @@
 - Taktik, maç ve rakip analizinin temel kaydı.
 - Kulüp/grup kapsamlı egzersiz kütüphanesi; ortak etkileşimli taktik tahta;
   antrenman snapshot'ı ve maç tahtası.
+- Koç genel bakışı, drill kütüphanesi, plan bazlı yoklama erişimi ve doğrulanmış
+  çalışma alanı/oturum ayarları.
 - MVP için gerekli kullanıcı, kulüp, takım/grup ve kimlik doğrulama desteği.
 
 ## Explicit Non-goals

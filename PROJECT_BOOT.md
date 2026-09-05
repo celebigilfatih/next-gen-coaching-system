@@ -1,6 +1,6 @@
 # Next Generation Coaching System — Project Boot
 
-- **Document version:** 1.9
+- **Document version:** 2.0
 - **CDSK version:** 0.1.0
 - **Last updated:** 2026-09-05
 
@@ -67,9 +67,11 @@
   PostgreSQL 16 üzerinde uygulandı ve schema diff boş doğrulandı.
 - **Deployment model:** Docker Compose tanımı var; production modeli `TBD`.
 - **Frontend:** React 19/React Router Framework Mode SPA, shadcn/Radix, Tailwind,
-  Phosphor ve React-Konva. “Koç Operasyon Masası” kimliğiyle Hafta,
-  Antrenmanlar, Taktik Tahtası, Kadro ve Maçlar rotaları; kulüp egzersizi, plan
-  snapshot'ı ve maç tahtası gerçek REST API'ye bağlıdır.
+  Phosphor ve React-Konva. “Koç Operasyon Masası” kimliğiyle Genel Bakış, Hafta,
+  Antrenmanlar, Egzersiz Kütüphanesi, Taktik Tahtası, Maçlar, Kadro, Yoklama ve
+  Ayarlar rotaları; kulüp egzersizi, plan snapshot'ı ve maç tahtası gerçek REST
+  API'ye bağlıdır. Mobil alt navigasyon beş ana görevi korur; destek rotaları tam
+  menü Sheet'i içindedir.
 
 ## 5. Decision Snapshot
 
@@ -87,6 +89,7 @@
 | Production origin ve kalıcı tarayıcı oturumu | Accepted; implementation inputs TBD | ADR-0010 |
 | Rotalı shadcn koç çalışma alanı | Accepted; implemented | ADR-0011 |
 | Kapsamlı egzersiz ve taktik tahta sözleşmesi | Accepted; implemented | ADR-0012 |
+| Genişletilmiş koç navigasyonu ve shadcn shell | Accepted; implemented | ADR-0013 |
 
 ## 6. AI Context
 
@@ -100,9 +103,9 @@
   ADR-0003 monorepo topolojisi, ADR-0005 rol/tenant sınırı, ADR-0006 migration süreci
   ADR-0007 çekirdek eylem matrisi, ADR-0008 davet tabanlı hesap yaşam döngüsü
   ADR-0009 koç öncelikli frontend, ADR-0011 rotalı shadcn yüzeyi ve ADR-0012
-  kapsamlı egzersiz/taktik belge kararı kabul edildi. ADR-0010 aynı site origin ve
-  dönen refresh-session yaklaşımı olarak Option 1'i kabul eder; implementation
-  girdileri `TBD` kalır.
+  kapsamlı egzersiz/taktik belge kararı ve ADR-0013 genişletilmiş koç navigasyonu
+  kabul edildi. ADR-0010 aynı site origin ve dönen refresh-session yaklaşımı olarak
+  Option 1'i kabul eder; implementation girdileri `TBD` kalır.
 - **Recently completed:** Temiz Prisma baseline; current-database principal; HTTP ve
   Socket.IO kulüp/grup authorization; cross-club negatif testleri; passwordHash,
   throttling ve bounded season generation güvenlik tabanı; kırık frontend gitlink'inin
@@ -111,7 +114,9 @@
   yönle çalışan ve QA'dan geçen koç frontend dikey dilimi; gerçek API'ye bağlı
   beş rotalı responsive frontend; 15 araç/11 saha türü, 6 formasyon, history,
   import/export ve explicit save içeren ortak tahta; kulüp drill ownership'i;
-  plan snapshot'ı; maç tahtası; iki kulüplü Playwright E2E.
+  plan snapshot'ı; maç tahtası; iki kulüplü Playwright E2E; shadcn üst çubuk ve
+  gruplu dokuz masaüstü menüsü; gerçek workspace verisiyle Genel Bakış, Egzersiz
+  Kütüphanesi, Yoklama ve Ayarlar destek rotaları; 390 px mobil tam menü.
 
 ## 7. Current Priorities
 
@@ -162,14 +167,14 @@
 
 ## 11. AI Handoff
 
-- **Session summary:** ADR-0010 Option 1 kullanıcı tarafından açıkça kabul edildi.
-  Önceki teslimde `origin/main` tabanında güvenli repository uzlaştırması
-  yapıldı. Beş rotalı shadcn koç masası, React-Konva ortak tahta, kulüp/grup drill
-  yetkisi, plan snapshot ve maç tahtası uygulandı; clean migration, unit/build ve
-  iki kulüplü browser E2E ile doğrulandı.
-- **Documents updated:** ADR-0011/0012, requirements, roadmap/milestones, backlog,
-  mimari/veri/güvenlik/API/test belgeleri, README, changelog ve Project Boot.
-- **Decisions recorded:** ADR-0010 Option 1, ADR-0011 ve ADR-0012 Accepted.
+- **Session summary:** Eski frontend navigasyonu ve görsel dili güncel çalışma
+  alanıyla karşılaştırıldı. Kullanıcının açık onayıyla dört MVP destek rotası ve
+  dokuz girişli shadcn shell eklendi; beş ana görev mobil alt navigasyonda korundu.
+  Genel Bakış, Egzersiz Kütüphanesi, Yoklama ve Ayarlar gerçek workspace verisiyle
+  browser/responsive QA'dan geçti; backend ve veri modeli değişmedi.
+- **Documents updated:** ADR-0013, requirements, scope, roadmap, frontend/root
+  README, root design QA, changelog ve Project Boot.
+- **Decisions recorded:** ADR-0010 Option 1, ADR-0011, ADR-0012 ve ADR-0013 Accepted.
   ADR-0010 henüz implemented değildir. Exact domain/provider, token
   süreleri, retention, secret ve production operasyon sözleşmeleri `TBD`.
 - **Remaining risk:** Backend legacy analytics adapter'ında 41 görünür lint uyarısı;
@@ -203,3 +208,4 @@
 | 1.7 | 2026-09-01 | Production origin ve kalıcı session için Proposed ADR-0010 hazırlandı |
 | 1.8 | 2026-09-04 | Rotalı shadcn çalışma alanı, scoped drills ve ortak taktik tahta doğrulandı |
 | 1.9 | 2026-09-05 | ADR-0010 Option 1 kabul edildi; M4 zorunlu girdileri görünürleştirildi |
+| 2.0 | 2026-09-05 | shadcn shell dokuz masaüstü menüsü ve dört MVP destek rotasıyla genişletildi |

@@ -23,9 +23,9 @@ Bu proje **CDSK 0.1.0** standardını kullanır.
 
 - `apps/backend`: NestJS 11, Prisma 6 ve PostgreSQL kullanan backend.
 - `apps/frontend`: React 19/React Router SPA; shadcn/Radix, Tailwind, Phosphor ve
-  React-Konva tabanlı “Koç Operasyon Masası”. Hafta, Antrenmanlar, Taktik Tahtası,
-  Kadro ve Maçlar rotaları ile kulüp egzersizi, plan snapshot'ı ve maç tahtası
-  uçtan uca çalışır.
+  React-Konva tabanlı “Koç Operasyon Masası”. Genel Bakış, Hafta, Antrenmanlar,
+  Egzersiz Kütüphanesi, Taktik Tahtası, Maçlar, Kadro, Yoklama ve Ayarlar rotaları
+  ile kulüp egzersizi, plan snapshot'ı ve maç tahtası uçtan uca çalışır.
 - `docker-compose.yml`: Doğrulanmış PostgreSQL ve backend servislerini tanımlar.
 
 ## Doğrulanmış geliştirme komutları

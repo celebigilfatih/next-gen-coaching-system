@@ -17,3 +17,4 @@
 | BL-013 | Production origin ve kalıcı tarayıcı oturumu | P0 | ADR-0009, production/security owner | Origin, hosting ve session sınırı ADR ile onaylanır; domain/provider/süre/retention girdileri implementation öncesi kapanır | In progress — ADR-0010 accepted; required inputs TBD |
 | BL-014 | Beş rotalı shadcn koç çalışma alanı | P0 | ADR-0009, ADR-0011 | Hafta, antrenman, taktik, kadro ve maç rotaları responsive kalite kapılarından geçer | Done — route/browser verified |
 | BL-015 | Kulüp egzersizi ve ortak taktik tahta | P0 | ADR-0012, BL-014 | Sürümlü belge, tenant/sahiplik, plan snapshot ve maç tahtası uçtan uca doğrulanır | Done — unit/migration/E2E verified |
+| BL-016 | Koç destek navigasyonunu genişlet | P1 | ADR-0013, BL-014 | Genel Bakış, Egzersiz Kütüphanesi, Yoklama ve Ayarlar gerçek bağlamla açılır; masaüstü/mobil shell QA'dan geçer | Done — browser/design QA verified |

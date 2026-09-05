@@ -5,8 +5,11 @@ Framework Mode SPA olarak bu workspace'te uygulanır. shadcn/Radix, Tailwind CSS
 Phosphor ve React-Konva tabanı ADR-0011 ile; taktik tahta sözleşmesi ADR-0012 ile
 kabul edilmiştir. Görsel hedef “Koç Operasyon Masası”dır.
 
-Ana rotalar `/app/week`, `/app/trainings`, `/app/tactics`, `/app/squad` ve
-`/app/matches`; plan, egzersiz ve maç detayları kimlikli alt rotalardır.
+Ana görev rotaları `/app/week`, `/app/trainings`, `/app/tactics`, `/app/squad` ve
+`/app/matches`; destek rotaları `/app/dashboard`, `/app/library`,
+`/app/attendance` ve `/app/settings` adreslerindedir. Plan, egzersiz ve maç
+detayları kimlikli alt rotalardır. Masaüstü tam navigasyonu dokuz girişi gösterir;
+mobil alt navigasyon beş ana görevi korur ve destek rotaları menü Sheet'i içindedir.
 
 ## Yerel çalışma
 
@@ -44,7 +47,8 @@ npm run test:e2e
 Komut migration'ı uygular, deterministik kulüp/takım/sezon fixture'ını kurar,
 backend ile frontend'i geçici portlarda başlatır ve gerçek login → kulüp taktik
 egzersizi → plan snapshot → maç tahtası → ikinci kulüpten erişim reddi zincirini
-doğrular. Beş ana rota ayrıca 1440, 1024 ve 390 piksel genişlikte kontrol edilir.
+doğrular. Ana rotalar ayrıca 1440, 1024 ve 390 piksel genişlikte kontrol edilir;
+genişletilmiş shell ve destek rotaları browser/design QA ile doğrulanır.
 Credential repository'ye yazılmaz.
 
 Production hosting, kalıcı oturum ve ölçülebilir erişilebilirlik hedefi `TBD`.
