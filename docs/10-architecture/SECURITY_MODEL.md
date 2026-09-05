@@ -54,6 +54,10 @@
   `Accepted` durumundadır ancak uygulanmamıştır. Zorunlu implementation girdileri
   kapanana kadar memory-only bearer davranışı geçerlidir; refresh credential veya
   cookie sözleşmesi uygulanmış kabul edilemez.
+- Prisma CLI → `@prisma/config` → `deepmerge-ts` advisory zinciri ADR-0016 ile
+  hosted runtime için `not_actionable` sınıflanmış ve production öncesi yeniden
+  inceleme koşuluyla geçici kabul edilmiştir. Runtime/migrator image ayrımı
+  ADR-0017 altında `Proposed`; uygulanmış kabul edilemez.
 
 Kalan maddeler sonraki güvenlik ve production dalgaları için karar girdileridir.
 

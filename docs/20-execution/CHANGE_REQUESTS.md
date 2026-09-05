@@ -12,3 +12,5 @@
 | CR-008 | Davet tabanlı hesap yaşam döngüsünü uygula | Auth, veri modeli ve audit | ADR-0008 | Product owner approval; named security owner TBD | Approved |
 | CR-009 | Same-club cross-group aggregate ve Socket recipient sınırını kapat | Güvenlik, API/event sözleşmesi ve veri ilişkileri | ADR-0014 | Explicit user approval; named security owner TBD | Approved and verified |
 | CR-010 | Password reset token tüketimini single-winner atomik yap | Güvenlik ve transaction davranışı | ADR-0015 | Explicit user approval; named security/data owner TBD | Approved and verified |
+| CR-011 | Prisma CLI advisory için kanıtlı geçici risk kabulü | Dependency security ve production gate | ADR-0016 | Explicit user approval; named security/operations owner TBD | Approved |
+| CR-012 | Backend runtime image ile migrator artifact/job'u ayır | Deployment mimarisi, image içeriği ve DB yetkileri | ADR-0017 | Preparation approved; implementation approver/owner TBD | Proposed |

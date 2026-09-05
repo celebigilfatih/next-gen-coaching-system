@@ -1,6 +1,6 @@
 # Next Generation Coaching System — Project Boot
 
-- **Document version:** 2.4
+- **Document version:** 2.5
 - **CDSK version:** 0.1.0
 - **Last updated:** 2026-09-05
 
@@ -37,11 +37,12 @@
 - **Version:** Ürün sürümü `TBD`.
 - **Active milestone:** M4 production session hazırlığı; zorunlu girdiler, owner ve
   hedef tarih `TBD`.
-- **Current focus:** BL-024 log/DTO/lint borcu, BL-025 Prisma advisory kararı ve
-  ADR-0010 implementation girdilerini hazırlamak.
-- **Critical risks:** Memory-only frontend session; Prisma production dependency
-  advisory'leri; production deployment, secret, backup ve observability modeli;
-  sağlık/ileri analitik gizlilik politikası. Bunlar M4 veya MVP dışı risklerdir.
+- **Current focus:** ADR-0010 production/session girdileri, BL-026 runtime/migrator
+  image ayrımı ve BL-024 log/DTO/lint borcunu hazırlamak.
+- **Critical risks:** Memory-only frontend session; runtime image'ın Prisma CLI ve
+  builder dependency ağacını taşıması; production deployment, secret, backup ve
+  observability modeli; sağlık/ileri analitik gizlilik politikası. Prisma
+  advisory'si ADR-0016 koşullarıyla geçici kabul edilmiştir.
 - **Blocking decisions:** Exact production domain/provider, session lifetime ve
   retention, operasyon sahibi, sağlık verisi retention/audit politikası `TBD`.
 - **Last status update:** 2026-09-05
@@ -92,6 +93,8 @@
 | Genişletilmiş koç navigasyonu ve shadcn shell | Accepted; implemented | ADR-0013 |
 | Grup izolasyonu ve gerçek zamanlı olay alıcıları | Accepted; verified | ADR-0014 |
 | Atomik recovery ve güvenli SVG serialization | Accepted; verified | ADR-0015 |
+| Prisma CLI advisory risk disposition | Accepted; production re-review required | ADR-0016 |
+| Runtime ve migrator image ayrımı | Proposed; implementation approval TBD | ADR-0017 |
 
 ## 6. AI Context
 
@@ -106,9 +109,11 @@
   ADR-0007 çekirdek eylem matrisi, ADR-0008 davet tabanlı hesap yaşam döngüsü
   ADR-0009 koç öncelikli frontend, ADR-0011 rotalı shadcn yüzeyi ve ADR-0012
   kapsamlı egzersiz/taktik belge kararı, ADR-0013 genişletilmiş koç navigasyonu,
-  ADR-0014 kesin group/recipient sınırı ve ADR-0015 atomik reset/güvenli SVG
-  kabul edildi. ADR-0010 aynı site origin ve dönen refresh-session yaklaşımı olarak
-  Option 1'i kabul eder; implementation girdileri `TBD` kalır.
+  ADR-0014 kesin group/recipient sınırı, ADR-0015 atomik reset/güvenli SVG ve
+  ADR-0016 Prisma advisory geçici risk disposition kararı kabul edildi. ADR-0010
+  aynı site origin ve dönen refresh-session yaklaşımı olarak Option 1'i kabul eder;
+  implementation girdileri `TBD` kalır. ADR-0017 runtime/migrator ayrımı
+  `Proposed` durumundadır.
 - **Recently completed:** Temiz Prisma baseline; current-database principal; HTTP ve
   Socket.IO kulüp/grup authorization; cross-club negatif testleri; passwordHash,
   throttling ve bounded season generation güvenlik tabanı; kırık frontend gitlink'inin
@@ -126,7 +131,9 @@
   da taşındı; on ekran görüntüsü ile ürün fontları yerleştirme sonrasında doğrulandı.
   F-001–F-006; tenant-safe dashboard, kesin group aggregate sınırı, güncel
   recipient Socket yayını, dirty-navigation koruması, single-winner reset ve
-  güvenli SVG serialization ile kapatıldı.
+  güvenli SVG serialization ile kapatıldı. Prisma advisory zinciri statik
+  triyajda hosted runtime için `not_actionable` bulundu; BL-025 ADR-0016 ile
+  kapatıldı ve image hardening BL-026/ADR-0017'ye ayrıldı.
 - **Latest review:** `1b831e0` tabanlı stabilizasyon çalışma ağacında root quality,
   PostgreSQL 16 migration/schema diff, backend 9/9 E2E ve frontend 3/3 Playwright
   E2E geçti; açık P0/P1 kalmadığı için remediation hükmü **Pass**. Kanıt:
@@ -136,8 +143,8 @@
 
 1. ADR-0010 için exact domain/provider, session lifetime/retention ve operasyon
    sahibini belirlemek.
-2. BL-025 Prisma production advisory reachability ve upgrade/downgrade kararını
-   kanıtlamak.
+2. ADR-0017/BL-026 runtime ve migrator image ayrımının implementation kararını ve
+   provider/registry/DB-role girdilerini tamamlamak.
 3. BL-024 structured/redacted logging, DTO ve analytics lint borcunu planlamak.
 4. Sağlık/ileri analitik politikası ile formal WCAG ve başarı metriklerini ayrı
    onay kapılarında karara bağlamak.
@@ -191,16 +198,17 @@
   uygulandı. F-001–F-006 kapatıldı; quality, clean PostgreSQL 16 migration/diff,
   backend 9/9 E2E ve frontend 3/3 Playwright E2E geçti. Güncel MVP review hükmü
   **Pass**.
-- **Documents updated:** ADR-0014/0015, review raporu, BL-017–BL-025, CR-009/010,
-  requirements, mimari güvenlik/veri/API/entegrasyon belgeleri, roadmap,
-  milestone, changelog ve handoff.
+- **Documents updated:** ADR-0014–0017, review raporu, BL-017–BL-026, CR-009–012,
+  requirements, mimari güvenlik/veri/API/entegrasyon belgeleri, operations,
+  roadmap, milestone, changelog ve handoff.
 - **Decisions recorded:** Dashboard `GLOBAL + own club`; aggregate'lerde kesin
   group sınırı; Socket operasyon olaylarında güncel group/resource alıcısı;
-  password reset'te transaction içi conditional single-winner claim.
-- **Remaining risk:** Memory-only auth, Prisma production dependency advisory'leri,
+  password reset'te transaction içi conditional single-winner claim; Prisma CLI
+  advisory'si hosted runtime için geçici `not_actionable` risk kabulü.
+- **Remaining risk:** Memory-only auth, runtime image dependency fazlası,
   log/DTO/lint borcu ve production operasyon sözleşmesi M4 riski olarak sürer.
-- **Recommended next step:** ADR-0010 implementation girdilerini ve BL-025
-  dependency kararını owner bilgisiyle tamamlamak.
+- **Recommended next step:** ADR-0010 implementation girdilerini tamamlamak ve
+  ADR-0017 runtime/migrator ayrımını uygulama onayına sunmak.
 
 ## Revision History
 
@@ -230,3 +238,4 @@
 | 2.2 | 2026-09-05 | doğrulanmış UI audit kanıtı düzenlenebilir Figma panosuna taşındı |
 | 2.3 | 2026-09-05 | tam MVP review Fail hükmü, bulgular ve remediation backlog'u kaydedildi |
 | 2.4 | 2026-09-05 | A–D stabilizasyonu tamamlandı; F-001–F-006 kapandı ve remediation review Pass oldu |
+| 2.5 | 2026-09-05 | Prisma advisory geçici risk kabulü kaydedildi; runtime/migrator ayrımı Proposed oldu |

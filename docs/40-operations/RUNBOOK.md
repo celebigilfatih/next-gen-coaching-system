@@ -26,6 +26,8 @@ dosyası belirtilir. E2E bu komuta dahil değildir; dedicated database ve açık
 onayı gerektiren `npm run test:e2e` ayrı çalıştırılır.
 
 Varsayılan backend portu `4000`. Uygulama container'ı migration çalıştırmaz.
+Mevcut image builder'ın tam `node_modules` ağacını taşır; ADR-0017 kabul edilene
+kadar runtime-only production artifact olarak değerlendirilmez.
 
 İlk `SYSTEM_ADMIN`, yalnız veritabanında hiç sistem yöneticisi yokken ve migration
 uygulandıktan sonra explicit operator adımıyla oluşturulur. Credential komut
@@ -47,6 +49,10 @@ deployment adımı olarak çalıştırılır. Ön koşullar:
 - backup ve restore provası kanıtlanmış;
 - migration SQL'i review edilmiş ve izole PostgreSQL üzerinde denenmiş;
 - rollback/uyumluluk penceresi onaylanmış.
+
+ADR-0017 uygulanırsa komut yalnız aynı immutable revision ve lockfile'dan üretilen
+migrator artifact/job içinde çalıştırılır; serving runtime'a migration credential
+ve Prisma CLI verilmez.
 
 Bu koşullar sağlanmadan aşağıdaki komut çalıştırılmaz:
 

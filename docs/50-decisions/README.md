@@ -28,3 +28,5 @@
 | [ADR-0013](ADR-0013-expanded-coach-navigation.md) | Genişletilmiş koç navigasyonu ve shadcn shell | Accepted |
 | [ADR-0014](ADR-0014-group-isolation-and-event-recipients.md) | Grup izolasyonu ve gerçek zamanlı olay alıcıları | Accepted |
 | [ADR-0015](ADR-0015-atomic-recovery-and-safe-svg.md) | Atomik password recovery ve güvenli SVG serialization | Accepted |
+| [ADR-0016](ADR-0016-prisma-advisory-risk-disposition.md) | Prisma CLI advisory risk disposition | Accepted |
+| [ADR-0017](ADR-0017-runtime-and-migrator-image-separation.md) | Runtime ve migrator image ayrımı | Proposed |

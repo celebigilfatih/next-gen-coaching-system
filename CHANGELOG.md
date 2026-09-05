@@ -71,6 +71,10 @@
   password recovery/güvenli SVG serialization kararını kabul eden ADR-0015.
 - İki-kulüplü dashboard, iki-gruplu aggregate, current-recipient Socket,
   eşzamanlı reset, güvenli SVG ve dirty-navigation regresyon testleri.
+- Prisma CLI advisory zincirini hosted runtime için `not_actionable` sınıflandıran
+  ve production öncesi yeniden incelemeli geçici risk kabulünü kaydeden ADR-0016.
+- Runtime-only backend image ile ayrı migrator artifact/job modelini seçenekleri,
+  rollout ve kabul kapılarıyla hazırlayan Proposed ADR-0017 ve CR-012.
 
 ### Changed
 
@@ -145,6 +149,9 @@
 - Password reset completion transaction içi conditional claim ile single-winner
   hale getirildi. REQ-005 ve REQ-009 remediation kanıtıyla yeniden `Implemented`
   durumuna getirildi.
+- BL-025, Prisma `6.19.3` → `@prisma/config` `6.19.3` → `deepmerge-ts` `7.1.5`
+  zincirinin source/control/sink triyajı ve açık risk kabulüyle tamamlandı; paket,
+  lockfile ve runtime davranışı değiştirilmedi.
 
 ### Known issues
 
@@ -157,10 +164,11 @@
   silinebilir veritabanında çalıştırılabilir.
 - Backend legacy analytics adapter'ında 41 unused-variable lint uyarısı görünür
   teknik borç olarak kalıyor; repository lint hatası yoktur.
-- Güncelleme sonrasında `npm audit --omit=dev` Prisma CLI / `@prisma/config` /
-  `deepmerge-ts` zincirinde 3 high advisory bırakıyor. Önerilen otomatik çözüm
-  Prisma 6.12.0'a breaking downgrade olduğu için uygulanmadı; reachability ve
-  güvenli Prisma upgrade/downgrade kararı ayrıca incelenecek.
+- `npm audit --omit=dev` Prisma CLI / `@prisma/config` / `deepmerge-ts` zincirinde
+  3 high advisory raporluyor. ADR-0016 bunu hosted runtime için `not_actionable`
+  ve production öncesi yeniden incelemeli geçici kabul olarak kaydeder; otomatik
+  Prisma 6.12.0 breaking downgrade uygulanmadı. Runtime image hardening'i Proposed
+  ADR-0017/BL-026 kapsamındadır.
 - 2026-09-05 ilk tam MVP review hükmü tarihsel olarak **Fail** idi; A–D
   stabilizasyonuyla F-001–F-006 kapatıldı ve güncel remediation hükmü **Pass** oldu.
   Ayrıntı ve yeniden doğrulama kanıtı `docs/30-quality/MVP_REVIEW_2026-09-05.md`

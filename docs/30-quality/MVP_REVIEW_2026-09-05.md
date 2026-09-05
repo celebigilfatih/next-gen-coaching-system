@@ -55,7 +55,7 @@ güncel kapanış durumu “Review sonrası kabul kontrolü” bölümündedir.
 | Backend E2E | Pass | 9 / 9; yalnız disposable DB; tenant/group/reset concurrency dahil |
 | Frontend Playwright E2E | Pass | 3 / 3; tactical zincir, responsive rotalar ve dirty navigation |
 | Frontend production dependencies | Pass | `npm audit --omit=dev`: 0 |
-| Backend production dependencies | Risk | Prisma/@prisma/config/deepmerge-ts zincirinde 3 high advisory; otomatik çözüm uygulanmadı |
+| Backend production dependencies | Accepted risk | ADR-0016: hosted runtime `not_actionable`; 3 scanner entry görünür, otomatik çözüm uygulanmadı |
 | Secret örüntüleri | Pass | İzlenen gerçek key/token bulunmadı; yalnız örnek ve test denylist değerleri |
 | Browser console | Pass | Denetlenen akışlarda error/warn görülmedi |
 
@@ -286,8 +286,9 @@ seçeneklerini zorunlu kılar; F-004 Playwright ile kapalıdır.
 - Frontend bearer JWT yalnız bellekte; reload oturumu kaybeder. Kalıcı session,
   lifetime, rotation, CSRF, exact domain/provider ve retention girdileri `TBD`.
 - Backend audit'inde Prisma → `@prisma/config` → `deepmerge-ts` zincirinde 3 high
-  advisory vardır. Önerilen otomatik çözüm breaking downgrade olduğu için değişiklik
-  yapılmadı; reachability ve güvenli upgrade/downgrade kararı gerekir.
+  advisory vardır. ADR-0016 triyajı bunu hosted runtime için `not_actionable`
+  sınıflandırmış ve production öncesi yeniden inceleme koşuluyla geçici kabul
+  etmiştir; otomatik breaking downgrade uygulanmamıştır.
 - Production image least-privilege, runtime-only dependency, secret injection,
   readiness, centralized redaction, backup/restore ve observability modeli `TBD`.
 - Sağlık, scouting ve ileri analitik yolları yalnız SYSTEM_ADMIN ile fail-closed;
