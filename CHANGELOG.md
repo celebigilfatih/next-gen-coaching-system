@@ -58,6 +58,8 @@
   mobil tam navigasyon Sheet'i.
 - Genişletilmiş shell için masaüstü/mobil browser kanıtı ve kaynakla birleşik
   `design-qa.md` karşılaştırması.
+- Dokuz masaüstü rota ve düzeltilmiş mobil kanıtı sıralı, düzenlenebilir kartlarda
+  birleştiren doğrulanmış Figma UI audit panosu.
 
 ### Changed
 

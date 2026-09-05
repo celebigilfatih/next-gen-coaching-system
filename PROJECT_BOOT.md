@@ -1,6 +1,6 @@
 # Next Generation Coaching System — Project Boot
 
-- **Document version:** 2.1
+- **Document version:** 2.2
 - **CDSK version:** 0.1.0
 - **Last updated:** 2026-09-05
 
@@ -118,7 +118,9 @@
   gruplu dokuz masaüstü menüsü; gerçek workspace verisiyle Genel Bakış, Egzersiz
   Kütüphanesi, Yoklama ve Ayarlar destek rotaları; 390 px mobil tam menü.
   Dokuz rotalı masaüstü UI audit'i ve düzeltilmiş mobil kütüphane kanıtı ayrıca
-  kaydedildi; mobil ana görev sırası ADR-0011 ile bire bir hizalandı.
+  kaydedildi; mobil ana görev sırası ADR-0011 ile bire bir hizalandı. Bu kanıtlar
+  sıralı ve düzenlenebilir bir [Figma audit panosuna](https://www.figma.com/design/SsL9HvCQTqzyM0z3nbriMW)
+  da taşındı; on ekran görüntüsü ile ürün fontları yerleştirme sonrasında doğrulandı.
 
 ## 7. Current Priorities
 
@@ -172,9 +174,10 @@
 - **Session summary:** Dokuz koç rotası gerçek yerel fixture ile 1440 × 1024'te
   ekran ekran denetlendi. Mobil ana görev sırası kabul edilmiş düzene sabitlendi ve
   Egzersiz Kütüphanesi faz sekmelerinin 390 px'de ikinci satıra taşması giderildi;
-  backend ve veri modeli değişmedi.
-- **Documents updated:** UI audit kanıtı, changelog ve Project Boot; önceki ADR-0013
-  karar sınırı değişmedi.
+  kanıtlar düzenlenebilir Figma audit panosunda sıralandı; backend ve veri modeli
+  değişmedi.
+- **Documents updated:** UI audit kanıtı/Figma bağlantısı, changelog ve Project
+  Boot; önceki ADR-0013 karar sınırı değişmedi.
 - **Decisions recorded:** ADR-0010 Option 1, ADR-0011, ADR-0012 ve ADR-0013 Accepted.
   ADR-0010 henüz implemented değildir. Exact domain/provider, token
   süreleri, retention, secret ve production operasyon sözleşmeleri `TBD`.
@@ -211,3 +214,4 @@
 | 1.9 | 2026-09-05 | ADR-0010 Option 1 kabul edildi; M4 zorunlu girdileri görünürleştirildi |
 | 2.0 | 2026-09-05 | shadcn shell dokuz masaüstü menüsü ve dört MVP destek rotasıyla genişletildi |
 | 2.1 | 2026-09-05 | dokuz rota UI audit'i tamamlandı; mobil sıra ve kütüphane sekmeleri düzeltildi |
+| 2.2 | 2026-09-05 | doğrulanmış UI audit kanıtı düzenlenebilir Figma panosuna taşındı |
