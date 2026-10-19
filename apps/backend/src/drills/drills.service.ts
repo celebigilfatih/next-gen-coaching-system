@@ -300,6 +300,7 @@ export class DrillsService {
           createdAt: item.createdAt,
           isBoard: boards.has(item.id),
           contentVersion: version?.version ?? null,
+          contentVersionId: version?.id ?? null,
           summary: version?.summary ?? null,
           objectiveKey: version?.objectiveKey ?? null,
           objectiveLabel: version?.objectiveLabel ?? null,

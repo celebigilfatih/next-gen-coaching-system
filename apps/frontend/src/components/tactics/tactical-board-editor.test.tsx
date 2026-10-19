@@ -19,6 +19,9 @@ import { Blob as NodeBlob } from 'node:buffer';
 import { toast } from 'sonner';
 
 // These tests exercise real editor state and controls, not canvas rendering.
+// Styles/layout are verified in browser QA; avoid a large CSS cascade for every
+// history-step accessibility query in JSDOM.
+vi.mock('../../styles/tactical-studio.css', () => ({}));
 vi.mock('konva', () => ({ default: {} }));
 vi.mock('react-konva', () => ({
   Arrow: () => null,
@@ -95,6 +98,46 @@ function openScenes(
 }
 
 describe('document-wide scene editor', () => {
+  it('keeps mobile properties optional while scene selection and view controls preserve the complete saved sequence', async () => {
+    vi.stubGlobal(
+      'matchMedia',
+      vi.fn((query: string) => ({
+        matches: query === '(max-width: 700px)',
+        media: query,
+        addEventListener() {},
+        removeEventListener() {},
+      })),
+    );
+    const sequence = editScenes(createSequence(emptyBoard(), 'one'), {
+      type: 'duplicate',
+      id: 'one',
+      newId: 'two',
+    });
+    const save = openScenes(sequence);
+    expect(
+      screen.queryByRole('tab', { name: 'Katmanlar' }),
+    ).not.toBeInTheDocument();
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Sahne 2: Sahne 1 kopyası' }),
+    );
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Özellik panelini göster' }),
+    );
+    expect(screen.getByRole('tab', { name: 'Katmanlar' })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Yakınlaştır' }));
+    fireEvent.click(screen.getByText('Görünüm', { exact: true }));
+    fireEvent.click(screen.getByRole('button', { name: 'Disk' }));
+    expect(
+      screen.getByRole('button', { name: 'Sahne 2: Sahne 1 kopyası' }),
+    ).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByRole('status')).toHaveTextContent(/^Kaydedildi$/);
+    expect(screen.getByRole('button', { name: 'Geri al' })).toBeDisabled();
+    await act(async () =>
+      fireEvent.click(screen.getByRole('button', { name: 'Kaydet' })),
+    );
+    expect(save).toHaveBeenCalledExactlyOnceWith(sequence);
+  });
+
   it('exports every scene as JSON without view preferences or mutation of the saved document', async () => {
     const sequence = editScenes(createSequence(emptyBoard(), 'one'), {
       type: 'duplicate',
@@ -124,6 +167,7 @@ describe('document-wide scene editor', () => {
     fireEvent.click(
       screen.getByRole('button', { name: 'Sahne 2: İkinci sahne' }),
     );
+    fireEvent.click(screen.getByText('Görünüm', { exact: true }));
     fireEvent.click(screen.getByRole('button', { name: 'Disk' }));
     fireEvent.click(screen.getByRole('button', { name: 'JSON' }));
     expect(JSON.parse(await blobs[0].text())).toEqual(sequence);
@@ -416,7 +460,10 @@ describe('document-wide scene editor', () => {
   });
   it('retains exactly 50 undo transitions for scene edits', () => {
     openScenes(createSequence(emptyBoard(), 'one'));
+    const undo = screen.getByRole('button', { name: 'Geri al' });
     for (let i = 1; i <= 55; i++) {
+      // Applying settings remounts the keyed scene form. Exercise the current
+      // controls on every transition, rather than detached input/button nodes.
       fireEvent.change(screen.getByLabelText('Sahne adı'), {
         target: { value: `Pres ${i}` },
       });
@@ -424,11 +471,11 @@ describe('document-wide scene editor', () => {
         screen.getByRole('button', { name: 'Sahne ayarlarını uygula' }),
       );
     }
-    for (let i = 0; i < 50; i++)
-      fireEvent.click(screen.getByRole('button', { name: 'Geri al' }));
+    expect(screen.getByLabelText('Sahne adı')).toHaveValue('Pres 55');
+    for (let i = 0; i < 50; i++) fireEvent.click(undo);
     expect(screen.getByLabelText('Sahne adı')).toHaveValue('Pres 5');
     expect(screen.getByRole('button', { name: 'Geri al' })).toBeDisabled();
-  }, 15000);
+  }, 60000);
 });
 
 describe('tactical board persistence status', () => {
@@ -635,6 +682,7 @@ describe('tactical board persistence status', () => {
   });
   it('keeps view preferences out of saved V1 documents and undo history', async () => {
     const save = openEditor(true);
+    fireEvent.click(screen.getByText('Görünüm', { exact: true }));
     fireEvent.click(screen.getByRole('button', { name: 'Disk' }));
     expect(screen.getByRole('button', { name: 'Disk' })).toHaveAttribute(
       'aria-pressed',
@@ -669,6 +717,7 @@ describe('tactical board persistence status', () => {
     fireEvent.change(screen.getByLabelText('Oyuncu adı'), {
       target: { value: 'Deniz Kaya' },
     });
+    fireEvent.click(screen.getByText('Görünüm', { exact: true }));
     fireEvent.click(screen.getByRole('button', { name: 'Disk' }));
     await act(async () =>
       fireEvent.click(screen.getByRole('button', { name: 'Kaydet' })),

@@ -290,7 +290,9 @@ describe('drill route tactical cutover', () => {
     fireEvent.change(screen.getByLabelText('Başlık'), {
       target: { value: 'Unsaved' },
     });
-    fireEvent.click(screen.getByRole('link', { name: 'Kütüphane' }));
+    fireEvent.click(
+      screen.getByRole('link', { name: 'Taktik tahtalarına dön' }),
+    );
     await screen.findByRole('dialog');
     fireEvent.click(screen.getByRole('button', { name: 'Kaydet ve çık' }));
     await waitFor(() => expect(api.save).toHaveBeenCalledTimes(1));

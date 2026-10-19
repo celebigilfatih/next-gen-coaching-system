@@ -2,15 +2,18 @@ import {
   act,
   fireEvent,
   render,
+  renderHook,
   screen,
   waitFor,
 } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import LibraryRoute from './library';
+import { useDrillCatalogFilters } from '../components/drill-catalog-filters';
 const mocks = vi.hoisted(() => ({
   page: vi.fn(),
   filtered: vi.fn(),
+  content: vi.fn(),
   workspace: {
     group: { id: 'g', name: 'U17' } as { id: string; name: string } | null,
     scope: { clubId: 'c', clubSeasonId: 'cs', teamId: 't' },
@@ -21,6 +24,7 @@ const mocks = vi.hoisted(() => ({
 vi.mock('../lib/api', () => ({
   getDrillPage: mocks.page,
   getFilteredDrillPage: mocks.filtered,
+  getDrillContent: mocks.content,
 }));
 vi.mock('../lib/workspace-context', () => ({
   useWorkspace: () => ({
@@ -40,9 +44,11 @@ const page = (title: string, nextCursor: string | null = null) => ({
       scope: 'GLOBAL',
       difficulty: 'EASY',
       isBoard: true,
+      ageGroup: 'U16',
     },
   ],
   total: 31,
+  ageGroup: 'U18',
   limit: 25,
   nextCursor,
 });
@@ -54,6 +60,21 @@ function Harness() {
   );
 }
 describe('independent drill library', () => {
+  it('keeps the active server query stable while search text is being typed', () => {
+    vi.useFakeTimers();
+    try {
+      const { result } = renderHook(() => useDrillCatalogFilters());
+      const original = result.current.filters;
+      act(() => result.current.setDraft({ q: 'pa' }));
+      expect(result.current.filters).toBe(original);
+      act(() => result.current.setDraft({ q: 'pas' }));
+      expect(result.current.filters).toBe(original);
+      act(() => vi.advanceTimersByTime(250));
+      expect(result.current.filters.q).toBe('pas');
+    } finally {
+      vi.useRealTimers();
+    }
+  });
   beforeEach(() => {
     vi.resetAllMocks();
     mocks.workspace = {
@@ -67,18 +88,18 @@ describe('independent drill library', () => {
     );
     mocks.filtered.mockImplementation(async () => page('Filtered'));
   });
-  it('renders the approved library hero, verified metrics and category surface', async () => {
+  it('renders the compact register with verified totals and categories', async () => {
     render(<Harness />);
     await screen.findByText('First');
     expect(
       screen.getByRole('heading', { name: 'Egzersiz Kütüphanesi' }),
     ).toBeInTheDocument();
-    expect(document.querySelector('.page-hero-image')).toBeInTheDocument();
+    expect(document.querySelector('.page-hero-image')).not.toBeInTheDocument();
     expect(
       screen.getByRole('heading', { name: 'Antrenman İçerikleri' }),
     ).toBeInTheDocument();
-    expect(screen.getByLabelText('Egzersiz özeti')).toHaveTextContent(
-      'Toplam egzersiz31',
+    expect(screen.getByLabelText('Egzersiz kapsamı özeti')).toHaveTextContent(
+      '31 egzersiz',
     );
     expect(screen.getByRole('tab', { name: 'Tümü' })).toBeInTheDocument();
     expect(screen.queryByText(/sağlık|scouting/i)).not.toBeInTheDocument();
@@ -89,20 +110,22 @@ describe('independent drill library', () => {
     expect(screen.getByLabelText('Egzersiz kapsamı özeti')).toHaveTextContent(
       '31 egzersiz',
     );
-    expect(screen.getByRole('link', { name: /First/ })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: 'First' })).toHaveAttribute(
       'href',
       '/app/library/First',
     );
-    expect(screen.getByText('First').closest('[data-tone]')).toHaveAttribute(
-      'data-tone',
-      'board',
-    );
+    expect(
+      screen.getByRole('button', { name: 'First önizle' }),
+    ).toBeInTheDocument();
+    expect(mocks.content).not.toHaveBeenCalled();
     fireEvent.click(screen.getByRole('button', { name: 'Sonraki sayfa' }));
     await screen.findByText('Second');
     expect(screen.queryByText('First')).not.toBeInTheDocument();
-    expect(screen.getByRole('navigation')).toHaveTextContent(
-      'Sayfa 2 · 1 / 31 egzersiz',
-    );
+    expect(
+      screen.getByRole('navigation', {
+        name: 'Egzersiz sayfaları',
+      }),
+    ).toHaveTextContent('Sayfa 2 · 1 / 31 egzersiz');
     expect(mocks.page).toHaveBeenLastCalledWith('g', undefined, 'cursor');
     fireEvent.click(screen.getByRole('button', { name: 'Önceki sayfa' }));
     await screen.findByText('First');
@@ -185,13 +208,72 @@ describe('independent drill library', () => {
     });
     view.rerender(<Harness />);
     await screen.findByText('Plain');
-    expect(screen.getByText('Plain').closest('[data-tone]')).toHaveAttribute(
-      'data-tone',
-      'default',
-    );
-    expect(screen.getByRole('link', { name: /Plain/ })).toHaveAttribute(
+    expect(
+      screen.getByRole('button', { name: 'Plain önizle' }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Plain' })).toHaveAttribute(
       'href',
       '/app/library/Plain',
+    );
+  });
+  it('loads preview only on demand with the resolved catalog age and returns focus', async () => {
+    mocks.content.mockResolvedValue({ version: null, variant: null });
+    render(<Harness />);
+    const trigger = await screen.findByRole('button', { name: 'First önizle' });
+    expect(mocks.content).not.toHaveBeenCalled();
+    fireEvent.click(trigger);
+    expect(
+      await screen.findByText(
+        'Bu eski kaydın profesyonel içerik ayrıntıları bulunmuyor.',
+      ),
+    ).toBeInTheDocument();
+    expect(mocks.content).toHaveBeenCalledWith('First', 'U18');
+    expect(
+      screen.getByRole('link', { name: 'Egzersiz detayını aç' }),
+    ).toHaveAttribute('href', '/app/library/First');
+    fireEvent.click(screen.getByRole('button', { name: 'Önizlemeyi kapat' }));
+    await waitFor(() =>
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument(),
+    );
+    expect(trigger).toHaveFocus();
+  });
+  it('keeps one search outside the filter panel and combines advanced filters with source', async () => {
+    render(<Harness />);
+    await screen.findByText('First');
+    fireEvent.click(screen.getByRole('button', { name: 'NGCS' }));
+    await screen.findByText('Filtered');
+    fireEvent.click(screen.getByRole('button', { name: 'Filtreler' }));
+    fireEvent.change(screen.getByRole('combobox', { name: 'Yaş grubu' }), {
+      target: { value: 'U14' },
+    });
+    await waitFor(() =>
+      expect(mocks.filtered).toHaveBeenLastCalledWith(
+        'g',
+        undefined,
+        expect.objectContaining({ source: 'NGCS', ageGroup: 'U14' }),
+        undefined,
+      ),
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Sonuçları göster' }));
+    expect(
+      screen.getAllByRole('textbox', { name: 'Egzersiz ara' }),
+    ).toHaveLength(1);
+    fireEvent.change(screen.getByRole('textbox', { name: 'Egzersiz ara' }), {
+      target: { value: 'pas' },
+    });
+    await waitFor(() =>
+      expect(mocks.filtered).toHaveBeenLastCalledWith(
+        'g',
+        undefined,
+        expect.objectContaining({ source: 'NGCS', ageGroup: 'U14', q: 'pas' }),
+        undefined,
+      ),
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Tümünü temizle' }));
+    await waitFor(() =>
+      expect(screen.getByRole('textbox', { name: 'Egzersiz ara' })).toHaveValue(
+        '',
+      ),
     );
   });
 });

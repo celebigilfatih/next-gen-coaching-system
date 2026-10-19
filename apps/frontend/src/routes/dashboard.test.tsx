@@ -343,11 +343,26 @@ describe('independent dashboard training overview', () => {
     mocks.workspace.group = null;
     view.rerender(<Harness />);
     expect(
-      screen.getByText(/legacy antrenman bağlamı bulunmuyor/),
+      screen.getByText(/henüz antrenman çalışma alanı bulunmuyor/),
     ).toBeInTheDocument();
     expect(mocks.overview).not.toHaveBeenCalled();
     expect(mocks.drillOverview).not.toHaveBeenCalled();
     expect(mocks.matchOverview).not.toHaveBeenCalled();
+  });
+  it('offers initial setup only to a system administrator without a club', () => {
+    mocks.workspace.group = null;
+    mocks.workspace.scope = { clubId: '', clubSeasonId: '', teamId: '' };
+    mocks.role = 'SYSTEM_ADMIN';
+    const view = render(<Harness />);
+    expect(
+      screen.getByRole('link', { name: /Kulüp kurulumuna başla/ }),
+    ).toHaveAttribute('href', '/app/setup');
+    mocks.role = 'COACH';
+    view.rerender(<Harness />);
+    expect(
+      screen.queryByRole('link', { name: /Kulüp kurulumuna başla/ }),
+    ).not.toBeInTheDocument();
+    expect(mocks.overview).not.toHaveBeenCalled();
   });
   it('shows a genuine empty response with zero totals', async () => {
     mocks.overview.mockResolvedValue({

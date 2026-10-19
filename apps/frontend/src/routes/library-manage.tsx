@@ -23,11 +23,13 @@ import { Tabs, TabsList, TabsTrigger } from '../components/ui/tabs';
 import { Textarea } from '../components/ui/textarea';
 import {
   getDrillContentQueue,
+  publishDrillStarterPack,
   transitionDrillContent,
   type DrillContentQueueItem,
   type DrillContentStatus,
 } from '../lib/api';
 import { getSession } from '../lib/session';
+import { DrillEditorialPreview } from '../components/drill-preview';
 
 const statuses: Array<{ value: DrillContentStatus; label: string }> = [
   { value: 'DRAFT', label: 'Taslaklar' },
@@ -50,6 +52,7 @@ export default function LibraryManageRoute() {
   const [busy, setBusy] = useState('');
   const [revision, setRevision] = useState(0);
   const [loadedKey, setLoadedKey] = useState('');
+  const [previewId, setPreviewId] = useState('');
   const principal = getSession()?.user;
   const requestKey = `${status}:${revision}`;
   useEffect(() => {
@@ -75,6 +78,9 @@ export default function LibraryManageRoute() {
     };
   }, [requestKey, status]);
   const loading = loadedKey !== requestKey;
+  const preview = !loading
+    ? items.find((item) => item.id === previewId)
+    : undefined;
 
   async function transition(
     item: DrillContentQueueItem,
@@ -111,6 +117,36 @@ export default function LibraryManageRoute() {
           </Link>
         </Button>
       </header>
+      {principal?.role === 'SYSTEM_ADMIN' && status === 'APPROVED' && (
+        <div className="drill-choice-summary">
+          <p>
+            NGCS başlangıç paketinin ilk yayını, 120 egzersizin tamamı bağımsız
+            uzman onayı aldıktan sonra birlikte yapılır.
+          </p>
+          <Button
+            disabled={Boolean(busy) || loading}
+            onClick={async () => {
+              if (busy) return;
+              setBusy('starter-pack');
+              try {
+                await publishDrillStarterPack();
+                toast.success('120 egzersizlik başlangıç paketi yayımlandı');
+                setRevision((value) => value + 1);
+              } catch (cause) {
+                toast.error(
+                  cause instanceof Error
+                    ? cause.message
+                    : 'Paket yayımlanamadı.',
+                );
+              } finally {
+                setBusy('');
+              }
+            }}
+          >
+            120 egzersizlik paketi yayımla
+          </Button>
+        </div>
+      )}
       <Alert>
         <AlertDescription>
           NGCS başlangıç paketi 120 taslak içerir. Adlandırılmış futbol uzmanı
@@ -130,6 +166,13 @@ export default function LibraryManageRoute() {
         </TabsList>
       </Tabs>
       <p className="library-manage__total">{total} kayıt</p>
+      {preview && (
+        <DrillEditorialPreview
+          key={preview.id}
+          version={preview}
+          onClose={() => setPreviewId('')}
+        />
+      )}
       {loading ? (
         <div className="loading-grid">
           <Skeleton className="h-48" />
@@ -164,6 +207,9 @@ export default function LibraryManageRoute() {
               </CardHeader>
               <CardContent className="library-manage__content">
                 <p>{item.summary}</p>
+                <Button variant="outline" onClick={() => setPreviewId(item.id)}>
+                  İçeriği ve yaş uyarlamalarını incele
+                </Button>
                 {item.status === 'IN_REVIEW' &&
                 item.createdBy?.id === principal?.id ? (
                   <Alert className="library-manage__review-boundary">
@@ -234,7 +280,17 @@ export default function LibraryManageRoute() {
                   {item.status === 'APPROVED' &&
                   principal?.role === 'SYSTEM_ADMIN' ? (
                     <Button
-                      disabled={busy === item.id}
+                      disabled={
+                        Boolean(busy) ||
+                        (item.drillId.startsWith('ngcs-starter-v1-') &&
+                          item.version === 1)
+                      }
+                      title={
+                        item.drillId.startsWith('ngcs-starter-v1-') &&
+                        item.version === 1
+                          ? 'Başlangıç paketi 120 egzersiz birlikte yayımlanır'
+                          : undefined
+                      }
                       onClick={() => void transition(item, 'publish')}
                     >
                       <SealCheck /> Yayınla

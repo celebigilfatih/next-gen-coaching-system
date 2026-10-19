@@ -1,11 +1,14 @@
 import {
   BadRequestException,
+  ConflictException,
+  ForbiddenException,
   HttpException,
   Injectable,
   InternalServerErrorException,
   Logger,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import type { Prisma } from '@prisma/client';
 import {
   assertLegacyTacticalWrite,
   rethrowTacticalConflict,
@@ -22,6 +25,12 @@ import {
   parseCreateTrainingPlanBody,
   parseUpdateTrainingPlanBody,
 } from './dto/training-plan.dto';
+import {
+  planSourceSelect,
+  resolvePlanContent,
+  planDrillDuration,
+  projectPlanContent,
+} from './plan-drill-content';
 
 @Injectable()
 export class TrainingPlansService {
@@ -56,49 +65,54 @@ export class TrainingPlansService {
       };
     }
 
-    return this.prisma.trainingPlan.findMany({
-      where: { AND: [scope, requested] },
-      include: {
-        attendance:
-          principal.role === 'PLAYER'
-            ? { where: { playerId: principal.id } }
-            : true,
-        drills: { include: { drill: true } },
-      },
-    });
+    return this.prisma.trainingPlan
+      .findMany({
+        where: { AND: [scope, requested] },
+        include: {
+          attendance:
+            principal.role === 'PLAYER'
+              ? { where: { playerId: principal.id } }
+              : true,
+          drills: { include: { drill: true } },
+        },
+      })
+      .then((plans) => plans.map(projectPlanContent));
   }
 
   async getEditor(id: string) {
-    return this.prisma.trainingPlan.findUnique({
+    const plan = await this.prisma.trainingPlan.findUnique({
       where: { id },
       include: { drills: { include: { drill: true } } },
     });
+    return plan ? projectPlanContent(plan) : plan;
   }
 
   async get(id: string, principal: AuthPrincipal) {
-    return this.prisma.trainingPlan.findUnique({
-      where: { id },
-      include: {
-        drills: { include: { drill: true } },
-        attendance: {
-          where:
+    return this.prisma.trainingPlan
+      .findUnique({
+        where: { id },
+        include: {
+          drills: { include: { drill: true } },
+          attendance: {
+            where:
+              principal.role === 'PLAYER'
+                ? { playerId: principal.id }
+                : undefined,
+            include: { player: { select: publicUserSelect } },
+          },
+          group:
             principal.role === 'PLAYER'
-              ? { playerId: principal.id }
-              : undefined,
-          include: { player: { select: publicUserSelect } },
-        },
-        group:
-          principal.role === 'PLAYER'
-            ? true
-            : {
-                include: {
-                  members: {
-                    include: { user: { select: publicUserSelect } },
+              ? true
+              : {
+                  include: {
+                    members: {
+                      include: { user: { select: publicUserSelect } },
+                    },
                   },
                 },
-              },
-      },
-    });
+        },
+      })
+      .then((plan) => (plan ? projectPlanContent(plan) : plan));
   }
 
   async create(input: CreateTrainingPlanDto) {
@@ -220,39 +234,70 @@ export class TrainingPlansService {
     phase: 'WARM_UP' | 'TECHNICAL' | 'TACTICAL' | 'COOL_DOWN',
     order: number,
     notes?: string,
+    expectedVersionId?: string,
+    principal?: AuthPrincipal,
   ) {
-    validatePlanDrillEntries([{ drillId, phase, order, notes }]);
+    validatePlanDrillEntries([
+      { drillId, phase, order, notes, expectedVersionId },
+    ]);
     try {
       return await this.prisma.$transaction(
         async (transaction) => {
           const [plan, drill] = await Promise.all([
             transaction.trainingPlan.findUnique({
               where: { id: planId },
-              select: { id: true, clubId: true, groupId: true },
+              select: {
+                id: true,
+                clubId: true,
+                groupId: true,
+                group: { select: { ageGroup: true } },
+              },
             }),
             transaction.drill.findUnique({
               where: { id: drillId },
-              select: {
-                id: true,
-                durationMin: true,
-                scope: true,
-                clubId: true,
-                groupId: true,
-              },
+              select: planSourceSelect,
             }),
           ]);
           if (!plan)
             throw new BadRequestException('Training plan does not exist');
           if (!drill) throw new BadRequestException('Drill does not exist');
           this.assertDrillFitsPlan(plan, drill);
+          await this.assertAttachmentAccess(transaction, principal, plan);
+
+          const content = resolvePlanContent(
+            drill,
+            plan.group?.ageGroup,
+            expectedVersionId,
+          );
+          const current = await transaction.planDrill.findMany({
+            where: { trainingPlanId: planId },
+            include: { drill: true },
+          });
+          if (current.some((entry) => entry.drillId === drillId))
+            throw new ConflictException(
+              'Egzersiz bu planda zaten bulunuyor. Planı yenileyin.',
+            );
+          if (current.length >= 50)
+            throw new BadRequestException(
+              'Bir plana en fazla 50 egzersiz eklenebilir.',
+            );
+          const targetPhase = drill.versions?.[0]?.category ?? phase;
+          const appendOrder =
+            Math.max(
+              -1,
+              ...current
+                .filter((entry) => entry.phase === targetPhase)
+                .map((entry) => entry.order),
+            ) + 1;
 
           const planDrill = await transaction.planDrill.create({
             data: {
               trainingPlanId: planId,
               drillId,
-              phase: phase as any,
-              order,
+              phase: targetPhase,
+              order: appendOrder,
               notes,
+              ...content,
             },
           });
           const planDrills = await transaction.planDrill.findMany({
@@ -260,7 +305,7 @@ export class TrainingPlansService {
             include: { drill: true },
           });
           const totalDuration = planDrills.reduce(
-            (sum, entry) => sum + entry.drill.durationMin,
+            (sum, entry) => sum + planDrillDuration(entry),
             0,
           );
           await Promise.all([
@@ -279,11 +324,16 @@ export class TrainingPlansService {
       );
     } catch (error) {
       if (error instanceof HttpException) throw error;
+      rethrowTacticalConflict(error);
       this.persistenceFailure('TRAINING_PLAN_DRILL_ADD_FAILED');
     }
   }
 
-  async replaceDrills(planId: string, entries: PlanDrillInput[]) {
+  async replaceDrills(
+    planId: string,
+    entries: PlanDrillInput[],
+    principal?: AuthPrincipal,
+  ) {
     validatePlanDrillEntries(entries);
 
     try {
@@ -293,17 +343,16 @@ export class TrainingPlansService {
           const [plan, drills] = await Promise.all([
             transaction.trainingPlan.findUnique({
               where: { id: planId },
-              select: { id: true, clubId: true, groupId: true },
+              select: {
+                id: true,
+                clubId: true,
+                groupId: true,
+                group: { select: { ageGroup: true } },
+              },
             }),
             transaction.drill.findMany({
               where: { id: { in: drillIds } },
-              select: {
-                id: true,
-                durationMin: true,
-                scope: true,
-                clubId: true,
-                groupId: true,
-              },
+              select: planSourceSelect,
             }),
           ]);
           if (!plan)
@@ -312,18 +361,14 @@ export class TrainingPlansService {
             throw new BadRequestException('One or more drills do not exist');
           }
           drills.forEach((drill) => this.assertDrillFitsPlan(plan, drill));
-
-          const durationByDrill = new Map(
-            drills.map((drill) => [drill.id, drill.durationMin]),
-          );
-          const totalDuration = entries.reduce(
-            (total, entry) => total + (durationByDrill.get(entry.drillId) ?? 0),
-            0,
-          );
+          await this.assertAttachmentAccess(transaction, principal, plan);
 
           const currentPhases = await transaction.planDrill.findMany({
             where: { trainingPlanId: planId },
             select: {
+              drillId: true,
+              phase: true,
+              contentSnapshot: true,
               boardSnapshot: true,
               drill: { select: { jsonData: true } },
             },
@@ -333,25 +378,61 @@ export class TrainingPlansService {
               phase.boardSnapshot ?? phase.drill.jsonData,
             );
           }
+          const remaining = [...currentPhases];
+          const resolved = entries.map((entry) => {
+            const source = drills.find((drill) => drill.id === entry.drillId)!;
+            const index = remaining.findIndex(
+              (current) =>
+                current.drillId === entry.drillId &&
+                current.phase === entry.phase,
+            );
+            const previous =
+              index >= 0 ? remaining.splice(index, 1)[0] : undefined;
+            const content = previous
+              ? {
+                  ...(previous.contentSnapshot
+                    ? { contentSnapshot: previous.contentSnapshot as never }
+                    : {}),
+                  ...(previous.boardSnapshot
+                    ? { boardSnapshot: previous.boardSnapshot as never }
+                    : {}),
+                }
+              : resolvePlanContent(
+                  source,
+                  plan.group?.ageGroup,
+                  entry.expectedVersionId,
+                );
+            return {
+              trainingPlanId: planId,
+              drillId: entry.drillId,
+              phase: entry.phase,
+              order: entry.order,
+              notes: entry.notes,
+              ...content,
+            };
+          });
+          const totalDuration = resolved.reduce(
+            (sum, entry) =>
+              sum +
+              planDrillDuration({
+                contentSnapshot: entry.contentSnapshot,
+                drill: drills.find((drill) => drill.id === entry.drillId)!,
+              }),
+            0,
+          );
           await transaction.planDrill.deleteMany({
             where: { trainingPlanId: planId },
           });
           if (entries.length > 0) {
             await transaction.planDrill.createMany({
-              data: entries.map((entry) => ({
-                trainingPlanId: planId,
-                drillId: entry.drillId,
-                phase: entry.phase,
-                order: entry.order,
-                notes: entry.notes,
-              })),
+              data: resolved,
             });
           }
           await transaction.dayPlan.updateMany({
             where: { trainingPlanId: planId },
             data: { duration: totalDuration },
           });
-          return transaction.trainingPlan.update({
+          const updated = await transaction.trainingPlan.update({
             where: { id: planId },
             data: { totalDuration },
             include: {
@@ -362,6 +443,7 @@ export class TrainingPlansService {
               },
             },
           });
+          return projectPlanContent(updated);
         },
         { isolationLevel: 'Serializable' },
       );
@@ -567,6 +649,47 @@ export class TrainingPlansService {
       if (error instanceof HttpException) throw error;
       this.persistenceFailure('TRAINING_PLAN_UPDATE_FAILED');
     }
+  }
+
+  private async assertAttachmentAccess(
+    tx: Prisma.TransactionClient,
+    principal: AuthPrincipal | undefined,
+    plan: { clubId: string; groupId: string | null },
+  ) {
+    // Public controllers always supply the authenticated principal. Internal
+    // service callers retain the existing signature for non-HTTP workflows.
+    if (!principal) return;
+    const actor = await tx.user.findUnique({
+      where: { id: principal.id },
+      select: { status: true, role: true, clubId: true },
+    });
+    if (
+      !actor ||
+      actor.status !== 'ACTIVE' ||
+      actor.role !== principal.role ||
+      actor.clubId !== principal.clubId
+    )
+      throw new ForbiddenException(
+        'Plan erişimi değişti. Çalışma alanını yenileyin.',
+      );
+    if (actor.role === 'SYSTEM_ADMIN') return;
+    if (actor.clubId !== plan.clubId)
+      throw new ForbiddenException('Plan kulübüne erişim yok.');
+    if (actor.role === 'CLUB_ADMIN') return;
+    if (
+      actor.role === 'COACH' &&
+      plan.groupId &&
+      (await tx.groupMember.findFirst({
+        where: {
+          userId: principal.id,
+          groupId: plan.groupId,
+          group: { archivedAt: null },
+        },
+        select: { id: true },
+      }))
+    )
+      return;
+    throw new ForbiddenException('Planı yönetme yetkisi bulunmuyor.');
   }
 
   private assertDrillFitsPlan(

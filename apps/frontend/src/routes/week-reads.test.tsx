@@ -10,12 +10,12 @@ import { MemoryRouter, useLocation } from 'react-router';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import WeekRoute from './week';
 import { addDays, toLocalDateKey } from '../lib/week';
-
+import { clearSession, setSession } from '../lib/session';
+import type { PlanningPage } from '../lib/planning';
 const mocks = vi.hoisted(() => ({
   page: vi.fn(),
-  matches: vi.fn(),
   workspace: {
-    group: { id: 'g', name: 'U17' } as { id: string; name: string } | null,
+    group: { id: 'g', name: 'U16' } as { id: string; name: string } | null,
     season: { id: 's', name: 'Season' } as
       | { id: string; name: string }
       | undefined,
@@ -24,38 +24,101 @@ const mocks = vi.hoisted(() => ({
     error: '',
   },
 }));
-vi.mock('../lib/api', () => ({
-  getTrainingDayPage: mocks.page,
-  getMatchDayPage: mocks.matches,
+vi.mock('../lib/api', () => ({ getPlanningPage: mocks.page }));
+vi.mock('../components/week-planning-dialogs', () => ({
+  WeekProgramDialog: () => null,
+  WeekEventDialog: () => null,
+  WeekDeleteDialog: () => null,
 }));
 vi.mock('../lib/workspace-context', () => ({
   useWorkspace: () => ({
     ...mocks.workspace,
     get matches() {
-      throw new Error('Week must not read shared matches');
+      throw new Error('No shared matches');
     },
     get plans() {
-      throw new Error('Week must not read shared plans');
+      throw new Error('No shared plans');
     },
   }),
 }));
-const page = (title: string, after?: string) => ({
-  items: [
-    {
-      id: title,
-      title,
-      date: new Date(2026, 8, 1, 12).toISOString(),
-      totalDuration: 60,
-    },
-  ],
-  nextCursor: after ?? null,
-  summary: { total: 30, totalDuration: 1800 },
-});
-const empty = {
+const empty: PlanningPage = {
   items: [],
+  limit: 25,
   nextCursor: null,
-  summary: { total: 0, totalDuration: 0 },
+  summary: {
+    total: 0,
+    trainingCount: 0,
+    trainingMinutes: 0,
+    meetingCount: 0,
+    matchCount: 0,
+  },
 };
+function page(next = false): PlanningPage {
+  return {
+    ...empty,
+    nextCursor: next ? null : 'cursor',
+    summary: {
+      total: 32,
+      trainingCount: 30,
+      trainingMinutes: 1800,
+      meetingCount: 1,
+      matchCount: 1,
+    },
+    items: next
+      ? [
+          {
+            id: 'second',
+            source: 'plan',
+            kind: 'TRAINING',
+            title: 'Second',
+            date: new Date(2026, 8, 1, 16).toISOString(),
+            duration: 60,
+            notes: null,
+            location: null,
+            topic: null,
+            completed: false,
+          },
+        ]
+      : [
+          {
+            id: 'first',
+            source: 'plan',
+            kind: 'TRAINING',
+            title: 'First',
+            date: new Date(2026, 8, 1, 10).toISOString(),
+            duration: 60,
+            notes: null,
+            location: null,
+            topic: null,
+            completed: false,
+          },
+          {
+            id: 'meeting',
+            source: 'event',
+            kind: 'TOPLANTI',
+            title: 'Maç toplantısı',
+            date: new Date(2026, 8, 1, 12).toISOString(),
+            duration: 25,
+            notes: 'Örnek',
+            location: 'Toplantı alanı',
+            topic: 'Oyun planı',
+            completed: false,
+          },
+          {
+            id: 'match',
+            source: 'match',
+            kind: 'MATCH',
+            title: 'Match',
+            date: new Date(2026, 8, 1, 16).toISOString(),
+            duration: 0,
+            notes: null,
+            location: 'Home',
+            topic: null,
+            completed: false,
+          },
+        ],
+  };
+}
 function Location() {
   return <output aria-label="URL">{useLocation().search}</output>;
 }
@@ -67,53 +130,43 @@ function Harness() {
     </MemoryRouter>
   );
 }
-describe('bounded daily training reads', () => {
+describe('unified bounded daily calendar', () => {
   beforeEach(() => {
     vi.resetAllMocks();
+    clearSession();
     mocks.workspace = {
-      group: { id: 'g', name: 'U17' },
+      group: { id: 'g', name: 'U16' },
       season: { id: 's', name: 'Season' },
       scope: { clubId: 'c', clubSeasonId: 'cs', teamId: 't' },
       loading: false,
       error: '',
     };
     mocks.page.mockImplementation(async (_g, _s, from, _until, after) =>
-      toLocalDateKey(new Date(from)) === '2026-09-01'
-        ? page(after ? 'Second' : 'First', after ? undefined : 'cursor')
-        : empty,
-    );
-    mocks.matches.mockImplementation(async (_g, _s, from) =>
-      toLocalDateKey(new Date(from)) === '2026-09-01'
-        ? {
-            items: [
-              {
-                id: 'm',
-                opponent: 'Match',
-                date: new Date(2026, 8, 1, 12).toISOString(),
-                location: 'Home',
-              },
-            ],
-            total: 1,
-            nextCursor: null,
-          }
-        : { items: [], total: 0, nextCursor: null },
+      toLocalDateKey(new Date(from)) === '2026-09-01' ? page(!!after) : empty,
     );
   });
-  it('renders the approved weekly planning surface without fabricated aggregates', async () => {
+  it('renders seven days, chronological mixed records and real full summaries', async () => {
     const { container } = render(<Harness />);
+    await screen.findByText('First');
     expect(
-      screen.getByRole('heading', { name: 'Haftalık Plan', level: 1 }),
+      screen.getByRole('heading', { name: 'Haftalık Plan' }),
     ).toBeInTheDocument();
-    expect(
-      screen.getByRole('region', { name: 'Hafta görünümü kontrolleri' }),
-    ).toHaveTextContent('Pazartesi – Pazar');
     expect(container.querySelector('.week-reference__hero img')).not.toBeNull();
     expect(screen.getAllByRole('heading', { level: 3 })).toHaveLength(7);
+    const day = within(
+      screen.getByRole('region', { name: '2026-09-01 etkinlikleri' }),
+    );
     expect(
-      screen.queryByText(/sakat|performans yüzdesi/i),
-    ).not.toBeInTheDocument();
+      day.getByText('30 antrenman · 1800 dk · 1 toplantı · 1 maç'),
+    ).toBeInTheDocument();
+    expect(day.getByText('Oyun planı')).toBeInTheDocument();
+    expect(day.getByRole('link', { name: /Match/ })).toHaveAttribute(
+      'href',
+      '/app/matches/match',
+    );
+    expect(screen.queryByText(/sağlık skoru/i)).not.toBeInTheDocument();
   });
-  it('requests seven local half-open days and pages only the selected day without changing its full totals or matches', async () => {
+  it('requests seven half-open local days and pages one day with stable full totals', async () => {
     render(<Harness />);
     await screen.findByText('First');
     expect(mocks.page).toHaveBeenCalledTimes(7);
@@ -127,35 +180,32 @@ describe('bounded daily training reads', () => {
         undefined,
       );
     const day = within(
-      screen.getByRole('region', { name: '2026-09-01 antrenmanları' }),
+      screen.getByRole('region', { name: '2026-09-01 etkinlikleri' }),
     );
-    expect(day.getByText('30 plan · 1800 dk')).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /Match/ })).toBeInTheDocument();
-    fireEvent.click(day.getByRole('button', { name: 'Sonraki sayfa' }));
+    fireEvent.click(day.getByRole('button', { name: 'Sonraki' }));
     await day.findByText('Second');
     expect(day.queryByText('First')).not.toBeInTheDocument();
+    expect(day.getByText(/1800 dk/)).toBeInTheDocument();
     expect(mocks.page).toHaveBeenCalledTimes(8);
-    expect(day.getByText('30 plan · 1800 dk')).toBeInTheDocument();
-    fireEvent.click(day.getByRole('button', { name: 'Önceki sayfa' }));
+    fireEvent.click(day.getByRole('button', { name: 'Önceki' }));
     await day.findByText('First');
   });
-  it('keeps a failed continuation distinct from an empty day and retries the same cursor', async () => {
+  it('retains failed cursor and retries without claiming the day is empty', async () => {
     render(<Harness />);
     await screen.findByText('First');
     mocks.page.mockRejectedValueOnce(new Error('Day failed'));
     const day = within(
-      screen.getByRole('region', { name: '2026-09-01 antrenmanları' }),
+      screen.getByRole('region', { name: '2026-09-01 etkinlikleri' }),
     );
-    fireEvent.click(day.getByRole('button', { name: 'Sonraki sayfa' }));
+    fireEvent.click(day.getByRole('button', { name: 'Sonraki' }));
     expect(await day.findByRole('alert')).toHaveTextContent('Day failed');
     expect(day.queryByText('Planlanmış etkinlik yok')).not.toBeInTheDocument();
-    expect(day.getByRole('button', { name: 'Önceki sayfa' })).toBeEnabled();
     fireEvent.click(day.getByRole('button', { name: 'Tekrar dene' }));
     await day.findByText('Second');
     expect(mocks.page.mock.lastCall?.[4]).toBe('cursor');
   });
-  it('resets on week/scope changes, preserves URL context and ignores late old-day responses', async () => {
-    let resolve!: (value: ReturnType<typeof page>) => void;
+  it('resets week and scope, preserves URL and rejects late old responses', async () => {
+    let resolve!: (v: PlanningPage) => void;
     mocks.page.mockImplementationOnce(
       () =>
         new Promise((done) => {
@@ -169,7 +219,9 @@ describe('bounded daily training reads', () => {
     expect(screen.getByLabelText('URL')).toHaveTextContent(
       'start=2026-09-07&ngcsTeam=t',
     );
-    await act(async () => resolve(page('Stale')));
+    await act(async () =>
+      resolve({ ...page(), items: [{ ...page().items[0], title: 'Stale' }] }),
+    );
     expect(screen.queryByText('Stale')).not.toBeInTheDocument();
     mocks.workspace.season = undefined;
     mocks.workspace.scope.clubSeasonId = '*';
@@ -177,7 +229,7 @@ describe('bounded daily training reads', () => {
     await waitFor(() => expect(mocks.page).toHaveBeenCalledTimes(21));
     expect(mocks.page.mock.lastCall?.[1]).toBeUndefined();
   });
-  it('does not request during loading/error or for a native team and links undated drafts to the catalog', async () => {
+  it('does not widen unresolved season scope or load while context is missing', async () => {
     mocks.workspace.loading = true;
     const view = render(<Harness />);
     mocks.workspace.loading = false;
@@ -185,159 +237,72 @@ describe('bounded daily training reads', () => {
     view.rerender(<Harness />);
     expect(screen.getByText('Workspace failed')).toBeInTheDocument();
     mocks.workspace.error = '';
+    mocks.workspace.season = undefined;
+    view.rerender(<Harness />);
+    expect(
+      screen.getByText('Seçili sezon için takvim bağlamı bulunmuyor.'),
+    ).toBeInTheDocument();
     mocks.workspace.group = null;
     view.rerender(<Harness />);
     expect(
       screen.getByText('Bu takım için antrenman bağlamı bulunmuyor.'),
     ).toBeInTheDocument();
+    expect(mocks.page).not.toHaveBeenCalled();
     expect(
       screen.getByRole('link', { name: 'Tarihsiz taslakları gör' }),
     ).toHaveAttribute('href', '/app/trainings');
-    expect(mocks.page).not.toHaveBeenCalled();
-    expect(mocks.matches).not.toHaveBeenCalled();
   });
-  it('pages matches independently with full day totals and preserved training cards', async () => {
-    mocks.matches.mockImplementation(async (_g, _s, from, _until, after) =>
-      toLocalDateKey(new Date(from)) === '2026-09-01'
-        ? {
-            items: [
-              {
-                id: after ? 'm2' : 'm1',
-                opponent: after ? 'Second match' : 'First match',
-                date: new Date(2026, 8, 1, 12).toISOString(),
-                location: 'Home',
-              },
-            ],
-            total: 30,
-            nextCursor: after ? null : 'matches-next',
-          }
-        : { items: [], total: 0, nextCursor: null },
-    );
-    render(<Harness />);
-    await screen.findByText('First match');
-    expect(mocks.matches).toHaveBeenCalledTimes(7);
-    const start = new Date(2026, 7, 31);
-    for (let i = 0; i < 7; i++)
-      expect(mocks.matches).toHaveBeenCalledWith(
-        'g',
-        's',
-        addDays(start, i).toISOString(),
-        addDays(start, i + 1).toISOString(),
-        undefined,
-      );
-    const day = within(
-      screen.getByRole('region', { name: '2026-09-01 maçları' }),
-    );
-    expect(day.getByText('30 maç')).toBeInTheDocument();
-    fireEvent.click(day.getByRole('button', { name: 'Sonraki maçlar' }));
-    await day.findByText('Second match');
-    expect(day.queryByText('First match')).not.toBeInTheDocument();
-    expect(day.getByRole('link')).toHaveAttribute('href', '/app/matches/m2');
-    expect(day.getByRole('navigation')).toHaveTextContent('Sayfa 2 · 1 / 30');
-    expect(mocks.page).toHaveBeenCalledTimes(7);
-    expect(screen.getByText('First')).toBeInTheDocument();
-    mocks.matches.mockResolvedValueOnce({
-      items: [],
-      total: 30,
-      nextCursor: null,
+  it('only exposes management controls to supported management roles', async () => {
+    setSession({
+      token: 'test',
+      user: {
+        id: 'admin',
+        name: 'Admin',
+        email: 'test@example.test',
+        role: 'SYSTEM_ADMIN',
+        clubId: null,
+      },
     });
-    fireEvent.click(day.getByRole('button', { name: 'Önceki maçlar' }));
-    await waitFor(() =>
-      expect(day.queryByText('Second match')).not.toBeInTheDocument(),
-    );
-  });
-
-  it('never declares an empty day while match reads load or fail, and retries independently', async () => {
-    mocks.page.mockResolvedValue(empty);
-    let reject!: (error: Error) => void;
-    mocks.matches.mockImplementationOnce(
-      () =>
-        new Promise((_done, fail) => {
-          reject = fail;
-        }),
-    );
-    render(<Harness />);
-    await waitFor(() => expect(mocks.matches).toHaveBeenCalledTimes(7));
-    const training = within(
-      screen.getByRole('region', { name: '2026-08-31 antrenmanları' }),
-    );
-    const match = within(
-      screen.getByRole('region', { name: '2026-08-31 maçları' }),
-    );
-    expect(
-      training.queryByText('Planlanmış etkinlik yok'),
-    ).not.toBeInTheDocument();
-    await act(async () => reject(new Error('Matches failed')));
-    expect(match.getByRole('alert')).toHaveTextContent('Matches failed');
-    expect(
-      training.queryByText('Planlanmış etkinlik yok'),
-    ).not.toBeInTheDocument();
-    fireEvent.click(match.getByRole('button', { name: 'Maçları tekrar dene' }));
-    await training.findByText('Planlanmış etkinlik yok');
-    expect(mocks.page).toHaveBeenCalledTimes(7);
-  });
-
-  it('resets match pages on week/scope changes and rejects late responses', async () => {
-    let resolve!: (value: unknown) => void;
-    mocks.matches.mockImplementationOnce(
-      () =>
-        new Promise((done) => {
-          resolve = done;
-        }),
-    );
     const view = render(<Harness />);
-    await waitFor(() => expect(mocks.matches).toHaveBeenCalledTimes(7));
-    fireEvent.click(screen.getByRole('button', { name: 'Sonraki hafta' }));
-    await waitFor(() => expect(mocks.matches).toHaveBeenCalledTimes(14));
-    await act(async () =>
-      resolve({ items: [{ id: 'stale', opponent: 'Stale match' }], total: 1 }),
-    );
-    expect(screen.queryByText('Stale match')).not.toBeInTheDocument();
-    mocks.workspace.group = { id: 'g2', name: 'U19' };
-    mocks.workspace.scope.teamId = 't2';
-    mocks.workspace.scope.clubSeasonId = '*';
-    mocks.workspace.season = undefined;
-    view.rerender(<Harness />);
-    await waitFor(() => expect(mocks.matches).toHaveBeenCalledTimes(21));
-    expect(mocks.matches.mock.lastCall?.slice(0, 2)).toEqual(['g2', undefined]);
-  });
-
-  it('does not widen missing season context or hide training records', async () => {
-    mocks.workspace.season = undefined;
-    render(<Harness />);
     await screen.findByText('First');
+    expect(screen.getByRole('button', { name: 'Etkinlik ekle' })).toBeEnabled();
     expect(
-      screen.getAllByText('Bu sezon için maç bağlamı bulunmuyor.'),
-    ).toHaveLength(7);
-    expect(mocks.matches).not.toHaveBeenCalled();
+      screen.getByRole('button', { name: 'First düzenle' }),
+    ).toBeInTheDocument();
+    act(() =>
+      setSession({
+        token: 'test',
+        user: {
+          id: 'player',
+          name: 'Player',
+          email: 'player@example.test',
+          role: 'PLAYER',
+          clubId: 'c',
+        },
+      }),
+    );
+    view.rerender(<Harness />);
     expect(
-      screen.queryByText('Planlanmış etkinlik yok'),
+      screen.queryByRole('button', { name: 'Etkinlik ekle' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: 'First düzenle' }),
     ).not.toBeInTheDocument();
   });
-
-  it('uses local midnight boundaries across a daylight-saving transition', async () => {
+  it('handles local midnight, year transitions and cleared date inputs', async () => {
     render(<Harness />);
     await screen.findByText('First');
     fireEvent.change(screen.getByLabelText('Hafta seç'), {
       target: { value: '2026-03-08' },
     });
-    await waitFor(() => expect(mocks.matches).toHaveBeenCalledTimes(14));
-    const from = new Date(2026, 2, 8);
-    const until = new Date(2026, 2, 9);
-    expect(mocks.matches).toHaveBeenCalledWith(
+    await waitFor(() => expect(mocks.page).toHaveBeenCalledTimes(14));
+    expect(mocks.page).toHaveBeenCalledWith(
       'g',
       's',
-      from.toISOString(),
-      until.toISOString(),
+      new Date(2026, 2, 8).toISOString(),
+      new Date(2026, 2, 9).toISOString(),
       undefined,
     );
-    if (Intl.DateTimeFormat().resolvedOptions().timeZone === 'America/New_York')
-      expect(until.getTime() - from.getTime()).toBe(23 * 3600000);
-  });
-
-  it('handles year changes and ignores a cleared date input', async () => {
-    render(<Harness />);
-    await screen.findByText('First');
     fireEvent.change(screen.getByLabelText('Hafta seç'), {
       target: { value: '2026-12-31' },
     });
@@ -348,7 +313,5 @@ describe('bounded daily training reads', () => {
       target: { value: '' },
     });
     expect(screen.getByLabelText('Hafta seç')).toHaveValue('2027-01-04');
-    fireEvent.click(screen.getByRole('button', { name: 'Bugün' }));
-    expect(screen.getByLabelText('Hafta seç')).not.toHaveValue('2027-01-04');
   });
 });

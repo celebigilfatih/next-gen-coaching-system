@@ -41,10 +41,9 @@ describe('tactics editor reference surface', () => {
     expect(details.closest('details')).not.toHaveAttribute('open');
     fireEvent.click(details);
     expect(details.closest('details')).toHaveAttribute('open');
-    expect(screen.getByRole('link', { name: 'Kütüphane' })).toHaveAttribute(
-      'href',
-      '/app/tactics',
-    );
+    expect(
+      screen.getByRole('link', { name: 'Taktik tahtalarına dön' }),
+    ).toHaveAttribute('href', '/app/tactics');
     expect(screen.getByLabelText('Başlık')).toHaveValue(
       'Yeni taktik egzersizi',
     );

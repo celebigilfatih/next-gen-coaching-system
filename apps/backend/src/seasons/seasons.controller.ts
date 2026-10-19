@@ -213,7 +213,11 @@ export class SeasonsController {
     @Body() input: unknown,
   ) {
     await this.authorization.assertMatchManage(req.user, matchId);
-    return this.seasons.updateMatch(matchId, parseUpdateMatchBody(input));
+    return this.seasons.updateMatch(
+      matchId,
+      parseUpdateMatchBody(input),
+      req.user,
+    );
   }
 
   @Put('matches/:matchId/tactical-board')

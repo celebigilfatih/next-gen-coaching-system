@@ -14,7 +14,7 @@ dist/
 .next/
 .react-router/
 out/
-/output/playwright/
+/output/
 /.playwright-cli/
 
 # Environment variables
@@ -52,6 +52,8 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .eslintcache
+__pycache__/
+*.pyc
 
 # OS Files
 Thumbs.db

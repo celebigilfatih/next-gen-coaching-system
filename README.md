@@ -1,5 +1,34 @@
 # Next Generation Coaching System
 
+Egzersiz detayında numaralı uygulama adımları, yaş uyarlaması ve ekipman bilgisi
+tek rehberde; saha ve kaynak ayrı sekmelerde açılır. Mobil görünüm ve mevcut
+plana ekleme akışı doğrulandı.
+[Doğrulama](docs/30-quality/LIBRARY_DETAIL_UX_2026-10-19.md).
+
+Egzersiz kütüphanesi maç/antrenman sayfalarının kompakt liste dilini kullanır;
+mobil filtre paneli ve listeden ayrılmadan uygulama/saha önizlemesi eklendi.
+[Doğrulama](docs/30-quality/LIBRARY_UX_2026-10-19.md).
+
+Hafta ekranı artık antrenman, toplantı, toparlanma ve izin yönetimini; yaşa göre
+haftalık program önizleme/uygulamasını destekler. Spor Manage'ın19–25 Ekim2026
+haftası tüm on takım için yerel ortamda doldurulmuştur.
+[Doğrulama](docs/30-quality/WEEKLY_CLUB_PROGRAM_2026-10-19.md).
+
+Sonraki açık istekle program tüm 2026–2027 sezonuna yayılmıştır: 41 takvim haftası,
+on takım, mevcut hafta ve 36 maç korunarak 2.009 yeni fiziksel seans eklenmiştir.
+Maçsız aralar ve okul sonrası altyapı saatleri uygulanır.
+[Sezon doğrulaması](docs/30-quality/SEASON_CLUB_PROGRAM_2026-10-19.md).
+
+Maç detayındaki **Tarih ve saati düzenle**, bağlı A Takım programını yeni fikstüre
+otomatik uyarlar. Elle düzenlenen/silinen, geçmiş ve tamamlandı işaretli kayıtlar korunur;
+çakışmada maç ve program birlikte değiştirilmeden kalır.
+[Doğrulama](docs/30-quality/FIXTURE_PROGRAM_SYNC_2026-10-19.md).
+
+A Takım haftada beş maça kadar gerçek maç aralığına göre kısa toparlanma, teknik/
+aktivasyon ve toplantı programı kullanır. Önizlemede seçtiğiniz saatler dahil elle
+yapılan değişiklikler korunur. [Güncel karar ve doğrulama](docs/30-quality/FIVE_MATCH_PROGRAM_2026-10-19.md).
+
+
 Bu proje **CDSK 0.1.0** standardını kullanır.
 
 ## Proje özeti
@@ -10,6 +39,9 @@ Bu proje **CDSK 0.1.0** standardını kullanır.
   analiz için dar bir MVP oluşturmak.
 - **Mevcut durum:** NestJS/Prisma backend prototipi mevcuttur. Güncel çalışma
   bağlamı için [`PROJECT_BOOT.md`](PROJECT_BOOT.md) okunmalıdır.
+- **Taktik V2:** Çok sahneli tahta/oynatıcı Windows yerel ortamında 2026-10-19
+  kullanıcı isteğiyle kontrollü açıldı. Varsayılan kapalıdır; production ve
+  sportif pilot ayrı kapıdır. [Aktivasyon kanıtı](docs/30-quality/TACTICAL_LOCAL_ROLLOUT_2026-10-19.md).
 - **MVP review:** `1b831e0` tabanlı stabilizasyon için 2026-09-05 remediation
   hükmü **Pass**; F-001–F-006 kapalı, açık P0/P1 yoktur. Kanıt için
   [`MVP_REVIEW_2026-09-05.md`](docs/30-quality/MVP_REVIEW_2026-09-05.md) okunmalıdır.
@@ -28,8 +60,15 @@ Bu proje **CDSK 0.1.0** standardını kullanır.
   [doğrulama raporu](docs/30-quality/ACCOUNT_ACCESS_ADMINISTRATION_2026-09-08.md).
 - **Profesyonel egzersiz kütüphanesi:** Sürümlü içerik, yaş varyantı,
   kaynak/lisans/checksum ve ayrık uzman-yayın akışı repository temelinde
-  uygulanmıştır. 120 özgün Türkçe kayıt `DRAFT`tır; uzman `TBD` olduğundan
-  retained veritabanına alınmamış ve yayınlanmamıştır.
+  uygulanmıştır. 120 özgün Türkçe kayıt bu Windows bilgisayarına açık onayla
+  aktarılmış ve 2026-10-19 tarihinde yerel katalogda yayımlanmıştır. Manifest
+  değişmeyen `DRAFT` kaynak dosyasıdır; yayın durumu veritabanında tutulur.
+  Hazır egzersizden planlama, yaşa göre sabit içerik/süre kopyası ve yayın kapısı
+  [ADR-0039](docs/50-decisions/ADR-0039-ready-drill-plan-snapshots.md) ile
+  uygulanmıştır. [ADR-0041](docs/50-decisions/ADR-0041-local-starter-review-exception.md)
+  yalnız bu yerel pakette Fatih Çelebigil'in aynı hesapla onayını açık istisna
+  olarak kaydeder; genel API kuralları korunur. Tekrar aktarım/yayın sıfır yazımdır.
+  [Yerel yayın kanıtı](docs/30-quality/READY_DRILL_LOCAL_PUBLICATION_2026-10-19.md).
   [Karar](docs/50-decisions/ADR-0032-professional-drill-versioning-and-age-variants.md),
   [kanıt](docs/30-quality/PROFESSIONAL_DRILL_LIBRARY_2026-09-09.md).
 
@@ -162,10 +201,25 @@ Repository kökünde doğrulanmış non-destructive kalite kapısı:
 npm run quality
 ```
 
+Global npm olmayan Windows ortamında da doğrudan çalışır:
+
+```bash
+node scripts/quality-gate.mjs
+node scripts/quality-gate.mjs --continue-on-error
+```
+
+İkinci komut bütün aşamaları dener ve herhangi bir hata varsa nonzero döner.
+Kök lockfile'da npm12.2.0 sabittir; global kurulum gerekmez. Mevcut pnpm ile ilk
+kurulum: `pnpm dlx npm@12.2.0 ci --ignore-scripts`. Node sürümü npm'in engine
+aralığını karşılamalıdır (bu bilgisayarda24.19.0). Backend/frontend bağımlılıkları
+kendi lockfile'larıyla ayrıca kuruludur. Prisma kalite çıktısı ayrı cache'e
+üretilir; açık API'nin Windows engine DLL dosyası değiştirilmez.
+[Windows doğrulaması](docs/30-quality/QUALITY_GATE_WINDOWS_2026-10-19.md).
+
 Bu komut backend/frontend typecheck, salt-okunur lint ve format, unit test, build,
 Sites worker, Markdown bağlantı, CDSK ve `git diff --check` adımlarını fail-fast
-çalıştırır. CDSK checkout'u varsayılan sibling konumda değilse
-`CDSK_VALIDATOR=/path/to/validate_project.py` verilir. Dedicated veritabanı isteyen
+çalıştırır. CDSK doğrulayıcısı repository içindedir; Python 3.9+ yeterlidir,
+dış CDSK checkout'u gerekmez. Dedicated veritabanı isteyen
 E2E testleri bu komuta bilinçli olarak dahil değildir.
 
 Backend dizininde:
@@ -197,11 +251,14 @@ npm run test:sites
 Frontend browser E2E, yalnız dedicated ve silinebilir PostgreSQL hedefiyle çalışır;
 zorunlu environment değişkenleri `apps/frontend/README.md` içinde tanımlıdır.
 
-CDSK yapısı yerel kit ile şöyle doğrulanır:
+CDSK yapısı repository içindeki doğrulayıcıyla çalıştırılır:
 
 ```bash
-python3 /Users/fatih/Dev/cdsk/scripts/validate_project.py .
+node scripts/validate-cdsk.mjs
 ```
 
-Bu doğrulama yolu yerel CDSK checkout'una bağlıdır; taşınabilir validator modeli
-`TBD`.
+Python 3.9+ ve standart kütüphanesi kullanılır; `PYTHON` ile interpreter seçilebilir.
+`CDSK_VALIDATOR` yalnız açık bir alternatif dosya seçmek içindir; eksik/hatalı
+seçimde kontrol başarısız kalır. [CDSK 0.1.0 proje profili](docs/30-quality/CDSK_0_1_0_PROFILE.md)
+ve [karar](docs/50-decisions/ADR-0046-repository-owned-cdsk-validator.md) doğrulamanın
+kapsamını belgeler. [Çalıştırma kanıtı](docs/30-quality/CDSK_LOCAL_VALIDATOR_2026-10-19.md).

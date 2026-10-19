@@ -20,6 +20,7 @@ import { AuthorizationModule } from './auth/authorization.module';
 import { AccountsModule } from './accounts/accounts.module';
 import { SportingModule } from './sporting/sporting.module';
 import { TacticalDocumentModule } from './tactics/tactical-document.module';
+import { PlanningModule } from './planning/planning.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { TacticalDocumentModule } from './tactics/tactical-document.module';
     AnalyticsModule,
     SportingModule,
     TacticalDocumentModule,
+    PlanningModule,
   ],
   controllers: [AppController],
   providers: [

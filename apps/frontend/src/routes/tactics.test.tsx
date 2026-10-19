@@ -67,23 +67,28 @@ describe('independent tactical catalog', () => {
       page(after ? 'Second' : 'First', after ? null : 'cursor'),
     );
   });
-  it('renders the approved tactics hero, verified metrics and editor capabilities', async () => {
+  it('renders the compact match-style catalog with authoritative totals', async () => {
     render(<Harness />);
     await screen.findByText('First');
     expect(
       screen.getByRole('heading', { name: 'Taktik Tahtası' }),
     ).toBeInTheDocument();
-    expect(document.querySelector('.page-hero-image')).toBeInTheDocument();
+    expect(document.querySelector('.page-hero-image')).not.toBeInTheDocument();
     expect(
       screen.getByRole('heading', { name: 'Taktik Çalışmaları' }),
     ).toBeInTheDocument();
-    expect(screen.getByLabelText('Taktik kütüphanesi özeti')).toHaveTextContent(
-      'Taktik egzersizi31',
+    expect(screen.getByLabelText('Taktik kapsamı özeti')).toHaveTextContent(
+      '31 taktik egzersizi',
     );
-    expect(screen.getByText('NGCS JSON içe aktarım')).toBeInTheDocument();
-    expect(screen.getByText('PNG, SVG ve JSON çıktı')).toBeInTheDocument();
+    expect(
+      screen.getByRole('table', { name: 'Taktik egzersizleri' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('columnheader', { name: 'Çalışma' }),
+    ).toBeInTheDocument();
+    expect(screen.getByText(/NGCS JSON içe aktarım/)).toBeInTheDocument();
   });
-  it('uses full totals and minimal cards across pages without filtering by category', async () => {
+  it('uses full totals and scoped register links across pages without filtering by category', async () => {
     render(<Harness />);
     await screen.findByText('First');
     expect(screen.getByLabelText('Taktik kapsamı özeti')).toHaveTextContent(
@@ -95,13 +100,12 @@ describe('independent tactical catalog', () => {
     );
     expect(screen.getByText('Kopyala ve düzenle')).toBeInTheDocument();
     expect(screen.getByText(/Isınma/)).toBeInTheDocument();
-    expect(screen.getByText('First').closest('[data-tone]')).toHaveAttribute(
-      'data-tone',
-      'board',
+    expect(screen.getByRole('row', { name: /First/ })).toHaveTextContent(
+      '20 dk',
     );
     expect(
       document.querySelector('[data-slot="football-card-preview"]'),
-    ).toHaveAttribute('aria-hidden', 'true');
+    ).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Sonraki sayfa' }));
     await screen.findByText('Second');
     expect(screen.queryByText('First')).not.toBeInTheDocument();

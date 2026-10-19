@@ -1,11 +1,15 @@
 import {
   BadRequestException,
+  ForbiddenException,
   HttpException,
   Injectable,
   InternalServerErrorException,
   Logger,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { PlanningService } from '../planning/planning.service';
+import { AuthorizationService } from '../auth/authorization.service';
+import { dayKey } from '../planning/planning-input';
 import {
   assertLegacyTacticalWrite,
   rethrowTacticalConflict,
@@ -35,7 +39,10 @@ export class SeasonsService {
   private static readonly MAX_SEASON_WEEKS = 80;
   private readonly logger = new Logger(SeasonsService.name);
 
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private planning: PlanningService = new PlanningService(prisma),
+  ) {}
 
   private assertSafeSeasonRange(startDate: Date, endDate: Date) {
     const startTime = startDate.getTime();
@@ -323,9 +330,53 @@ export class SeasonsService {
     });
   }
 
-  async updateMatch(matchId: string, input: unknown) {
+  async updateMatch(matchId: string, input: unknown, actor?: AuthPrincipal) {
     const data = parseUpdateMatchBody(input);
     try {
+      if (data.date) {
+        if (!actor) throw new ForbiddenException();
+        return await legacyWrite(this.prisma, async (tx) => {
+          await tx.$executeRaw`SELECT id FROM "User" WHERE id=${actor.id} FOR SHARE`;
+          const current = await tx.user.findUnique({
+            where: { id: actor.id },
+            select: { status: true, role: true, clubId: true },
+          });
+          if (
+            !current ||
+            current.status !== 'ACTIVE' ||
+            current.role !== actor.role ||
+            current.clubId !== actor.clubId
+          )
+            throw new ForbiddenException();
+          const auth = new AuthorizationService(tx as PrismaService);
+          const scope = await auth.assertMatchManage(actor, matchId);
+          // Same lock as manual/program planning, before reading either schedule.
+          await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtextextended(${`planning_events:${scope.id}`},0))`;
+          const old = await tx.match.findUniqueOrThrow({
+            where: { id: matchId },
+          });
+          const season = await tx.season.findUniqueOrThrow({
+            where: { id: old.seasonId },
+          });
+          if (
+            dayKey(data.date!) < dayKey(season.startDate) ||
+            dayKey(data.date!) > dayKey(season.endDate)
+          )
+            throw new BadRequestException('Maç tarihi sezon dışında.');
+          const match = await tx.match.update({
+            where: { id: matchId },
+            data: data as Prisma.MatchUncheckedUpdateInput,
+          });
+          if (old.date.getTime() === data.date!.getTime()) return match;
+          const planningSync = await this.planning.reconcileMatch(
+            tx,
+            actor,
+            old,
+            data.date!,
+          );
+          return { ...match, planningSync };
+        });
+      }
       return await this.prisma.match.update({
         where: { id: matchId },
         data: {
@@ -340,7 +391,8 @@ export class SeasonsService {
           videoLinks: data.videoLinks,
         } as Prisma.MatchUncheckedUpdateInput,
       });
-    } catch {
+    } catch (error) {
+      if (error instanceof HttpException) throw error;
       this.persistenceFailure('SEASON_MATCH_UPDATE_FAILED');
     }
   }

@@ -28,6 +28,7 @@ import {
   getSessionGeneration,
   subscribeSession,
 } from '../lib/session';
+import '../styles/tactics-workspace.css';
 import { emptyBoard } from '../lib/tactical-board';
 import type { TacticalDocument } from '../lib/tactical-document-core';
 import { useAssignmentPage } from '../lib/use-assignment-page';
@@ -181,7 +182,11 @@ function LoadedDrill({
   return (
     <div className="page-shell tactics-editor-page tactics-editor-reference tactical-studio-page">
       <header className="studio-heading">
+        <Link to="/app/tactics" className="tactics-workspace-back">
+          <ArrowLeft /> Taktik tahtalarına dön
+        </Link>
         <div>
+          <p className="tactics-workspace-kicker">Taktik çalışma alanı</p>
           <h1>{title}</h1>
           <p>
             {group?.name ?? 'Takım seçilmedi'} · Taktik stüdyosu · {duration} dk
@@ -194,12 +199,6 @@ function LoadedDrill({
               Kopyala ve düzenle
             </Badge>
           ) : null}
-          <Button variant="outline" asChild>
-            <Link to="/app/tactics">
-              <ArrowLeft />
-              Kütüphane
-            </Link>
-          </Button>
         </div>
       </header>
       <details className="studio-details">

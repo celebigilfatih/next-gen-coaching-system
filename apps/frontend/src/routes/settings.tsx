@@ -53,6 +53,21 @@ export default function SettingsRoute() {
         image={dashboardCoachWide}
       />
 
+      {user?.role === 'SYSTEM_ADMIN' && (
+        <SectionCard
+          title="Kulüp kurulumu"
+          description="Yeni bir kulübün kimliğini, sezonunu ve takımlarını hazırlayın."
+        >
+          <p className="mb-4 text-sm text-muted-foreground">
+            Beş adımlı kurulum; logo, renkler ve isteğe bağlı teknik kadro.
+            Hesap davetleri ayrı yönetilir.
+          </p>
+          <Button asChild>
+            <Link to="/app/setup">Yeni kulüp kur</Link>
+          </Button>
+        </SectionCard>
+      )}
+
       <section
         className="settings-reference__metrics"
         aria-label="Ayar özetleri"

@@ -1,5 +1,11 @@
 # Architecture Overview
 
+The approved guided setup is a SYSTEM_ADMIN-only frontend route and one atomic
+sporting orchestration API, using existing legacy adapters and durable audit
+replay. Club colors derive readable UI tokens for the selected club; semantic
+status/pitch/equipment colors remain domain-specific. [ADR-0037](../50-decisions/ADR-0037-guided-club-setup.md),
+[ADR-0038](../50-decisions/ADR-0038-club-branding-and-derived-theme.md).
+
 ## System Context
 
 Repository, futbol kulübü çalışma verisini yöneten NestJS backend ile koç öncelikli

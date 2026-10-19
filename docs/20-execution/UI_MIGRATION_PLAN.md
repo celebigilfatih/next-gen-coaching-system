@@ -18,6 +18,56 @@
 
 ## Visual-system follow-up — approved 2026-09-07
 
+2026-10-19 exercise-detail extension: compact heading, semantic four-fact strip
+and one Uygulama/Saha/Kaynak guide. Full numbered steps/equipment and exact-age
+coaching stack on mobile; readonly pitch mounts on explicit Saha selection.
+Mobile44px controls, two-action row, full disclosure and picker focus return
+preserve existing source/publication, scope and explicit attachment behavior.
+[Verification](../30-quality/LIBRARY_DETAIL_UX_2026-10-19.md).
+
+2026-10-19 library extension: compact Matches/training register, one search and
+advanced-filter Sheet, full summary disclosure, explicit preview/detail and two
+pagers. Mobile retains44px actions/16px fields, fixed dialog actions and
+Uygulama/Saha tabs; preview uses resolved response age and a readonly board.
+Existing server totals/cursors/scope, publication and explicit attachment remain.
+[Verification](../30-quality/LIBRARY_UX_2026-10-19.md).
+
+2026-10-19 training-list extension: compact Matches-style heading/native register
+and explicit actions replace the photo/cards. Full purpose disclosure, local-day
+server filtering/Today/reset and lower pagination improve inspection. Mobile has
+44px controls, 16px date input and a short internally scrolling five-statistic
+strip. Scoped 320px minimum-width correction avoids changing other routes.
+Server totals/order/cursor/retry, PLAYER and lifecycle guards remain unchanged.
+[Verification](../30-quality/TRAININGS_LIST_UX_2026-10-19.md).
+
+2026-10-19 training-detail extension: compact heading, semantic saved summary,
+one flow/board/attendance panel and numbered phase selection match the approved
+Matches language. Full selected instructions sit beside phases on desktop and
+tablet; mobile stacks with 44px navigation and an explicit board open. Exercise
+attachment remains available below the flow. Lazy reads, snapshot/frozen content,
+role boundaries and draft/history guards remain unchanged.
+[Verification](../30-quality/TRAINING_DETAIL_UX_2026-10-19.md).
+
+
+2026-10-19 tactical extension: user requested the compact Matches language on
+catalogue/editor and easier mobile pitch/scene controls. Native scoped register,
+text headings and shared white panels replace catalogue photos/metrics/sidebar.
+Optional properties follow playback/scenes; touch controls and focus-mode layout
+are verified. Persistence/permissions remain unchanged.
+[Verification](../30-quality/TACTICS_UX_2026-10-19.md).
+
+2026-10-19 match-detail extension: the user requested the selected compact
+Matches language on detail and mobile. A text heading, one saved-data strip,
+single preparation panel and readable responsive fields replace the old hero,
+metric cards and duplicate sidebar. Existing match/board contracts and guards
+remain. [Verification and gate limit](../30-quality/MATCH_DETAIL_UX_2026-10-19.md).
+
+2026-10-19 Matches follow-up: user selected generated concept 3, replacing the
+earlier photographic Matches slice with a compact native fixture register and
+inline date toolbar. Tablet/mobile stack the same data with touch-sized actions
+and full note disclosure. Existing API, scope, dates and cursor/retry contracts
+remain. [Verification](../30-quality/MATCHES_UX_EXPLORATION_2026-10-19.md).
+
 Three user-supplied screenshots are now the visual source for the next page-by-page
 delivery: Dashboard (1672 × 941), Teams (1536 × 1024) and Matches (1672 × 941).
 The work order is shared white shell + Dashboard, Teams, Matches, then the remaining

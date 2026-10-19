@@ -18,6 +18,8 @@ import {
 } from './ui/dialog';
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
+import { getSession } from '../lib/session';
+import { PlanCoachPicker } from './plan-coach-picker';
 
 type EditableTrainingPlan = Pick<
   TrainingPlan,
@@ -29,6 +31,7 @@ type TrainingPlanDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   groupId?: string;
+  clubId?: string;
   groupName: string;
   plan?: EditableTrainingPlan;
   returnFocusId?: string;
@@ -48,6 +51,7 @@ function TrainingPlanDialog({
   open,
   onOpenChange,
   groupId,
+  clubId,
   groupName,
   plan,
   returnFocusId,
@@ -64,6 +68,11 @@ function TrainingPlanDialog({
   );
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+  const role = getSession()?.user.role;
+  const needsCoach =
+    mode === 'create' && (role === 'SYSTEM_ADMIN' || role === 'CLUB_ADMIN');
+  const [coach, setCoach] = useState<{ clubId?: string; id: string }>();
+  const coachId = coach?.clubId === clubId ? coach?.id : undefined;
 
   function changeOpen(next: boolean) {
     if (saving) return;
@@ -73,6 +82,7 @@ function TrainingPlanDialog({
   async function submit() {
     if (!title.trim() || !date || saving) return;
     if (mode === 'create' && !groupId) return;
+    if (needsCoach && (!clubId || !coachId)) return;
     setSaving(true);
     setError('');
     try {
@@ -83,7 +93,11 @@ function TrainingPlanDialog({
       };
       const saved =
         mode === 'create'
-          ? await createTrainingPlan({ ...input, groupId: groupId as string })
+          ? await createTrainingPlan({
+              ...input,
+              groupId: groupId as string,
+              ...(needsCoach ? { clubId, coachId } : {}),
+            })
           : await updateTrainingPlan(plan!.id, input);
       await onSaved(saved);
       onOpenChange(false);
@@ -127,6 +141,18 @@ function TrainingPlanDialog({
         </DialogHeader>
         <FormError message={error} />
         <div className="grid gap-5" aria-busy={saving}>
+          {needsCoach && clubId && open && (
+            <PlanCoachPicker
+              key={clubId}
+              clubId={clubId}
+              value={coachId ?? ''}
+              onChange={(id) => setCoach({ clubId, id })}
+              disabled={saving}
+            />
+          )}
+          {needsCoach && !clubId && (
+            <p role="alert">Plan oluşturmak için kulüp bağlamı seçilmelidir.</p>
+          )}
           <FormField label="Başlık" htmlFor={`training-${mode}-title`}>
             <Input
               id={`training-${mode}-title`}
@@ -163,7 +189,12 @@ function TrainingPlanDialog({
           </Button>
           <Button
             type="button"
-            disabled={!title.trim() || !date || saving}
+            disabled={
+              !title.trim() ||
+              !date ||
+              saving ||
+              (needsCoach && (!clubId || !coachId))
+            }
             onClick={() => void submit()}
           >
             {saving

@@ -118,13 +118,16 @@ describe('independent match detail and shell count', () => {
     await screen.findByRole('heading', { name: 'Opponent', level: 1 });
     expect(
       screen.getByRole('region', { name: 'Maç hazırlığı özeti' }),
-    ).toHaveTextContent('Test League');
+    ).toHaveTextContent('4-4-2');
+    expect(screen.getByText('Test League')).toBeInTheDocument();
     expect(screen.getByText('Hazırlık ve taktik planı')).toBeInTheDocument();
-    expect(screen.getByText('Maç Özeti')).toBeInTheDocument();
+    expect(screen.queryByText('Maç Özeti')).not.toBeInTheDocument();
     expect(screen.getByText('Manuel kayıt')).toBeInTheDocument();
-    expect(
-      document.querySelector('.match-detail-reference__hero'),
-    ).toBeTruthy();
+    expect(document.querySelector('.match-detail-reference__hero')).toBeNull();
+    expect(screen.getByRole('link', { name: 'Maçlara dön' })).toHaveAttribute(
+      'href',
+      '/app/matches',
+    );
     expect(
       screen.getByRole('tab', { name: 'Taktik tahtası' }),
     ).toBeInTheDocument();
@@ -139,6 +142,52 @@ describe('independent match detail and shell count', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Maçı tekrar yükle' }));
     await screen.findByRole('heading', { name: 'Opponent', level: 1 });
     expect(mocks.workspace.reload).not.toHaveBeenCalled();
+  });
+  it('keeps the analysis draft on a failed explicit save and disables fields while pending', async () => {
+    let reject!: (error: Error) => void;
+    mocks.update.mockImplementationOnce(
+      () =>
+        new Promise((_, fail) => {
+          reject = fail;
+        }),
+    );
+    render(detail());
+    await screen.findByRole('heading', { name: 'Opponent', level: 1 });
+    fireEvent.change(screen.getByLabelText('Koç notu'), {
+      target: { value: 'Unsaved coaching notes' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Analizi kaydet' }));
+    expect(
+      screen.getByRole('button', { name: 'Kaydediliyor…' }),
+    ).toBeDisabled();
+    expect(screen.getByLabelText('Koç notu')).toBeDisabled();
+    expect(screen.getByLabelText('Rakip analizi')).toBeDisabled();
+    await act(async () => reject(new Error('Save failed')));
+    expect(await screen.findByRole('alert')).toHaveTextContent('Save failed');
+    expect(screen.getByLabelText('Koç notu')).toHaveValue(
+      'Unsaved coaching notes',
+    );
+    expect(
+      screen.getByRole('button', { name: 'Analizi kaydet' }),
+    ).toBeEnabled();
+    expect(mocks.update).toHaveBeenCalledTimes(1);
+  });
+  it('updates the summary only after the server accepts formation changes', async () => {
+    mocks.update.mockResolvedValue({ ...match, ourFormation: '4-2-3-1' });
+    render(detail());
+    await screen.findByRole('heading', { name: 'Opponent', level: 1 });
+    const summary = screen.getByRole('region', { name: 'Maç hazırlığı özeti' });
+    fireEvent.change(screen.getByLabelText('Dizilişimiz'), {
+      target: { value: '4-2-3-1' },
+    });
+    expect(summary).toHaveTextContent('4-4-2');
+    expect(summary).not.toHaveTextContent('4-2-3-1');
+    fireEvent.click(screen.getByRole('button', { name: 'Analizi kaydet' }));
+    await waitFor(() => expect(summary).toHaveTextContent('4-2-3-1'));
+    expect(mocks.update).toHaveBeenCalledWith(
+      'm',
+      expect.objectContaining({ ourFormation: '4-2-3-1' }),
+    );
   });
   it('discards a late old detail on route/scope change and does not widen missing season', async () => {
     let resolve!: (value: unknown) => void;

@@ -36,6 +36,7 @@ import {
   useMemo,
   useRef,
   useState,
+  useSyncExternalStore,
   type Ref,
 } from 'react';
 import { useBlocker, useNavigate, useLocation } from 'react-router';
@@ -105,6 +106,14 @@ import {
 import { SceneStrip } from './scene-strip';
 import { useTacticalPlayback } from './use-tactical-playback';
 import { PlaybackControls } from './playback-controls';
+
+const watchNarrowViewport = (listener: () => void) => {
+  const media = window.matchMedia?.('(max-width: 700px)');
+  media?.addEventListener('change', listener);
+  return () => media?.removeEventListener('change', listener);
+};
+const readNarrowViewport = () =>
+  window.matchMedia?.('(max-width: 700px)').matches ?? false;
 
 export type BoardEditorHandle = { transition: (action: () => void) => void };
 type Props = {
@@ -310,7 +319,15 @@ export function TacticalBoardEditor({
   const [appearance, setAppearance] = useState<PlayerAppearance>('shirt');
   const [zoom, setZoom] = useState(1);
   const [panning, setPanning] = useState(false);
-  const [inspectorOpen, setInspectorOpen] = useState(true);
+  const narrowViewport = useSyncExternalStore(
+    watchNarrowViewport,
+    readNarrowViewport,
+    () => false,
+  );
+  const [inspectorPreference, setInspectorPreference] = useState<
+    boolean | null
+  >(null);
+  const inspectorOpen = inspectorPreference ?? !narrowViewport;
   const [inspectorTab, setInspectorTab] = useState('layers');
   const [expanded, setExpanded] = useState(false);
   const expandRef = useRef<HTMLButtonElement>(null);
@@ -910,115 +927,126 @@ export function TacticalBoardEditor({
         </DialogContent>
       </Dialog>
       <div className="board-commandbar">
-        <Select
-          value={document.pitch.type}
-          onValueChange={(value) => changePitch(value as PitchType)}
-          disabled={editingLocked || multipleScenes}
-        >
-          <SelectTrigger className="w-48" aria-label="Saha türü">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {Object.entries(pitchConfigs).map(([key, value]) => (
-              <SelectItem key={key} value={key}>
-                {value.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={undo}
-          disabled={editingLocked || historyIndex === 0}
-        >
-          Geri al
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={redo}
-          disabled={editingLocked || historyIndex >= history.length - 1}
-        >
-          Yinele
-        </Button>
-        <Button
-          variant={gridSnap ? 'secondary' : 'outline'}
-          size="sm"
-          onClick={() => setGridSnap((value) => !value)}
-          aria-pressed={gridSnap}
-          disabled={editingLocked}
-        >
-          <GridFour />
-          Izgaraya hizala
-        </Button>
-        <div
-          className="board-appearance"
-          role="group"
-          aria-label="Oyuncu görünümü"
-        >
-          <Button
-            size="sm"
-            variant={appearance === 'shirt' ? 'secondary' : 'ghost'}
-            aria-pressed={appearance === 'shirt'}
-            onClick={() => setAppearance('shirt')}
+        <div className="board-commandbar-tools">
+          <Select
+            value={document.pitch.type}
+            onValueChange={(value) => changePitch(value as PitchType)}
+            disabled={editingLocked || multipleScenes}
           >
-            <TShirt />
-            Forma
+            <SelectTrigger className="w-48" aria-label="Saha türü">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {Object.entries(pitchConfigs).map(([key, value]) => (
+                <SelectItem key={key} value={key}>
+                  {value.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={undo}
+            disabled={editingLocked || historyIndex === 0}
+          >
+            Geri al
           </Button>
           <Button
+            variant="outline"
             size="sm"
-            variant={appearance === 'disc' ? 'secondary' : 'ghost'}
-            aria-pressed={appearance === 'disc'}
-            onClick={() => setAppearance('disc')}
+            onClick={redo}
+            disabled={editingLocked || historyIndex >= history.length - 1}
           >
-            <Circle />
-            Disk
+            Yinele
+          </Button>
+          <Button
+            size="icon"
+            variant="ghost"
+            aria-label={
+              inspectorOpen
+                ? 'Özellik panelini gizle'
+                : 'Özellik panelini göster'
+            }
+            aria-expanded={inspectorOpen}
+            onClick={() => setInspectorPreference(!inspectorOpen)}
+          >
+            <SidebarSimple />
+          </Button>
+          <Button
+            ref={expandRef}
+            size="icon"
+            variant="ghost"
+            aria-label={expanded ? 'Odak modundan çık' : 'Odak modunu aç'}
+            aria-pressed={expanded}
+            onClick={() => setExpanded((value) => !value)}
+          >
+            {expanded ? <ArrowsIn /> : <ArrowsOut />}
           </Button>
         </div>
-        <Button
-          size="icon"
-          variant="ghost"
-          aria-label={
-            inspectorOpen ? 'Özellik panelini gizle' : 'Özellik panelini göster'
-          }
-          aria-expanded={inspectorOpen}
-          onClick={() => setInspectorOpen((value) => !value)}
-        >
-          <SidebarSimple />
-        </Button>
-        <Button
-          ref={expandRef}
-          size="icon"
-          variant="ghost"
-          aria-label={expanded ? 'Odak modundan çık' : 'Odak modunu aç'}
-          aria-pressed={expanded}
-          onClick={() => setExpanded((value) => !value)}
-        >
-          {expanded ? <ArrowsIn /> : <ArrowsOut />}
-        </Button>
-        <span
-          className={dirty ? 'dirty-indicator dirty' : 'dirty-indicator'}
-          role="status"
-        >
-          {saving
-            ? 'Kaydediliyor…'
-            : dirty
-              ? 'Kaydedilmemiş değişiklik'
-              : hasSaved
-                ? 'Kaydedildi'
-                : 'Henüz kaydedilmedi'}
-        </span>
-        {!readOnly ? (
-          <Button
-            className="ml-auto"
-            onClick={() => void save()}
-            disabled={saving || preview || (!onSave && !onSaveDocument)}
+        <details className="board-view-options">
+          <summary>Görünüm</summary>
+          <div className="board-view-settings">
+            <Button
+              variant={gridSnap ? 'secondary' : 'outline'}
+              size="sm"
+              onClick={() => setGridSnap((value) => !value)}
+              aria-pressed={gridSnap}
+              disabled={editingLocked}
+            >
+              <GridFour />
+              Izgaraya hizala
+            </Button>
+            <div
+              className="board-appearance"
+              role="group"
+              aria-label="Oyuncu görünümü"
+            >
+              <Button
+                size="sm"
+                variant={appearance === 'shirt' ? 'secondary' : 'ghost'}
+                aria-pressed={appearance === 'shirt'}
+                onClick={() => setAppearance('shirt')}
+              >
+                <TShirt />
+                Forma
+              </Button>
+              <Button
+                size="sm"
+                variant={appearance === 'disc' ? 'secondary' : 'ghost'}
+                aria-pressed={appearance === 'disc'}
+                onClick={() => setAppearance('disc')}
+              >
+                <Circle />
+                Disk
+              </Button>
+            </div>
+          </div>
+        </details>
+        <div className="board-save-controls">
+          <span
+            className={dirty ? 'dirty-indicator dirty' : 'dirty-indicator'}
+            role="status"
           >
-            <FloppyDisk />
-            Kaydet
-          </Button>
-        ) : null}
+            {saving
+              ? 'Kaydediliyor…'
+              : dirty
+                ? 'Kaydedilmemiş değişiklik'
+                : hasSaved
+                  ? 'Kaydedildi'
+                  : 'Henüz kaydedilmedi'}
+          </span>
+          {!readOnly ? (
+            <Button
+              className="ml-auto"
+              onClick={() => void save()}
+              disabled={saving || preview || (!onSave && !onSaveDocument)}
+            >
+              <FloppyDisk />
+              Kaydet
+            </Button>
+          ) : null}
+        </div>
       </div>
       {saveError && (
         <p className="scene-save-error" role="alert">
@@ -1026,182 +1054,251 @@ export function TacticalBoardEditor({
           olarak ezmeyiz.
         </p>
       )}
-      <div className="board-layout">
-        {!readOnly ? (
-          <aside className="board-tools">
-            <fieldset disabled={editingLocked} className="board-tool-scroll">
-              <p className="tool-heading">Araçlar</p>
-              <button
-                aria-pressed={!panning}
-                onClick={() => setPanning(false)}
-                title="Seç ve taşı"
-              >
-                <Cursor />
-                <span>Seç</span>
-              </button>
-              <button
-                aria-pressed={panning}
-                onClick={() => setPanning((value) => !value)}
-                title="Sahayı kaydır"
-              >
-                <Hand />
-                <span>Kaydır</span>
-              </button>
-              {tools.map((tool, index) => {
-                const Icon = tool.icon ?? Circle;
-                return (
-                  <button
-                    key={`${tool.type}-${index}`}
-                    title={tool.label}
-                    disabled={saving || document.elements.length >= 250}
-                    onClick={() => {
-                      setPanning(false);
-                      addElement(tool);
-                    }}
-                  >
-                    <Icon />
-                    <span>{tool.label}</span>
-                  </button>
-                );
-              })}
-            </fieldset>
-          </aside>
-        ) : null}
-        <div className="board-stage-shell">
-          <div className="board-stage-caption">
-            <span>TAKTİK ÇALIŞMA ALANI</span>
-            <span>{document.elements.length} / 250 eleman</span>
-          </div>
-          <div
-            className={`board-canvas-wrap${panning ? ' is-panning' : ''}`}
-            ref={containerRef}
-            tabIndex={0}
-            role="region"
-            aria-label="Saha; kaydırmak için ok tuşlarını kullanın"
-            onPointerDownCapture={(event) => {
-              if (!panning) return;
-              const node = event.currentTarget;
-              panOrigin.current = {
-                x: event.clientX,
-                y: event.clientY,
-                left: node.scrollLeft,
-                top: node.scrollTop,
-              };
-              node.setPointerCapture(event.pointerId);
-              event.preventDefault();
-              event.stopPropagation();
-            }}
-            onPointerMove={(event) => {
-              const origin = panOrigin.current;
-              if (!origin) return;
-              event.currentTarget.scrollLeft =
-                origin.left - (event.clientX - origin.x);
-              event.currentTarget.scrollTop =
-                origin.top - (event.clientY - origin.y);
-            }}
-            onPointerUp={(event) => {
-              panOrigin.current = null;
-              if (event.currentTarget.hasPointerCapture(event.pointerId))
-                event.currentTarget.releasePointerCapture(event.pointerId);
-            }}
-            onPointerCancel={() => {
-              panOrigin.current = null;
-            }}
-          >
-            <Stage
-              ref={stageRef}
-              width={document.pitch.width * scale}
-              height={document.pitch.height * scale}
-              scaleX={scale}
-              scaleY={scale}
-              onPointerDown={(event) => {
-                if (event.target === event.target.getStage())
-                  setSelectedId(undefined);
+      <div className="board-workspace">
+        <div className="board-layout">
+          {!readOnly ? (
+            <aside className="board-tools">
+              <fieldset disabled={editingLocked} className="board-tool-scroll">
+                <p className="tool-heading">Araçlar</p>
+                <button
+                  aria-pressed={!panning}
+                  onClick={() => setPanning(false)}
+                  title="Seç ve taşı"
+                >
+                  <Cursor />
+                  <span>Seç</span>
+                </button>
+                <button
+                  aria-pressed={panning}
+                  onClick={() => setPanning((value) => !value)}
+                  title="Sahayı kaydır"
+                >
+                  <Hand />
+                  <span>Kaydır</span>
+                </button>
+                {tools.map((tool, index) => {
+                  const Icon = tool.icon ?? Circle;
+                  return (
+                    <button
+                      key={`${tool.type}-${index}`}
+                      title={tool.label}
+                      disabled={saving || document.elements.length >= 250}
+                      onClick={() => {
+                        setPanning(false);
+                        addElement(tool);
+                      }}
+                    >
+                      <Icon />
+                      <span>{tool.label}</span>
+                    </button>
+                  );
+                })}
+              </fieldset>
+            </aside>
+          ) : null}
+          <div className="board-stage-shell">
+            <div className="board-stage-caption">
+              <span>TAKTİK ÇALIŞMA ALANI</span>
+              <span>{document.elements.length} / 250 eleman</span>
+            </div>
+            <div
+              className={`board-canvas-wrap${panning ? ' is-panning' : ''}`}
+              ref={containerRef}
+              tabIndex={0}
+              role="region"
+              aria-label="Saha; kaydırmak için ok tuşlarını kullanın"
+              onPointerDownCapture={(event) => {
+                if (!panning) return;
+                const node = event.currentTarget;
+                panOrigin.current = {
+                  x: event.clientX,
+                  y: event.clientY,
+                  left: node.scrollLeft,
+                  top: node.scrollTop,
+                };
+                node.setPointerCapture(event.pointerId);
+                event.preventDefault();
+                event.stopPropagation();
+              }}
+              onPointerMove={(event) => {
+                const origin = panOrigin.current;
+                if (!origin) return;
+                event.currentTarget.scrollLeft =
+                  origin.left - (event.clientX - origin.x);
+                event.currentTarget.scrollTop =
+                  origin.top - (event.clientY - origin.y);
+              }}
+              onPointerUp={(event) => {
+                panOrigin.current = null;
+                if (event.currentTarget.hasPointerCapture(event.pointerId))
+                  event.currentTarget.releasePointerCapture(event.pointerId);
+              }}
+              onPointerCancel={() => {
+                panOrigin.current = null;
               }}
             >
-              <Layer>
-                <Pitch
-                  width={document.pitch.width}
-                  height={document.pitch.height}
-                  type={document.pitch.type}
-                />
-                {renderBoard.elements.map((element) => (
-                  <BoardNode
-                    key={element.id}
-                    element={element}
-                    appearance={appearance}
-                    multiSelected={
-                      !preview &&
-                      selectedIds.length > 1 &&
-                      selectedIds.includes(element.id)
-                    }
-                    readOnly={editingLocked || panning}
-                    onSelect={(additive) => {
-                      if (!panning && !preview) {
-                        selectElement(element.id, additive);
-                        setInspectorTab('properties');
+              <Stage
+                ref={stageRef}
+                width={document.pitch.width * scale}
+                height={document.pitch.height * scale}
+                scaleX={scale}
+                scaleY={scale}
+                onPointerDown={(event) => {
+                  if (event.target === event.target.getStage())
+                    setSelectedId(undefined);
+                }}
+              >
+                <Layer>
+                  <Pitch
+                    width={document.pitch.width}
+                    height={document.pitch.height}
+                    type={document.pitch.type}
+                  />
+                  {renderBoard.elements.map((element) => (
+                    <BoardNode
+                      key={element.id}
+                      element={element}
+                      appearance={appearance}
+                      multiSelected={
+                        !preview &&
+                        selectedIds.length > 1 &&
+                        selectedIds.includes(element.id)
                       }
-                    }}
-                    onDragStart={() => {
-                      dragIds.current = selectedIds.includes(element.id)
-                        ? selectedIds
-                        : [element.id];
-                      setSelectedIds(dragIds.current);
-                    }}
-                    onDragMove={(x, y) => previewMove(element.id, x, y)}
-                    onMove={(x, y) => moveElement(element.id, x, y)}
-                    onTransform={(node) => transformElement(element, node)}
-                  />
-                ))}
-                {!editingLocked && !panning ? (
-                  <Transformer
-                    ref={transformerRef}
-                    rotateEnabled={selectedIds.length <= 1}
-                    resizeEnabled={selectedIds.length <= 1}
-                    shouldOverdrawWholeArea={false}
-                    anchorSize={14}
-                    borderStroke="#facc15"
-                    anchorFill="#ffffff"
-                    anchorStroke="#0a3156"
-                    boundBoxFunc={(oldBox, newBox) =>
-                      newBox.width < 12 || newBox.height < 12 ? oldBox : newBox
-                    }
-                  />
-                ) : null}
-              </Layer>
-            </Stage>
-          </div>
-          <div
-            className="board-view-controls"
-            role="group"
-            aria-label="Saha görünümü"
-          >
-            <Button
-              size="icon"
-              variant="ghost"
-              aria-label="Uzaklaştır"
-              disabled={zoom <= 1}
-              onClick={() => setZoom((value) => Math.max(1, value - 0.25))}
+                      readOnly={editingLocked || panning}
+                      onSelect={(additive) => {
+                        if (!panning && !preview) {
+                          selectElement(element.id, additive);
+                          setInspectorTab('properties');
+                        }
+                      }}
+                      onDragStart={() => {
+                        dragIds.current = selectedIds.includes(element.id)
+                          ? selectedIds
+                          : [element.id];
+                        setSelectedIds(dragIds.current);
+                      }}
+                      onDragMove={(x, y) => previewMove(element.id, x, y)}
+                      onMove={(x, y) => moveElement(element.id, x, y)}
+                      onTransform={(node) => transformElement(element, node)}
+                    />
+                  ))}
+                  {!editingLocked && !panning ? (
+                    <Transformer
+                      ref={transformerRef}
+                      rotateEnabled={selectedIds.length <= 1}
+                      resizeEnabled={selectedIds.length <= 1}
+                      shouldOverdrawWholeArea={false}
+                      anchorSize={14}
+                      borderStroke="#facc15"
+                      anchorFill="#ffffff"
+                      anchorStroke="#0a3156"
+                      boundBoxFunc={(oldBox, newBox) =>
+                        newBox.width < 12 || newBox.height < 12
+                          ? oldBox
+                          : newBox
+                      }
+                    />
+                  ) : null}
+                </Layer>
+              </Stage>
+            </div>
+            <div
+              className="board-view-controls"
+              role="group"
+              aria-label="Saha görünümü"
             >
-              <MagnifyingGlassMinus />
-            </Button>
-            <span>{Math.round(zoom * 100)}%</span>
-            <Button
-              size="icon"
-              variant="ghost"
-              aria-label="Yakınlaştır"
-              disabled={zoom >= 3}
-              onClick={() => setZoom((value) => Math.min(3, value + 0.25))}
-            >
-              <MagnifyingGlassPlus />
-            </Button>
-            <Button size="sm" variant="ghost" onClick={fitPitch}>
-              <CornersOut />
-              Sahaya sığdır
-            </Button>
+              <Button
+                size="icon"
+                variant="ghost"
+                aria-label="Uzaklaştır"
+                disabled={zoom <= 1}
+                onClick={() => setZoom((value) => Math.max(1, value - 0.25))}
+              >
+                <MagnifyingGlassMinus />
+              </Button>
+              <span>{Math.round(zoom * 100)}%</span>
+              <Button
+                size="icon"
+                variant="ghost"
+                aria-label="Yakınlaştır"
+                disabled={zoom >= 3}
+                onClick={() => setZoom((value) => Math.min(3, value + 0.25))}
+              >
+                <MagnifyingGlassPlus />
+              </Button>
+              <Button size="sm" variant="ghost" onClick={fitPitch}>
+                <CornersOut />
+                Sahaya sığdır
+              </Button>
+            </div>
           </div>
         </div>
-        <aside className="board-inspector" hidden={!inspectorOpen}>
+        {fullDocument.schemaVersion === 2 && (
+          <PlaybackControls
+            state={playbackState}
+            durationMs={playback.durationMs}
+            reducedMotion={playback.reducedMotion}
+            disabled={saving}
+            sceneTitle={
+              fullDocument.scenes.find(
+                (scene) => scene.id === playback.frame?.sceneId,
+              )?.title
+            }
+            onPlay={() => {
+              if (
+                savingRef.current ||
+                window.document.hidden ||
+                window.document.querySelector(
+                  '[role="dialog"], [role="alertdialog"], [role="listbox"]',
+                )
+              )
+                return;
+              setSelectedIds([]);
+              transport.play();
+            }}
+            onPause={transport.pause}
+            onSeek={transport.seek}
+            onSpeed={transport.setSpeed}
+            onLoop={transport.setLoop}
+            onEdit={() =>
+              selectScene(playback.frame?.sceneId ?? activeScene!.id)
+            }
+          />
+        )}
+        {fullDocument.schemaVersion === 2 ? (
+          <SceneStrip
+            document={fullDocument}
+            selectedId={activeScene!.id}
+            onSelect={selectScene}
+            onEdit={changeScenes}
+            readOnly={readOnly}
+            busy={saving}
+            editingLocked={preview}
+          />
+        ) : onSaveDocument && !readOnly ? (
+          <div className="scene-strip scene-strip-heading">
+            <span>
+              Bu tahta tek sahnelidir. Dönüşüm taslakta kalır; Kaydet gerekir.
+            </span>
+            <Button
+              variant="outline"
+              disabled={saving}
+              onClick={() => {
+                if (savingRef.current) return;
+                const next = createSequence(document, id());
+                commitDocument(next);
+                selectScene(next.scenes[0].id);
+              }}
+            >
+              Animasyon oluştur
+            </Button>
+          </div>
+        ) : null}
+        <aside
+          aria-label="Tahta özellikleri"
+          className="board-inspector"
+          hidden={!inspectorOpen}
+        >
           <fieldset disabled={editingLocked} className="board-control-group">
             {!readOnly ? (
               <div className="board-multi-controls">
@@ -1435,160 +1532,103 @@ export function TacticalBoardEditor({
             ) : null}
           </fieldset>
         </aside>
+        {!readOnly ? (
+          <fieldset className="board-footerbar" disabled={saving || preview}>
+            <Select
+              value={formation}
+              onValueChange={(value) => setFormation(value as typeof formation)}
+            >
+              <SelectTrigger className="w-36" aria-label="Formasyon">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {formations.map((item) => (
+                  <SelectItem key={item} value={item}>
+                    {item}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Button variant="outline" onClick={() => applyFormation('home')}>
+              Ev formasyonu
+            </Button>
+            <Button variant="outline" onClick={() => applyFormation('away')}>
+              Deplasman formasyonu
+            </Button>
+            <div className="board-export">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => importRef.current?.click()}
+              >
+                <UploadSimple />
+                JSON al
+              </Button>
+              <input
+                ref={importRef}
+                hidden
+                type="file"
+                accept="application/json,.json"
+                onChange={(event) => void importJson(event.target.files?.[0])}
+              />
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() =>
+                  download(
+                    'ngcs-tactical-board.json',
+                    JSON.stringify(fullDocument),
+                    'application/json',
+                  )
+                }
+              >
+                <DownloadSimple />
+                JSON
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() =>
+                  exportPng(
+                    stageRef.current,
+                    document,
+                    activeScene
+                      ? `ngcs-scene-${activeScene.id}.png`
+                      : undefined,
+                  )
+                }
+              >
+                <DownloadSimple />
+                {activeScene ? 'Seçili sahne PNG' : 'PNG'}
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() =>
+                  download(
+                    activeScene
+                      ? `ngcs-scene-${activeScene.id}.svg`
+                      : 'ngcs-tactical-board.svg',
+                    boardSvg(document, appearance),
+                    'image/svg+xml',
+                  )
+                }
+              >
+                <DownloadSimple />
+                {activeScene ? 'Seçili sahne SVG' : 'SVG'}
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setClearOpen(true)}
+              >
+                <ArrowsClockwise />
+                Temizle
+              </Button>
+            </div>
+          </fieldset>
+        ) : null}
       </div>
-      {fullDocument.schemaVersion === 2 && (
-        <PlaybackControls
-          state={playbackState}
-          durationMs={playback.durationMs}
-          reducedMotion={playback.reducedMotion}
-          disabled={saving}
-          sceneTitle={
-            fullDocument.scenes.find(
-              (scene) => scene.id === playback.frame?.sceneId,
-            )?.title
-          }
-          onPlay={() => {
-            if (
-              savingRef.current ||
-              window.document.hidden ||
-              window.document.querySelector(
-                '[role="dialog"], [role="alertdialog"], [role="listbox"]',
-              )
-            )
-              return;
-            setSelectedIds([]);
-            transport.play();
-          }}
-          onPause={transport.pause}
-          onSeek={transport.seek}
-          onSpeed={transport.setSpeed}
-          onLoop={transport.setLoop}
-          onEdit={() => selectScene(playback.frame?.sceneId ?? activeScene!.id)}
-        />
-      )}
-      {fullDocument.schemaVersion === 2 ? (
-        <SceneStrip
-          document={fullDocument}
-          selectedId={activeScene!.id}
-          onSelect={selectScene}
-          onEdit={changeScenes}
-          readOnly={readOnly}
-          busy={saving}
-          editingLocked={preview}
-        />
-      ) : onSaveDocument && !readOnly ? (
-        <div className="scene-strip scene-strip-heading">
-          <span>
-            Bu tahta tek sahnelidir. Dönüşüm taslakta kalır; Kaydet gerekir.
-          </span>
-          <Button
-            variant="outline"
-            disabled={saving}
-            onClick={() => {
-              if (savingRef.current) return;
-              const next = createSequence(document, id());
-              commitDocument(next);
-              selectScene(next.scenes[0].id);
-            }}
-          >
-            Animasyon oluştur
-          </Button>
-        </div>
-      ) : null}
-      {!readOnly ? (
-        <fieldset className="board-footerbar" disabled={saving || preview}>
-          <Select
-            value={formation}
-            onValueChange={(value) => setFormation(value as typeof formation)}
-          >
-            <SelectTrigger className="w-36" aria-label="Formasyon">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {formations.map((item) => (
-                <SelectItem key={item} value={item}>
-                  {item}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <Button variant="outline" onClick={() => applyFormation('home')}>
-            Ev formasyonu
-          </Button>
-          <Button variant="outline" onClick={() => applyFormation('away')}>
-            Deplasman formasyonu
-          </Button>
-          <div className="board-export">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => importRef.current?.click()}
-            >
-              <UploadSimple />
-              JSON al
-            </Button>
-            <input
-              ref={importRef}
-              hidden
-              type="file"
-              accept="application/json,.json"
-              onChange={(event) => void importJson(event.target.files?.[0])}
-            />
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() =>
-                download(
-                  'ngcs-tactical-board.json',
-                  JSON.stringify(fullDocument),
-                  'application/json',
-                )
-              }
-            >
-              <DownloadSimple />
-              JSON
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() =>
-                exportPng(
-                  stageRef.current,
-                  document,
-                  activeScene ? `ngcs-scene-${activeScene.id}.png` : undefined,
-                )
-              }
-            >
-              <DownloadSimple />
-              {activeScene ? 'Seçili sahne PNG' : 'PNG'}
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() =>
-                download(
-                  activeScene
-                    ? `ngcs-scene-${activeScene.id}.svg`
-                    : 'ngcs-tactical-board.svg',
-                  boardSvg(document, appearance),
-                  'image/svg+xml',
-                )
-              }
-            >
-              <DownloadSimple />
-              {activeScene ? 'Seçili sahne SVG' : 'SVG'}
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setClearOpen(true)}
-            >
-              <ArrowsClockwise />
-              Temizle
-            </Button>
-          </div>
-        </fieldset>
-      ) : null}
       <Dialog open={clearOpen} onOpenChange={setClearOpen}>
         <DialogContent>
           <DialogHeader>

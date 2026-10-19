@@ -4,8 +4,10 @@
 REQ-025 / BL-058. A–D kullanıcı tarafından onaylandı. Belgedeki GET/PUT document
 adaptörleri backend'de uygulandı; V2 yazımı varsayılan kapalı. Ortak editör V2'yi
 destekler. BL-058e.1 maç, e.2 taktik egzersiz ve e.3 antrenman fazı route'una
-bağlandı. Birleşik e.4 kabulü geçti; retained rollout ayrı onay bekler ve V2
-yazımı kapalıdır.
+bağlandı. Birleşik e.4 kabulü geçti. Kullanıcının 2026-10-19 kontrollü
+etkinleştirme isteğiyle yalnız Windows yerel ortamında V2 yazımı açıldı;
+production ve temsilî sportif pilot kapıları açıktır.
+[Yerel rollout kanıtı](../30-quality/TACTICAL_LOCAL_ROLLOUT_2026-10-19.md).
 
 ## Kanıtlanan başlangıç ve etki alanı
 
@@ -193,8 +195,9 @@ isimler dışa aktarım uyarısı ve XML escape korunur. MP4/GIF yoktur.
    root quality ve CDSK. Yerel rollout için veri yazımı ayrıca açıkça seçilir.
 
 Her kapı geçmeden sonrakine “tamamlandı” yazılmaz. Owner/tarih TBD. A–D
-onayı alındı; BL-058a–e repository uygulama/kabulü tamamlandı. Retained rollout
-ayrı açık onay bekler; temsilî kulüp/hardware pilotu hâlâ TBD.
+onayı alındı; BL-058a–e repository uygulama/kabulü tamamlandı. 2026-10-19
+isteği yalnız yerel retained aktivasyonu kapsar; temsilî kulüp/hardware
+pilotu hâlâ TBD. Production rollout ayrıca onay gerektirir.
 
 ## Kabul testleri ve rollout
 
@@ -266,5 +269,6 @@ BL-058e.4: V1/V2 kulüp kopyası → faz snapshot → maç, bağımsız token, k
 izolasyonu ve tam JSON/seçili sabit PNG/SVG kabulü geçti. Disposable HTTP 18/18,
 gerçek route/API/PG browser akışı, üç viewport ve 12 sahne/1.500 eleman/50 undo
 ölçümü doğrulandı. [Birleşik kanıt](../30-quality/TACTICAL_COMBINED_ACCEPTANCE_2026-10-03.md).
-Repository kabulü kapalı; ayrı retained rollout/pilot kapısı açıktır. Flag kapalı;
-V2-aware okuyucu ve legacy ezme koruması rollback sırasında da korunmalıdır.
+Repository kabulü kapalıdır. e.4 tarihinde flag kapalı bırakıldı; 2026-10-19
+yerel aktivasyonu ayrı kanıtla tamamlandı. Production/sportif pilot kapısı
+açıktır. V2-aware okuyucu ve legacy ezme koruması rollback sırasında da korunmalıdır.

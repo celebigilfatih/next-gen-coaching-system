@@ -10,6 +10,92 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 ## NGCS visual target
 
+- Exercise detail extension approved on 2026-10-19: compact text heading,
+  four-cell semantic summary and one Uygulama/Saha/Kaynak panel. Full numbered
+  instructions and equipment precede the coaching column (stack below1100px).
+  Keep all age rules, source/license/attribution and safety text. Mount the existing
+  readonly board only on Saha; the content API still includes the source board.
+  Mobile uses44px actions/tabs, two primary actions together and a compact four-
+  fact strip. Put full summary disclosure in Uygulama and keep the duplicate panel
+  heading accessible but visually hidden on mobile. Preserve exact-age/PLAYER/
+  publication/explicit-picker guards, scope reset and return focus to the add
+  trigger. Do not restore the photograph, separate cards or always-mounted pitch.
+
+- Library extension approved on 2026-10-19: carry the compact Matches/training
+  register language into the exercise catalogue. Keep one always-visible search,
+  horizontal source/phase controls, one advanced-filter Sheet with a scrolling
+  body and fixed close/result actions, native full-summary disclosures and
+  separate preview/detail actions. Both pagers share the existing cursor reader.
+  Preview only the explicitly chosen exercise using the response's resolved age;
+  Uygulama/Saha tabs mount the readonly board only on Saha selection. Keep focus
+  return, honest legacy fallback, publication and explicit plan-attachment guards.
+  Mobile uses44px actions/16px fields and hides the duplicate panel introduction.
+  Do not restore the photograph, metric cards or full-row nested links.
+
+- Training catalogue extension approved on 2026-10-19: use the compact Matches
+  heading, one white native register and separate detail/edit/menu actions.
+  Dates/times, purpose, duration and phase count remain API values; full purpose
+  opens in a native disclosure. Mobile stacks the same rows with 44px actions,
+  16px date input and a short internally scrolling five-statistic strip led by
+  count/duration. Desktop/tablet statistics remain 5 and 3/2. Reuse the existing
+  full-day server reader for date/Today/reset; use local midnight boundaries,
+  reject invalid dates, reset cursors and ignore stale results. Keep the date
+  input outside the keyed reader. Both pagers own no request state. Preserve
+  role/lifecycle guards and IDs. The root minimum-width override is scoped to
+  this route only. Do not restore the photograph, auto-fit cards or mobile 2/2/1
+  metrics grid on this catalogue.
+
+- Training detail extension approved on 2026-10-19: match the compact Matches
+  language with a text heading, semantic saved summary and one tab panel.
+  Ordered phase buttons expose selection; keep full notes/frozen application
+  beside the flow (stack below 900px), and the add picker in a disclosure that
+  starts open for an empty plan. Mobile uses 44px tabs/phase navigation and 16px
+  selects. Board-tab entry and previous/next are selection only; read the chosen
+  board only on explicit open. Retain draft guards, first-save history, snapshot
+  identity, frozen content and PLAYER read-only behavior. Keep the embedded
+  board within panel gutters and use existing focus mode for the larger pitch.
+
+- Tactical workspace extension approved on 2026-10-19: match the compact
+  Matches/detail language on catalogue and editor. Use a native scoped register,
+  text headings, white panels and explicit links. Remove catalogue photographs,
+  metrics and capabilities sidebar. Mobile puts pitch/playback/scenes before
+  optional properties, starts the inspector collapsed and uses 44px actions/
+  16px scene fields. View options use a keyboard-accessible disclosure. Focus
+  mode keeps the pitch visible and scrolls content above navigation/below dialogs.
+  Preserve V1/V2, explicit save, history, exports, readonly and conflict guards.
+
+- Match detail extension approved on 2026-10-19: carry the selected Matches
+  design language into `/app/matches/:matchId`. Use a compact text heading,
+  one saved-data summary strip and an un-nested analysis/tactics panel. Remove
+  the photographic hero and duplicate facts sidebar. Mobile stacks fields,
+  uses 16px input text and at least 44px back/tab/save controls. Preserve
+  explicit analysis writes, PLAYER readonly access and the lazy token-bound
+  tactical editor with its existing transition/conflict guards.
+
+- Matches direction approved on 2026-10-19: use the third generated concept,
+  the dense fixture register, and adapt it for mobile. Keep a compact text
+  header, inline date/reset toolbar, aligned date/time/fixture/venue/preparation
+  columns and explicit Detail links. On mobile, use one stacked fixture per
+  row with 44px controls. Keep real scoped totals, cursor/retry behavior and
+  exact local-day filtering; preserve full notes through keyboard-accessible
+  disclosure. Do not restore the photographic hero or separate filter sidebar.
+  Reference: `qa/matches-ux-2026-10-19/selected-design-3.png`.
+
+- Weekly planning approved on 2026-10-19 (ADR-0040): preserve team/season scope,
+  chronological mixed records and full server summaries; never duplicate linked
+  TrainingPlan/DayPlan cards. Use existing white Radix dialogs for manual events
+  and preview/apply. Keep submit controls outside the scrolling preview; team
+  sections and phase notes are expandable. Small-age profiles use after-school
+  hours and original CLUB examples, not global expert-publication claims. Keep
+  request identity across uncertain retries and reload; no silent resubmission.
+
+- Club setup approved on 2026-10-19: five steps (club, season, teams, optional
+  technical staff, review) use the existing white shadcn system. Club identity
+  includes a raster logo upload and two colors with a live, readable derived
+  theme. Applying a saved club changes UI accents, never pitch/equipment or
+  semantic warning/error colors. Staff records do not create login accounts,
+  send invitations or grant access. Preserve drafts and explicit final save.
+
 - Tactical studio direction approved on 2026-09-19: prioritize the pitch over
   photographic headers; keep metadata collapsible, use numbered shirts with a
   disc alternative, a compact toolbar and a collapsible inspector. Equipment
@@ -36,12 +122,12 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
   deterministic synthetic Turkish names, not visible `Demo Oyuncu NN` labels.
 
 - Training lifecycle correction approved on 2026-09-08: active controls use a
-  pointer and disabled controls use not-allowed; plan cards expose separate
+  pointer and disabled controls use not-allowed; plan records expose separate
   Detail/Edit/Delete actions without nested interactive content. Edit is limited
   to title/local date-time/purpose; permanent delete requires explicit Dialog
-  confirmation and never removes a card optimistically. Five catalogue metrics
-  remain 5 desktop, 3/2 tablet and 2/2/1 mobile; plan cards use auto-fit and
-  unsupported board-status copy stays hidden.
+  confirmation and never removes a record optimistically. Catalogue presentation
+  is superseded by the 2026-10-19 training-list extension above; all five statistics
+  remain server-backed and unsupported board-status copy stays hidden.
 
 - Dashboard reference correction approved on 2026-09-08: 185px sidebar, 78px
   topbar, unframed photographic welcome with Inter heading, six real metrics,
@@ -87,3 +173,14 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - Dark tokens are preparation only, not a working application-wide dark mode.
 - Compare matched viewport/state screenshots before removing legacy selectors;
   do not install unused components or add empty NGCS wrappers around primitives.
+
+## Ready drill planning — 2026-10-19
+
+- Keep the existing library/card design. Share server filters with the plan picker;
+  preview instructions and the board only on explicit open. Show the resolved
+  team age, duration, players and area before attachment.
+- Library detail selects an existing or newly created plan, then asks for explicit
+  attachment. Never lose the exercise during plan creation or retry an uncertain
+  write automatically. Preserve selection and offer explicit plan verification.
+- Saved plan instructions and duration come from contentSnapshot. Unsupported
+  ages do not silently inherit nearby ages; no drafts appear as approved content.

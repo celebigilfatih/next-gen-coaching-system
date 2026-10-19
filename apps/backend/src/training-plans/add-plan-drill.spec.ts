@@ -74,6 +74,8 @@ describe('Single plan-drill runtime input boundary', () => {
           phase,
           0,
           notes,
+          undefined,
+          principal,
         );
       }
     },

@@ -1,6 +1,6 @@
 # Next Generation Coaching System — Project Boot
 
-- **Document version:** 2.107
+- **Document version:** 2.137
 - **CDSK version:** 0.1.0
 - **Last updated:** 2026-10-19
 
@@ -9,13 +9,264 @@
 
 ## Project Compass
 
+- **Publication verification (2026-10-19):** requested final review/commit/push
+  targets codex/mvp-stabilization only. Fresh root17/17 passes: backend918/frontend509/
+  Sites4/tooling8; dedicated PostgreSQL HTTP36/36 and operator guards/syntax pass.
+  Output baselines/env/Python caches excluded, staged text scan has no findings.
+  [Review](docs/30-quality/PRE_PUSH_REVIEW_2026-10-19.md).
+
+
+- **Five-match senior microcycles (2026-10-19):** ADR-0047 / REQ-033 / CR-034 /
+  BL-068 accepts five SENIOR fixtures using existing actual-hour presets and manual
+  protections. Backend918/focused48/HTTP21, all21 weekday combinations and restored
+  UI pass.36 retained fixture dates unchanged; no migration/re-enrollment.
+  [Evidence](docs/30-quality/FIVE_MATCH_PROGRAM_2026-10-19.md).
+
+
+- **Four-match senior microcycles (2026-10-19):** ADR-0045 / REQ-032 / CR-033 /
+  BL-067 extends existing elapsed-hour planning to four SENIOR fixtures, retaining
+  manual decisions and transaction guards. Backend913/focused43/HTTP19 and all35
+  weekday combinations pass; restored UI/retained preservation verified. No migration.
+  [Evidence](docs/30-quality/FOUR_MATCH_PROGRAM_2026-10-19.md).
+
+
+- **Exercise detail UI/UX (2026-10-19):** compact library/Matches heading,
+  four-fact summary and one Uygulama/Saha/Kaynak guide. Full numbered steps,
+  equipment, exact-age coaching and source attribution remain. Readonly pitch
+  mounts on Saha; mobile44px actions/tabs, short summary and picker focus return
+  pass actual1440/1024/390/320 QA. Full frontend509/509, affected29/29, final
+  detail11/11 and type/lint/format/build/Sites4 pass; initial173-file links pass.
+  The closing snapshot reported6 missing four-match links and duplicate ADR-0045.
+  Follow-up resolves both: report links exist; CDSK is ADR-0046 and four-match
+  remains ADR-0045. Link/profile checks have zero errors. No retained
+  business write, API/schema/dependency/flag or new ADR.
+  [Evidence](docs/30-quality/LIBRARY_DETAIL_UX_2026-10-19.md).
+
+- **Repository-owned CDSK (2026-10-19):** explicit user request approves ADR-0046
+  and resolves ADR-0001's portable-validator question. Default wrapper uses tracked
+  Python and the documented CDSK0.1.0 project profile, without sibling checkout.
+  Eight tooling tests pass, including17 Python cases (16 pass/one Windows symlink
+  privilege skip). Full root17/17 passes: backend913/frontend509/Sites4/tooling8,
+  CDSK36 documents/46 ADRs,178-file links, types/lint/format/builds/whitespace all
+  pass, exit0. BL-061 complete. Earlier external-source
+  blocker entries below are historical. [Evidence](docs/30-quality/CDSK_LOCAL_VALIDATOR_2026-10-19.md).
+
+- **Three-match senior microcycles (2026-10-19):** ADR-0044 / REQ-031 / CR-032 /
+  BL-066 extends existing elapsed-hour preview/apply and enrolled reconciliation
+  to three SENIOR fixtures. Manual/time/deletion protections remain. Backend908 /
+  focused38 / HTTP17 and restored UI pass;36 retained dates unchanged, no migration.
+  [Evidence](docs/30-quality/THREE_MATCH_PROGRAM_2026-10-19.md).
+
+
+- **Two-match senior microcycles (2026-10-19):** ADR-0043 extends existing
+  preview/apply and date reconciliation to two SENIOR fixtures using actual hour
+  intervals, preserving manual changes and explicit preview times. Backend904 /
+  HTTP15 / restored UI pass;36 retained dates unchanged, no migration.
+  [Evidence](docs/30-quality/TWO_MATCH_PROGRAM_2026-10-19.md).
+
+- **Windows root quality portability (2026-10-19):** root resolves pinned local
+  npm12.2.0 through Node, with tested nonzero continuation and no global install.
+  Git LF/EOL-auto policy preserves existing checkouts; isolated Prisma client and
+  corresponding quality type/build avoid active API DLL locks. Socket fixtures
+  explicitly cover both session modes; repeated history-test queries reduced.
+  Full root run: 16/17 stages pass, including backend904/frontend498/Sites4 and
+  tooling6. CDSK alone fails because the real external0.1.0 validator is absent;
+  root correctly returns1. [Evidence](docs/30-quality/QUALITY_GATE_WINDOWS_2026-10-19.md).
+
+- **Exercise library UI/UX (2026-10-19):** compact Matches/training register,
+  visible debounced search, advanced-filter Sheet and separate preview/detail.
+  Full descriptions use native disclosure; mobile has44px actions/16px fields,
+  fixed dialog actions and Uygulama/Saha tabs. Preview uses response-resolved age
+  and mounts the readonly board only on Saha. Actual1440/1024/390/320 QA and29
+  affected tests pass. No API/schema/new ADR or retained write.
+  [Evidence](docs/30-quality/LIBRARY_UX_2026-10-19.md).
+  Final58/58 affected checks and type/lint/format/build/Sites4 pass. Full run497/498
+  plus corrected29-test board-file retry covers498 cases. Initial167-file link
+  scan passed; the then-pending ADR-0043 report links resolve in the later
+  exercise-detail follow-up's173-file check.
+
+- **Fixture-aware program updates (2026-10-19):** explicit user request fulfilled
+  under ADR-0042 / CR-030 / REQ-029 / BL-064. Match-date save synchronously reconciles
+  enrolled SENIOR old/new/adjacent weeks. Complete fingerprints protect manual edits,
+  deletions/exclusions/history/completion/attendance; conflict/congestion rolls back
+  match and program. Existing-design date dialog keeps analysis/board state separate.
+  No schema/new endpoint/background service. Fresh backup/restore; retained 41-week
+  enrollment owns 631 original events/protects 2 edits, preserving all 24415 prior rows
+  across 44 tables. Replay changes none of 24456 rows. Backend 896 / HTTP 13 / frontend
+  495, final affected 27/12 / operator 1 / Sites 4, builds/type/lint/format and responsive
+  browser checks pass. [Evidence](docs/30-quality/FIXTURE_PROGRAM_SYNC_2026-10-19.md).
+
+- **Local session persistence (2026-10-19):** user requested the reload logout
+  fix. Enabled existing ADR-0018 backend/frontend flags in ignored local configs,
+  exact UI3132 origin, existing API4000/retained DB unchanged. Actual full reloads
+  on dashboard/library/training detail and a fresh tab preserve login. Backend18,
+  frontend20 and dedicated PostgreSQL HTTP9 pass. No source/schema/dependency or
+  production-policy change; one normal login establishes the refresh cookie.
+  [Evidence](docs/30-quality/SESSION_PERSISTENCE_LOCAL_2026-10-19.md).
+
+- **Training list UI/UX (2026-10-19):** compact Matches-style register and
+  full purpose disclosure replace the photographic catalogue/cards. Existing
+  day reader backs date/Today/reset; both pagers retain cursor/scope guards.
+  Mobile uses 44px actions, 16px date input, short statistics strip and a scoped
+  minimum-width fix. Actual 1440/1024/390/320 QA passes; 491 frontend tests,
+  final 33 focused tests, type/lint/format/build and Sites 4 pass. No retained write
+  or API/schema/new ADR. [Evidence](docs/30-quality/TRAININGS_LIST_UX_2026-10-19.md).
+
+- **Ready-drill tablet/mobile acceptance (2026-10-19):** actual 1024×900/390×844
+  library filters, preview/Escape, paginated existing-plan selection and explicit
+  attachment pass. Existing A Takım plan on 19 May2027 16:00 now45→71→103 minutes,
+  4→6 entries (senior-12 technical26, senior-13 tactical32). Original phases,
+  source versions, linked day and earlier desktop121-minute plan preserved.
+  Scrollable mobile filter Sheet,44px controls/16px fields, mobile overflow fix
+  and full selected-plan summary added. Focused19/19, typecheck, lint/format pass;
+  root Windows npm gate remains BL-061.
+  [Evidence](docs/30-quality/READY_DRILL_RESPONSIVE_BROWSER_2026-10-19.md).
+
+- **Whole-season program (2026-10-19):** subsequent explicit request fulfilled for
+  Spor Manage, 14 August 2026–23 May 2027, 41 weeks / 410 team-week slots. Existing
+  October week and 36 sample matches preserved; added 2009 sessions / 8036 phases,
+  504 meetings and 1026 rest entries. Boundary weeks clipped; fixture-free breaks
+  use development/rest, academy retains after-school hours. Guarded existing-service
+  operator preflights all weeks and resumes atomic weekly commits. All 1963 original
+  rows across 44 tables preserved; retained replay adds zero. Backend 893 / HTTP 8 /
+  operator 4, builds/type/lint/format and actual browser reads pass. No schema/API
+  change. [Evidence](docs/30-quality/SEASON_CLUB_PROGRAM_2026-10-19.md).
+
+- **Training detail UI/UX (2026-10-19):** compact Matches-style heading,
+  saved summary and unified flow/board/attendance panel. Numbered phases and
+  full selected notes/frozen applications, optional add picker, 44px mobile
+  phase navigation and explicit board open. Actual 1440/1024/390 checks pass;
+  full frontend 479/479 (59 files), 47 focused tests, typecheck, scoped
+  lint/format, build and Sites 4/4 pass.
+  No backend/schema/ADR or retained write. Snapshot/lazy-read/draft/history and
+  PLAYER boundaries remain. [Evidence](docs/30-quality/TRAINING_DETAIL_UX_2026-10-19.md).
+
+- **Retained ready-drill browser acceptance (2026-10-19):** actual Chrome login,
+  A Takım NGCS catalog (48), library → existing plan and in-plan preview/add pass.
+  Two user-authorized attachments remain in “İlk kontrol, pas ve destek açıları”,
+  20 October 10:00: warm-up 20 + technical 26, total 75→95→121 min, entries 4→6.
+  Linked day 121 and Tuesday 166 verified; old four rows/boards/notes, both source
+  versions and other 50 plans unchanged. Duplicate selection excluded. Concurrent
+  development reload/import interruption recovered with normal login; final
+  updated plan/instructions/board reopen successfully. No runtime change here.
+  [Evidence](docs/30-quality/READY_DRILL_RETAINED_BROWSER_2026-10-19.md).
+
+- **Tactical UI/UX (2026-10-19):** compact Matches-style catalogue and shared
+  editor, native scoped register and optional view disclosure. Mobile prioritizes
+  pitch/playback/scenes before properties, with 44px actions and 16px fields.
+  Corrected focus-mode overlap/layering. Full frontend 478/478, final affected
+  44/44, typecheck, scoped lint/format, build and Sites 4/4 pass. Actual desktop,
+  tablet/mobile QA passes. No API/schema/flag or saved-data change in this slice.
+  [Evidence](docs/30-quality/TACTICS_UX_2026-10-19.md).
+
+- **Weekly club program (2026-10-19):** full proposed plan explicitly approved.
+  Week unifies scoped chronological training/match/meeting/rest reads and manual
+  event management; preview supports exact-age profiles, phase notes, exclusion
+  and time edits. One Serializable all-team apply, stale/overlap guards and durable
+  actor-bound request/season-week replay verified. Approved retained19–25 October:
+  51 physical plans/204 phases,13 meetings,26 rest entries across10 teams; existing
+  36 matches,1 account,30 staff people and0 grants unchanged. Only weekly audit
+  enum migration deployed after backup/restore; retained14/current, diff empty.
+  Backend890/frontend478/Sites4, final focused21/14 and dedicated HTTP7 pass.
+  Actual browser create/reload/edit/age switching and1440/1024/390 QA passed.
+  Canonical3132 week left open. ADR-0040/CR-029/REQ-028/BL-063 implemented;
+  Windows root quality/CDSK tooling remains BL-061.
+  [Evidence](docs/30-quality/WEEKLY_CLUB_PROGRAM_2026-10-19.md).
+
+- **Ready drill local publication (2026-10-19):** separate user approval covers local
+  migration, 120-item import and publication. Exact snapshot migration deployed;
+  this migration brought Windows DB to 13; subsequent separate weekly work
+  brought it to 14. All 120 starter versions are PUBLISHED.
+  Backup/restore and preservation across 38 business tables verified; import
+  replay creates zero duplicates. Publication and Fatih Çelebigil's named review
+  approval are recorded. The user explicitly accepted ADR-0041's one-package
+  local same-account exception. A maintenance-only atomic operation recorded
+  360 truthful transition audits; runtime API guards are unchanged. New backup/
+  restore, 43-table preservation and 10 maintenance tests pass; replay writes zero.
+  Later weekly additions were preserved; all 1,020 pre-publication rows still
+  match outside approved publication fields. Tactical V2 flag/pilot preserved.
+  [Evidence](docs/30-quality/READY_DRILL_LOCAL_PUBLICATION_2026-10-19.md).
+
+- **Controlled tactical activation (2026-10-19):** user requested local V2
+  activation. Backup/restore rehearsal, 119 backend / 64 frontend and 18
+  disposable PostgreSQL HTTP tests pass. Windows API 4000 / UI 3132 uses the
+  ignored backend `.env` V2 flag; default example remains false. One clearly
+  labelled synthetic CLUB pilot was explicitly saved V1 then V2; existing
+  matches/club/groups remain identical. No migration or bulk conversion.
+  The flag covers all otherwise-authorized local tactical writes, not an
+  allowlist. Production, sporting/touch-device pilot and offline remain open.
+  [Evidence](docs/30-quality/TACTICAL_LOCAL_ROLLOUT_2026-10-19.md).
+
+- **Ready drill planning (2026-10-19):** ADR-0039 / CR-028 / REQ-027 / BL-062
+  implements shared filters/preview, existing/new plan selection and frozen
+  exact-age content/board/duration with transactional authorization/version checks.
+  First starter release requires all 120 independent approvals and is atomic.
+  Dedicated clean/legacy migration parity, importer replay, HTTP 9/9, actual
+  login/browser flow and 869 backend / 4 Sites tests pass. Frontend final full
+  run: 473 pass / one existing undo timeout; isolated rerun passes.
+  Windows root quality/CDSK limits remain BL-061. Retained migration/import was
+  subsequently approved and completed (see latest entry), followed by explicitly
+  excepted local publication under ADR-0041.
+  [Evidence](docs/30-quality/READY_DRILL_PLANNING_2026-10-19.md).
+
+- **Match detail UI/UX (2026-10-19):** extended the selected Matches style
+  with a compact heading, saved-data strip and readable analysis/tactics panel;
+  mobile fields, tabs and save controls verified. Focused 27 tests, scoped
+  lint/format, production build and 4 Sites tests pass. Full typecheck remains
+  blocked by the separate add-drill dialog's `TrainingPlanCatalogPage.total`
+  error. No API/data/schema/permission change in this slice.
+  [Evidence](docs/30-quality/MATCH_DETAIL_UX_2026-10-19.md).
+
+- **Guided club setup and branding (2026-10-19):** user explicitly approved
+  the five-step SYSTEM_ADMIN wizard, optional staff and separate invitations.
+  Logo upload, primary/secondary colors and readable derived theme implemented.
+  Single atomic final POST, actor-bound durable replay/status and canonical/legacy
+  parity verified. Dedicated HTTP 6/6, DTO 16/16, frontend wizard/branding 17/17;
+  final full frontend 465/465. Browser create/reload/theme and 1440/1024/390 QA
+  passed. Only the exact branding migration was separately approved/applied to
+  retained local DB after private backup/restore rehearsal (12 applied migrations).
+  Existing business data matches restored snapshot. ADR-0037/0038 Accepted,
+  CR-027/REQ-026/BL-060 implemented. Root Windows quality/CDSK limits: BL-061.
+  Final frontend global typecheck is blocked by the concurrent add-drill dialog
+  catalog-total field; production build and 4 Sites tests pass.
+  [Evidence](docs/30-quality/CLUB_SETUP_WIZARD_2026-10-19.md).
+
+- **Matches UI/UX (2026-10-19):** third generated concept explicitly selected
+  and implemented as a compact fixture table with responsive stacked rows,
+  inline exact-day filter/reset and full note disclosure. Real scoped reads,
+  totals, cursor/retry and detail contracts preserved. Focused 14 tests,
+  typecheck, scoped lint/format, build and 4 Sites tests pass. Full frontend run
+  has one tactical undo timeout (464 passed); isolated rerun passes. Desktop,
+  tablet and mobile browser QA passed. No API/schema/data/dependency change.
+  [Evidence](docs/30-quality/MATCHES_UX_EXPLORATION_2026-10-19.md).
+
+- **Spor Manage local setup (2026-10-19):** explicitly approved retained local
+  fixture completed: one club/2026-2027 ClubSeason, A Takım plus U8–U16,
+  30 example staff assignments and 36 example A Takım matches. TFF-sourced
+  season bounds and opponent names are distinguished from synthetic schedules
+  and staff. Dedicated PostgreSQL verification and browser flow passed; retained
+  replay creates nothing. No player seed, new account, grant or schema change.
+  [Evidence](docs/30-quality/SPOR_MANAGE_LOCAL_SETUP_2026-10-19.md).
+  [ADR-0037](docs/50-decisions/ADR-0037-guided-club-setup.md) / CR-027 / BL-060
+  now document the separately approved and implemented product wizard (see latest entry).
+
+- **Windows local startup (2026-10-19):** fetched and checked out
+  `codex/mvp-stabilization` at `33442ff`. With explicit user approval, created
+  a separate empty PostgreSQL 16 database on this computer and applied all 11
+  tracked migrations. Status is current and schema diff is empty. A separately
+  approved first SYSTEM_ADMIN is ACTIVE; browser login reaches the dashboard.
+  Frontend `http://localhost:3132`, API `http://localhost:4000` both return 200.
+  This computer has no previous club/season/team records; the other computer's
+  retained data is not part of Git. Session and tactical V2 flags remain off.
+  See the [local runbook](docs/40-operations/RUNBOOK.md).
+
 - **Repository publication preparation (2026-10-19):** user requested commit
   and push of accumulated approved work on `codex/mvp-stabilization`.
   `main` is not the publication target; no force push, data rollout or V2 flag
   activation. Temporary Playwright CLI recordings are excluded from Git.
   Verify commit/remote outcome in Git; this entry is not a deployment claim.
 
-- **Latest — combined tactical acceptance (BL-058e.4):** repository V1/V2
+- **Previous — combined tactical acceptance (BL-058e.4):** repository V1/V2
   drill/copy → phase snapshot → match and JSON/static export acceptance passed.
   Disposable HTTP 18/18, migrations current/diff empty; actual route/API/PG
   browser flow preserves full scenes and source isolation. Three viewports and
@@ -639,6 +890,478 @@ altı migration güncel, iki kulüp IN_SYNC ve yerel browser smoke geçti. Ayrı
 - [x] MVP kabul kapısı geçiyor; F-001–F-006 kapalı ve remediation hükmü **Pass**.
 
 ## 11. AI Handoff
+
+Final publication check,2026-10-19: user explicitly requests commit/push of all
+accumulated approved changes to codex/mvp-stabilization; main stays unchanged.
+Full root17/17 exits0, backend918/frontend509/Sites4/tooling8 plus types/lint/format/
+build/CDSK36 documents/47 ADRs/180-file links/whitespace pass. Fresh dedicated
+PostgreSQL setup6/content9/planning21 pass (36 total), operator guards8 and syntax9
+pass; two opt-in operator DB cases skipped. Manual browser QA not repeated here.
+Root output now ignored, preserving private DB baselines/helpers locally; env,
+logs/builds/dependencies/Python caches excluded. Candidate/staged text hygiene has
+no findings; valid frontend QA assets stay. No runtime edit/deployment/migration/
+retained data rewrite in publication review. Operational usage assumes max3 games;
+existing tested5-game capacity remains unchanged. InfraScope context-menu question
+was advisory only and introduces no feature into this repository.
+Prior target/local HEAD33442ff and local/remote main1b831e087b727b80bfed0d47005bb0b95fa0852f
+verified. Commit uses command-scoped prior repository identity; no hooksPath/active
+Git hook configured, no bypass override. Push only HEAD:refs/heads/codex/mvp-stabilization,
+without force. Final commit/upstream/clean-tree/unchanged-main checks come from Git.
+[Review](docs/30-quality/PRE_PUSH_REVIEW_2026-10-19.md).
+
+
+Five-match senior increment,2026-10-19: explicit request implemented under
+ADR-0047 / REQ-033 / CR-034 / BL-068. BALANCED_WEEK_V6 raises SENIOR ceiling to five
+using existing pairwise kickoff-hour training/recovery/combined-briefing presets.
+Manual content/time/exclusion/deletion, history/completion/attendance and atomic
+conflict/fault guards remain. Six-or-more/same-day/sub24-hour contexts stay manual.
+Applied checkpoints remain valid; no migration/new endpoint/enrollment/academy changes.
+Backend62 suites/918 tests, focused48, PostgreSQL HTTP21, type/full lint/format,
+normal Nest/isolated builds pass. All21 five-match plus35 four-match combinations
+have no generated overlap and correct phase totals. Five-match time pins, phase/
+agenda/deletion, kickoff-hour changes, cross-Monday, concurrency and rollback pass.
+Fresh before-five-match-20261019.dump restored to ngcs_five_match_restore_test.
+Actual isolated UI shows19Oct16,20Oct16,22Oct16,23Oct18,25Oct16 (24/48/26/46h).
+Fifth save updates2/retires1/protects65. Recovery30/briefings15 and manual121min
+remain visible. Exact comparison preserves both121/103min plans/phases/exercises/
+day links, academy and32 other complete fixtures. Retained36 dates/41 enrollments
+unchanged;44-table snapshot identical before restart, only normal auth refresh
+and SESSION_REFRESHED audit additions differ afterward. API4000 dist/main.js
+serves V6 with DB URL in process environment; UI3132/ignored auth/tactical flags
+remain. Persistent reload verifies real Beşiktaş25Oct16. QA4014/3500/tab stopped
+after proof; private backup/copied DB remain. No reset/commit/push/production.
+Existing repo-owned CDSK is ADR-0046. Current profile47 ADRs and180-file links
+have zero errors; earlier library closing duplicate/missing-report warnings resolve.
+Use existing date dialog/fresh-week preview; never remove checkpoint/slot markers.
+[Evidence](docs/30-quality/FIVE_MATCH_PROGRAM_2026-10-19.md).
+
+
+Four-match senior increment,2026-10-19: explicit request implemented under
+ADR-0045 / REQ-032 / CR-033 / BL-067. BALANCED_WEEK_V5 raises the SENIOR ceiling to
+four, reusing pairwise actual-hour training/recovery/briefing presets. Runtime
+change is only template version/limit/fallback text. Manual content/time/exclusion/
+deletion and history/completion/attendance protections remain; conflicts roll
+back the whole date/program/checkpoint write. Five-or-more/same-day/sub24-hour
+contexts remain manual. Old applied checkpoints stay valid; no re-enrollment.
+Backend62 suites/913 tests, focused43, PostgreSQL HTTP19, type/full lint/format,
+normal Nest/isolated runtime builds pass. All35 four-match weekday combinations
+have no generated overlaps and valid phase sums; actual four-match preview/apply,
+time pins, phase/agenda/deletion, cross-Monday, concurrent retry and late-fault
+rollback pass. Existing two/three-match cases and academy profiles remain.
+Fresh before-four-match-20261019.dump restored to ngcs_four_match_restore_test.
+Actual isolated UI produces20Oct16,22Oct16,23Oct18,25Oct16 fixtures (48/26/46h).
+Fourth-match save updates5/adds2/retires2/protects65. Wednesday/Saturday recovery30
+and briefings15 appear; edited Tuesday121min stays on the new matchday. Exact
+comparison preserves both121/103min plans/phases/exercises/day links, academy and
+33 other fixtures. All36 retained fixture dates unchanged;44-table snapshot
+identical before restart, only normal auth refresh/session audits differ after.
+Canonical dist/main.js API4000 serves V5, with DB URL in process environment;
+frontend3132/ignored auth/tactical flags remain and persistent reload is verified.
+Real BJK still25Oct16. QA4014/3500/tab stopped after proof; backup/copied DB remain.
+QA legacy-memory auth can end on dev reload; valid screenshots are result-desktop
+and week-desktop under output/playwright/four-match. No migration/reset/commit/push.
+Use existing date dialog or fresh-week preview; never delete audit/slot markers.
+[Evidence](docs/30-quality/FOUR_MATCH_PROGRAM_2026-10-19.md).
+
+
+Exercise detail extension, 2026-10-19: `/app/library/:drillId` now uses the compact
+library/Matches language: text heading, semantic four-fact strip and one guide
+panel. Uygulama retains full purpose/description, numbered steps, equipment and
+exact-age coaching/rules; source/license/attribution stay in Kaynak. Saha explicitly
+mounts the existing readonly board, with normal content transfer unchanged.
+Mobile44px controls, two-action row, short facts and focus mode pass. Picker close
+returns focus to its add trigger. Reader retry/context-loading/error and keyed
+tab/dialog reset exclude previous resource results. Existing PLAYER, missing-age,
+publication and expected-version/scope attachment guards remain; no retained save,
+API/schema/dependency or flag change. No new ADR is needed for this UI slice.
+Full frontend509/509 (61 files), affected29/29, final detail11/11, type/lint/format,
+production build/Sites4 and whitespace pass; initial173-file Markdown passes. Actual
+1440/1024/390/320 QA includes steps, readonly pitch/focus, source, picker Escape/
+focus, no-variant and legacy. Earlier ADR-0043 missing-report links now resolve.
+Full root/CDSK acceptance is tracked separately under the newer repository-owned
+validator work above; this slice does not claim that entire gate. Preserve the
+existing local sessions, API4000/UI3132 and earlier retained attachments/program.
+Closing177-file doc scan finds6 concurrently added FOUR_MATCH_PROGRAM report links
+pending outside this slice. ADR-0045 is also duplicated between repository-owned
+CDSK and four-match microcycles; do not silently pick authority or renumber an
+accepted decision. UI/runtime verification is unaffected; these are open doc risks.
+Next: review the Uygulama/Saha/Kaynak flow on real team content; keep explicit plan
+selection/save and independent publication policy.
+[Evidence](docs/30-quality/LIBRARY_DETAIL_UX_2026-10-19.md).
+
+CDSK local-validator follow-up,2026-10-19: user explicitly authorized replacing
+the missing external dependency with a tracked project-contract implementation.
+Accepted ADR-0046 resolves ADR-0001's open portable model. Use the default
+`node scripts/validate-cdsk.mjs`; no sibling checkout/network/pip dependency.
+Python3.9+ is required; explicit CDSK_VALIDATOR overrides retain failure semantics.
+Profile r1 pins36 mandatory documents, manifest/version/Boot/Constitution/ADR/path
+checks. Do not claim upstream parity or human content/approval verification.
+Eight Node tooling tests include17 Python tests (16 pass/one Windows symlink
+privilege skip). Full root log: ignored
+`node_modules/.cache/ngcs-quality/cdsk-local-complete-20261019.log`: all17 stages
+pass, exit0; backend913/frontend509/Sites4/tooling8, CDSK36/46,178-file links and
+types/lint/format/builds/whitespace pass. Final parser/renumbering follow-up also
+passes8/8 tooling tests; BL-061 complete for the approved local profile.
+[Evidence](docs/30-quality/CDSK_LOCAL_VALIDATOR_2026-10-19.md).
+
+The temporary ADR-0045 collision mentioned by concurrent library-detail handoff
+was detected by the local validator and resolved: this task's new validator
+record is ADR-0046 with updated references; four-match ADR-0045 retains its ID and
+content. Current local validation passes36 documents/46 distinct ADRs and178-file
+links pass. Earlier missing-report/collision warnings below describe prior state.
+
+Three-match senior increment,2026-10-19: explicit request accepted ADR-0044 /
+REQ-031 / CR-032 / BL-066. BALANCED_WEEK_V4 raises SENIOR ceiling to three, reusing
+existing pairwise elapsed-hour presets for every consecutive gap. Only template
+version/limit/message changes in runtime; tests cover72/72,48/96,24/120-hour
+cycles and adjacent-week/final-match recovery. All manual content/time/exclusion/
+deletion and history/completion/attendance protections remain. Four-or-more,
+same-day/sub24-hour contexts remain manual; old applied checkpoints stay valid.
+Backend62 suites/908 tests, focused38, PostgreSQL HTTP17, type/full lint/format,
+normal Nest and isolated runtime builds pass. Triple cases verify actual apply,
+preview pins, phase/agenda/deletion protection, interval change, cross-Monday,
+concurrency, manual conflict and late-fault atomic rollback.
+Fresh before-three-match-20261019.dump restored to ngcs_three_match_restore_test.
+Actual isolated UI moves Rizespor to22Oct16 and Konyaspor to23Oct18, leaving BJK25Oct16;
+26/46-hour intervals show Saturday recovery30/briefing15. Third-match save updates5,
+retires1 and protects49 records. Exact comparison preserves edited121/103min plans,
+academy and34 other fixtures. Retained44-table snapshot unchanged before restart;
+all36 retained fixture dates stay. Normal refresh only changes auth session/audits.
+Canonical dist/main.js API4000 now serves V4, DB URL provided in process environment;
+frontend3132/auth/tactical flags unchanged and existing persistent reload verified.
+Real BJK remains25Oct16. QA4014/3500 and temporary tab stopped after proof; copied
+DB/private backup remain. No migration/new endpoint/enrollment/reset/commit/push.
+Use existing match-date dialog and empty-week preview; never delete audit markers.
+[Evidence](docs/30-quality/THREE_MATCH_PROGRAM_2026-10-19.md).
+
+
+Two-match senior microcycles,2026-10-19: explicit request implemented under
+ADR-0043 / REQ-030 / CR-031 / BL-065, superseding only the earlier two-match refusal.
+BALANCED_WEEK_V3 uses actual elapsed kickoff hours including adjacent weeks;
+compressed intervals up to120 hours have one physical session, combined briefing
+and afternoon rest. Normal seven-day cycles and academy profiles remain. Explicit
+preview time overrides now pin on apply; full manual edits/deletions/exclusions,
+history/completion/attendance and conflict/transaction guards remain. At that release three-or-more contexts were manual; ADR-0044 above
+subsequently adds three. Same-day/sub24-hour contexts remain manual. No migration.
+Backend904/focused34/PostgreSQL HTTP15/type/full lint/normal+quality builds pass.
+Fresh before-two-match-20261019.dump restored to ngcs_two_match_restore_test;
+actual isolated UI18→22 October makes two fixtures, updates8/creates7/retires5,
+protects33 records. Exact comparison preserves edited121/103min plans, academy and
+35 other fixtures. Retained44-table snapshot identical before runtime restart;
+all36 retained fixture dates unchanged. Normal refresh may update auth sessions.
+Canonical dist/main.js API4000 active with DATABASE_URL supplied in process env;
+ignored .env contains persistence/origin/tactical flags, not DB credentials.
+Frontend3132 and retained persistent login work; real Beşiktaş remains25Oct16:00.
+QA4014/3500 stopped after proof; restored DB/backup remain. No commit/push/reset.
+Use existing match-date dialog or fresh-week preview; never erase audit markers.
+[Evidence](docs/30-quality/TWO_MATCH_PROGRAM_2026-10-19.md).
+
+
+Windows root quality follow-up,2026-10-19: use `node scripts/quality-gate.mjs`
+or `--continue-on-error` to attempt all checks and retain a failing status. npm
+is pinned locally12.2.0 through the root lockfile; no global install. Fresh quality
+Prisma client/types and build go to ignored caches; keep the serving API/engine
+running. Original runtime generation and standalone build:check remain unchanged.
+Git text checkout LF plus Prettier EOL-auto prevents CRLF-only failures without
+mass rewrites. Socket tests isolate local persistence configuration and test both
+modes; history assertions preserved with cached undo/current remounted scene fields,
+mocked styling for state tests and15s default/60s large-history case budget.
+CDSK remains an external prerequisite: no local/accessible source for0.1.0
+validate_project.py was found or supplied. Do not stub it, skip it or claim the
+complete root gate passed. Python launcher/missing-validator paths are tested.
+Final root log is ignored `node_modules/.cache/ngcs-quality/windows-complete-20261019.log`.
+Complete result: 16/17 stages pass; 904 backend,498 frontend,4 Sites and6 tooling
+tests pass, both builds/type/lint/format and170-file links/whitespace pass.
+CDSK alone fails for the missing real validator; root exit1 is intentional.
+Runtime Prisma engine hash is unchanged. Obtain the original validator, configure
+CDSK_VALIDATOR, run its wrapper and then repeat the full gate; BL-061 stays partial.
+Closing documentation recheck passes172 files/zero broken links after concurrent
+three-match documentation was written; test counts describe the completed run.
+[Evidence](docs/30-quality/QUALITY_GATE_WINDOWS_2026-10-19.md).
+
+Exercise library extension, 2026-10-19: compact heading/native list replaces the
+photo and metric cards. One mounted search and one advanced-filter Sheet keep
+all server filtering/cursor/stale-scope behavior. Search query identity stays
+stable during debounce. Full summary disclosure, both pagers and separate preview/
+detail actions improve mobile inspection. Preview explicitly loads the selected
+record with response-resolved age; sticky Uygulama/Saha tabs mount only the
+readonly pitch. Fixed close/detail controls, exact-row focus return, legacy
+fallback and existing in-plan attachment guards remain. Actual1440/1024/390/320
+QA and29 affected tests pass; final full-suite/build results are recorded in the
+linked evidence. No retained save/attachment, API/schema/dependency or flag change.
+Final58 affected checks and type/lint/format/build/Sites4 pass. Initial167-file
+link scan passed; its final169-file scan found3 concurrent ADR-0043 report links
+pending at that time. The later exercise-detail173-file check resolves all three.
+The full run's history-test timeout exposed stale test DOM references; corrected
+live-form interaction now verifies55 edits/50 undos in a passing29-test board file.
+Existing role/publication/snapshot boundaries stay. No new ADR. Root Windows/CDSK
+gate remains BL-061. Preserve the separately restored persistent login and API4000/
+UI3132; no reset, migration, commit or push is part of this slice.
+Next: review the existing library preview/filter workflow before extending this
+same language to another separately requested screen.
+[Evidence](docs/30-quality/LIBRARY_UX_2026-10-19.md).
+
+Fixture-aware program updates, 2026-10-19: explicit subsequent request implemented;
+ADR-0042 supersedes the earlier manual-fixture-review limitation for enrolled
+SENIOR programs. Existing match-date update rechecks actor/scope under season lock,
+then reconciles old/new/adjacent weeks in one Serializable transaction. Immutable
+audit checkpoints track complete ownership fingerprints and protected tombstones.
+Manual edits/deletions/exclusions, past/completed/attendance and extra links stay;
+At the initial ADR-0042 release, two-match templates also rolled back.
+ADR-0043 above subsequently adds two-match support; ordinary conflicts still roll back.
+Analysis-only/same-date saves do not repeat planning. New SENIOR weekly applications
+enroll automatically; unknown legacy origins are never assumed automatic.
+Guarded local enrollment follows fresh before-fixture-sync-20261019.dump backup
+and ngcs_fixture_sync_restore_test rehearsal: 41 weeks, 631 owned/2 protected events,
+all 24415 original rows across 44 tables identical. Retained replay adds zero and
+preserves 24456 rows. Existing 36 retained fixture dates were not changed for testing.
+Restored UI 16-to-18 update moves 2 events; independent comparison preserves 2 edited
+events, 35 other fixtures and academy. Backend 896 / HTTP 13 / frontend 495, final
+focused 27/12, enrollment 1, builds/type/lint/format/Sites 4 and 1440/1024/390 QA pass.
+Canonical API 4000/frontend 3132 use existing ignored environment, including the
+separately configured persistent-session and tactical flags. No migration, reset,
+production, commit or push. QA 4014/3500 stopped; restored test data remains separate.
+Continuation found local services/Docker stopped. Docker Desktop was reopened;
+the original PostgreSQL volume has 2060 plans and all 41 automation checkpoints.
+Canonical API 4000 (dist/main.js) and frontend 3132 health were restored.
+Existing persistent login recovered after the interrupted development module was
+reloaded. Real Beşiktaş detail/date dialog verified at original16:00 without save;
+the match detail remains open. No retained fixture was moved for final UI checks.
+Next: Maçlar → maç detayı → Tarih ve saati düzenle. Preserve all checkpoint/request/
+slot audits; no automatic unpin. ADR-0043 subsequently extends two-match templates.
+Root Windows/CDSK tooling remains BL-061.
+[Evidence](docs/30-quality/FIXTURE_PROGRAM_SYNC_2026-10-19.md).
+
+Local session reactivation, 2026-10-19: preserve ignored backend
+`PERSISTENT_SESSIONS_ENABLED=true`/exact `FRONTEND_ORIGIN=http://localhost:3132`
+and frontend `.env.local` persistence=true/API4000 settings. This fixes the
+observed reload logout through existing ADR-0018 cookie/refresh/bootstrap, not
+Web Storage. Tactical V2 config, source changes and business data preserved;
+retained RefreshSession migration was already applied. User logged in normally;
+dashboard/library/103-minute-plan full reloads and new protected tab passed.
+Focused backend18/frontend20 and fresh `ngcs_session_refresh_test_20261019_1442`
+HTTP9 pass, all14 migrations only in the fresh test DB. Existing API replacement
+was not killed when its PID changed; enabled4000 CORS/refresh verified. Default
+env examples and production gates stay unchanged. Do not turn the local flags
+off during unrelated dev restarts. Root Windows/CDSK limits remain BL-061.
+[Evidence](docs/30-quality/SESSION_PERSISTENCE_LOCAL_2026-10-19.md).
+
+Final session follow-up: Docker/API briefly stopped during concurrent local
+development. Existing containers recovered; after database readiness, canonical
+API4000 restarted as managed exec5918/PID25272 with both persistence and tactical
+V2 enabled. Browser full reload recovered the103-minute plan without sign-in
+even after the new API signing secret. No Docker reset, volume/database recreation
+or business mutation. Final capture is `03-after-api-restart.png` in session QA.
+
+Training catalogue UI/UX, 2026-10-19: same Matches/detail language requested.
+Text heading/native register and full purpose disclosure replace hero/cards;
+mobile stacks rows with 44px actions and short horizontal five-statistic strip.
+Date/Today/reset use existing getTrainingDayPage, local midnight bounds and
+invalid-date error; no client-only filtering. Keyed reads reset cursors and reject
+stale responses while the input remains mounted. Upper/lower pagers share the
+existing hook. Scope, server summaries/order, edit/delete confirmation/focus and
+PLAYER remain. Actual 1440/1024/390/320 QA, full 491/491 in 59 files, final 33 focused,
+typecheck/lint/format/build/Sites 4 pass. No writes by this slice; retain other
+approved season/ready-drill work. No new ADR. Physical phone check remains useful.
+[Evidence](docs/30-quality/TRAININGS_LIST_UX_2026-10-19.md).
+
+Ready-drill responsive follow-up, 2026-10-19: retain real A Takım plan
+`cmvf 5l 7tf 11wv 2yo 4g 19mx 9w 6`, 19 May 2027 16:00, 103min/six entries. Tablet added
+senior-12 technical 26; mobile added senior-13 tactical 32. Do not repeat or reset.
+Bounded read-only persistence assertions preserve original four rows/notes/boards,
+source versions/age rows, linked day except duration 103/update timestamp, earlier
+desktop 121-minute plan and other 2059 TrainingPlan row hash. Shared responsive CSS,
+scrolling library filter Sheet and full selected-plan summary address measured
+touch-size/overflow/truncated-date issues. Focused 19/19 and typegen/tsc/lint/format
+pass; no new schema/API/auth/ADR change. Root gate still npm ENOENT,BL-061.
+Chrome control timed out; IAB used normal user sign-in. Memory-only sessions are
+lost by full reload; use SPA links in browser follow-up. Preserve concurrent UI
+and whole-season edits. [Evidence](docs/30-quality/READY_DRILL_RESPONSIVE_BROWSER_2026-10-19.md).
+
+Season program extension, 2026-10-19: explicit subsequent request covers the whole
+2026-2027 season, including past weeks. BALANCED_WEEK_V 2 clips partial weeks and
+uses fixture-free development/rest. Existing user edits and 10 applied team-weeks
+preserved. Guarded operator preflights 41 weeks, then atomically applies each of 40
+missing weeks; stable IDs/slot markers resume interruptions. Added 2009 plans / 8036
+phases, 504 meetings, 1026 rest entries. Final 2060 plans / 8242 phases (old six-phase
+edit retained), 3629 DayPlans / 410 WeekPlans and 36 identical matches. New private
+before-season-program-20261019.dump restored to ngcs_season_program_restore_test;
+all 1963 original rows across 44 tables preserved. Retained replay skips 410 slots,
+changes none of 24413 rows. Backend 893 / HTTP 8 / operator 4, build/type/lint/format
+pass; actual partial/end/break weeks and U 8/U 16 school-hour reads verified.
+No frontend/schema/migration/global publication/flags changed by this extension.
+Canonical API 4000 restarted (exec 10459), UI 3132 open on A Takım 26 October week.
+No commit/push requested. ADR-0040 extension/runbook/quality evidence updated.
+Root Windows/CDSK limitations remain BL-061. Saved plans require coach review if
+fixtures subsequently change; no background rescheduler. Next: edit populated
+example plans as needed; preserve slot markers rather than forcing reapplication.
+[Evidence](docs/30-quality/SEASON_CLUB_PROGRAM_2026-10-19.md).
+
+Training detail UI/UX, 2026-10-19: user requested the same Matches language and
+better mobile phases/board. Text heading, saved summary and shared tab panel
+replace the photo hero. Numbered phase buttons select full notes/frozen content;
+board entry and previous/next preserve lazy explicit reads and dirty guards.
+Mobile 44px controls/16px selects, panel-fitting board and existing focus/scenes
+verified at actual 390px; desktop 1440/tablet 1024 also pass. Focused 47/47,
+full frontend 479/479 (59 files), typecheck, scoped lint/format and build/Sites 4
+pass. The initial full run hit local memory limits; serial recovery passed. No retained data write; keep the separately approved attachments
+and weekly-program data. No new ADR or infrastructure change.
+[Evidence](docs/30-quality/TRAINING_DETAIL_UX_2026-10-19.md).
+
+2026-10-19 retained browser acceptance: user authorized actual existing-plan
+attachments. Plan `cmvf4syke000t2yx4u69iioue` (A Takım, 20 October 10:00) now has
+121 minutes / 6 entries, including starter senior-04 warm-up 20 and senior-06
+technical 26. These are retained real writes, not disposable fixtures; do not add
+them again or reset the plan. Linked day 121 / Tuesday 166 verified. Old four
+phase rows/notes/boards and other 50 plans unchanged. Actual UI preview/Escape,
+duplicate exclusion, saved instructions and board/reopening passed. Concurrent
+training UI changes temporarily interrupted Vite/login; recovered after the CSS
+file arrived, without reverting others' work. No new ADR/runtime change.
+[Evidence](docs/30-quality/READY_DRILL_RETAINED_BROWSER_2026-10-19.md).
+
+Tactical UI/UX, 2026-10-19: user requested Matches-style catalogue/editor and
+mobile pitch/scene improvements. Native scoped register, compact heading/back,
+view disclosure and shared grid replace catalogue imagery/metrics/sidebar.
+Properties follow playback/scenes in DOM; mobile starts collapsed, explicit
+preference survives viewport changes. Focus mode scrolls workspace/footer,
+shows the pitch and sits above navigation/below dialogs. No backend/schema/flag
+or saved record changed by this slice. Pilot playback, scene add/cancel/undo
+and view toggles return to saved state without Save. Full frontend 478/478,
+final affected 44/44, typecheck, scoped lint/format, build and Sites 4/4 pass.
+Desktop/tablet/mobile and combined visual QA pass. Chrome control/concurrent
+backend restart interrupted QA; user signed into IAB to finish. Other local
+publication/weekly data remains separate. Next: user review; physical touch
+validation remains open. [Evidence](docs/30-quality/TACTICS_UX_2026-10-19.md).
+
+Weekly club program,2026-10-19: user explicitly requested the complete plan.
+Implemented unified chronological paginated calendar/manual events, age-specific
+editable preview and atomic multi-team apply, preserving existing role/scope and
+training lifecycle. Request+season-week audit markers prevent replay/duplicate
+programs; stale schedules/overlaps fail without partial writes. Four real phases
+and original team-age CLUB exercises per physical plan; no global publication,
+accounts/grants, players, clinical data or measurement claims.
+Approved retained week19–25 October now has51 plans/204 phases,13 meetings and26
+rest entries (90 DayPlans/20 WeekPlans). Existing36 fixtures and14 protected-table
+full-row digests preserved against restored backup. Only the exact weekly enum
+migration applied after private backup/restore rehearsal; snapshot dependency had
+already been independently rolled out. Retained14/current, schema diff empty.
+Full890 backend/478 frontend/4 Sites pass; final targeted21 template/14 frontend
+and7 PostgreSQL HTTP pass; type/lint/build and actual responsive browser flow pass.
+Root Windows npm runner and external CDSK validator remain unavailable (BL-061).
+Standard Prisma generation hit the known Windows locked-DLL copy issue; current
+generated client/same-version engine passed all runtime/HTTP checks.
+Canonical API4000 rebuilt/restarted;3132 week open on A Takım. Temporary4013/3135
+QA services stopped. ADR-0040/CR-029/REQ-028/BL-063 and runbook/evidence updated.
+Other chats' ready-content publication/ADR-0041 and tactical activation are preserved;
+this task does not alter their approvals, flags or records. No commit/push requested.
+Next: user can add/edit events or preview/apply next week's program. Multi-match
+weeks remain manual; no automatic whole-season generation/resource allocation.
+[Evidence](docs/30-quality/WEEKLY_CLUB_PROGRAM_2026-10-19.md).
+
+Ready drill local rollout/publication, 2026-10-19: separate approvals executed.
+Retained `ngcs_local_session_dev` has 120 starter PUBLISHED versions;
+120 unique sources and 120 import audit events. Replay: 0 created / 120 skipped.
+Private backup/restore and 38-table business preservation verified; original
+two-scene CLUB V2 pilot unchanged. This operation applied no weekly migration;
+the separate weekly task subsequently applied it (retained migration count now 14) and added plans/phases/club drills/calendar rows. Preserve those additions.
+Final comparison confirms all 1,020 pre-publication rows match outside approved
+publication fields; all 120 source contents and catalog checks still pass.
+Existing compiled API/client already support the snapshot; no restart or flag
+change. Publication permission and Fatih Çelebigil's named all-120 approval are
+recorded; his account is also the import author. ADR-0041's one-package local
+exception was explicitly accepted and executed by maintenance CLI. Exactly 360
+transition audits record independentReview=false; runtime API guards unchanged.
+Maintenance tests 10/10, new private backup/restore, 43-table preservation and
+zero-write replay pass. Read-only compiled catalog/detail checks see all 120
+across supported ages; U8 remains empty. No retained browser login claim.
+Do not substitute synthetic approvals or create accounts/grants implicitly.
+[Publication evidence](docs/30-quality/READY_DRILL_LOCAL_PUBLICATION_2026-10-19.md).
+
+Controlled local tactical activation, 2026-10-19: user authorized the existing
+V2 write gate locally. Ignored `apps/backend/.env` sets the exact flag true;
+API 4000 runs compiled `dist/main.js` (no watch), UI 3132 remains available.
+At that activation the database had 12 applied migrations; the later separately
+approved ready-drill operation above brings it to 13. Private dump
+and restore rehearsal precede changes. Pilot drill `cmvf3z4jd00012yxw62fpw3zf`
+is synthetic, CLUB/A Takım, two scenes/5 seconds with one linear player move.
+No pre-existing board was converted. Tests: 119 backend, 64 frontend, 18
+dedicated HTTP pass. Rollback disables new writes while keeping V2 readers and
+legacy overwrite protection. Production/sporting pilot and real touch hardware
+remain open. See [activation evidence](docs/30-quality/TACTICAL_LOCAL_ROLLOUT_2026-10-19.md).
+
+Ready drill planning is repository-verified and local migration/import is now
+complete, including local publication through accepted ADR-0041. Future revisions
+and production must use the ordinary independent-review workflow.
+Do not treat disposable approvals as real review. See ADR-0039 and the latest
+ready-drill local rollout evidence above.
+
+Match detail UI/UX, 2026-10-19: user requested the selected Matches design
+language and mobile adaptation. Compact heading/back link, one saved-data strip,
+un-nested analysis/tactics panel, readable labels and mobile 44px controls
+replace the photo/metric-card/duplicate-summary layout. Same explicit analysis
+writes, scope keys, readonly roles, lazy token-bound board and dirty/conflict
+guards. Focused 27 tests plus build/4 Sites/scoped lint/format pass. Desktop,
+tablet and mobile analysis plus mobile pitch were inspected on the real route;
+analysis draft survived tabs and was cleared without saving. Concurrent HMR
+caused login resets; no retained record was edited. Full typecheck is currently
+blocked by `add-drill-to-plan-dialog.tsx` accessing nonexistent catalog `total`.
+Next: user reviews match detail; the separate drill work must close that gate.
+[Evidence](docs/30-quality/MATCH_DETAIL_UX_2026-10-19.md).
+
+Guided setup/branding, 2026-10-19: five-step /app/setup implemented with the
+existing white design system, logo and two-color live preview; staff optional,
+account invitations separate. SYSTEM_ADMIN-only atomic orchestration creates
+canonical/legacy club/season/team and account-free staff; actor-bound durable
+UUID replay/status survives reload/restart without new writes. See ADR-0037/0038
+Accepted, CR-027/REQ-026/BL-060. Exact nullable two-color migration applied after
+explicit user approval, private backup and successful restore rehearsal; retained
+12-migration state preserves 1 club, 10 teams, 30 staff and 36 matches unchanged.
+Dedicated HTTP 6, DTO 16, wizard/branding 17 and final full frontend 465 tests
+pass; backend full 859 passed before concurrent plan changes. Browser QA uses
+separate test DB/ports; canonical /app/setup left ready with no duplicate club.
+Workspace type/lint/build evidence and Windows root quality/CDSK limitations
+are recorded in the [verification](docs/30-quality/CLUB_SETUP_WIZARD_2026-10-19.md).
+Other active work owns plan contentSnapshot/ADR-0039 and its pending migration;
+this task does not authorize/deploy it. No commit/push or production rollout.
+Next: user reviews wizard; existing-club branding edit and general staff/account
+linking remain separate increments, BL-061 tooling portability remains open.
+
+Matches UX, 2026-10-19: user selected the third generated concept and requested
+mobile adaptation. Implemented compact fixture table, persistent inline date
+toolbar, responsive stacked rows and native note disclosure. API values,
+synthetic labels, exact-day bounds, full totals, scope guards and cursor/retry
+remain. Focused 14 tests, typecheck, scoped lint/format, build and 4 Sites tests
+pass; full frontend run 464 passed/one tactical undo timeout, isolated rerun
+passes. Chrome desktop/tablet/mobile checks passed after user restored login.
+No API/schema/data/dependency change. External CDSK validator absent locally.
+Next: user review of the responsive Matches screen; shared club-setup/branding
+changes belong to the separate concurrent work. [Evidence](docs/30-quality/MATCHES_UX_EXPLORATION_2026-10-19.md).
+
+Latest, 2026-10-19: user approved Spor Manage local setup, sourced 2026-2027
+season bounds, U8–U16, sample fixtures and example staff. Guarded script applied
+one club/ClubSeason, ten teams/legacy groups/seasons, thirty account-independent
+staff assignments and thirty-six explicit sample senior matches. Real browser
+shows correct workspace, nine academy teams and three U8 staff. Dedicated
+PostgreSQL tests cover dry-run/no writes, complete setup/parity, unchanged replay
+and late-conflict rollback; retained replay returned no creates. No access grants,
+invitations, players, migration, flags or production change. Source/evidence and
+runbook updated. At this fixture stage the product wizard was Proposed; its
+subsequent approval and implementation are recorded in the latest entry above.
+
+Windows startup, 2026-10-19: `33442ff` checked out on
+`codex/mvp-stabilization`; main unchanged. User explicitly approved an empty
+local database and first administrator bootstrap. Container `ngcs-postgres`,
+volume `ngcs_windows_pgdata`, database `ngcs_local_session_dev`, loopback port
+5433 are specific to this computer, not a restore of the other computer.
+All 11 migrations applied, status current and live-schema diff empty; one
+ACTIVE SYSTEM_ADMIN, no club/season/team seed. Password delivered only in chat.
+Lockfile installs, Prisma generation, backend compilation (zero errors), HTTP
+200 and browser login/dashboard smoke passed. Servers run in development on
+3132/4000; persistent sessions and tactical V2 writes remain disabled. No code,
+dependency, lockfile, ADR, production, commit or push change. Full quality was
+not repeated for this startup; the external CDSK validator is absent locally.
+Next: user signs in and chooses initial club/season/team setup or supplies a
+backup if previous working data is required. See runbook for Windows commands.
 
 Publication preparation: accumulated approved work is being committed/pushed on
 `codex/mvp-stabilization` at the user's request (2026-10-19). Confirm the final
@@ -1615,6 +2338,43 @@ Do not mark roster binding, animation, offline match-day or 3D complete.
   rollout kendi karar kapılarında `TBD` kalır.
 
 ## Revision History
+
+2.126 — 2026-10-19: Approved fixture-aware SENIOR updates and manual-edit/deletion
+protection delivered; retained checkpoint enrollment, rollback/replay, backend/HTTP/
+frontend/operator and responsive QA verified. No new schema or retained fixture edit.
+
+2.122 — 2026-10-19: Approved whole-season program applied across 41 weeks / ten
+teams, adding 2009 sessions / 504 meetings / 1026 rest entries. Restored rehearsal,
+all-original-row preservation, durable replay and backend/HTTP/operator checks pass.
+
+2.120 — 2026-10-19: Actual retained A Takım library/existing-plan browser flow
+passes; two authorized attachments retained, 121 minutes / 6 entries with correct
+snapshots/day totals and preserved existing/other records. Reopening verified.
+
+2.118 —2026-10-19: Approved weekly program implemented and populated for all
+ten teams. Exact audit migration/backup restore,51 plans/204 phases/13 meetings/
+26 rest rows, durable replay and preserved fixtures verified; quality/UI evidence recorded.
+
+2.117 — 2026-10-19: Explicitly accepted ADR-0041 local same-account exception;
+all 120 published with truthful transition audits. Maintenance tests 10/10,
+private backup/restore, 43-table preservation and zero-write replay verified.
+
+2.116 — 2026-10-19: Separately approved local snapshot migration and all-120
+DRAFT import completed; backup/restore, 38-table preservation and zero-duplicate
+replay verified. Publication/Fatih Çelebigil review approval recorded; same-account
+guard remains, local exception ADR-0041 Proposed.
+
+2.112 — 2026-10-19: Approved five-step club wizard, optional staff, logo/colors
+and derived theme implemented; separately approved branding migration applied
+with backup/restore and preserved retained data. Durable replay/API/browser QA
+verified; Windows root-quality/validator limitations recorded as BL-061.
+
+2.109 — 2026-10-19: Approved Spor Manage local club/season/teams/example-staff
+and sample-fixture setup verified; first-run product wizard recorded as Proposed.
+
+2.108 — 2026-10-19: Approved fresh Windows local database, 11 migrations,
+first administrator and verified development startup; previous-machine data
+was not transferred.
 
 2.90 — 2026-09-09: A Takım route'u doğrudan kadro merkezine geçirildi; ortak
 responsive oyuncu dizini, URL filtre/sıra, deterministik cursor ve self-scope

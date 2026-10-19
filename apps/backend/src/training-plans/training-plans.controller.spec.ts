@@ -68,7 +68,11 @@ describe('TrainingPlansController replace-drills boundary', () => {
     await expect(
       controller.replaceDrills({ user: principal }, 'plan-a', { drills }),
     ).resolves.toEqual({ id: 'plan-a' });
-    expect(plans.replaceDrills).toHaveBeenCalledWith('plan-a', drills);
+    expect(plans.replaceDrills).toHaveBeenCalledWith(
+      'plan-a',
+      drills,
+      principal,
+    );
     expect(authorization.assertDrillView).toHaveBeenCalledTimes(length ? 1 : 0);
   });
 
@@ -81,7 +85,11 @@ describe('TrainingPlansController replace-drills boundary', () => {
       }),
     );
     await controller.replaceDrills({ user: principal }, 'plan-a', { drills });
-    expect(plans.replaceDrills).toHaveBeenCalledWith('plan-a', drills);
+    expect(plans.replaceDrills).toHaveBeenCalledWith(
+      'plan-a',
+      drills,
+      principal,
+    );
     for (const drill of drills)
       expect(authorization.assertDrillView).toHaveBeenCalledWith(
         principal,

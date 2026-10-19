@@ -1,25 +1,109 @@
-import { useCallback, useState } from 'react';
-import { getDrillPage, type DrillCatalogItem } from '../lib/api';
+import { useCallback, useRef, useState } from 'react';
+import {
+  getDrillPage,
+  getFilteredDrillPage,
+  type DrillCatalogItem,
+  type DrillPhase,
+  type DrillCatalogFilters,
+} from '../lib/api';
 import { useAssignmentPage } from '../lib/use-assignment-page';
 import { Button } from './ui/button';
+import { NativeSelect } from './ui/native-select';
+import {
+  DrillCatalogFilterFields,
+  useDrillCatalogFilters,
+  drillPhases,
+  supportedDrillAges,
+} from './drill-catalog-filters';
+import { DrillPreview } from './drill-preview';
 
 export function PlanDrillPicker({
   groupId,
   attachedIds,
   onAdd,
+  ageGroup,
 }: {
   groupId: string;
   attachedIds: string[];
   onAdd: (drill: DrillCatalogItem) => Promise<void>;
+  ageGroup?: string;
+}) {
+  const { draft, setDraft, filters } = useDrillCatalogFilters();
+  const [phase, setPhase] = useState<DrillPhase>();
+  return (
+    <div className="plan-drill-catalog">
+      <details>
+        <summary>Hazır egzersizleri filtrele</summary>
+        <DrillCatalogFilterFields
+          value={draft}
+          onChange={setDraft}
+          allowAge={false}
+        />
+      </details>
+      <label className="grid gap-2 py-2 text-sm">
+        Egzersiz fazı
+        <NativeSelect
+          aria-label="Egzersiz fazı"
+          value={phase ?? ''}
+          onChange={(e) =>
+            setPhase((e.target.value || undefined) as DrillPhase | undefined)
+          }
+        >
+          <option value="">Tüm fazlar</option>
+          {drillPhases.map((item) => (
+            <option key={item.value} value={item.value}>
+              {item.label}
+            </option>
+          ))}
+        </NativeSelect>
+      </label>
+      {ageGroup && !supportedDrillAges.includes(ageGroup) && (
+        <p>
+          NGCS başlangıç paketinde {ageGroup} uyarlaması bulunmuyor. Yayınlanmış
+          uygun kulüp egzersizleri varsa aşağıda görünür.
+        </p>
+      )}
+      <PlanDrillChoices
+        key={JSON.stringify([groupId, phase, filters])}
+        groupId={groupId}
+        attachedIds={attachedIds}
+        onAdd={onAdd}
+        phase={phase}
+        filters={filters}
+        ageGroup={ageGroup}
+      />
+    </div>
+  );
+}
+
+function PlanDrillChoices({
+  groupId,
+  attachedIds,
+  onAdd,
+  phase,
+  filters,
+  ageGroup,
+}: {
+  groupId: string;
+  attachedIds: string[];
+  onAdd: (drill: DrillCatalogItem) => Promise<void>;
+  phase?: DrillPhase;
+  filters: DrillCatalogFilters;
+  ageGroup?: string;
 }) {
   const load = useCallback(
-    (after?: string) => getDrillPage(groupId, undefined, after),
-    [groupId],
+    (after?: string) =>
+      Object.values(filters).some(Boolean)
+        ? getFilteredDrillPage(groupId, phase, filters, after)
+        : getDrillPage(groupId, phase, after),
+    [groupId, phase, filters],
   );
   const page = useAssignmentPage(load);
   const [selected, setSelected] = useState<DrillCatalogItem>();
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+  const [preview, setPreview] = useState<string>();
+  const writing = useRef(false);
   const rows = (page.data?.items ?? []).filter(
     (row) => !attachedIds.includes(row.id),
   );
@@ -30,7 +114,8 @@ export function PlanDrillPicker({
       ? [choice, ...rows]
       : rows;
   async function add() {
-    if (!choice || saving) return;
+    if (!choice || writing.current) return;
+    writing.current = true;
     setSaving(true);
     setError('');
     try {
@@ -39,6 +124,7 @@ export function PlanDrillPicker({
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'Egzersiz eklenemedi.');
     } finally {
+      writing.current = false;
       setSaving(false);
     }
   }
@@ -78,6 +164,44 @@ export function PlanDrillPicker({
         </Button>
       </div>
       {error && <p role="alert">{error}</p>}
+      {choice && (
+        <article
+          className="drill-choice-summary"
+          aria-label="Seçilen egzersiz özeti"
+        >
+          <strong>{choice.title}</strong>
+          <p>
+            {choice.summary ||
+              choice.equipment ||
+              'Uygulamayı önizlemeden inceleyin.'}
+          </p>
+          <p>
+            {choice.ageGroup} · {choice.durationMin} dk
+            {choice.playerMin && choice.playerMax
+              ? ` · ${choice.playerMin}–${choice.playerMax} oyuncu`
+              : ''}
+            {choice.areaLengthM && choice.areaWidthM
+              ? ` · ${choice.areaLengthM}×${choice.areaWidthM} m`
+              : ''}
+          </p>
+          <Button
+            type="button"
+            variant="outline"
+            disabled={saving}
+            onClick={() => setPreview(choice.id)}
+          >
+            Uygulamayı ve sahayı incele
+          </Button>
+        </article>
+      )}
+      {preview && (
+        <DrillPreview
+          key={preview}
+          drillId={preview}
+          ageGroup={ageGroup}
+          onClose={() => setPreview(undefined)}
+        />
+      )}
       {page.loading ? (
         <p role="status">Egzersiz seçenekleri yükleniyor…</p>
       ) : page.error ? (

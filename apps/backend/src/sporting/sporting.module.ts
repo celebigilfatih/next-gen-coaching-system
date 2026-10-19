@@ -8,6 +8,8 @@ import { SportingTeamLifecycleService } from './team-lifecycle.service';
 import { TeamLifecycleController } from './team-lifecycle.controller';
 import { PlayerNoteController } from './player-note.controller';
 import { PlayerNoteService } from './player-note.service';
+import { ClubSetupController } from './club-setup.controller';
+import { ClubSetupService } from './club-setup.service';
 
 @Module({
   imports: [PrismaModule],
@@ -16,12 +18,14 @@ import { PlayerNoteService } from './player-note.service';
     WorkspaceCatalogController,
     TeamLifecycleController,
     PlayerNoteController,
+    ClubSetupController,
   ],
   providers: [
     SportingService,
     WorkspaceCatalogService,
     SportingTeamLifecycleService,
     PlayerNoteService,
+    ClubSetupService,
   ],
   exports: [SportingService],
 })

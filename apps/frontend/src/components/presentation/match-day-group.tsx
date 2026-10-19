@@ -1,8 +1,8 @@
 import {
   ArrowRight,
+  CaretDown,
   MapPin,
   ShieldChevron,
-  SoccerBall,
   Strategy,
 } from '@phosphor-icons/react';
 import { Link } from 'react-router';
@@ -19,13 +19,7 @@ type MatchDayGroupProps = {
 function locationLabel(value: string) {
   if (value === 'HOME') return 'İç saha';
   if (value === 'AWAY') return 'Deplasman';
-  return value || 'Konum TBD';
-}
-
-function dayLabel(value: string) {
-  return new Intl.DateTimeFormat('tr-TR', {
-    dateStyle: 'full',
-  }).format(new Date(`${value}T12:00:00`));
+  return value || 'Saha belirtilmedi';
 }
 
 export function MatchDayGroup({
@@ -33,55 +27,80 @@ export function MatchDayGroup({
   matches,
   teamName,
 }: MatchDayGroupProps) {
-  const titleId = `match-day-${dateKey}`;
+  const day = new Date(`${dateKey}T12:00:00`);
+  const dateLabel = new Intl.DateTimeFormat('tr-TR', {
+    dateStyle: 'long',
+  }).format(day);
+  const weekday = new Intl.DateTimeFormat('tr-TR', { weekday: 'long' }).format(
+    day,
+  );
+
   return (
-    <section className="match-day-group" aria-labelledby={titleId}>
-      <header className="match-day-group__header">
-        <h2 id={titleId}>{dayLabel(dateKey)}</h2>
-        <span>{matches.length} maç</span>
-      </header>
-      <div className="match-day-group__rows">
-        {matches.map((match) => {
-          const home = match.location === 'AWAY' ? match.opponent : teamName;
-          const away = match.location === 'AWAY' ? teamName : match.opponent;
-          return (
-            <article className="match-reference-row" key={match.id}>
+    <tbody className="match-day-group" aria-label={`${dateLabel} ${weekday}`}>
+      {matches.map((match) => {
+        const home = match.location === 'AWAY' ? match.opponent : teamName;
+        const away = match.location === 'AWAY' ? teamName : match.opponent;
+        return (
+          <tr className="match-reference-row" key={match.id}>
+            <th scope="row" className="match-reference-row__date">
+              <time dateTime={dateKey}>{dateLabel}</time>
+              <span>{weekday}</span>
+            </th>
+            <td className="match-reference-row__time">
               <time dateTime={match.date}>
                 {new Intl.DateTimeFormat('tr-TR', {
                   hour: '2-digit',
                   minute: '2-digit',
                 }).format(new Date(match.date))}
               </time>
-              <Badge variant="secondary">
-                {match.competition || 'Müsabaka TBD'}
-              </Badge>
-              <div className="match-reference-row__fixture-copy">
-                <div className="match-reference-row__fixture">
-                  <span>
-                    <ShieldChevron weight="duotone" aria-hidden="true" />
-                    <strong>{home}</strong>
-                  </span>
-                  <b>{match.result || 'VS'}</b>
-                  <span>
-                    <SoccerBall weight="duotone" aria-hidden="true" />
-                    <strong>{away}</strong>
-                  </span>
-                </div>
-                <small>{match.notes || 'Koç notu eklenmedi.'}</small>
-              </div>
-              <div className="match-reference-row__meta">
+            </td>
+            <td className="match-reference-row__fixture-copy">
+              <div className="match-reference-row__fixture">
                 <span>
-                  <MapPin aria-hidden="true" />
-                  {locationLabel(match.location)}
+                  <ShieldChevron weight="duotone" aria-hidden="true" />
+                  <strong>{home}</strong>
                 </span>
+                <b>{match.result || 'VS'}</b>
+                <span>
+                  <ShieldChevron weight="duotone" aria-hidden="true" />
+                  <strong>{away}</strong>
+                </span>
+              </div>
+              <p className="match-reference-row__competition">
+                {match.competition || 'Müsabaka belirtilmedi'}
+              </p>
+              {match.notes ? (
+                <details className="match-reference-row__notes">
+                  <summary aria-label={`${match.opponent} maçı koç notu`}>
+                    <span>{match.notes}</span>
+                    <CaretDown aria-hidden="true" />
+                  </summary>
+                  <p>{match.notes}</p>
+                </details>
+              ) : (
+                <p className="match-reference-row__no-note">
+                  Koç notu eklenmedi.
+                </p>
+              )}
+            </td>
+            <td className="match-reference-row__venue">
+              <span>
+                <MapPin aria-hidden="true" />
+                {locationLabel(match.location)}
+              </span>
+            </td>
+            <td className="match-reference-row__preparation">
+              <div>
                 <span>
                   <Strategy aria-hidden="true" />
-                  {match.ourFormation || 'Diziliş TBD'}
+                  {match.ourFormation || 'Diziliş belirtilmedi'}
                 </span>
                 <Badge variant={match.hasBoard ? 'default' : 'outline'}>
                   {match.hasBoard ? 'Tahta hazır' : 'Tahta yok'}
                 </Badge>
               </div>
+            </td>
+            <td className="match-reference-row__action">
               <Button asChild variant="outline" size="sm">
                 <Link
                   to={`/app/matches/${match.id}`}
@@ -90,10 +109,10 @@ export function MatchDayGroup({
                   Detay <ArrowRight aria-hidden="true" />
                 </Link>
               </Button>
-            </article>
-          );
-        })}
-      </div>
-    </section>
+            </td>
+          </tr>
+        );
+      })}
+    </tbody>
   );
 }

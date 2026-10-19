@@ -1,5 +1,228 @@
 # NGCS visual QA — BL-048 reference migration (2026-09-08)
 
+## Exercise detail extension — 2026-10-19
+
+final result: passed
+
+Source: `apps/frontend/qa/library-ux-2026-10-19/17-desktop-final.png`.
+Result: `apps/frontend/qa/library-detail-ux-2026-10-19/15-desktop-final.png`.
+Both1425×990 inputs were opened in `comparison-style.png` at equal800px widths,
+preserving aspect ratio. Compact Inter heading, white summary/panel, thin borders
+and explicit blue actions adapt the approved language to a longer detail title.
+
+Actual1440/1024/390/320 QA passes. Full numbered steps, equipment and exact-age
+rules are readable; Saha mounts the existing readonly pitch, including working
+mobile focus entry/exit. Kaynak retains license/attribution and safety. Source
+request behavior is unchanged; deferred mounting is not a new lazy board fetch.
+
+P2 corrections: initial mobile stacked actions/2×2 facts put tabs below the first
+viewport (`04-mobile-overview.png`). Final action row/four-fact strip and summary
+disclosure inside Uygulama bring controls forward (`05-mobile-overview-final.png`).
+The duplicate panel title remains accessible while visually hidden on mobile.
+Picker Escape previously left focus on body; it now returns to the exact add
+button. At390 and320 client/scroll widths are375/375 and305/305. Actions are
+167.5×44 and132.5×44; every tab is44px high. Full steps appear in
+`09-mobile-steps.png`, mobile focus in `06-mobile-pitch-focus.png`.
+
+No actionable P0/P1/P2 remains. Full frontend509/509, affected29/29, final detail
+11/11 and type/lint/format/build/Sites4 pass. No retained write was submitted.
+Physical-device certification remains outside this local Chromium check.
+[Report](docs/30-quality/LIBRARY_DETAIL_UX_2026-10-19.md).
+
+## Exercise library extension — 2026-10-19
+
+final result: passed
+
+Source: approved training register
+`apps/frontend/qa/trainings-list-ux-2026-10-19/11-desktop-final.png` (1425×990).
+Result: `apps/frontend/qa/library-ux-2026-10-19/17-desktop-final.png` (1425×990).
+Both were opened in `comparison-style.png` at equal800px widths, preserving
+aspect ratio. This intentionally adapts the same compact Inter heading, white
+register, thin borders and explicit blue actions to exercise data.
+
+Actual1440×1000/1024×900/390×844/320×844 checks pass. Mobile uses a scrolling
+source/phase row, one search, a scrolling filter body/fixed result button, native
+full descriptions and44px preview/detail actions. Preview separates Uygulama/Saha,
+keeps footer actions visible, supports readonly focus mode and returns row focus.
+
+P2 refinements: removed duplicate mobile panel introduction and collapsed full
+summaries into native disclosure to shorten browsing. Moved the long preview
+summary into Uygulama so Saha starts near the pitch; sticky tabs and fixed footer
+avoid long navigation scrolls. The preview heading also removes the inherited
+double right-padding while reserving room for its44px close action.
+Route-scoped minimum width avoids inherited320px
+overflow: page client/scroll widths375/375 at390 and305/305 at320. Actions are
+151.5×44 and116.5×44. Narrow filter fields are44px high/16px type and panel widths
+282/282. No actionable P0/P1/P2 remains. Desktop/tablet retain native aligned rows.
+
+Evidence includes `16-tablet-final.png`, `11-mobile-final.png`,
+`21-mobile-preview-final.png`, `08-mobile-focus.png`, `19-narrow-filters.png` and
+`20-narrow-final.png`. Actual combined filters, empty/reset, lower next/previous,
+legacy fallback, full description, Escape/focus and correct detail transition pass.
+No retained save/attachment was submitted. Physical-device certification is outside
+the local Chromium check. Final automated results are in the
+[report](docs/30-quality/LIBRARY_UX_2026-10-19.md).
+
+## Training catalogue extension — 2026-10-19
+
+final result: passed
+
+Source: existing Matches register
+`apps/frontend/qa/matches-ux-2026-10-19/07-desktop-final.png` (1457×1047).
+Implementation: `apps/frontend/qa/trainings-list-ux-2026-10-19/11-desktop-final.png`
+(1425×990). Both were opened in `comparison-style.png`, at equal 800px widths
+with preserved aspect ratio. This is intentional cross-page adaptation:
+compact Inter heading, white native register, thin borders, date controls and
+blue explicit actions. Different statistics and row content are intentional.
+
+Desktop CSS 1440×1000 and tablet 1024×900 retain native table rows; mobile 390×844
+stacks them with full purpose disclosure and 44px actions. Final evidence:
+`11-desktop-final.png`, `09-tablet-list.png`, `07-mobile-plan-final.png`,
+`08-mobile-detail-transition.png`, `14-mobile-empty-date.png`.
+
+P2 corrections: initial mobile 2/2/1 statistics pushed plans too far below the
+filter (`04-mobile-overview.png`); a short internal horizontal strip now leads
+with count/duration (`05-mobile-overview-final.png`). At CSS 320×844, inherited
+html/body 320px minimums caused 15px page overflow (`12-narrow-mobile.png`).
+Route-scoped minimum override and smaller action padding fix it; final
+`13-narrow-mobile-final.png` has equal 305px content/scroll widths and 89.5×44px
+detail/edit targets. Normal 390px view has equal 375px widths and 124.5×44px targets.
+Bottom pager ends 737.2px above navigation starting 774px. No actionableP0/P1/P2
+remains. Other routes retain their minimum-width rules.
+
+Actual Today/day-empty/reset, lower next/previous page, full purpose, correct
+mobile detail, edit/Escape and delete Cancel/focus return passed without writes.
+Full frontend 491/491 (59 files), focused 33/33, typecheck, scoped lint/format,
+production build and Sites 4/4 pass. Physical-device certification is outside
+this local Chromium check.
+[Report](docs/30-quality/TRAININGS_LIST_UX_2026-10-19.md).
+
+## Training detail extension — 2026-10-19
+
+final result: passed
+
+Source: existing Matches detail `qa/match-detail-ux-2026-10-19/08-desktop-analysis.png`.
+Implementation: `apps/frontend/qa/training-detail-ux-2026-10-19/`.
+`comparison-style.png` combines the source (1472×1047) and training detail
+(1425×1085) at equal 800px widths, preserving aspect ratio. Both inputs were
+opened together. This is intentional cross-page adaptation: compact Inter
+heading/back link, one saved-data strip, white panel, thin borders, blue actions.
+
+Desktop `02-desktop-flow.png` at CSS 1440×1000; tablet `12-tablet-final.png`
+at 1024×900; mobile `10-mobile-phases.png`, `09-mobile-phase-picker.png`,
+`05-mobile-focus.png` and `07-mobile-scene-fields.png` at 390×844. Mobile
+`mobile-preview.png` combines the phase list and picker at native capture sizes.
+
+P2 corrections during QA: embedded board inherited −16px margins outside the
+new panel; route-scoped zero margins now fit x=17…358 in 375px content width.
+The initial tablet stack put selected instructions too far below phases; the
+stack breakpoint is now 900px, retaining two columns at 1024px. Post-fix
+measurements/captures show no horizontal page overflow, 88px phase rows,
+44px navigation/scene actions and 16px scene inputs. No P0/P1/P2 remains.
+
+Actual phase selection, explicit board open, mobile focus mode, temporary
+formation/animation/two scenes, full playback, dirty cancel/discard, attendance
+empty roster and edit/Escape focus return passed. No retained write was made.
+Frozen instructions, lazy reads, first-save undo, identity/tokens and PLAYER
+access remain covered by the 47 focused tests. Typecheck, scoped lint/format,
+build and Sites 4/4 pass. Full frontend 479/479 in 59 files passed on the
+serial recovery run; the linked report records the initial resource failure.
+[Report](docs/30-quality/TRAINING_DETAIL_UX_2026-10-19.md).
+
+## Tactical workspace extension — 2026-10-19
+
+final result: passed
+
+Source visual truth: existing Matches detail
+`apps/frontend/qa/match-detail-ux-2026-10-19/08-desktop-analysis.png` and the
+selected Matches language. Implementation evidence lives in
+`apps/frontend/qa/tactics-ux-2026-10-19/`.
+
+Full-view comparison: `comparison-style.png`; focused heading/panel comparison:
+`comparison-heading.png`. Both source and final implementation were opened
+in these combined inputs. This is explicit cross-page style adaptation:
+different content/workflow is intentional, rather than an identical-frame claim.
+Reference 1472×1047 pixels; final editor full-page 1425×1587 pixels at CSS
+1440×1000. Equal 800px comparison widths preserve aspect ratio. Inter hierarchy,
+white panels, thin borders and blue actions match; pitch art remains unchanged.
+
+Comparison history:
+
+- P2, initial `02-editor-desktop.png`: legacy CSS won the header cascade,
+  leaving small/right-aligned text. Scoped route selectors fix the heading.
+  Post-fix `09-editor-desktop-final.png`, full and focused combined comparisons
+  show the correct left-aligned 40px desktop hierarchy.
+- P1/P2, `05-mobile-focus.png`: grid compression overlapped the pitch and
+  application navigation covered the expanded editor. Intrinsic grid rows,
+  scrolling workspace/footer and layer 45 (below dialogs/above navigation)
+  fix both. `comparison-focus-fix.png` shows before/after at the same native
+  390×844 expanded/static/first-scene state. `06-mobile-focus-fixed.png` shows
+  the entire pitch; `07-mobile-scenes.png` shows accessible scene controls.
+
+Final catalogue captures: `08-catalog-desktop-final.png` / `11-catalog-mobile.png`.
+Tablet: `10-editor-tablet.png`, CSS 1024×900. Mobile: CSS 390×844. Native
+scrollbar accounts for 15px page-width differences outside focus mode.
+No page-level horizontal overflow or actionable P0/P1/P2 finding remains.
+
+Actual interactions: four-page 93-item catalogue, board opening, full five-second
+playback, static return, temporary scene add, delete cancel, Undo and view toggles.
+Saved state restored without Save. Commands/scene arrows meet 44px; scene fields
+use 16px text. Optional mobile inspector leaves playback/scenes close to pitch.
+Final IAB warning/error capture is empty. Viewport reset in IAB; Chrome control
+was unavailable at cleanup. Physical touch/landscape and formal accessibility
+remain unclaimed. See the [verification report](docs/30-quality/TACTICS_UX_2026-10-19.md).
+
+
+## Match detail language extension — 2026-10-19
+
+final result: passed
+
+Scope: the user's explicit request to extend the selected Matches language to
+detail and mobile. Compared the saved third catalogue concept and the rendered
+detail together in [one input](apps/frontend/qa/match-detail-ux-2026-10-19/comparison-style.png).
+This is cross-page design consistency, not an identical-content/pixel overlay.
+Compact Inter heading, white panel, thin dividers, blue actions and readable
+forms align with that direction. The old photo, metric-card row and repeated
+facts sidebar are removed. No actionable P0/P1/P2 presentation finding remains
+in desktop analysis, tablet or mobile analysis/pitch states.
+
+Mobile fields stack, use 16px text, and back/tab/save controls meet 44px height.
+The bottom save action clears fixed navigation. Existing draft/readonly/lazy
+board/conflict behavior passes targeted tests. Browser notes and evidence,
+including the independent add-drill typecheck blocker and rejected later board
+capture, are in the [verification report](docs/30-quality/MATCH_DETAIL_UX_2026-10-19.md).
+Visual pass does not claim a passing full repository quality gate.
+
+## Matches fixture register — 2026-10-19
+
+final result: passed
+
+The user selected the third generated concept and requested mobile adaptation.
+The actual authenticated route/API was compared with the saved concept in one
+combined image. The initial review found unnecessarily tall rows and wrapped
+preparation data; reduced padding and a wider preparation column resolve those
+findings in the final comparison. No outstanding component P0/P1/P2 finding at
+desktop, 1024×900 tablet or 390×844 mobile.
+
+The generated reference is 1487×1058. Browser viewport overrides and native
+captures include classic-scrollbar/capture-size differences; the combined image
+keeps both originals at their native sizes. This is a hierarchy/layout review,
+not a pixel-perfect overlay claim. Real notes/competition, fixture pairings,
+existing shell branding/search and the actual 25-row pager intentionally replace
+illustrative content. The same native table becomes stacked tablet/mobile rows;
+mobile date/reset, note and Detail targets are at least 44px high.
+
+Verified filter/empty/reset, full keyboard note disclosure, 25/11 pagination,
+pager clearance above fixed navigation and detail/back navigation. Console
+warning/error capture is empty. Formal accessibility and physical touch are
+unclaimed. P3 follow-up: the existing shared shell's minimum body width has a
+classic-scrollbar edge case at 320px; fixture contents fit, but full-app 320px
+compliance is not claimed.
+
+[Comparison](apps/frontend/qa/matches-ux-2026-10-19/comparison-final.png),
+[mobile](apps/frontend/qa/matches-ux-2026-10-19/09-mobile-final.png),
+[verification and test limits](docs/30-quality/MATCHES_UX_EXPLORATION_2026-10-19.md).
+
 ## Training tactical integration — 2026-09-26
 
 Actual TrainingDetailRoute/Konva with isolated synthetic workspace/session and

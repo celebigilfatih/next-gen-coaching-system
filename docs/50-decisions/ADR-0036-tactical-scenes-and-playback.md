@@ -74,6 +74,15 @@ ezme reddi, eşzamanlı yazım, snapshot izolasyonu ve üç viewport kapısı zo
 Yeni format yazıldıktan sonra V1-only backend'e kör rollback yapılmaz; V2-aware
 okuyucu ve koruma muhafaza edilerek yeni V2 yazımı kapatılır.
 
+## Yerel aktivasyon kaydı — 2026-10-19
+
+2026-10-19 operasyon kaydı: Kullanıcı “Taktik tahtasını kontrollü olarak
+etkinleştirelim” diyerek mevcut yerel ortamda ayrı aktivasyonu istedi.
+Bu istek Windows `ngcs_local_session_dev`, API 4000 / UI 3132 ve yeni etiketli
+sentetik pilotla sınırlı uygulanmıştır. A–D sözleşmesi değişmez; migration,
+toplu dönüşüm, production veya global editorial V2 yetkisi verilmez.
+[Yedek ve rollout kanıtı](../30-quality/TACTICAL_LOCAL_ROLLOUT_2026-10-19.md).
+
 ## Açık sorular
 
 Futbol uzmanı/temsilî kulüp, fiziksel tablet modeli, production performans

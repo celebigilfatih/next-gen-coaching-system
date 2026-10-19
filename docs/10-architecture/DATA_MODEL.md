@@ -1,5 +1,65 @@
 # Data Model
 
+## Fixture automation checkpoints — ADR-0042
+
+No schema change. Existing WEEK_PLANNING_APPLIED audit metadata gains immutable
+PLANNING_AUTOMATION_V1 checkpoints: seasonId/weekStart/revision plus server-owned
+event keys/specifications, linked day/plan IDs, complete-row fingerprints and
+protected/retired flags. Highest revision per week is authoritative; retain every
+checkpoint together with request/slot markers. No credentials or board/content
+snapshots are duplicated into metadata. New SENIOR applications capture checkpoints
+atomically; guarded adoption of known original local programs checks exact source
+request, fixture identities and every expected original field before granting
+automatic ownership. Nonmatching rows are protected, never reset.
+
+ADR-0043 adds no fields or migration: two-match reconciliation uses the same
+checkpoints and keys. Explicit preview time overrides set the existing protected
+flag at initial apply; previous fingerprints are not re-baselined by V3.
+
+## Weekly planning — ADR-0040
+
+Only SecurityAuditAction gains WEEK_PLANNING_APPLIED. Existing TrainingPlan,
+PlanDrill, team-scoped CLUB Drill, WeekPlan and DayPlan represent all program
+records. Example exercise instructions live in PlanDrill.notes; no DrillVersion
+or global publication approval is fabricated. Every generated physical plan has
+four unique example exercises, exact team age and summed duration; DayPlan links
+once. Meeting/rest duration never contributes to physical totals.
+
+Actor-bound request audit stores normalized hash, authorized season IDs and
+minimal result identifiers/counts; per-season/week audit marker prevents duplicate
+program application. Future retention must preserve these markers. WeekPlan
+numbering stays relative to season start; newly created boundaries include the
+whole last local day. Monday–Sunday frontend may cross two persisted weeks.
+
+
+## Ready drill planning — ADR-0039
+
+PlanDrill.contentSnapshot is nullable JSON (schemaVersion 1), written only by the
+server. Published attachments freeze sourceVersionId/sourceVersion, exact
+ageGroup, title/summary/category/difficulty, resolved duration/player/area,
+equipment, organization/steps/coaching/progressions/regressions/constraints,
+age rules/coaching and source attribution. boardSnapshot stores the validated
+published V1 board separately. Existing rows are not backfilled. Metadata reads
+project frozen title/duration; full content never contains the board document.
+New add and retained replace entries preserve existing snapshots. Plan/day totals
+prefer frozen duration over the mutable legacy Drill duration.
+
+## Club setup and branding — 2026-10-19
+
+ADR-0037 orchestrates existing Club, Person/StaffProfile, Team/TeamSeason,
+ClubSeason and legacy PlayerGroup/Season in one Serializable transaction.
+Sporting STAFF assignments use selected FunctionalRole definitions; they create
+no User, GroupMember, invitation or RoleCapability. Same-name people remain
+distinct. Actor-bound deterministic first-team audit IDs plus normalized request
+hash/result anchor durable replay without a new table. Preserve these audit
+markers when defining any future retention policy.
+
+ADR-0038 adds only nullable Club.primaryColor/secondaryColor VARCHAR(7), with
+#RRGGBB check constraints. Existing Club.logo stores bounded raster data URI;
+no object-storage service is introduced. Existing rows are not backfilled.
+The exact branding migration was independently approved and applied locally
+after private backup/restore rehearsal. [Evidence](../30-quality/CLUB_SETUP_WIZARD_2026-10-19.md).
+
 ## Canonical Entities
 
 Doğrulanmış Prisma şeması şu kümeleri içerir:

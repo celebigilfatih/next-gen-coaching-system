@@ -16,6 +16,7 @@ import {
   assertEditorReadQuery,
   editorReadIdentifier,
 } from './dto/editor-read.dto';
+import { projectPlanContent } from './plan-drill-content';
 
 type BoardIdentity = {
   planId: string;
@@ -74,13 +75,14 @@ export class TrainingEditorService {
               phase: true,
               order: true,
               notes: true,
+              contentSnapshot: true,
               drill: { select: { id: true, title: true, durationMin: true } },
             },
           },
         },
       });
       if (!plan) throw new NotFoundException('Training plan not found');
-      return plan;
+      return projectPlanContent(plan);
     });
   }
 

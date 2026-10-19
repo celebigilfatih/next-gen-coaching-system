@@ -1,5 +1,86 @@
 # Change Requests
 
+## CR-034 — Beş maçlı yoğun fikstür (Approved; implemented, 2026-10-19)
+
+Explicit user request approves five-match training/meeting/recovery adaptation
+with manual decisions preserved. ADR-0047 / REQ-033 / BL-068 raises only the
+existing planner ceiling; all permissions, example-content and transactional
+guards remain. No migration, new service or retained fixture changes.
+
+## CR-033 — Dört maçlı yoğun fikstür (Approved; implemented, 2026-10-19)
+
+Explicit request approves four-match A Takım adaptation with manual decisions
+preserved. ADR-0045 / REQ-032 / BL-067 extends the existing pairwise planner's
+ceiling; permissions, conflict/transaction/replay and example-content rules remain.
+No migration, service, academy regeneration or retained fixture changes.
+
+## CR-032 — Üç maçlı yoğun fikstür (Approved; implemented, 2026-10-19)
+
+Explicit user request authorizes three-match senior planning with automatic
+training/meeting/recovery adaptation and preserved manual changes. ADR-0044 /
+REQ-031 / BL-066 extends the existing pairwise template ceiling; no new policy,
+schema, service, academy regeneration or retained fixture changes.
+
+## CR-031 — İki maçlı mikro döngü (Approved; implemented, 2026-10-19)
+
+Explicit request to support two-match senior weeks and interval-aware recovery
+while retaining manual changes. ADR-0043 / REQ-030 / BL-065 replaces the two-match
+refusal in existing preview/apply and match-date reconciliation. No new schema,
+service, academy changes or retained fixture edits. Explicit preview times pin.
+
+## CR-030 — Fikstüre bağlı program güncellemesi (Approved; implemented, 2026-10-19)
+
+Explicit request: match date/time updates automatically adapt A Takım training
+and meetings while preserving manual edits. ADR-0042 / REQ-029 / BL-064. Existing
+match save performs transactional reconciliation, immutable checkpoints protect
+edits/deletions, and conflicts roll back with readable feedback. Existing known
+local rollout is enrolled only after backup/restore rehearsal; no new model or
+migration, no academy regeneration or production rollout.
+
+CR-029 season extension — explicitly approved by the subsequent request to spread
+the structure across the entire season, using fixture-relative senior weeks and
+age/school-compatible academy schedules. Existing product service, full preflight,
+per-week atomic application, stable continuation and existing-row preservation.
+No schema/API change. [Evidence](../30-quality/SEASON_CLUB_PROGRAM_2026-10-19.md).
+
+## CR-029 — Haftalık kulüp programı (Approved; implemented, 2026-10-19)
+
+User explicitly requested implementation of the complete proposed plan, including
+age-specific original example sessions for all ten local teams, school-compatible
+times, meetings/rest, unified calendar, preview/time/exclusion edits, atomic apply
+and the exact additive WEEK_PLANNING_APPLIED audit migration. Single fixture
+and no-fixture templates are supported; congested weeks use manual planning.
+Retained rollout follows isolated and restore rehearsal; no existing fixture,
+account/grant or player data is replaced. ADR-0040, REQ-028, BL-063.
+[Evidence](../30-quality/WEEKLY_CLUB_PROGRAM_2026-10-19.md).
+
+
+## CR-028 — Hazır egzersizlerden planlama (Approved; repository implemented, 2026-10-19)
+
+User explicitly requested the complete implementation, including nullable plan
+content snapshot migration. Scope: existing five ages, individual exercises and
+first publication only after all 120 receive independent expert approval.
+ADR-0039 / REQ-027 / BL-062. Separate follow-up approval covers retained local
+migration/import and publication. Snapshot migration and 120-item DRAFT import
+are complete; replay creates zero duplicates. The user named Fatih Çelebigil,
+approved all 120 and explicitly accepted ADR-0041's local same-account exception.
+All 120 are now PUBLISHED with exception audits; general API guards are unchanged.
+Maintenance tests 10/10, backup/restore and preservation pass.
+[Local publication](../30-quality/READY_DRILL_LOCAL_PUBLICATION_2026-10-19.md).
+[Implementation evidence](../30-quality/READY_DRILL_PLANNING_2026-10-19.md).
+
+## CR-027 — Rehberli kulüp kurulumu ve kimliği (Approved; implemented, 2026-10-19)
+
+Kullanıcı beş adımlı wizard uygulamasını, isteğe bağlı teknik kadroyu ve ayrı hesap
+davetlerini açıkça onayladı. Logo yükleme, ana/ikincil renk ve otomatik okunaklı
+tema ek isteği de uygulandı. Yalnız iki nullable Club renk kolonunun somut
+migration'ı ayrıca açık onayla retained local DB'ye uygulandı; özel backup ve
+restore provası tamamlandı. Tek atomik son kayıt, kalıcı replay/sonuç sorgusu,
+rol sınırları, browser/responsive QA doğrulandı. Yeni servis veya otomatik
+hesap/grant yok. [ADR-0037](../50-decisions/ADR-0037-guided-club-setup.md),
+[ADR-0038](../50-decisions/ADR-0038-club-branding-and-derived-theme.md), BL-060,
+[kanıt](../30-quality/CLUB_SETUP_WIZARD_2026-10-19.md).
+
 ## CR-026 — Taktik sahneler ve 2D animasyon (Approved, 2026-09-19)
 
 Kullanıcı ADR-0035 sonrası sahne/zaman çizelgesi sözleşmesinin hazırlanmasına
@@ -14,6 +95,10 @@ V2, MP4/GIF, offline, Person bağı ve 3D kapsam dışıdır.
 2026-10-03: repository a–e uygulama/kabul kapıları geçti; retained rollout
 ayrı onay bekler. Flag/veri değişmedi.
 [Birleşik kabul](../30-quality/TACTICAL_COMBINED_ACCEPTANCE_2026-10-03.md).
+2026-10-19: Kullanıcı kontrollü yerel aktivasyonu ayrıca istedi. Windows
+retained ortamında yedek/restore ve tek etiketli sentetik pilotla V2 yazımı
+açıldı; toplu dönüşüm ve production yoktur.
+[Yerel aktivasyon](../30-quality/TACTICAL_LOCAL_ROLLOUT_2026-10-19.md).
 
 ## CR-025 — Profesyonel taktik stüdyosu (Approved; first 2D slice, 2026-09-19)
 
@@ -121,29 +206,29 @@ runs, quality/API/browser gates. Implementation closed; performance owner/budget
 and broader BL-043 pilot capacity remain TBD/open.
 Tracking: BL-046, P2, Done. [Evidence](../30-quality/BL046_MATCHED_EDITOR_MEASUREMENT_2026-09-07.md).
 
-| ID     | Change                                                                    | Scope impact                                                                    | ADR needed         | Approver                                                                                              | Status                                                                                      |
-| ------ | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ------------------ | ----------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| CR-001 | CDSK 0.1.0 kullan                                                         | Repository yönetişimi ve bilgi mimarisi                                         | ADR-0001           | Product owner                                                                                         | Approved                                                                                    |
-| CR-002 | Dar MVP sınırını benimse                                                  | Ürün kapsamı                                                                    | ADR-0002           | Product owner                                                                                         | Approved                                                                                    |
-| CR-003 | Frontend kaynak/topoloji modelini seç                                     | Repository ve delivery mimarisi                                                 | ADR-0003           | Product owner                                                                                         | Approved                                                                                    |
-| CR-004 | Şema/migration geçmişini uzlaştır                                         | Veri modeli ve migration                                                        | ADR-0006           | Product owner approval; named data owner TBD                                                          | Approved                                                                                    |
-| CR-005 | Çekirdek rol ve tenant matrisini uygula                                   | Güvenlik                                                                        | ADR-0005, ADR-0007 | Product owner approval; named security owner TBD                                                      | Approved                                                                                    |
-| CR-006 | Sağlık ve ileri analitik veri politikasını onayla                         | Güvenlik ve gizlilik                                                            | Evet, TBD          | Product owner / security owner TBD                                                                    | Proposed                                                                                    |
-| CR-007 | Frontend teknoloji ve ilk ekran akışını seç                               | Ürün ve frontend mimarisi                                                       | ADR-0009           | Product owner approval; named frontend owner TBD                                                      | Approved                                                                                    |
-| CR-008 | Davet tabanlı hesap yaşam döngüsünü uygula                                | Auth, veri modeli ve audit                                                      | ADR-0008           | Product owner approval; named security owner TBD                                                      | Approved                                                                                    |
-| CR-009 | Same-club cross-group aggregate ve Socket recipient sınırını kapat        | Güvenlik, API/event sözleşmesi ve veri ilişkileri                               | ADR-0014           | Explicit user approval; named security owner TBD                                                      | Approved and verified                                                                       |
-| CR-010 | Password reset token tüketimini single-winner atomik yap                  | Güvenlik ve transaction davranışı                                               | ADR-0015           | Explicit user approval; named security/data owner TBD                                                 | Approved and verified                                                                       |
-| CR-011 | Prisma CLI advisory için kanıtlı geçici risk kabulü                       | Dependency security ve production gate                                          | ADR-0016           | Explicit user approval; named security/operations owner TBD                                           | Approved                                                                                    |
-| CR-012 | Backend runtime image ile migrator artifact/job'u ayır                    | Deployment mimarisi, image içeriği ve DB yetkileri                              | ADR-0017           | Explicit user approval; named operations owner TBD                                                    | Approved and verified                                                                       |
-| CR-013 | Provider-neutral kalıcı oturum ve onaylı süre/retention politikası        | Auth API, frontend, additive migration ve güvenlik                              | ADR-0018           | Explicit user approval; named security/operations owner TBD                                           | Approved and verified — production rollout TBD                                              |
-| CR-014 | Attendance kaydını `(planId, playerId)` için atomik ve tekil yap          | Veri modeli, migration, concurrency ve son-yazım davranışı                      | ADR-0019           | Explicit user approval; named data/product owner TBD                                                  | Approved and verified                                                                       |
-| CR-015 | Davet/reset e-postası ve mevcut admin için break-glass recovery ekle      | Dış servis, public auth UI/API, additive audit migration ve operasyon güvenliği | ADR-0020           | User approved Option A on 2026-09-06; named security/operations owner TBD                             | Approved and implemented — provider/account and production rollout TBD                      |
-| CR-016 | Phase 2 P0.1 sportif organizasyon ve oyuncu yolculuğu temelini uygula     | Ürün sınırı, veri modeli, API/yetki, takım ve Player 360 frontend'i             | ADR-0021–0024      | User approved decisions A–D and implementation on 2026-09-06; named product/data/security owner TBD   | Approved — repository and controlled local rollout verified; production TBD                 |
-| CR-017 | Antrenman editörü tahta payload büyümesini isteğe bağlı okumaya geçir     | API projection, frontend dirty-state ve ölçüm                                   | ADR-0025           | User approved Option A on 2026-09-07; named owner TBD                                                 | Approved and verified                                                                       |
-| CR-018 | Antrenman düzenleme ve atomik kalıcı silme yaşam döngüsünü uygula         | UI, API transaction, takvim/katılım/faz ilişkileri                              | ADR-0026           | User approved hard delete and title/date/purpose edit on 2026-09-08; named product/data owner TBD     | Approved, implemented and verified                                                          |
-| CR-019 | Kullanıcı hesabı ve erişim yönetimi yüzeyini uygula                       | Güvenlik, hesap dizini API'si ve admin UI                                       | ADR-0027           | User requested implementation on 2026-09-08; named product/security owner TBD                         | Approved, implemented and verified                                                          |
-| CR-020 | A Takım tekilliği ve altyapı takım yaşam döngüsünü uygula                 | Veri modeli/migration, takım API/yetkisi ve iki sekmeli yönetim UI'ı            | ADR-0028           | User approved the implementation plan on 2026-09-08; named product/data/security owner TBD            | Approved, implemented and verified                                                          |
-| CR-021 | A Takım ve altyapıyı sidebar'da ayır; sentetik kadro adlarını doğallaştır | Frontend route/navigation ve kontrollü yerel fixture verisi                     | ADR-0029           | User explicitly requested both changes on 2026-09-09; named product owner TBD                         | Approved, implemented and verified                                                          |
-| CR-022 | A Takımı doğrudan kadro merkezine geçir; oyuncu dizinini iyileştir        | Player list API/query/cursor ve ortak responsive UI                             | ADR-0030           | User explicitly approved the implementation plan on 2026-09-09; named product owner TBD               | Approved, implemented and verified                                                          |
-| CR-023 | Player 360 ve takım kapsamlı sürümlü oyuncu notlarını uygula              | Additive veri/migration, yetki/API, revision ve responsive Player 360 UI        | ADR-0031           | User explicitly approved the implementation plan on 2026-09-09; named product/data/security owner TBD | Approved and implemented; desktop browser flow verified, exact-size responsive evidence TBD |
+| ID     | Change                                                                    | Scope impact                                                                    | ADR needed         | Approver                                                                                              | Status                                                                                       |
+| ------ | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ------------------ | ----------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| CR-001 | CDSK 0.1.0 kullan                                                         | Repository yönetişimi ve bilgi mimarisi                                         | ADR-0001           | Product owner                                                                                         | Approved                                                                                     |
+| CR-002 | Dar MVP sınırını benimse                                                  | Ürün kapsamı                                                                    | ADR-0002           | Product owner                                                                                         | Approved                                                                                     |
+| CR-003 | Frontend kaynak/topoloji modelini seç                                     | Repository ve delivery mimarisi                                                 | ADR-0003           | Product owner                                                                                         | Approved                                                                                     |
+| CR-004 | Şema/migration geçmişini uzlaştır                                         | Veri modeli ve migration                                                        | ADR-0006           | Product owner approval; named data owner TBD                                                          | Approved                                                                                     |
+| CR-005 | Çekirdek rol ve tenant matrisini uygula                                   | Güvenlik                                                                        | ADR-0005, ADR-0007 | Product owner approval; named security owner TBD                                                      | Approved                                                                                     |
+| CR-006 | Sağlık ve ileri analitik veri politikasını onayla                         | Güvenlik ve gizlilik                                                            | Evet, TBD          | Product owner / security owner TBD                                                                    | Proposed                                                                                     |
+| CR-007 | Frontend teknoloji ve ilk ekran akışını seç                               | Ürün ve frontend mimarisi                                                       | ADR-0009           | Product owner approval; named frontend owner TBD                                                      | Approved                                                                                     |
+| CR-008 | Davet tabanlı hesap yaşam döngüsünü uygula                                | Auth, veri modeli ve audit                                                      | ADR-0008           | Product owner approval; named security owner TBD                                                      | Approved                                                                                     |
+| CR-009 | Same-club cross-group aggregate ve Socket recipient sınırını kapat        | Güvenlik, API/event sözleşmesi ve veri ilişkileri                               | ADR-0014           | Explicit user approval; named security owner TBD                                                      | Approved and verified                                                                        |
+| CR-010 | Password reset token tüketimini single-winner atomik yap                  | Güvenlik ve transaction davranışı                                               | ADR-0015           | Explicit user approval; named security/data owner TBD                                                 | Approved and verified                                                                        |
+| CR-011 | Prisma CLI advisory için kanıtlı geçici risk kabulü                       | Dependency security ve production gate                                          | ADR-0016           | Explicit user approval; named security/operations owner TBD                                           | Approved                                                                                     |
+| CR-012 | Backend runtime image ile migrator artifact/job'u ayır                    | Deployment mimarisi, image içeriği ve DB yetkileri                              | ADR-0017           | Explicit user approval; named operations owner TBD                                                    | Approved and verified                                                                        |
+| CR-013 | Provider-neutral kalıcı oturum ve onaylı süre/retention politikası        | Auth API, frontend, additive migration ve güvenlik                              | ADR-0018           | Explicit user approval; named security/operations owner TBD                                           | Approved and verified — production rollout TBD                                               |
+| CR-014 | Attendance kaydını `(planId, playerId)` için atomik ve tekil yap          | Veri modeli, migration, concurrency ve son-yazım davranışı                      | ADR-0019           | Explicit user approval; named data/product owner TBD                                                  | Approved and verified                                                                        |
+| CR-015 | Davet/reset e-postası ve mevcut admin için break-glass recovery ekle      | Dış servis, public auth UI/API, additive audit migration ve operasyon güvenliği | ADR-0020           | User approved Option A on 2026-09-06; named security/operations owner TBD                             | Approved and implemented — provider/account and production rollout TBD                       |
+| CR-016 | Phase 2 P0.1 sportif organizasyon ve oyuncu yolculuğu temelini uygula     | Ürün sınırı, veri modeli, API/yetki, takım ve Player 360 frontend'i             | ADR-0021–0024      | User approved decisions A–D and implementation on 2026-09-06; named product/data/security owner TBD   | Approved — repository and controlled local rollout verified; production TBD                  |
+| CR-017 | Antrenman editörü tahta payload büyümesini isteğe bağlı okumaya geçir     | API projection, frontend dirty-state ve ölçüm                                   | ADR-0025           | User approved Option A on 2026-09-07; named owner TBD                                                 | Approved and verified                                                                        |
+| CR-018 | Antrenman düzenleme ve atomik kalıcı silme yaşam döngüsünü uygula         | UI, API transaction, takvim/katılım/faz ilişkileri                              | ADR-0026           | User approved hard delete and title/date/purpose edit on 2026-09-08; named product/data owner TBD     | Approved, implemented and verified                                                           |
+| CR-019 | Kullanıcı hesabı ve erişim yönetimi yüzeyini uygula                       | Güvenlik, hesap dizini API'si ve admin UI                                       | ADR-0027           | User requested implementation on 2026-09-08; named product/security owner TBD                         | Approved, implemented and verified                                                           |
+| CR-020 | A Takım tekilliği ve altyapı takım yaşam döngüsünü uygula                 | Veri modeli/migration, takım API/yetkisi ve iki sekmeli yönetim UI'ı            | ADR-0028           | User approved the implementation plan on 2026-09-08; named product/data/security owner TBD            | Approved, implemented and verified                                                           |
+| CR-021 | A Takım ve altyapıyı sidebar'da ayır; sentetik kadro adlarını doğallaştır | Frontend route/navigation ve kontrollü yerel fixture verisi                     | ADR-0029           | User explicitly requested both changes on 2026-09-09; named product owner TBD                         | Approved, implemented and verified                                                           |
+| CR-022 | A Takımı doğrudan kadro merkezine geçir; oyuncu dizinini iyileştir        | Player list API/query/cursor ve ortak responsive UI                             | ADR-0030           | User explicitly approved the implementation plan on 2026-09-09; named product owner TBD               | Approved, implemented and verified                                                           |
+| CR-023 | Player 360 ve takım kapsamlı sürümlü oyuncu notlarını uygula              | Additive veri/migration, yetki/API, revision ve responsive Player 360 UI        | ADR-0031           | User explicitly approved the implementation plan on 2026-09-09; named product/data/security owner TBD | Approved and implemented; desktop browser flow verified, exact-size responsive evidence TBD  |
 | CR-024 | Profesyonel sürümlü egzersiz kütüphanesi ve 120 taslak paketini uygula    | Additive veri/migration, kaynak-lisans, yayın yetkisi, katalog/detail/manage UI | ADR-0032–0034      | User explicitly approved the implementation plan on 2026-09-09; named football/legal owner TBD        | Approved; repository foundation and DRAFT package implemented, expert review/publication TBD |

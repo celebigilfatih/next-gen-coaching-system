@@ -1,5 +1,108 @@
 # API Conventions
 
+## Fixture-driven planning — ADR-0042
+
+Current ADR-0047 / BALANCED_WEEK_V6 supports up to five SENIOR fixtures using
+the same consecutive elapsed-hour rules. Six-or-more/same-day/sub24-hour contexts
+require manual planning; automatic date reconciliation rejects them with409.
+Existing contracts, preview-token invalidation, replay and manual protection remain.
+ADR-0043 below describes the earlier two-match release, superseded only in ceiling.
+
+ADR-0043 extends the same paths to two SENIOR fixtures per calendar week.
+BALANCED_WEEK_V3 uses real elapsed kickoff intervals (including adjacent weeks)
+for compressed recovery/preparation. Three-or-more/same-day/sub24-hour contexts
+remain manual and reject automatic reconciliation with409. Explicit preview time
+overrides pin the entire event when applied; manual edits/deletions remain fixed.
+
+Existing PUT `/seasons/matches/:matchId` accepts date as before. An actual timestamp
+change rechecks ACTIVE actor/current team permission inside a Serializable write,
+uses the shared season planning lock and reconciles enrolled SENIOR calendar weeks
+at old/new Monday plus adjacent weeks. Response remains the match with optional
+`planningSync:{status,updated,created,retired,protected,weeks}`. Status is updated
+or not-enrolled. Same-date and analysis-only requests do not repeat reconciliation.
+Only date is sent by the schedule dialog; unrelated analysis/board drafts remain.
+
+Immutable checkpoint hashes detect any day/plan/phase/exercise edit. Protect the
+whole edited/deleted/excluded event, as well as past/completed/attendance-linked
+sessions. Never adopt manual standalone records. Check authoritative matches and
+all fixed/manual rows before mutation. Conflicts/congested templates return409
+and roll back both match and program; out-of-season dates return400. Ordinary
+management role boundaries remain; PLAYER cannot schedule. No additional endpoint,
+background service or migration.
+
+## Weekly planning — ADR-0040
+
+- GET `/planning/events/page`: strict groupId, optional seasonId, ISO from/until
+  half-open interval <=7 days, limit 1–50 (default25), scope-bound opaque after.
+  Returns chronological `{items,summary,nextCursor,limit}`. Item source is plan,
+  match or event; physical totals derive from authoritative plans. Linked DayPlan
+  is metadata, never a second card. Private GORUSME is excluded. No board JSON.
+- GET `/planning/teams?clubSeasonId=...`: management-authorized team/legacy-season
+  choices only. POST `/planning/week/preview`: `{weekStart,seasonIds,overrides?}`,
+  Monday ISO day, max21 distinct seasons in one club. Overrides accept only
+  `{key,excluded?,startsAt?}`. Response includes token, normalized input, teams,
+  fixture context, example phase/instruction previews and conflicts. No writes.
+  Base template rows are clipped to inclusive season dates, including partial
+  opening/closing weeks. Moving an included row outside the season still conflicts;
+  excluded boundary rows are not valid override keys. BALANCED_WEEK_V6 uses real
+  fixtures for opponent preparation; fixture-free breaks use development/rest.
+- POST `/planning/week/apply`: `{requestId,previewToken,program}`. Server regenerates
+  original templates, rechecks current principal/each season, schedule fingerprint
+  and overlaps. All selected records/audits commit in one Serializable transaction.
+  A per-team/season/week marker prevents new-request reapplication. UUID v4 request
+  and normalized hash are actor-bound; exact replay does not rewrite timestamps.
+  Changed payload/stale preview/overlap/duplicate returns409.
+- GET `/planning/week/applications/:id`: actor-bound completed result or not-found.
+  No-store on reads/preview/apply; URL retains only opaque request ID for recovery.
+- POST `/planning/events`: requestId, seasonId, kind, title, startsAt, duration,
+  optional notes/location/topic. Physical kinds create a real four-phase plan;
+  TOPLANTI/REST create only DayPlan. Fixed fields/ownership are server-derived.
+  PUT/DELETE `/planning/events/:id` manage nonlinked nonprivate day records only;
+  kind/season are immutable. Linked training uses existing plan edit/delete routes.
+- Existing roles remain: SystemAdmin, own-club ClubAdmin, assigned Coach; Player
+  reads authorized calendar only. Dates use Turkey +03:00; durations1–480 minutes,
+  physical sessions>=20. Existing100KiB parser remains; apply sends template
+  selection/overrides, never all generated exercise text.
+
+
+## Ready drill planning — ADR-0039
+
+Drill catalog rows additionally return nullable contentVersionId. POST
+/training-plans/:id/drills accepts optional expectedVersionId (nonempty, max 128).
+A stale version or duplicate attachment returns 409; unpublished or unsupported
+exact-age content returns 400. Source ownership, actor and group membership,
+publication and exact age are rechecked in the Serializable write transaction.
+The server appends to the published category and derives snapshot content; caller
+snapshot/ownership fields never control storage. Existing controller role guards
+remain authoritative and old optional-version callers remain compatible.
+
+GET /training-plans/:id/editor-metadata adds nullable contentSnapshot without
+board JSON. Old NULL records keep legacy title/duration. GET published drill
+content returns variant=null for an explicitly requested unsupported age;
+unpublished versioned records return 404 rather than a legacy projection.
+
+POST /drills/content/starter-pack/publish is SystemAdmin-only and body-free.
+All 120 approved stable starter IDs publish/audit in one Serializable transaction
+or none do. Individual starter first publication is rejected; later revisions
+and non-starter publication retain the existing expert/publication boundary.
+
+## Guided club setup — ADR-0037/0038
+
+POST `/sporting/club-setup` accepts only `{requestId, club, season, firstTeam,
+academyTeams, staff}`. SYSTEM_ADMIN is rechecked ACTIVE inside the transaction.
+All canonical/legacy projections and optional staff commit together. UUID v4
+request identity is actor-bound; identical normalized body replays the original
+result, changed body returns 409. GET `/sporting/club-setup/:requestId` returns
+`completed` with club/season/first-team IDs and counts, or `not-found`. Both use
+`Cache-Control: no-store`. The first-team audit anchors hash/result; it contains
+no staff list or logo. No auto-retry with a different identity after network errors.
+
+Club supports optional PNG/JPEG/WebP data URI logo up to 48 KiB and two nullable
+#RRGGBB colors. Existing 100 KiB JSON body limit remains. Dates are valid ISO
+calendar days, interpreted at +03:00; max 80-week season, 20 academy teams,
+60 staff rows. Staff never writes accounts, invitations or capability grants.
+[Verification](../30-quality/CLUB_SETUP_WIZARD_2026-10-19.md).
+
 ## Versioned tactical documents — ADR-0036 / BL-058b
 
 - BL-058e.3 plan-phase document GET/PUT responses additionally include

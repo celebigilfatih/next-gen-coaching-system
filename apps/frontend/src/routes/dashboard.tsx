@@ -88,9 +88,26 @@ export default function DashboardRoute() {
       ) : error ? (
         <ReadError error={error} retry={() => void reload()} />
       ) : !group ? (
-        <p className="dashboard-empty">
-          Bu takım için legacy antrenman bağlamı bulunmuyor.
-        </p>
+        <div className="dashboard-empty">
+          {!scope.clubId && getSession()?.user.role === 'SYSTEM_ADMIN' ? (
+            <>
+              <h2 className="mb-2 font-semibold">İlk kulübünüzü kurun</h2>
+              <p className="mb-4">
+                Kulüp kimliği, sezon ve takımlarınızı beş adımda hazırlayın.
+              </p>
+              <Button asChild>
+                <Link to="/app/setup">
+                  Kulüp kurulumuna başla <ArrowRight />
+                </Link>
+              </Button>
+            </>
+          ) : (
+            <p>
+              Seçili takım için henüz antrenman çalışma alanı bulunmuyor. Kulüp
+              yöneticinizle iletişime geçin.
+            </p>
+          )}
+        </div>
       ) : (
         <DashboardContent
           key={scopeKey}

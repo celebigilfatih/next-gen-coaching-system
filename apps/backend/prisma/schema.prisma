@@ -56,6 +56,8 @@ model Club {
   id                  String               @id @default(cuid())
   name                String
   logo                String?
+  primaryColor        String?              @db.VarChar(7)
+  secondaryColor      String?              @db.VarChar(7)
   description         String?
   createdAt           DateTime             @default(now())
   updatedAt           DateTime             @updatedAt
@@ -563,15 +565,16 @@ model TrainingPlan {
 }
 
 model PlanDrill {
-  id             String       @id @default(cuid())
-  trainingPlanId String
-  drillId        String
-  phase          Phase
-  order          Int          @default(0)
-  notes          String?
-  boardSnapshot  Json?
-  drill          Drill        @relation(fields: [drillId], references: [id])
-  trainingPlan   TrainingPlan @relation(fields: [trainingPlanId], references: [id])
+  id              String       @id @default(cuid())
+  trainingPlanId  String
+  drillId         String
+  phase           Phase
+  order           Int          @default(0)
+  notes           String?
+  boardSnapshot   Json?
+  contentSnapshot Json?
+  drill           Drill        @relation(fields: [drillId], references: [id])
+  trainingPlan    TrainingPlan @relation(fields: [trainingPlanId], references: [id])
 }
 
 model Attendance {
@@ -850,6 +853,7 @@ enum AccountStatus {
 }
 
 enum SecurityAuditAction {
+  WEEK_PLANNING_APPLIED
   SYSTEM_ADMIN_BOOTSTRAPPED
   SYSTEM_ADMIN_RECOVERED
   INVITATION_CREATED

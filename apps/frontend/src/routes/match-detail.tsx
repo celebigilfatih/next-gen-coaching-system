@@ -16,21 +16,12 @@ import {
 } from 'react';
 import { Link, useParams } from 'react-router';
 import { toast } from 'sonner';
-import dashboardHero from '../assets/dashboard-coach-wide.png';
-import { MetricCard } from '../components/presentation/metric-card';
-import { PageHero } from '../components/presentation/page-hero';
 import type { BoardEditorHandle } from '../components/tactics/tactical-board-editor';
 import { ResourceBoard } from '../components/tactics/resource-board';
+import { MatchScheduleDialog } from '../components/match-schedule-dialog';
 import { Alert, AlertDescription, AlertTitle } from '../components/ui/alert';
 import { Badge } from '../components/ui/badge';
 import { Button } from '../components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '../components/ui/card';
 import { Input } from '../components/ui/input';
 import {
   Tabs,
@@ -208,13 +199,17 @@ function MatchEditor({ initialMatch }: { initialMatch: MatchMetadata }) {
 
   const date = new Date(match.date);
   const fullDate = new Intl.DateTimeFormat('tr-TR', {
-    dateStyle: 'full',
-    timeStyle: 'short',
+    dateStyle: 'long',
   }).format(date);
-  const compactDate = new Intl.DateTimeFormat('tr-TR', {
-    day: 'numeric',
-    month: 'short',
-  }).format(date);
+  const weekday = new Intl.DateTimeFormat('tr-TR', { weekday: 'long' }).format(
+    date,
+  );
+  const location =
+    match.location === 'HOME'
+      ? 'İç saha'
+      : match.location === 'AWAY'
+        ? 'Deplasman'
+        : match.location || 'Saha belirtilmedi';
   const time = new Intl.DateTimeFormat('tr-TR', {
     hour: '2-digit',
     minute: '2-digit',
@@ -222,59 +217,72 @@ function MatchEditor({ initialMatch }: { initialMatch: MatchMetadata }) {
 
   return (
     <div className="page-shell match-detail-reference">
-      <PageHero
-        className="match-detail-reference__hero"
-        image={dashboardHero}
-        eyebrow={match.competition || 'Maç hazırlığı'}
-        title={match.opponent}
-        description={`${fullDate} · ${match.location}`}
-        actions={
-          <Button variant="outline" asChild>
-            <Link to="/app/matches">
-              <ArrowLeft />
-              Maçlara dön
-            </Link>
-          </Button>
-        }
-      />
+      <header className="match-detail-reference__heading">
+        <Link to="/app/matches" className="match-detail-reference__back">
+          <ArrowLeft aria-hidden="true" /> Maçlara dön
+        </Link>
+        <p className="match-detail-reference__competition">
+          {match.competition || 'Müsabaka belirtilmedi'}
+        </p>
+        <h1>{match.opponent}</h1>
+        <p className="match-detail-reference__description">
+          Maç hazırlığı, rakip analizi ve taktik planı.
+        </p>
+      </header>
 
+      {canManage && (
+        <MatchScheduleDialog
+          matchId={matchId}
+          date={match.date}
+          onSaved={(date) => setMatch((current) => ({ ...current, date }))}
+        />
+      )}
       <section
-        className="match-detail-reference__metrics"
+        className="match-detail-reference__summary"
         aria-label="Maç hazırlığı özeti"
       >
-        <MetricCard
-          icon={CalendarBlank}
-          label="Maç tarihi"
-          value={compactDate}
-          detail={match.competition || 'Müsabaka TBD'}
-        />
-        <MetricCard
-          icon={Clock}
-          label="Başlama"
-          value={time}
-          detail="Yerel saat"
-          tone="teal"
-        />
-        <MetricCard
-          icon={MapPin}
-          label="Konum"
-          value={match.location || 'TBD'}
-          detail="Maç sahası"
-          tone="amber"
-        />
-        <MetricCard
-          icon={Strategy}
-          label="Dizilişimiz"
-          value={match.ourFormation || 'TBD'}
-          detail="Kaydedilmiş plan"
-          tone="violet"
-        />
-        <MetricCard
-          icon={SoccerBall}
-          label="Taktik tahta"
-          value={match.hasBoard ? 'Hazır' : 'Bekliyor'}
-          detail="Maçtan ayrı belge"
-        />
+        <dl>
+          <div>
+            <dt>
+              <CalendarBlank aria-hidden="true" /> Maç tarihi
+            </dt>
+            <dd>
+              <time dateTime={match.date}>{fullDate}</time>
+              <small>{weekday}</small>
+            </dd>
+          </div>
+          <div>
+            <dt>
+              <Clock aria-hidden="true" /> Başlama
+            </dt>
+            <dd>
+              {time}
+              <small>Yerel saat</small>
+            </dd>
+          </div>
+          <div>
+            <dt>
+              <MapPin aria-hidden="true" /> Saha
+            </dt>
+            <dd>{location}</dd>
+          </div>
+          <div>
+            <dt>
+              <Strategy aria-hidden="true" /> Dizilişimiz
+            </dt>
+            <dd>{match.ourFormation || 'Belirtilmedi'}</dd>
+          </div>
+          <div>
+            <dt>
+              <SoccerBall aria-hidden="true" /> Taktik tahta
+            </dt>
+            <dd>
+              <Badge variant={match.hasBoard ? 'default' : 'outline'}>
+                {match.hasBoard ? 'Tahta hazır' : 'Tahta yok'}
+              </Badge>
+            </dd>
+          </div>
+        </dl>
       </section>
 
       <Tabs
@@ -284,7 +292,6 @@ function MatchEditor({ initialMatch }: { initialMatch: MatchMetadata }) {
       >
         <header className="match-detail-reference__tabs-head">
           <div>
-            <p className="page-kicker">Maç çalışma alanı</p>
             <h2>Hazırlık ve taktik planı</h2>
           </div>
           <TabsList aria-label="Maç detay bölümleri">
@@ -293,30 +300,34 @@ function MatchEditor({ initialMatch }: { initialMatch: MatchMetadata }) {
           </TabsList>
         </header>
         <TabsContent value="analysis">
-          <div className="match-detail-reference__analysis-layout">
-            <Card className="match-analysis-card match-detail-reference__analysis-card">
-              <CardHeader>
-                <div>
-                  <p className="page-kicker">Rakip planı</p>
-                  <CardTitle>
-                    <SoccerBall weight="duotone" /> Rakip ve oyun planı
-                  </CardTitle>
-                  <CardDescription>
-                    Analiz, diziliş ve koç notlarını açık kaydetme eylemiyle
-                    güncelleyin.
-                  </CardDescription>
-                </div>
-                <Badge variant="outline">Manuel kayıt</Badge>
-              </CardHeader>
-              <CardContent className="analysis-form">
-                <label>
-                  Rakip analizi
-                  <Textarea
-                    disabled={!canManage || savingAnalysis}
-                    value={analysis}
-                    onChange={(event) => setAnalysis(event.target.value)}
-                  />
-                </label>
+          <section
+            className="match-detail-reference__analysis-card"
+            aria-labelledby="match-analysis-title"
+          >
+            <header className="match-detail-reference__analysis-head">
+              <div>
+                <h3 id="match-analysis-title">Rakip ve oyun planı</h3>
+                <p>
+                  {canManage
+                    ? 'Analiz ve notlarınızı düzenleyin, ardından kaydedin.'
+                    : 'Bu maçın analiz ve taktik planını görüntülüyorsunuz.'}
+                </p>
+              </div>
+              <Badge variant="outline">
+                {canManage ? 'Manuel kayıt' : 'Salt okunur'}
+              </Badge>
+            </header>
+            <div className="analysis-form">
+              <label className="match-detail-reference__analysis-field">
+                Rakip analizi
+                <Textarea
+                  disabled={!canManage || savingAnalysis}
+                  value={analysis}
+                  onChange={(event) => setAnalysis(event.target.value)}
+                  placeholder="Rakibin güçlü yönleri, oyun yapısı ve dikkat edilecek noktalar…"
+                />
+              </label>
+              <div className="match-detail-reference__plan-fields">
                 <div className="analysis-two">
                   <label>
                     Dizilişimiz
@@ -345,63 +356,42 @@ function MatchEditor({ initialMatch }: { initialMatch: MatchMetadata }) {
                     onChange={(event) => setFocus(event.target.value)}
                   />
                 </label>
-                <label>
-                  Koç notu
-                  <Textarea
-                    disabled={!canManage || savingAnalysis}
-                    value={notes}
-                    onChange={(event) => setNotes(event.target.value)}
-                  />
-                </label>
-                {analysisError && (
-                  <Alert role="alert">
-                    <AlertDescription>{analysisError}</AlertDescription>
-                  </Alert>
-                )}
+              </div>
+              <label className="match-detail-reference__notes-field">
+                Koç notu
+                <Textarea
+                  disabled={!canManage || savingAnalysis}
+                  value={notes}
+                  onChange={(event) => setNotes(event.target.value)}
+                  placeholder="Maç hazırlığına ilişkin notlarınızı ekleyin…"
+                />
+              </label>
+              {analysisError && (
+                <Alert
+                  role="alert"
+                  className="match-detail-reference__save-error"
+                >
+                  <AlertDescription>{analysisError}</AlertDescription>
+                </Alert>
+              )}
+              <footer className="match-detail-reference__save-bar">
+                <p>
+                  {canManage
+                    ? 'Analiz ve taktik tahtası ayrı kaydedilir.'
+                    : 'Bu kayıtta düzenleme yetkiniz bulunmuyor.'}
+                </p>
                 {canManage && (
                   <Button
-                    className="justify-self-end"
                     disabled={savingAnalysis}
                     onClick={() => void saveAnalysis()}
                   >
-                    <FloppyDisk />
-                    Analizi kaydet
+                    <FloppyDisk aria-hidden="true" />
+                    {savingAnalysis ? 'Kaydediliyor…' : 'Analizi kaydet'}
                   </Button>
                 )}
-              </CardContent>
-            </Card>
-
-            <Card className="match-detail-reference__facts">
-              <CardHeader>
-                <CardTitle>Maç Özeti</CardTitle>
-                <CardDescription>
-                  Yetkili maç kaydındaki doğrulanmış bilgiler.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <span>
-                  <CalendarBlank weight="duotone" />
-                  <small>Tarih ve saat</small>
-                  <strong>{fullDate}</strong>
-                </span>
-                <span>
-                  <MapPin weight="duotone" />
-                  <small>Konum</small>
-                  <strong>{match.location || 'TBD'}</strong>
-                </span>
-                <span>
-                  <SoccerBall weight="duotone" />
-                  <small>Müsabaka</small>
-                  <strong>{match.competition || 'TBD'}</strong>
-                </span>
-                <span>
-                  <Strategy weight="duotone" />
-                  <small>Rakip dizilişi</small>
-                  <strong>{opponentFormation || 'TBD'}</strong>
-                </span>
-              </CardContent>
-            </Card>
-          </div>
+              </footer>
+            </div>
+          </section>
         </TabsContent>
         <TabsContent value="board">
           <section className="match-detail-reference__board">

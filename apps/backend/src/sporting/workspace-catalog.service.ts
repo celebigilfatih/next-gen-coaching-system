@@ -14,6 +14,12 @@ import {
 } from './dto/catalog.dto';
 
 const clubSelect = { id: true, name: true } as const;
+const brandedClubSelect = {
+  ...clubSelect,
+  logo: true,
+  primaryColor: true,
+  secondaryColor: true,
+} as const;
 const seasonSelect = {
   id: true,
   name: true,
@@ -320,13 +326,13 @@ export class WorkspaceCatalogService {
       (desired.clubId
         ? await this.prisma.club.findFirst({
             where: { AND: [clubsWhere, { id: desired.clubId }] },
-            select: clubSelect,
+            select: brandedClubSelect,
           })
         : null) ??
       (await this.prisma.club.findFirst({
         where: clubsWhere,
         orderBy: { id: 'asc' },
-        select: clubSelect,
+        select: brandedClubSelect,
       }));
     const clubs = catalogPage(
       await this.prisma.club.findMany({

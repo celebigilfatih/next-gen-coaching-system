@@ -1,0 +1,305 @@
+.tactics-workspace,
+.tactics-editor-reference.tactical-studio-page {
+  min-width: 0;
+  color: var(--ink);
+  background: #f5f8fc;
+}
+
+.tactics-workspace-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.tactics-workspace-heading h1,
+.tactics-editor-reference.tactical-studio-page .studio-heading h1 {
+  margin: 0;
+  font: 750 40px/1.15 var(--font-body);
+  letter-spacing: -1.4px;
+  overflow-wrap: anywhere;
+}
+
+.tactics-workspace-heading p,
+.tactics-editor-reference.tactical-studio-page .studio-heading p {
+  margin: 8px 0 0;
+  color: var(--legacy-muted-foreground);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.tactics-workspace-heading > a {
+  flex: none;
+}
+.tactics-workspace-panel {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card);
+}
+.tactics-workspace-panel > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 20px 22px;
+  border-bottom: 1px solid var(--border);
+}
+.tactics-workspace-panel h2 {
+  margin: 0;
+  font: 700 20px/1.3 var(--font-body);
+}
+.tactics-workspace-panel header p {
+  margin: 6px 0 0;
+  color: var(--legacy-muted-foreground);
+  font-size: 13px;
+}
+.tactics-workspace-pagination {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.tactics-workspace-pagination p {
+  margin: 0 !important;
+  font-variant-numeric: tabular-nums;
+}
+.tactics-workspace-pagination button {
+  min-width: 40px;
+  min-height: 40px;
+}
+.tactics-workspace-state {
+  padding: 24px;
+}
+.tactics-workspace-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+.tactics-workspace-table th {
+  padding: 12px 22px;
+  color: var(--legacy-muted-foreground);
+  background: #f8fafc;
+  font-size: 12px;
+  font-weight: 550;
+}
+.tactics-workspace-table td {
+  padding: 20px 22px;
+  border-top: 1px solid var(--border);
+  font-size: 14px;
+}
+.tactics-workspace-table td:first-child {
+  width: 45%;
+  overflow-wrap: anywhere;
+}
+.tactics-workspace-table td > strong {
+  display: block;
+  font-weight: 650;
+}
+.tactics-workspace-table td small {
+  display: block;
+  margin-top: 5px;
+  color: var(--legacy-muted-foreground);
+  font-size: 12px;
+}
+.tactics-workspace-table td:last-child {
+  text-align: right;
+}
+.tactics-workspace-table a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 40px;
+  color: var(--blue-dark);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.tactics-workspace-table a:hover {
+  text-decoration: underline;
+}
+.tactics-workspace-table a svg {
+  width: 18px;
+  height: 18px;
+}
+.tactics-workspace-table [data-slot='badge'] {
+  border-radius: 20px;
+  font-size: 12px;
+}
+.tactics-workspace-help {
+  margin-top: 18px;
+  color: var(--legacy-muted-foreground);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.tactics-editor-reference.tactical-studio-page .studio-heading {
+  display: block;
+  padding: 0;
+  margin-bottom: 24px;
+}
+.tactics-workspace-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 36px;
+  margin-bottom: 12px;
+  color: var(--blue-dark);
+  font-size: 13px;
+  font-weight: 550;
+}
+.tactics-workspace-back svg {
+  width: 16px;
+  height: 16px;
+}
+.tactics-workspace-back:hover {
+  text-decoration: underline;
+}
+.tactics-editor-reference.tactical-studio-page
+  .studio-heading
+  .tactics-workspace-kicker {
+  margin: 0 0 6px;
+  font-size: 13px;
+}
+.tactics-editor-reference.tactical-studio-page
+  .studio-heading
+  .page-actions:empty {
+  display: none;
+}
+.tactics-editor-reference.tactical-studio-page .studio-heading .page-actions {
+  margin-top: 12px;
+}
+.tactics-editor-reference.tactical-studio-page .studio-details {
+  border-color: var(--border);
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+.tactics-editor-reference.tactical-studio-page .studio-details summary {
+  padding: 16px 20px;
+  font-size: 13px;
+  font-weight: 550;
+}
+.tactics-editor-reference.tactical-studio-page .drill-fields label {
+  font-size: 13px;
+}
+.tactics-editor-reference.tactical-studio-page .drill-fields input,
+.tactics-editor-reference.tactical-studio-page .drill-fields [role='combobox'] {
+  height: 42px;
+  font-size: 14px;
+}
+.tactics-editor-reference.tactical-studio-page .board-editor {
+  margin: 0;
+  border-radius: 8px;
+  box-shadow: none;
+}
+.tactics-editor-reference.tactical-studio-page .shortcut-note {
+  margin: 14px 0 0;
+  line-height: 1.6;
+}
+
+@media (max-width: 1000px) {
+  .tactics-workspace-table td,
+  .tactics-workspace-table th {
+    padding-inline: 16px;
+  }
+}
+@media (max-width: 640px) {
+  .tactics-workspace,
+  .tactics-editor-reference.tactical-studio-page {
+    --page-gutter: 16px;
+  }
+  .tactics-workspace-heading {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .tactics-workspace-heading h1,
+  .tactics-editor-reference.tactical-studio-page .studio-heading h1 {
+    font-size: 30px;
+    letter-spacing: -1px;
+  }
+  .tactics-workspace-heading p,
+  .tactics-editor-reference.tactical-studio-page .studio-heading p {
+    font-size: 13px;
+  }
+  .tactics-workspace-heading > a {
+    align-self: flex-start;
+    min-height: 44px;
+    font-size: 14px;
+  }
+  .tactics-workspace-panel > header {
+    padding: 18px 16px;
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .tactics-workspace-panel h2 {
+    font-size: 17px;
+  }
+  .tactics-workspace-pagination {
+    justify-content: space-between;
+  }
+  .tactics-workspace-pagination button {
+    min-width: 44px;
+    min-height: 44px;
+  }
+  .tactics-workspace-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+  .tactics-workspace-table tbody,
+  .tactics-workspace-table tr {
+    display: block;
+  }
+  .tactics-workspace-table tr {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px 12px;
+    padding: 18px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .tactics-workspace-table tr:last-child {
+    border-bottom: 0;
+  }
+  .tactics-workspace-table td {
+    display: block;
+    padding: 0;
+    border: 0;
+  }
+  .tactics-workspace-table td:first-child {
+    width: auto;
+    grid-column: 1 / -1;
+    font-size: 15px;
+  }
+  .tactics-workspace-table td:last-child {
+    grid-column: 1 / -1;
+    text-align: left;
+  }
+  .tactics-workspace-table a {
+    min-height: 44px;
+  }
+  .tactics-workspace-back {
+    min-height: 44px;
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+  .tactics-editor-reference.tactical-studio-page .studio-heading {
+    margin-bottom: 20px;
+  }
+  .tactics-editor-reference.tactical-studio-page .studio-details summary {
+    padding: 16px;
+    min-height: 44px;
+    font-size: 14px;
+  }
+  .tactics-editor-reference.tactical-studio-page .drill-fields input,
+  .tactics-editor-reference.tactical-studio-page
+    .drill-fields
+    [role='combobox'] {
+    min-height: 44px;
+    font-size: 16px;
+  }
+}

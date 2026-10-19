@@ -128,7 +128,7 @@ function tab(name: string) {
 }
 async function openBoard() {
   await screen.findByRole('heading', { name: 'Antrenman' });
-  tab('Taktik snapshot');
+  tab('Taktik tahtası');
   fireEvent.click(screen.getByRole('button', { name: 'Tahtayı aç' }));
   await screen.findByRole('button', { name: 'Geri al' });
 }
@@ -249,7 +249,7 @@ describe('training on-demand board and draft transitions', () => {
       open();
       await openBoard();
       fireEvent.click(screen.getByRole('button', { name: 'Sahne ekle' }));
-      fireEvent.change(screen.getByLabelText('Snapshot kaynağı'), {
+      fireEvent.change(screen.getByLabelText('Tahta için faz seçin'), {
         target: { value: 'second' },
       });
       fireEvent.click(
@@ -259,7 +259,9 @@ describe('training on-demand board and draft transitions', () => {
         expect(api.putTrainingPhaseDocument).toHaveBeenCalledTimes(1),
       );
       fireEvent.click(screen.getByRole('button', { name: 'İptal' }));
-      expect(screen.getByLabelText('Snapshot kaynağı')).toHaveValue('first');
+      expect(screen.getByLabelText('Tahta için faz seçin')).toHaveValue(
+        'first',
+      );
       expect(
         screen.getByRole('region', { name: 'Sahne düzenleyici' }),
       ).toHaveTextContent('2/12');
@@ -273,7 +275,7 @@ describe('training on-demand board and draft transitions', () => {
     open();
     await openBoard();
     fireEvent.click(screen.getByRole('button', { name: 'Sahne ekle' }));
-    fireEvent.change(screen.getByLabelText('Snapshot kaynağı'), {
+    fireEvent.change(screen.getByLabelText('Tahta için faz seçin'), {
       target: { value: 'second' },
     });
     fireEvent.click(
@@ -318,19 +320,76 @@ describe('training on-demand board and draft transitions', () => {
     ).not.toBeInTheDocument();
     expect(api.putTrainingPhaseDocument).not.toHaveBeenCalled();
   });
-  it('renders the approved detail hero, verified plan summary and editor tabs', async () => {
+  it('renders the compact detail, verified plan summary and accessible phase selection', async () => {
     open();
     await screen.findByRole('heading', { name: 'Antrenman' });
-    expect(document.querySelector('.page-hero-image')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Planlar' })).toBeInTheDocument();
     expect(screen.getByText('Toplam süre')).toBeInTheDocument();
     expect(screen.getByText('20 dk')).toBeInTheDocument();
     expect(screen.getByText('Plan fazı')).toBeInTheDocument();
-    expect(screen.getByText('2')).toBeInTheDocument();
+    expect(
+      screen.getByRole('region', { name: 'Plan özeti' }),
+    ).toHaveTextContent('2 faz');
+    expect(
+      screen.getByRole('list', { name: 'Antrenman fazları' }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Faz first/ })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
+    fireEvent.click(screen.getByRole('button', { name: /Faz second/ }));
+    expect(screen.getByRole('button', { name: /Faz second/ })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
     expect(screen.getByRole('tab', { name: 'Akış' })).toBeInTheDocument();
     expect(
-      screen.getByRole('tab', { name: 'Taktik snapshot' }),
+      screen.getByRole('tab', { name: 'Taktik tahtası' }),
     ).toBeInTheDocument();
     expect(screen.getByRole('tab', { name: 'Katılım' })).toBeInTheDocument();
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Taktik tahtasına geç' }),
+    );
+    expect(screen.getByLabelText('Tahta için faz seçin')).toHaveValue('second');
+    expect(api.getTrainingPhaseDocument).not.toHaveBeenCalled();
+  });
+  it('guards next/previous phase navigation and loads a board only after explicit open', async () => {
+    api.getTrainingEditorMetadata.mockResolvedValue({
+      ...metadata,
+      drills: metadata.drills.map((item, index) => ({
+        ...item,
+        phase: index === 0 ? 'WARM_UP' : 'TECHNICAL',
+        order: 0,
+      })),
+    });
+    open();
+    await openBoard();
+    expect(screen.getByRole('button', { name: 'Önceki faz' })).toBeDisabled();
+    dirty();
+    fireEvent.click(screen.getByRole('button', { name: 'Sonraki faz' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'İptal' }));
+    expect(screen.getByLabelText('Tahta için faz seçin')).toHaveValue('first');
+    expect(screen.getByRole('button', { name: 'Geri al' })).toBeEnabled();
+    fireEvent.click(screen.getByRole('button', { name: 'Sonraki faz' }));
+    fireEvent.click(
+      await screen.findByRole('button', { name: 'Değişiklikleri at' }),
+    );
+    expect(screen.getByLabelText('Tahta için faz seçin')).toHaveValue('second');
+    expect(
+      screen.getByRole('option', { name: 'Faz second · Teknik · 2' }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Sonraki faz' })).toBeDisabled();
+    expect(api.getTrainingPhaseDocument).toHaveBeenCalledTimes(1);
+    fireEvent.click(screen.getByRole('button', { name: 'Tahtayı aç' }));
+    await screen.findByRole('button', { name: 'Geri al' });
+    expect(api.getTrainingPhaseDocument).toHaveBeenLastCalledWith(
+      'plan',
+      'second',
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Önceki faz' }));
+    expect(screen.getByLabelText('Tahta için faz seçin')).toHaveValue('first');
+    expect(api.getTrainingPhaseDocument).toHaveBeenCalledTimes(2);
+    expect(api.putTrainingPhaseDocument).not.toHaveBeenCalled();
   });
   it.each(['', '?tab=attendance'])(
     'loads metadata without any board JSON at entry %s',
@@ -340,7 +399,7 @@ describe('training on-demand board and draft transitions', () => {
       expect(api.getTrainingEditorMetadata).toHaveBeenCalledWith('plan');
       expect(api.getTrainingPhaseDocument).not.toHaveBeenCalled();
       expect(api.getTrainingPlan).not.toHaveBeenCalled();
-      tab('Taktik snapshot');
+      tab('Taktik tahtası');
       expect(
         screen.getByRole('option', { name: /Faz second/ }),
       ).toBeInTheDocument();
@@ -369,22 +428,22 @@ describe('training on-demand board and draft transitions', () => {
     open();
     await openBoard();
     dirty();
-    fireEvent.change(screen.getByLabelText('Snapshot kaynağı'), {
+    fireEvent.change(screen.getByLabelText('Tahta için faz seçin'), {
       target: { value: 'second' },
     });
     expect(await screen.findByRole('dialog')).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'İptal' }));
-    expect(screen.getByLabelText('Snapshot kaynağı')).toHaveValue('first');
+    expect(screen.getByLabelText('Tahta için faz seçin')).toHaveValue('first');
     expect(screen.getByRole('status')).toHaveTextContent(
       'Kaydedilmemiş değişiklik',
     );
-    fireEvent.change(screen.getByLabelText('Snapshot kaynağı'), {
+    fireEvent.change(screen.getByLabelText('Tahta için faz seçin'), {
       target: { value: 'second' },
     });
     fireEvent.click(
       await screen.findByRole('button', { name: 'Değişiklikleri at' }),
     );
-    expect(screen.getByLabelText('Snapshot kaynağı')).toHaveValue('second');
+    expect(screen.getByLabelText('Tahta için faz seçin')).toHaveValue('second');
     expect(api.getTrainingPhaseDocument).toHaveBeenCalledTimes(1);
     expect(api.putTrainingPhaseDocument).not.toHaveBeenCalled();
   });
@@ -401,7 +460,7 @@ describe('training on-demand board and draft transitions', () => {
     );
     await screen.findByText('Egzersiz seçici');
     expect(api.putTrainingPhaseDocument).toHaveBeenCalledTimes(1);
-    tab('Taktik snapshot');
+    tab('Taktik tahtası');
     expect(
       screen.queryByRole('button', { name: 'Oyuncu' }),
     ).not.toBeInTheDocument();
@@ -484,9 +543,10 @@ describe('training on-demand board and draft transitions', () => {
     );
     expect(screen.getByRole('dialog')).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'İptal' }));
-    expect(
-      screen.getByRole('tab', { name: 'Taktik snapshot' }),
-    ).toHaveAttribute('aria-selected', 'true');
+    expect(screen.getByRole('tab', { name: 'Taktik tahtası' })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
     expect(screen.getByRole('status')).toHaveTextContent(
       'Kaydedilmemiş değişiklik',
     );
@@ -496,7 +556,7 @@ describe('training on-demand board and draft transitions', () => {
     api.getTrainingPhaseDocument.mockResolvedValueOnce(response('second'));
     open();
     await screen.findByRole('heading', { name: 'Antrenman' });
-    tab('Taktik snapshot');
+    tab('Taktik tahtası');
     fireEvent.click(screen.getByRole('button', { name: 'Tahtayı aç' }));
     await screen.findByText('Tahta yanıtı seçilen fazla eşleşmiyor.');
     expect(
@@ -544,7 +604,7 @@ describe('training on-demand board and draft transitions', () => {
     fireEvent.keyDown(window, { key: 's', ctrlKey: true });
     fireEvent.keyDown(window, { key: 's', ctrlKey: true });
     expect(api.putTrainingPhaseDocument).toHaveBeenCalledTimes(1);
-    expect(screen.getByLabelText('Snapshot kaynağı')).toBeDisabled();
+    expect(screen.getByLabelText('Tahta için faz seçin')).toBeDisabled();
     await act(async () => reject(new Error('Failed')));
     expect(screen.getByRole('status')).toHaveTextContent(
       'Kaydedilmemiş değişiklik',
@@ -560,9 +620,9 @@ describe('training on-demand board and draft transitions', () => {
     );
     open();
     await screen.findByRole('heading', { name: 'Antrenman' });
-    tab('Taktik snapshot');
+    tab('Taktik tahtası');
     fireEvent.click(screen.getByRole('button', { name: 'Tahtayı aç' }));
-    fireEvent.change(screen.getByLabelText('Snapshot kaynağı'), {
+    fireEvent.change(screen.getByLabelText('Tahta için faz seçin'), {
       target: { value: 'second' },
     });
     await act(async () => complete(response()));
@@ -591,7 +651,7 @@ describe('training on-demand board and draft transitions', () => {
       );
       open();
       await screen.findByRole('heading', { name: 'Antrenman' });
-      tab('Taktik snapshot');
+      tab('Taktik tahtası');
       fireEvent.click(screen.getByRole('button', { name: 'Tahtayı aç' }));
       await waitFor(() =>
         expect(screen.queryByText('Tahta yükleniyor…')).not.toBeInTheDocument(),

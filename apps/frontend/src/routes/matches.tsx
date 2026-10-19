@@ -1,17 +1,13 @@
-import { CalendarBlank, SoccerBall } from '@phosphor-icons/react';
+import {
+  ArrowCounterClockwise,
+  CalendarBlank,
+  SoccerBall,
+} from '@phosphor-icons/react';
 import { useCallback, useState } from 'react';
-import dashboardHero from '../assets/dashboard-coach-wide.png';
 import { EmptyState, ErrorState } from '../components/feedback/data-state';
 import { PagePagination } from '../components/feedback/page-pagination';
 import { MatchDayGroup } from '../components/presentation/match-day-group';
-import { PageHero } from '../components/presentation/page-hero';
 import { Button } from '../components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '../components/ui/card';
 import { Input } from '../components/ui/input';
 import { Skeleton } from '../components/ui/skeleton';
 import {
@@ -72,13 +68,13 @@ export default function MatchesRoute() {
 
   return (
     <div className="page-shell matches-reference">
-      <PageHero
-        className="matches-reference__hero"
-        image={dashboardHero}
-        eyebrow="Maçlar"
-        title="Maç Takvimi"
-        description="Kapsamdaki maçları, hazırlık notlarını ve taktik tahta durumunu yönetin."
-      />
+      <header className="matches-reference__heading">
+        <h1>Maç Takvimi</h1>
+        <p>
+          Kapsamdaki maçları, hazırlık notlarını ve taktik tahta durumunu
+          yönetin.
+        </p>
+      </header>
       {loading ? (
         <div
           role="status"
@@ -101,17 +97,26 @@ export default function MatchesRoute() {
           description="Bu takım ve sezon için doğrulanmış maç bağlamı yok."
         />
       ) : (
-        <div className="matches-reference__layout">
-          <Card className="matches-reference__filter">
-            <CardHeader>
-              <CardTitle>Tarih Filtresi</CardTitle>
-              <p>Tek bir yerel takvim günündeki maçları gösterin.</p>
-            </CardHeader>
-            <CardContent>
-              <label htmlFor="match-date-filter">Maç tarihi</label>
+        <section
+          className="matches-reference__catalog"
+          aria-labelledby="match-list-title"
+        >
+          <header className="matches-reference__catalog-head">
+            <div>
+              <h2 id="match-list-title">
+                {dateFilter ? 'Seçili Günün Maçları' : 'Kapsamdaki Maçlar'}
+              </h2>
+            </div>
+            <div
+              className="matches-reference__filter"
+              role="group"
+              aria-label="Tarih filtresi"
+            >
+              <label className="sr-only" htmlFor="match-date-filter">
+                Maç tarihi
+              </label>
               <Input
                 id="match-date-filter"
-                aria-label="Maç tarihi"
                 type="date"
                 value={dateFilter}
                 onChange={(event) => setDateFilter(event.target.value)}
@@ -122,10 +127,11 @@ export default function MatchesRoute() {
                 disabled={!dateFilter}
                 onClick={() => setDateFilter('')}
               >
+                <ArrowCounterClockwise aria-hidden="true" />
                 Tüm maçları göster
               </Button>
-            </CardContent>
-          </Card>
+            </div>
+          </header>
           <MatchCatalog
             key={key}
             groupId={group.id}
@@ -133,7 +139,7 @@ export default function MatchesRoute() {
             teamName={group.name}
             dateFilter={dateFilter}
           />
-        </div>
+        </section>
       )}
     </div>
   );
@@ -165,19 +171,15 @@ function MatchCatalog({
   const groups = groupMatchesByLocalDay(page?.items ?? []);
 
   return (
-    <section
-      className="matches-reference__catalog"
-      aria-labelledby="match-list-title"
-    >
-      <header className="matches-reference__catalog-head">
-        <div>
-          <p className="page-kicker">Liste görünümü</p>
-          <h2 id="match-list-title">
-            {dateFilter ? 'Seçili Günün Maçları' : 'Kapsamdaki Maçlar'}
-          </h2>
-        </div>
-        {page && <span aria-label="Maç kapsamı özeti">{page.total} maç</span>}
-      </header>
+    <>
+      {page && (
+        <span
+          className="matches-reference__total"
+          aria-label="Maç kapsamı özeti"
+        >
+          {page.total} maç
+        </span>
+      )}
 
       {state.loading ? (
         <div
@@ -195,7 +197,31 @@ function MatchCatalog({
           onRetry={state.retry}
         />
       ) : groups.length ? (
-        <div className="matches-reference__groups">
+        <table className="matches-reference__table">
+          <caption className="sr-only">
+            Kapsamdaki maçların tarih, saat, karşılaşma, saha ve hazırlık
+            bilgileri
+          </caption>
+          <colgroup>
+            <col className="matches-reference__date-col" />
+            <col className="matches-reference__time-col" />
+            <col />
+            <col className="matches-reference__venue-col" />
+            <col className="matches-reference__preparation-col" />
+            <col className="matches-reference__action-col" />
+          </colgroup>
+          <thead>
+            <tr>
+              <th scope="col">Tarih</th>
+              <th scope="col">Saat</th>
+              <th scope="col">Karşılaşma</th>
+              <th scope="col">Saha</th>
+              <th scope="col">Hazırlık</th>
+              <th scope="col">
+                <span className="sr-only">Maç detayı</span>
+              </th>
+            </tr>
+          </thead>
           {groups.map((group) => (
             <MatchDayGroup
               key={group.dateKey}
@@ -204,7 +230,7 @@ function MatchCatalog({
               teamName={teamName}
             />
           ))}
-        </div>
+        </table>
       ) : state.pageNumber > 1 ? (
         <p className="matches-reference__continuation-empty">
           Bu sayfada maç yok. Önceki sayfaya dönebilirsiniz.
@@ -236,6 +262,6 @@ function MatchCatalog({
           if (page?.nextCursor) state.next(page.nextCursor);
         }}
       />
-    </section>
+    </>
   );
 }

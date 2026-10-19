@@ -85,6 +85,12 @@ separate from this local implementation verification.
 
 ## References
 
+2026-10-19 local reactivation under the user's explicit reload-persistence request:
+both existing flags are enabled in ignored local settings. Actual reload/new-tab,
+backend18/frontend20/disposable HTTP9 verification passes. No policy amendment,
+new retained migration or production rollout.
+[Evidence](../30-quality/SESSION_PERSISTENCE_LOCAL_2026-10-19.md).
+
 [OWASP CSRF prevention: custom request headers and strict CORS](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html#employing-custom-request-headers-for-ajaxapi)
 supports the preflight-required API request control. SameSite remains defense in
 depth. XSS and compromised approved origins remain outside that control's guarantee.

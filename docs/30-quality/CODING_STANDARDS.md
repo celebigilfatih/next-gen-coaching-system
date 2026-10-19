@@ -9,6 +9,10 @@
 
 ## Repository Conventions
 
+- CDSK 0.1.0 validation uses the tracked, read-only Python profile under ADR-0046.
+  Keep its code/tests/[profile](CDSK_0_1_0_PROFILE.md) aligned. Removing baseline
+  declarations or masking errors is not a passing validation result.
+
 - Uygulamalar `apps/` altında; backend kendi package manifestine sahiptir.
 - Generated/build artifact'leri kaynak kod yerine geçmez.
 - Repository topolojisi ve kullanıcı değişikliği açık karar olmadan yeniden yazılmaz.
@@ -22,6 +26,13 @@
 - Beklenen client hataları kontrollü HTTP hatalarına dönüştürülür.
 
 ## Formatting and Static Analysis
+
+- Windows portability: root quality resolves lockfile-pinned npm through Node,
+  not a global shell command. `.gitattributes` defines LF text checkout while
+  Prettier's EOL-auto tolerates existing native checkouts without bulk rewriting.
+  Keep all other format checks. Prisma quality output/type/build uses an isolated
+  generated client; runtime client/DLL and active API remain untouched.
+  [Verification](QUALITY_GATE_WINDOWS_2026-10-19.md).
 
 - **Format:** Kök `npm run format:check`, repository kalite scriptleriyle iki
   uygulamayı kendi Prettier yapılandırması altında salt-okunur doğrular.

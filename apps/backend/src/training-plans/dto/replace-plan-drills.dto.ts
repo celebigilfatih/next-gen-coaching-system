@@ -5,6 +5,7 @@ export interface PlanDrillInput {
   phase: 'WARM_UP' | 'TECHNICAL' | 'TACTICAL' | 'COOL_DOWN';
   order: number;
   notes?: string;
+  expectedVersionId?: string;
 }
 
 export interface ReplacePlanDrillsDto {
@@ -29,7 +30,11 @@ export function validatePlanDrillEntries(
         !phases.has(entry.phase) ||
         !Number.isInteger(entry.order) ||
         entry.order < 0 ||
-        (entry.notes !== undefined && typeof entry.notes !== 'string'),
+        (entry.notes !== undefined && typeof entry.notes !== 'string') ||
+        (entry.expectedVersionId !== undefined &&
+          (typeof entry.expectedVersionId !== 'string' ||
+            !entry.expectedVersionId.trim() ||
+            entry.expectedVersionId.length > 128)),
     )
   ) {
     throw new BadRequestException('Invalid plan drill entry');

@@ -9,7 +9,7 @@
     "content:drills:validate": "npm --prefix apps/backend run content:drills:validate",
     "docs:check": "node scripts/check-markdown-links.mjs",
     "format:check": "npm run format:repo && npm --prefix apps/backend run format:check && npm --prefix apps/frontend run format:check",
-    "format:repo": "npm --prefix apps/frontend exec -- prettier --check package.json recover-system-admin.js 'scripts/*.mjs'",
+    "format:repo": "node node_modules/prettier/bin/prettier.cjs --check package.json recover-system-admin.js \"scripts/*.mjs\"",
     "lint": "npm --prefix apps/backend run lint && npm --prefix apps/frontend run lint",
     "lint:fix": "npm --prefix apps/backend run lint:fix && npm --prefix apps/frontend run lint -- --fix",
     "quality": "node scripts/quality-gate.mjs",
@@ -38,6 +38,7 @@
     "eslint": "^9.39.1",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.6",
+    "npm": "12.2.0",
     "prettier": "^3.6.2"
   }
 }

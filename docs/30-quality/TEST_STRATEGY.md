@@ -1,5 +1,128 @@
 # Test Strategy
 
+ADR-0047 tests all21 five-match weekday combinations alongside all35 four-match
+combinations. Cover24/24/24/72-hour gaps, asymmetric94-hour gaps, early kickoff
+dates, neighboring weeks and exact positive phase sums. PostgreSQL two/three/four/
+five-match preview/apply preserves preview-time pins, edited phases/agendas and
+deletion tombstones. Five-match concurrency, same-date/cross-Monday changes, manual
+collision and late-fault rollback remain atomic. Six-match rejection checks the
+actual ceiling message. Restored UI proof preserves edited plans, academy and32
+other fixtures. [Evidence](FIVE_MATCH_PROGRAM_2026-10-19.md).
+
+ADR-0045 covers all35 four-match weekday combinations,48/48/48,24/24/96 and
+24/72/48-hour gaps, neighboring-week preparation/recovery and valid phase totals.
+PostgreSQL runs two/three/four-match preview/apply, preview time pins and manual
+phase/agenda/deletion preservation. Four-match concurrent reschedule and late-fault
+rollback, manual collision and five-match/same-day fallback remain atomic. Actual
+restored UI must preserve edited plans, academy and33 other complete fixtures;
+no retained fixture changes. [Evidence](FOUR_MATCH_PROGRAM_2026-10-19.md).
+
+CDSK ADR-0046 adds a repository-owned profile CLI: eight Node tooling cases run
+17 Python unittest cases against disposable projects (16 pass, one OS-privileged
+symlink case skipped on Windows). Broken manifests, required-list removal, empty
+documents/handoff, version/date/ADR errors and escaping paths must fail; a valid
+fixture with spaces/BOM/CRLF/TBD passes without any file changes. The default local
+wrapper and explicit override failure propagation run too. Rule scope is versioned
+in [the profile](CDSK_0_1_0_PROFILE.md); [evidence](CDSK_LOCAL_VALIDATOR_2026-10-19.md).
+
+Exercise detail checks cover full ordered instructions, exact-age summary/rules,
+source attribution, deferred readonly board, expected-version/scope picker props
+and trigger focus return. Verify PLAYER/no-group/no-variant disables attachment,
+legacy/missing-board honesty, retry and stale scope/resource rejection. A React
+context signal must drive mocked scope changes through RouterProvider. Actual
+1440/1024/390/320 QA includes mobile steps, focus-mode entry/exit, source tab and
+picker Escape without a retained write.
+[Evidence](LIBRARY_DETAIL_UX_2026-10-19.md).
+
+ADR-0044 adds three-match symmetric72/72, asymmetric48/96 and boundary24/120-hour
+cycles, adjacent-week recovery, final-match recovery, positive phase sums and
+collision-free generated intervals. PostgreSQL runs both two/three-match preview/
+apply and manual time/content/deletion preservation; three-match concurrent saves
+and late-audit rollback; four-match/same-day fallback and role/season rejection.
+Fresh restored UI uses actual three fixtures, exact edited-plan/academy/34-other-
+fixture preservation and an unchanged retained business snapshot.
+
+ADR-0043 tests actual48/72/96/120-hour two-match intervals, kickoff-hour threshold
+changes, MD+1/MD−1 combination, adjacent Mondays, early kickoff date correctness,
+positive four-phase sums and unsupported three-match/same-day/sub24-hour contexts.
+PostgreSQL exercises ten-team write-free preview, two-match apply, explicit preview
+time pinning, phase/agenda/deletion preservation, cross-Monday rescheduling,
+concurrent identical date saves, collision and late-audit rollback. Fresh restored
+UI proof preserves both edited local plans, academy rows and35 other fixtures;
+retained44-table comparison must remain identical. No real fixture is moved.
+
+Windows root runner has eight actual CLI/exit/path regressions and pinned local
+npm. Full root runs can continue after failures while preserving nonzero status;
+missing explicit CDSK overrides fail; the default is now local. Isolated Prisma generation and fresh
+quality type/build avoid locking the serving Windows DLL. Socket positive cases
+cover both persistent and legacy modes independently of local env. History UI
+assertions remain intact with a cached undo handle and current remounted scene
+fields. State tests mock styling; visual layout remains browser QA. UI defaults
+to15s; the large55-edit/50-undo scene case has a bounded60s budget.
+[Evidence](QUALITY_GATE_WINDOWS_2026-10-19.md).
+
+Library register checks cover a stable query identity during250ms search debounce,
+combined source/advanced filters, cursor reset/retry/stale-scope exclusion and
+explicit resolved-age preview with focus return. The shared preview must mount a
+readonly board only after Saha selection and retain planning guards. Actual
+1440/1024/390/320 browser checks cover Sheet/footer access, empty/reset, lower
+pagers, native full description, preview/focus mode/Escape and correct detail ID.
+[Evidence](LIBRARY_UX_2026-10-19.md).
+
+ADR-0042 adds PostgreSQL coverage for kickoff-only updates preserving IDs/phases,
+cross-Monday and adjacent-week changes, edited phases/meetings, deletion tombstones,
+standalone collisions, same-date/concurrent replay, outside-season/role denial and
+late-checkpoint rollback. Pin the planning clock to make historical protection
+deterministic. UI tests verify date-only Turkey payload, double-submit guard,
+server error retention, cancellation and stale scope unmount. Rehearse guarded
+known-origin enrollment and zero-write replay on a fresh restored local copy;
+verify retained enrollment changes no business row. No real fixture is moved to
+test the interface.
+
+Season extension additionally verifies partial season clipping and forbidden
+out-of-season edits through PostgreSQL HTTP, real fixture weekday/kickoff changes,
+next-week preparation and no invented opponent preparation during breaks.
+Guarded operator tests cover exact targets, inclusive41-week enumeration, stable
+request IDs and preservation failures. Rehearse the full season on a fresh restored
+copy, compare all original rows and replay with zero writes before retained rollout.
+Ten-team HTTP cases use a30-second budget; the service transaction limit is unchanged.
+[Season evidence](SEASON_CLUB_PROGRAM_2026-10-19.md).
+
+## Weekly program acceptance — ADR-0040
+
+Exact loopback `ngcs_week_planning_test` is required by the HTTP suite; random
+fixture IDs isolate runs without retained reset. Verify all ten ages, four phase
+sums/instructions, no-fixture youth and match-relative senior schedules, current
+coach assignment revocation, cross-club/player denial, durable/concurrent replay,
+stale/overlap conflicts, late-fault full rollback and mixed chronological totals.
+Browser QA uses restored disposable DB and separate4013/3135; covers actual all-team
+apply, refresh result lookup, meeting create/edit/cancel-delete, age switching,
+phase detail and1440/1024/390 widths. Retained operator only follows successful
+rehearsal and explicit full-plan user approval.
+[Evidence](WEEKLY_CLUB_PROGRAM_2026-10-19.md).
+
+
+## Ready drill planning — 2026-10-19
+
+Backend snapshot/actor/version tests and frontend shared-filter/preview/target
+plan/create/uncertain-write/stale-response tests accompany dedicated PostgreSQL
+HTTP 9/9. Clean and pre-snapshot legacy migration parity plus importer replay
+are required. Actual login/API/PG browser checks cover desktop/tablet/mobile;
+synthetic expert approvals are test fixtures only. Retained rollout is separate.
+[Evidence](READY_DRILL_PLANNING_2026-10-19.md).
+
+## Guided setup acceptance
+
+Use exact loopback database `ngcs_club_setup_wizard_test` for
+`test/club-setup.e2e-spec.ts`; the suite refuses other targets and never resets
+retained data. Random request/fixture prefixes isolate runs. Cover current-role
+denials, canonical/legacy parity, account-free staff, unchanged replay after
+service recreation, concurrent submissions, conflict and complete rollback.
+Frontend covers step validation/back, optional staff, retry/recovery, dirty
+navigation and color contrast/reset. Browser QA uses separate ports and checks
+logo upload, actual final POST, reload result lookup and responsive theme.
+[Evidence](CLUB_SETUP_WIZARD_2026-10-19.md).
+
 ## Combined tactical acceptance — BL-058e.4, 2026-10-03
 
 Four editor export/import regressions cover whole JSON, selected escaped SVG

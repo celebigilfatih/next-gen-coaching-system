@@ -47,5 +47,24 @@
 | [ADR-0032](ADR-0032-professional-drill-versioning-and-age-variants.md)       | Profesyonel egzersiz sürümleme ve yaş varyantları       | Accepted |
 | [ADR-0033](ADR-0033-original-and-open-license-drill-content-policy.md)       | Özgün ve açık lisanslı egzersiz içerik politikası       | Accepted |
 | [ADR-0034](ADR-0034-drill-editorial-review-and-publication.md)               | Egzersiz uzman incelemesi ve global yayın ayrımı        | Accepted |
-| [ADR-0035](ADR-0035-professional-2d-tactical-studio.md) | Profesyonel 2D taktik stüdyosu ve aşamalı geliştirme | Accepted |
-| [ADR-0036](ADR-0036-tactical-scenes-and-playback.md) | Çok sahneli V2 taktik belge, oynatma ve güvenli kayıt | Accepted |
+| [ADR-0035](ADR-0035-professional-2d-tactical-studio.md)                      | Profesyonel 2D taktik stüdyosu ve aşamalı geliştirme    | Accepted |
+| [ADR-0036](ADR-0036-tactical-scenes-and-playback.md)                         | Çok sahneli V2 taktik belge, oynatma ve güvenli kayıt   | Accepted |
+| [ADR-0037](ADR-0037-guided-club-setup.md)                                    | Rehberli kulüp, sezon, takım ve teknik kadro kurulumu   | Accepted |
+| [ADR-0038](ADR-0038-club-branding-and-derived-theme.md)                      | Kulüp logosu, renkleri ve türetilmiş tema               | Accepted |
+
+- [ADR-0039 — Ready drill plan snapshots](ADR-0039-ready-drill-plan-snapshots.md): Accepted 2026-10-19; local migration/import/publication complete under the scoped ADR-0041 exception.
+- [ADR-0041 — Local starter review exception](ADR-0041-local-starter-review-exception.md): Accepted and executed; explicit named same-account local approval, all 120 published, general API guards unchanged.
+
+- [ADR-0040 — Weekly club program](ADR-0040-weekly-club-program.md): Accepted; unified events, atomic age-specific preview/apply and approved local rollout.
+
+- [ADR-0042 — Fixture-aware program updates](ADR-0042-fixture-aware-program-updates.md): Accepted; synchronous match-date reconciliation, immutable ownership checkpoints and protection of manual edits/deletions.
+
+- [ADR-0043 — Two-match senior microcycles](ADR-0043-two-match-microcycles.md): Accepted; elapsed-hour recovery/preparation and preserved coach time overrides.
+
+- [ADR-0044 — Three-match senior microcycles](ADR-0044-three-match-microcycles.md): Accepted; consecutive-interval adaptation for three SENIOR fixtures with existing manual protections.
+
+- [ADR-0045 — Four-match senior microcycles](ADR-0045-four-match-microcycles.md): Accepted; four SENIOR fixtures, actual-hour adaptation and preserved manual decisions.
+
+- [ADR-0047 — Five-match senior microcycles](ADR-0047-five-match-microcycles.md): Accepted; five SENIOR fixtures with actual-hour adaptation, existing manual protections and atomic reconciliation.
+
+- [ADR-0046 — Repository-owned CDSK validator](ADR-0046-repository-owned-cdsk-validator.md): Accepted; pinned CDSK 0.1.0 project profile, local default and real CLI regression fixtures.

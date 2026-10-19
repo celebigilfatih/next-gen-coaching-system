@@ -5,7 +5,22 @@ import {
   setSession,
   type SessionUser,
 } from './session';
+import type {
+  ApplyProgram,
+  PlanningEventInput,
+  PlanningPage,
+  PlanningResult,
+  PlanningTeam,
+  ProgramInput,
+  ProgramPreview,
+} from './planning';
 import type { TacticalBoardDocumentV1 } from './tactical-board';
+import {
+  validSetupResult,
+  type ClubSetupPayload,
+  type ClubSetupResult,
+  type ClubSetupStatus,
+} from './club-setup';
 import {
   validateTacticalDocument,
   type TacticalDocument,
@@ -271,6 +286,26 @@ export type PlanDrill = {
   notes: string | null;
   drill: Drill;
   boardSnapshot?: TacticalBoardDocumentV1 | null;
+  contentSnapshot?: PlanDrillContentSnapshot | null;
+};
+
+export type PlanDrillContentSnapshot = {
+  schemaVersion: 1;
+  sourceVersionId: string;
+  sourceVersion: number;
+  ageGroup: string;
+  title: string;
+  summary: string;
+  durationMin: number;
+  objectiveLabel: string;
+  organization: string;
+  steps: string[];
+  coachingPoints: string[];
+  rules: string[];
+  variantCoachingPoints: string[];
+  progressions: string[];
+  regressions: string[];
+  equipmentItems: string[];
 };
 
 export type TrainingPlan = {
@@ -424,6 +459,14 @@ export type MatchAnalysis = {
 };
 
 export type Match = {
+  planningSync?: {
+    status: 'updated' | 'not-enrolled';
+    updated: number;
+    created: number;
+    retired: number;
+    protected: number;
+    weeks: string[];
+  };
   id: string;
   seasonId: string;
   groupId: string | null;
@@ -561,7 +604,13 @@ export type WorkspaceCatalogs = {
   [K in keyof CatalogItems]: CatalogPage<CatalogItems[K]>;
 };
 export type WorkspaceSelection = WorkspaceCatalogs & {
-  club: CatalogItems['clubs'] | null;
+  club:
+    | (CatalogItems['clubs'] & {
+        logo?: string | null;
+        primaryColor?: string | null;
+        secondaryColor?: string | null;
+      })
+    | null;
   clubSeason: CatalogItems['seasons'] | null;
   team: SportingTeam | null;
   teamSeason: SportingTeam['teamSeasons'][number] | null;
@@ -1478,6 +1527,7 @@ export type DrillCatalogItem = Pick<
   isBoard: boolean;
   createdAt: string;
   contentVersion: number | null;
+  contentVersionId?: string | null;
   summary: string | null;
   objectiveKey: string | null;
   objectiveLabel: string | null;
@@ -1543,6 +1593,13 @@ export type DrillContentStatus =
   | 'APPROVED'
   | 'PUBLISHED'
   | 'ARCHIVED';
+
+export function publishDrillStarterPack() {
+  return request<{ published: number }>(
+    '/drills/content/starter-pack/publish',
+    { method: 'POST' },
+  );
+}
 
 export type DrillContentDetail = {
   drill: {
@@ -1692,6 +1749,8 @@ export function listAttendance(planId: string) {
 export function createTrainingPlan(input: {
   title: string;
   groupId: string;
+  clubId?: string;
+  coachId?: string;
   date: string;
   notes?: string;
 }) {
@@ -1744,7 +1803,12 @@ export function replaceTrainingPlanDrills(
 
 export function addTrainingPlanDrill(
   planId: string,
-  input: { drillId: string; phase: DrillPhase; order: number },
+  input: {
+    drillId: string;
+    phase: DrillPhase;
+    order: number;
+    expectedVersionId?: string;
+  },
 ) {
   return request<{ id: string }>(`/training-plans/${planId}/drills`, {
     method: 'POST',
@@ -1766,9 +1830,10 @@ export function markAttendance(input: {
 export function updateMatch(
   matchId: string,
   input: {
-    opponentAnalysis: MatchAnalysis;
-    ourFormation: string;
-    notes: string;
+    date?: string;
+    opponentAnalysis?: MatchAnalysis;
+    ourFormation?: string;
+    notes?: string;
   },
 ) {
   return request<Match>(`/seasons/matches/${matchId}`, {
@@ -1798,5 +1863,80 @@ export function updateMatchTacticalBoard(
   return request<Match>(`/seasons/matches/${matchId}/tactical-board`, {
     method: 'PUT',
     body: JSON.stringify({ tacticalBoard }),
+  });
+}
+
+export async function createClubSetup(
+  payload: ClubSetupPayload,
+): Promise<ClubSetupResult> {
+  const saved = validSetupResult(
+    await request<ClubSetupStatus>('/sporting/club-setup', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    }),
+  );
+  if (saved.state !== 'completed')
+    throw new Error('Kurulum henüz doğrulanmadı. Sonucu kontrol edin.');
+  return saved;
+}
+
+export async function getClubSetupStatus(requestId: string) {
+  return validSetupResult(
+    await request<ClubSetupStatus>(
+      `/sporting/club-setup/${encodeURIComponent(requestId)}`,
+      { cache: 'no-store' },
+    ),
+  );
+}
+
+export function getPlanningPage(
+  groupId: string,
+  seasonId: string | undefined,
+  from: string,
+  until: string,
+  after?: string,
+) {
+  const q = new URLSearchParams({ groupId, from, until, limit: '25' });
+  if (seasonId) q.set('seasonId', seasonId);
+  if (after) q.set('after', after);
+  return request<PlanningPage>(`/planning/events/page?${q}`);
+}
+export function getPlanningTeams(clubSeasonId: string) {
+  return request<{ items: PlanningTeam[] }>(
+    `/planning/teams?${new URLSearchParams({ clubSeasonId })}`,
+  );
+}
+export function previewWeekProgram(input: ProgramInput) {
+  return request<ProgramPreview>('/planning/week/preview', {
+    method: 'POST',
+    body: JSON.stringify(input),
+  });
+}
+export function applyWeekProgram(input: ApplyProgram) {
+  return request<PlanningResult>('/planning/week/apply', {
+    method: 'POST',
+    body: JSON.stringify(input),
+  });
+}
+export function getWeekApplication(id: string) {
+  return request<PlanningResult | { state: 'not-found' }>(
+    `/planning/week/applications/${encodeURIComponent(id)}`,
+  );
+}
+export function createPlanningEvent(input: PlanningEventInput) {
+  return request<PlanningResult>('/planning/events', {
+    method: 'POST',
+    body: JSON.stringify(input),
+  });
+}
+export function updatePlanningEvent(id: string, input: PlanningEventInput) {
+  return request(`/planning/events/${encodeURIComponent(id)}`, {
+    method: 'PUT',
+    body: JSON.stringify(input),
+  });
+}
+export function deletePlanningEvent(id: string) {
+  return request(`/planning/events/${encodeURIComponent(id)}`, {
+    method: 'DELETE',
   });
 }

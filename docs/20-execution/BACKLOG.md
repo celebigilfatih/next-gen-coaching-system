@@ -1,5 +1,125 @@
 # Backlog
 
+## BL-068 — Beş maçlı yoğun fikstür (Implemented, 2026-10-19)
+
+ADR-0047 / CR-034 / REQ-033. Five SENIOR fixtures accepted through existing
+pairwise planning, preserving manual content/time/deletion and atomic writes.
+Backend918/focused48/PostgreSQL HTTP21 pass, including all21 weekday combinations,
+hour asymmetry, adjacent weeks, pins, concurrency and late-fault rollback.
+
+## BL-067 — Dört maçlı yoğun fikstür (Implemented, 2026-10-19)
+
+ADR-0045 / CR-033 / REQ-032. Four SENIOR fixtures accepted with actual-hour
+adaptation and manual content/time/deletion protection. Backend913/focused43/
+PostgreSQL HTTP19, including all35 weekday combinations, actual apply, cross-
+Monday, concurrency, conflict and late-fault rollback pass. No migration.
+
+## BL-066 — Üç maçlı yoğun fikstür (Implemented, 2026-10-19)
+
+ADR-0044 / CR-032 / REQ-031. Three SENIOR fixtures supported in preview/apply and
+enrolled date reconciliation; existing elapsed-hour presets, full manual/time/
+deletion protection, concurrency and atomic rollback retained. Backend908 /
+focused38 / PostgreSQL HTTP17 and restored UI proof pass. No migration.
+
+## BL-065 — İki maçlı mikro döngü (Implemented, 2026-10-19)
+
+ADR-0043 / CR-031 / REQ-030. Two-match SENIOR templates use actual kickoff hours,
+compressed recovery/preparation and combined briefings. Manual phase/agenda/time
+changes and deletion/exclusion tombstones remain; preview times pin on apply.
+Unit/PostgreSQL transaction and restored UI verification cover interval changes,
+cross-Monday, concurrent replay, conflict and late-fault rollback. No migration.
+
+BL-027 local reactivation follow-up,2026-10-19: approved reload-persistence fix
+complete using existing ADR-0018 flags. Actual reload/new-tab login preservation,
+backend18/frontend20/dedicated HTTP9 verified. Production inputs remain BL-013/028;
+no new source/model/migration or changed lifetime policy.
+[Evidence](../30-quality/SESSION_PERSISTENCE_LOCAL_2026-10-19.md).
+
+## BL-064 — Fikstüre bağlı otomatik program (Implemented, 2026-10-19)
+
+ADR-0042 / CR-030 / REQ-029. Same-transaction date/program reconciliation, adjacent
+weeks, complete-fingerprint protection of manual changes and durable deletion
+tombstones. Explicit exclusions/history/completion/attendance remain protected.
+Shared season lock and Serializable retry; conflicts/congested weeks fail without
+partial writes. Authorized match-date dialog and result counts; guarded enrollment
+preserves known local business rows. No migration/new scheduler.
+
+BL-063 subsequent approved season extension complete: all41 weeks/ten teams,
+2009 new physical sessions/504 meetings/1026 rest entries; original1963 rows across44
+tables unchanged, retained replay adds zero. Fixture-free development and season
+clipping verified; no migration/new API. Backend893/HTTP8/operator4 pass.
+[Evidence](../30-quality/SEASON_CLUB_PROGRAM_2026-10-19.md).
+
+## BL-063 — Haftalık kulüp programı (Implemented; approved local rollout, 2026-10-19)
+
+ADR-0040 / CR-029 / REQ-028. Unified chronological, paginated training/match/day
+calendar; manual event/agenda management; editable preview and atomic multi-team
+age-specific weekly programs. Actor-bound durable replay, per-team/week duplicate
+protection, stale calendar and overlap rejection. Four actual phases and original
+CLUB exercises per physical session, no fabricated global publication or players.
+Approved Spor Manage 19–25 October local rollout: 51 physical sessions, 204 phases,
+13 meetings, 26 rest entries across ten teams; existing 36 matches preserved.
+Full backend 890 / frontend 478 / Sites 4; dedicated HTTP 7; browser responsive
+and create/reload/edit flows verified. Root Windows/CDSK limits remain BL-061.
+[Evidence](../30-quality/WEEKLY_CLUB_PROGRAM_2026-10-19.md).
+
+## BL-062 — Hazır egzersizlerden planlama (Implemented; local publication complete, 2026-10-19)
+
+ADR-0039 / CR-028 / REQ-027. Shared filters, preview, target-plan/create flow,
+version-bound content/board snapshots and exact-age frozen totals implemented.
+Backend 869 / Sites 4; frontend 473 pass / one existing undo timeout
+(isolated rerun passes); disposable HTTP 9/9, clean and legacy
+migration and idempotent import verified. Windows root quality/CDSK limitations
+remain BL-061. Separately approved retained snapshot migration/import completed:
+120 created, replay 0 created, backup restore and 38-table preservation verified.
+Publication and Fatih Çelebigil's named approval are recorded. ADR-0041's local
+same-account exception was explicitly accepted; all 120 are now PUBLISHED with
+360 truthful transition audits. Dedicated maintenance tests 10/10 pass; new
+backup/restore and 43-table preservation verified; publication replay writes zero.
+Ordinary API review guards and production/future-review gates remain unchanged.
+[Local publication](../30-quality/READY_DRILL_LOCAL_PUBLICATION_2026-10-19.md).
+Actual retained browser acceptance also passes: A Takım library/existing-plan
+and in-plan preview/add, two authorized entries, total 121 / 6, correct copies and
+day duration, original/other plans preserved, duplicate selection excluded.
+[Browser evidence](../30-quality/READY_DRILL_RETAINED_BROWSER_2026-10-19.md).
+Tablet/mobile follow-up also verified with two authorized retained attachments
+on19 May:45→103min,4→6 entries. Responsive filter scrolling/touch size/overflow
+and selected-plan identification corrected; focused19/19 and persistence pass.
+[Responsive evidence](../30-quality/READY_DRILL_RESPONSIVE_BROWSER_2026-10-19.md).
+[Evidence](../30-quality/READY_DRILL_PLANNING_2026-10-19.md).
+
+## BL-061 — Windows quality runner ve validator taşınabilirliği (Done; root 17/17 verified, 2026-10-19)
+
+- Priority: P2. Owner: TBD. Kalite araçları; uygulama davranışı değişmez.
+- Global npm/Windows spawn engeli yerel npm12.2.0 + Node CLI çözümüyle giderildi.
+  Fail-fast korunur; continue-on-error tüm aşamaları dener ve nonzero döner.
+  LF checkout/EOL-auto politikası, izole Prisma kalite client/type/build ve
+  yerel oturum ayarından bağımsız Socket testleri uygulandı.
+- Kabul: Windows'ta gerçek npm executable çözümü, checkout EOL politikası ve
+  ADR-0046 ile onaylanan repository içi CDSK proje profili belgelenir; workspace kapıları korunur. Toplu dosya
+  biçimleme veya validator sonucunu taklit etme çözüm değildir.
+- Önceki koşu16/17 geçti; dış kaynak eksikliği CDSK'yi durdurdu. Kullanıcının
+  sonraki açık isteğiyle ADR-0046 yerel modeli onayladı: standard0.1.0 korunur,
+  mevcut manifest/Boot/ADR sözleşmesi denetlenir; upstream eşdeğerliği iddia edilmez.
+  Sekiz araç testi ve17 Python vaka (16 başarılı/bir Windows symlink yetki atlaması)
+  geçti; yerel CDSK36 belge/46 ADR'de başarılı. Tam kapı17/17 ve exit0:
+  backend913/frontend509/Sites4/araç8, tür/lint/biçim/derleme/178-belge bağlantıları
+  ve whitespace başarılı. ADR numara çakışması yerel doğrulayıcı tarafından
+  yakalandı; bu karar0046 oldu, dört maçlı program0045 olarak korundu.
+  [Yeni kanıt](../30-quality/CDSK_LOCAL_VALIDATOR_2026-10-19.md),
+  [önceki koşu](../30-quality/QUALITY_GATE_WINDOWS_2026-10-19.md).
+
+## BL-060 — Rehberli ilk kulüp kurulumu (Implemented, 2026-10-19)
+
+- ADR-0037/0038 ve CR-027 açıkça onaylandı. Kulüp/logo/renk → sezon → tek
+  A Takım ve altyapı → isteğe bağlı teknik kadro → kontrol akışı /app/setup'ta.
+- Tek atomik final write; aktöre bağlı kalıcı replay/conflict/status; role/tenant,
+  rollback ve eşzamanlı HTTP testleri; gerçek desktop/tablet/mobile QA tamamlandı.
+- Teknik kişi/görev hesabı ve erişim grant'i oluşturmaz; davetler ayrı kalır.
+  Renk migration'ı özel backup/restore sonrası ayrıca onayla yerel DB'ye uygulandı.
+- [Kanıt](../30-quality/CLUB_SETUP_WIZARD_2026-10-19.md). Production rollout ve
+  genel personel/sonraki sezon yönetimi bu dilimin kapsamında değildir.
+
 ## BL-059 — Workspace-aware pre-commit routing (Open, 2026-10-19)
 
 - Priority: P2. Owner: TBD. Publication tooling only; runtime scope unchanged.
@@ -12,7 +132,7 @@
 - Current workaround: explicit `npm run quality`, script syntax checks and a
   command-scoped hook skip for the requested publication. No runtime fix applied.
 
-## BL-058 — Sahne ve zaman çizelgesi (Implemented in repository; rollout pending)
+## BL-058 — Sahne ve zaman çizelgesi (Implemented; local activation complete)
 
 - Priority: P1 — profesyonel tahta yönünün sonraki önerilen dilimi. Owner: TBD.
 - Dependencies: ADR-0036 A–D Accepted, CR-026, REQ-025; mevcut BL-057/V1 korunur.
@@ -42,9 +162,12 @@
   kaynak izolasyonu, JSON bütün sahneler ve PNG/SVG seçili sabit sahne.
   Disposable HTTP 18/18; gerçek route/API/PG browser akışı, üç viewport ve
   12 sahne/1.500 eleman/50 undo ölçümü; root quality 843/446/4 geçti.
-- Repository uygulama/kabul kapısı kapalı; retained rollout bekler ve ayrı açık
-  onay gerektirir. Flag kapalı kalır; otomatik dönüşüm yapılmaz. Owner/pilot ve
-  production performans hedefi TBD; offline/video/3D bu teslimle kapanmaz.
+- Repository uygulama/kabul kapısı kapalı. Kullanıcının 2026-10-19 isteğiyle
+  yalnız Windows yerel retained ortamında kontrollü V2 aktivasyonu yapıldı.
+  Yedek/restore ve ayrı pilot kayıt doğrulandı; toplu dönüşüm yoktur.
+  Varsayılan flag kapalı kalır; production/sportif pilot ayrıca onay gerektirir.
+  Owner/pilot ve production performans hedefi TBD; offline/video/3D bu teslimle kapanmaz.
+- [Yerel aktivasyon kanıtı](../30-quality/TACTICAL_LOCAL_ROLLOUT_2026-10-19.md).
 - [BL-058e.4 kanıtı](../30-quality/TACTICAL_COMBINED_ACCEPTANCE_2026-10-03.md).
 - [BL-058e.3 kanıtı](../30-quality/TACTICAL_TRAINING_INTEGRATION_2026-09-26.md).
 - [BL-058e.2 kanıtı](../30-quality/TACTICAL_DRILL_INTEGRATION_2026-09-26.md).
@@ -82,18 +205,18 @@ Remaining: persistent identities/named units, animation, offline and 3D.
 
 ## Current UI migration — 2026-09-07
 
-| ID     | Outcome                                                               | Priority                   | Owner | Dependencies                                                    | Acceptance criteria                                                                                                                                                                                                               | Status                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| ------ | --------------------------------------------------------------------- | -------------------------- | ----- | --------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| BL-047 | Incremental NGCS shadcn design-system convergence                     | P2 — current user priority | TBD   | ADR-0011/0013; user UI migration brief                          | Classified inventory; semantic tokens; per-phase behavior/responsive gates; shared layouts/forms/data patterns; only proven unused CSS removed; no API/domain regression                                                          | In progress — phases 1–5 passed with 102 added tests; shared data states, full/compact pagination and four football-card catalogs verified. Phases 6–8 open. [Plan](UI_MIGRATION_PLAN.md), [latest evidence](../30-quality/UI_FOOTBALL_CARDS_2026-09-07.md)                                                                                                                                                                                                              |
-| BL-048 | Page-by-page migration to the approved 2026-09-07 white visual system | P2 — current user priority | TBD   | User screenshots; BL-047; available authenticated local runtime | Shared shell + Dashboard, then Teams and Matches, matched viewport screenshots, real API-only content, keyboard/mobile checks, `design-qa.md` passed before each slice closes                                                     | Done — Dashboard, Teams, Matches, Week, Trainings/detail, Library/Tactical Board/editor, Match detail, Players, Player 360, Squad, Attendance and Settings passed visual QA with retained exact-size desktop/tablet/mobile evidence and real API-only content. Pagination, visibility, import/export, dirty navigation, dated assignments, session behavior and permissions are preserved; no API/schema/data change. Next: product gap audit. [QA](../../design-qa.md). |
-| BL-049 | Training plan edit, atomic permanent delete and catalogue UI repair   | P1 — user-approved         | TBD   | ADR-0026, CR-018, existing plan authorization                   | Edit sends only title/date/notes; linked DayPlan stays atomic; confirmed delete removes DayPlan/Attendance/PlanDrill/plan in one transaction; PLAYER/cross-tenant denied; cursor, focus, error and responsive UI regressions pass | Done — targeted unit/frontend suites, disposable PostgreSQL lifecycle E2E, root quality (663 backend, 268 frontend, 4 Sites) and combined visual QA passed; no schema/dependency/retained-data change.                                                                                                                                                                                                                                                                   |
-| BL-050 | Admin account directory and permission-management surface             | P1 — user-requested        | TBD   | ADR-0005/0008/0023/0027, CR-019                                 | Minimum-projection paged directory; SYSTEM_ADMIN platform and CLUB_ADMIN tenant scope; invite/access/status/reset/session actions; COACH/PLAYER denial; read-only sporting capability matrix; responsive and negative tests pass  | Done — backend/frontend unit tests, disposable PostgreSQL HTTP E2E and 1440/1024/390 browser QA passed; no schema/dependency/retained-data change.                                                                                                                                                                                                                                                                                                                       |
-| BL-051 | A Takım tekilliği ve altyapı takım yaşam döngüsü                      | P1 — user-approved         | TBD   | ADR-0022/0023/0028, CR-020                                      | Tek aktif A Takım; exact-season atomik create; yönetici academy edit/archive/restore; geçmiş korunumu; serbest kademe etiketi; coach/player salt-okunur; role/tenant/UI/migration kapıları geçer                                  | Done — 706 backend ve 276 frontend test, disposable PostgreSQL 16 migration/diff ve 3/3 lifecycle E2E geçti; retained-data clone hash'leri korundu; canlı Chrome QA mutation yapmadan geçti. [Evidence](../30-quality/TEAM_LIFECYCLE_VERIFICATION_2026-09-08.md).                                                                                                                                                                                                        |
-| BL-052 | Yerel A Takım ve U12/U14/U16/U18 kadrolarını kur                      | P1 — user-requested        | TBD   | ADR-0022/0028, BL-051                                           | Beş takım seçili sezona bağlı; her biri 18 aktif oyuncu; mevcut U18 oyuncuları korunur; sentetik kişiler hesap/PII üretmez; kurulum atomik ve tekrarlanabilir; Kadro canonical roster okur                                        | Done — 1 A Takım + 4 altyapı, 90 toplam aktif oyuncu; ikinci çalıştırma 0 yeni kayıt; frontend canonical Kadro testi ve veri postcondition sorguları geçti. [Evidence](../30-quality/LOCAL_DEMO_SQUADS_2026-09-09.md).                                                                                                                                                                                                                                                   |
-| BL-053 | A Takım/Altyapı navigasyonunu ayır ve kadro adlarını doğallaştır      | P1 — user-requested        | TBD   | ADR-0029, CR-021, BL-051/052                                    | İki ayrı sidebar/mobile route; sekmesiz dizin; legacy redirect; tek aktif menü; 90 benzersiz sentetik ad; hesap/PII/API/schema değişmez; route/data/idempotency/browser kapıları geçer                                            | Done — canonical A Takım/Altyapı rotaları, eski URL redirect'i, Chrome QA ve root quality 706/279/4 ile doğrulandı; 90/90 benzersiz ad, 0 Demo/E2E placeholder ve ikinci çalıştırmada 0 rename. [Evidence](../30-quality/LOCAL_DEMO_SQUADS_2026-09-09.md).                                                                                                                                                                                                               |
-| BL-054 | A Takımı doğrudan kadro merkezine ve ortak oyuncu dizinine geçir      | P1 — user-approved         | TBD   | ADR-0022/0023/0030, CR-022, BL-053                              | Route-preserving scope sync; responsive native tablo/kart; URL arama/pozisyon/sıra; deterministik opaque cursor; tam ve self-scope özetleri; Player 360 ve hızlı bağlantılar; kalite/QA kapıları geçer                            | Implemented — strict backend cursor/scope, frontend route/liste regresyonları, disposable HTTP E2E, root quality ve canlı Chrome route/control smoke geçti; yeniden login sonrası 1672/1024/390 matched visual gate açık. Schema/migration/dependency/data değişmedi. [Evidence](../30-quality/FIRST_TEAM_ROSTER_CENTER_2026-09-09.md).                                                                                                                                  |
-| BL-055 | Player 360 ve oyuncu notlarını etkinleştir                            | P1 — user-approved         | TBD   | ADR-0022/0023/0031, CR-023                                      | Person bağlı not; URL sekme/filtre; capability/tenant/grant; revision/409; arşiv/restore; gövde-log gizliliği; activity ve responsive QA; migration/quality kapıları geçer                                                        | Implemented in repository and retained local DB — additive migration, 2 disposable PostgreSQL E2E, authenticated Chrome desktop flow and root quality (720 backend / 285 frontend / 4 Sites) pass. Responsive breakpoints/tests pass; new exact-size responsive capture remains TBD. [Evidence](../30-quality/PLAYER_360_NOTES_VERIFICATION_2026-09-09.md).                                                                                                              |
-| BL-056 | Profesyonel egzersiz kütüphanesi ve 120 içerik paketi                 | P1 — user-approved         | TBD   | ADR-0032–0034, CR-024, REQ-023                                  | Sürümlü model/yaş varyantı/kaynak; review/publish yetkisi; yayınlanmış katalog/detay/yönetim UI; 120 özgün DRAFT manifest; dry-run/idempotency; migration/backfill/test/docs kapıları                                            | In progress — foundation, local additive migration and 120 DRAFT manifest implemented; root quality, clean migration/diff, 5-record legacy backfill and disposable import pass. Separate user approval sonrası retained DB importu da idempotent geçti: 120 DRAFT, 5 unchanged PUBLISHED legacy, 120 audit event. Named expert review, 3×40 sporting approval waves, publication and exact-size browser QA remain TBD. [Evidence](../30-quality/PROFESSIONAL_DRILL_LIBRARY_2026-09-09.md). |
+| ID     | Outcome                                                               | Priority                   | Owner | Dependencies                                                    | Acceptance criteria                                                                                                                                                                                                               | Status                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| ------ | --------------------------------------------------------------------- | -------------------------- | ----- | --------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| BL-047 | Incremental NGCS shadcn design-system convergence                     | P2 — current user priority | TBD   | ADR-0011/0013; user UI migration brief                          | Classified inventory; semantic tokens; per-phase behavior/responsive gates; shared layouts/forms/data patterns; only proven unused CSS removed; no API/domain regression                                                          | In progress — phases 1–5 passed with 102 added tests; shared data states, full/compact pagination and four football-card catalogs verified. Phases 6–8 open. [Plan](UI_MIGRATION_PLAN.md), [latest evidence](../30-quality/UI_FOOTBALL_CARDS_2026-09-07.md)                                                                                                                                                                                                                                |
+| BL-048 | Page-by-page migration to the approved 2026-09-07 white visual system | P2 — current user priority | TBD   | User screenshots; BL-047; available authenticated local runtime | Shared shell + Dashboard, then Teams and Matches, matched viewport screenshots, real API-only content, keyboard/mobile checks, `design-qa.md` passed before each slice closes                                                     | Done — Dashboard, Teams, Matches, Week, Trainings/detail, Library/Tactical Board/editor, Match detail, Players, Player 360, Squad, Attendance and Settings passed visual QA with retained exact-size desktop/tablet/mobile evidence and real API-only content. Pagination, visibility, import/export, dirty navigation, dated assignments, session behavior and permissions are preserved; no API/schema/data change. Next: product gap audit. [QA](../../design-qa.md).                   |
+| BL-049 | Training plan edit, atomic permanent delete and catalogue UI repair   | P1 — user-approved         | TBD   | ADR-0026, CR-018, existing plan authorization                   | Edit sends only title/date/notes; linked DayPlan stays atomic; confirmed delete removes DayPlan/Attendance/PlanDrill/plan in one transaction; PLAYER/cross-tenant denied; cursor, focus, error and responsive UI regressions pass | Done — targeted unit/frontend suites, disposable PostgreSQL lifecycle E2E, root quality (663 backend, 268 frontend, 4 Sites) and combined visual QA passed; no schema/dependency/retained-data change.                                                                                                                                                                                                                                                                                     |
+| BL-050 | Admin account directory and permission-management surface             | P1 — user-requested        | TBD   | ADR-0005/0008/0023/0027, CR-019                                 | Minimum-projection paged directory; SYSTEM_ADMIN platform and CLUB_ADMIN tenant scope; invite/access/status/reset/session actions; COACH/PLAYER denial; read-only sporting capability matrix; responsive and negative tests pass  | Done — backend/frontend unit tests, disposable PostgreSQL HTTP E2E and 1440/1024/390 browser QA passed; no schema/dependency/retained-data change.                                                                                                                                                                                                                                                                                                                                         |
+| BL-051 | A Takım tekilliği ve altyapı takım yaşam döngüsü                      | P1 — user-approved         | TBD   | ADR-0022/0023/0028, CR-020                                      | Tek aktif A Takım; exact-season atomik create; yönetici academy edit/archive/restore; geçmiş korunumu; serbest kademe etiketi; coach/player salt-okunur; role/tenant/UI/migration kapıları geçer                                  | Done — 706 backend ve 276 frontend test, disposable PostgreSQL 16 migration/diff ve 3/3 lifecycle E2E geçti; retained-data clone hash'leri korundu; canlı Chrome QA mutation yapmadan geçti. [Evidence](../30-quality/TEAM_LIFECYCLE_VERIFICATION_2026-09-08.md).                                                                                                                                                                                                                          |
+| BL-052 | Yerel A Takım ve U12/U14/U16/U18 kadrolarını kur                      | P1 — user-requested        | TBD   | ADR-0022/0028, BL-051                                           | Beş takım seçili sezona bağlı; her biri 18 aktif oyuncu; mevcut U18 oyuncuları korunur; sentetik kişiler hesap/PII üretmez; kurulum atomik ve tekrarlanabilir; Kadro canonical roster okur                                        | Done — 1 A Takım + 4 altyapı, 90 toplam aktif oyuncu; ikinci çalıştırma 0 yeni kayıt; frontend canonical Kadro testi ve veri postcondition sorguları geçti. [Evidence](../30-quality/LOCAL_DEMO_SQUADS_2026-09-09.md).                                                                                                                                                                                                                                                                     |
+| BL-053 | A Takım/Altyapı navigasyonunu ayır ve kadro adlarını doğallaştır      | P1 — user-requested        | TBD   | ADR-0029, CR-021, BL-051/052                                    | İki ayrı sidebar/mobile route; sekmesiz dizin; legacy redirect; tek aktif menü; 90 benzersiz sentetik ad; hesap/PII/API/schema değişmez; route/data/idempotency/browser kapıları geçer                                            | Done — canonical A Takım/Altyapı rotaları, eski URL redirect'i, Chrome QA ve root quality 706/279/4 ile doğrulandı; 90/90 benzersiz ad, 0 Demo/E2E placeholder ve ikinci çalıştırmada 0 rename. [Evidence](../30-quality/LOCAL_DEMO_SQUADS_2026-09-09.md).                                                                                                                                                                                                                                 |
+| BL-054 | A Takımı doğrudan kadro merkezine ve ortak oyuncu dizinine geçir      | P1 — user-approved         | TBD   | ADR-0022/0023/0030, CR-022, BL-053                              | Route-preserving scope sync; responsive native tablo/kart; URL arama/pozisyon/sıra; deterministik opaque cursor; tam ve self-scope özetleri; Player 360 ve hızlı bağlantılar; kalite/QA kapıları geçer                            | Implemented — strict backend cursor/scope, frontend route/liste regresyonları, disposable HTTP E2E, root quality ve canlı Chrome route/control smoke geçti; yeniden login sonrası 1672/1024/390 matched visual gate açık. Schema/migration/dependency/data değişmedi. [Evidence](../30-quality/FIRST_TEAM_ROSTER_CENTER_2026-09-09.md).                                                                                                                                                    |
+| BL-055 | Player 360 ve oyuncu notlarını etkinleştir                            | P1 — user-approved         | TBD   | ADR-0022/0023/0031, CR-023                                      | Person bağlı not; URL sekme/filtre; capability/tenant/grant; revision/409; arşiv/restore; gövde-log gizliliği; activity ve responsive QA; migration/quality kapıları geçer                                                        | Implemented in repository and retained local DB — additive migration, 2 disposable PostgreSQL E2E, authenticated Chrome desktop flow and root quality (720 backend / 285 frontend / 4 Sites) pass. Responsive breakpoints/tests pass; new exact-size responsive capture remains TBD. [Evidence](../30-quality/PLAYER_360_NOTES_VERIFICATION_2026-09-09.md).                                                                                                                                |
+| BL-056 | Profesyonel egzersiz kütüphanesi ve 120 içerik paketi                 | P1 — user-approved         | TBD   | ADR-0032–0034, CR-024, REQ-023                                  | Sürümlü model/yaş varyantı/kaynak; review/publish yetkisi; yayınlanmış katalog/detay/yönetim UI; 120 özgün DRAFT manifest; dry-run/idempotency; migration/backfill/test/docs kapıları                                             | In progress — foundation, local additive migration and 120 DRAFT manifest implemented; root quality, clean migration/diff, 5-record legacy backfill and disposable import pass. Separate user approval sonrası retained DB importu da idempotent geçti: 120 DRAFT, 5 unchanged PUBLISHED legacy, 120 audit event. Named expert review, 3×40 sporting approval waves, publication and exact-size browser QA remain TBD. [Evidence](../30-quality/PROFESSIONAL_DRILL_LIBRARY_2026-09-09.md). |
 
 Phase 2 current primitive interaction gate is complete: 12 new tests, quality
 655/164 and local Select/Dropdown/Tooltip/notification/tool-list keyboard checks.

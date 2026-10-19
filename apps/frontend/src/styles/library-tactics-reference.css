@@ -789,3 +789,118 @@
     border-radius: 0;
   }
 }
+.drill-filter-fields {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr));
+  gap: 12px;
+  width: 100%;
+}
+.drill-filter-fields label {
+  display: grid;
+  gap: 5px;
+  font-size: 13px;
+  min-width: 0;
+}
+.library-reference__filters > .drill-filter-fields {
+  grid-column: 1 / -1;
+}
+.drill-preview-dialog {
+  width: min(94vw, 960px);
+  max-width: 960px;
+  max-height: 90dvh;
+  overflow-y: auto;
+}
+.drill-plan-dialog {
+  max-height: 90dvh;
+  overflow-y: auto;
+}
+.drill-instructions {
+  display: grid;
+  gap: 16px;
+}
+.drill-instructions h3 {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.drill-instructions ol {
+  list-style: decimal;
+  padding-left: 22px;
+}
+.drill-instructions li {
+  margin-bottom: 5px;
+}
+.drill-choice-summary {
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-block: 12px;
+}
+.drill-choice-summary p {
+  margin-block: 8px;
+}
+.plan-drill-catalog > details {
+  margin-bottom: 12px;
+}
+.plan-drill-catalog summary {
+  cursor: pointer;
+  padding-block: 10px;
+}
+.plan-drill-catalog select {
+  max-width: 100%;
+}
+.drill-dialog-actions,
+.drill-picker-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.drill-filter-sheet {
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+}
+
+@media (max-width: 1100px) {
+  .drill-filter-fields input,
+  .drill-filter-fields select,
+  .drill-plan-dialog select,
+  .plan-drill-catalog select {
+    min-height: 44px;
+    font-size: 16px;
+  }
+
+  .drill-filter-fields button,
+  .drill-filter-sheet button,
+  .drill-plan-dialog button,
+  .drill-preview-dialog button,
+  .plan-drill-catalog button,
+  .library-reference__source-tabs button,
+  .library-reference__mobile-filter button,
+  .library-reference .library-tabs button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  .drill-plan-dialog,
+  .drill-preview-dialog {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .drill-plan-dialog h2,
+  .drill-preview-dialog h2 {
+    padding-right: 40px;
+  }
+}
+
+@media (max-width: 700px) {
+  .library-reference__hero {
+    margin-inline: 0;
+  }
+}

@@ -1,5 +1,6 @@
 import {
   ArrowLeft,
+  ArrowRight,
   CalendarBlank,
   Clock,
   PencilSimple,
@@ -15,13 +16,13 @@ import {
   useSearchParams,
 } from 'react-router';
 import { toast } from 'sonner';
-import teamsHero from '../assets/teams-hero.png';
-import { PageHero } from '../components/presentation/page-hero';
+import '../styles/training-detail-workspace.css';
 import {
   TacticalBoardEditor,
   type BoardEditorHandle,
 } from '../components/tactics/tactical-board-editor';
 import { PlanDrillPicker } from '../components/plan-drill-picker';
+import { DrillInstructions } from '../components/drill-preview';
 import { PlanAttendance } from '../components/plan-attendance';
 import { Alert, AlertDescription, AlertTitle } from '../components/ui/alert';
 import { Badge } from '../components/ui/badge';
@@ -160,6 +161,8 @@ function TrainingDetail({
   const readGeneration = useRef(0);
   const writeBusy = useRef(false);
   const selected = plan?.drills.find((item) => item.id === selectedId);
+  const selectedIndex =
+    plan?.drills.findIndex((item) => item.id === selectedId) ?? -1;
   const busy = saving || adding || checking;
 
   useEffect(() => {
@@ -211,6 +214,13 @@ function TrainingDetail({
       clearBoard();
       setSelectedId(id);
     });
+  }
+  function changeTab(next: string) {
+    if (next !== tab)
+      transition(() => {
+        clearBoard();
+        setTab(next);
+      });
   }
   async function openBoard() {
     if (!planId || !selected || busy) return;
@@ -371,6 +381,7 @@ function TrainingDetail({
     try {
       added = await addTrainingPlanDrill(planId, {
         drillId: drill.id,
+        expectedVersionId: drill.contentVersionId ?? undefined,
         phase: drill.category,
         order:
           Math.max(
@@ -444,28 +455,25 @@ function TrainingDetail({
       </div>
     );
   return (
-    <div className="page-shell training-detail-reference">
-      <PageHero
-        className="training-detail-reference__hero"
-        image={teamsHero}
-        eyebrow="Antrenman detayı"
-        title={plan.title}
-        description={
-          plan.date
-            ? new Intl.DateTimeFormat('tr-TR', {
-                dateStyle: 'full',
-                timeStyle: 'short',
-              }).format(new Date(plan.date))
-            : 'Tarih TBD'
-        }
-        actions={
-          <>
-            <Button variant="outline" asChild>
-              <Link to="/app/trainings">
-                <ArrowLeft />
-                Planlar
-              </Link>
-            </Button>
+    <div className="page-shell training-detail-reference training-detail-workspace">
+      <header className="training-detail-heading">
+        <Link className="training-detail-back" to="/app/trainings">
+          <ArrowLeft /> Planlar
+        </Link>
+        <div className="training-detail-heading-row">
+          <div>
+            <p className="training-detail-kicker">Antrenman detayı</p>
+            <h1>{plan.title}</h1>
+            <p className="training-detail-date">
+              {plan.date
+                ? new Intl.DateTimeFormat('tr-TR', {
+                    dateStyle: 'full',
+                    timeStyle: 'short',
+                  }).format(new Date(plan.date))
+                : 'Tarih TBD'}
+            </p>
+          </div>
+          <div className="training-detail-actions">
             {canManage ? (
               <>
                 <Button
@@ -488,9 +496,9 @@ function TrainingDetail({
                 </Button>
               </>
             ) : null}
-          </>
-        }
-      />
+          </div>
+        </div>
+      </header>
       {canManage ? (
         <>
           <TrainingPlanDialog
@@ -515,96 +523,150 @@ function TrainingDetail({
         className="training-detail-reference__summary"
         aria-label="Plan özeti"
       >
-        <span>
-          <Clock weight="duotone" />
-          <small>Toplam süre</small>
-          <strong>{plan.totalDuration} dk</strong>
-        </span>
-        <span>
-          <Strategy weight="duotone" />
-          <small>Plan fazı</small>
-          <strong>{plan.drills.length}</strong>
-        </span>
-        <span>
-          <CalendarBlank weight="duotone" />
-          <small>Plan amacı</small>
-          <strong>{plan.notes || 'TBD'}</strong>
-        </span>
+        <dl>
+          <div>
+            <dt>
+              <Clock /> Toplam süre
+            </dt>
+            <dd>{plan.totalDuration} dk</dd>
+          </div>
+          <div>
+            <dt>
+              <Strategy /> Plan fazı
+            </dt>
+            <dd>{plan.drills.length} faz</dd>
+          </div>
+          <div>
+            <dt>
+              <CalendarBlank /> Plan amacı
+            </dt>
+            <dd>{plan.notes || 'Belirtilmedi'}</dd>
+          </div>
+        </dl>
       </section>
       <Tabs
         className="training-detail-reference__tabs"
         value={tab}
-        onValueChange={(next) => {
-          if (next !== tab)
-            transition(() => {
-              clearBoard();
-              setTab(next);
-            });
-        }}
+        onValueChange={changeTab}
       >
-        <TabsList>
-          <TabsTrigger value="flow" disabled={busy}>
-            Akış
-          </TabsTrigger>
-          <TabsTrigger value="board" disabled={busy}>
-            Taktik snapshot
-          </TabsTrigger>
-          <TabsTrigger value="attendance" disabled={busy}>
-            Katılım
-          </TabsTrigger>
-        </TabsList>
+        <div className="training-detail-tabs-head">
+          <h2>Antrenman çalışma alanı</h2>
+          <TabsList>
+            <TabsTrigger value="flow" disabled={busy}>
+              Akış
+            </TabsTrigger>
+            <TabsTrigger value="board" disabled={busy}>
+              Taktik tahtası
+            </TabsTrigger>
+            <TabsTrigger value="attendance" disabled={busy}>
+              Katılım
+            </TabsTrigger>
+          </TabsList>
+        </div>
         <TabsContent value="flow" className="training-detail-reference__panel">
-          {refreshNeeded ? (
-            <Alert role="alert">
-              <AlertDescription>
-                {error || 'Plan yenileniyor…'}
-              </AlertDescription>
-              <Button disabled={refreshBusy} onClick={() => void refreshPlan()}>
-                Planı yenile
-              </Button>
-            </Alert>
-          ) : !canManage ? (
-            <p>Bu planı salt okunur görüntülüyorsunuz.</p>
-          ) : plan.groupId ? (
-            <PlanDrillPicker
-              key={JSON.stringify([plan.id, plan.groupId, scope])}
-              groupId={plan.groupId}
-              attachedIds={plan.drills.map((item) => item.drillId)}
-              onAdd={addDrill}
-            />
-          ) : (
-            <p>Egzersiz seçimi için planın grup bağlamı bulunmuyor.</p>
-          )}
-          <div className="phase-cards">
-            {plan.drills.length ? (
-              plan.drills.map((item) => (
-                <button
-                  disabled={busy}
-                  className={
-                    selectedId === item.id
-                      ? 'phase-card selected'
-                      : 'phase-card'
-                  }
-                  key={item.id}
-                  onClick={() => selectPhase(item.id)}
-                >
-                  <span>
-                    <Badge>{phaseLabel(item.phase)}</Badge>
-                    <strong>{item.drill.title}</strong>
-                    <small>{item.notes || 'Faz notu yok'}</small>
-                  </span>
-                  <span>
-                    <Clock />
-                    {item.drill.durationMin} dk
-                  </span>
-                </button>
-              ))
-            ) : (
-              <div className="empty-state">
-                <Strategy />
-                <h2>Plan fazı yok</h2>
-                <p>Bu plana henüz egzersiz eklenmemiş.</p>
+          <div className="training-flow-layout">
+            <section aria-labelledby="training-phases-title">
+              <div className="training-section-heading">
+                <h3 id="training-phases-title">Antrenman akışı</h3>
+                <span>
+                  {plan.drills.length} faz · {plan.totalDuration} dk
+                </span>
               </div>
+              {plan.drills.length ? (
+                <ol className="training-phases" aria-label="Antrenman fazları">
+                  {plan.drills.map((item, index) => (
+                    <li key={item.id}>
+                      <button
+                        disabled={busy}
+                        aria-pressed={selectedId === item.id}
+                        onClick={() => selectPhase(item.id)}
+                      >
+                        <span className="training-phase-number">
+                          {index + 1}
+                        </span>
+                        <span className="training-phase-copy">
+                          <span>{phaseLabel(item.phase)}</span>
+                          <strong>{item.drill.title}</strong>
+                        </span>
+                        <span className="training-phase-duration">
+                          <Clock /> {item.drill.durationMin} dk
+                        </span>
+                      </button>
+                    </li>
+                  ))}
+                </ol>
+              ) : (
+                <div className="empty-state">
+                  <Strategy />
+                  <h3>Plan fazı yok</h3>
+                  <p>Bu plana henüz egzersiz eklenmemiş.</p>
+                </div>
+              )}
+            </section>
+            {selected && (
+              <section
+                className="training-selected-phase"
+                aria-labelledby="selected-phase-title"
+              >
+                <p className="training-detail-kicker">
+                  Seçili faz · {selectedIndex + 1} / {plan.drills.length}
+                </p>
+                <h3 id="selected-phase-title">{selected.drill.title}</h3>
+                <div className="training-selected-meta">
+                  <Badge>{phaseLabel(selected.phase)}</Badge>
+                  <span>
+                    <Clock /> {selected.drill.durationMin} dk
+                  </span>
+                </div>
+                <p className="training-phase-notes">
+                  {selected.notes || 'Faz notu yok'}
+                </p>
+                {selected.contentSnapshot && (
+                  <details className="drill-choice-summary">
+                    <summary>
+                      Seçili fazın kayıtlı uygulaması ·{' '}
+                      {selected.contentSnapshot.ageGroup === 'SENIOR'
+                        ? 'A Takım'
+                        : selected.contentSnapshot.ageGroup}{' '}
+                      · v{selected.contentSnapshot.sourceVersion}
+                    </summary>
+                    <DrillInstructions content={selected.contentSnapshot} />
+                  </details>
+                )}
+                <Button disabled={busy} onClick={() => changeTab('board')}>
+                  <Strategy /> Taktik tahtasına geç <ArrowRight />
+                </Button>
+              </section>
+            )}
+          </div>
+          <div className="training-add-section">
+            {refreshNeeded ? (
+              <Alert role="alert">
+                <AlertDescription>
+                  {error || 'Plan yenileniyor…'}
+                </AlertDescription>
+                <Button
+                  disabled={refreshBusy}
+                  onClick={() => void refreshPlan()}
+                >
+                  Planı yenile
+                </Button>
+              </Alert>
+            ) : !canManage ? (
+              <p>Bu planı salt okunur görüntülüyorsunuz.</p>
+            ) : plan.groupId ? (
+              <details open={plan.drills.length === 0 ? true : undefined}>
+                <summary>Plana egzersiz ekle</summary>
+                <PlanDrillPicker
+                  key={JSON.stringify([plan.id, plan.groupId, scope])}
+                  groupId={plan.groupId}
+                  ageGroup={group?.ageGroup}
+                  attachedIds={plan.drills.map((item) => item.drillId)}
+                  onAdd={addDrill}
+                />
+              </details>
+            ) : (
+              <p>Egzersiz seçimi için planın grup bağlamı bulunmuyor.</p>
             )}
           </div>
         </TabsContent>
@@ -614,8 +676,14 @@ function TrainingDetail({
         >
           {plan.drills.length ? (
             <>
-              <div className="snapshot-picker flex flex-wrap gap-3">
-                <label htmlFor="snapshot-phase">Snapshot kaynağı</label>
+              <div className="snapshot-picker">
+                <div className="training-board-phase-heading">
+                  <label htmlFor="snapshot-phase">Tahta için faz seçin</label>
+                  <span>
+                    {selectedIndex >= 0 ? selectedIndex + 1 : '–'} /{' '}
+                    {plan.drills.length} faz
+                  </span>
+                </div>
                 <select
                   id="snapshot-phase"
                   className="min-w-0 max-w-full"
@@ -624,14 +692,42 @@ function TrainingDetail({
                   onChange={(event) => selectPhase(event.target.value)}
                 >
                   <option value="">Faz seçin</option>
-                  {plan.drills.map((item) => (
+                  {plan.drills.map((item, index) => (
                     <option value={item.id} key={item.id}>
                       {item.drill.title} · {phaseLabel(item.phase)} ·{' '}
-                      {item.order + 1}
+                      {index + 1}
                     </option>
                   ))}
                 </select>
+                <div
+                  className="training-phase-navigation"
+                  aria-label="Fazlar arasında gezin"
+                >
+                  <Button
+                    variant="outline"
+                    disabled={busy || selectedIndex <= 0}
+                    onClick={() =>
+                      selectPhase(plan.drills[selectedIndex - 1].id)
+                    }
+                  >
+                    <ArrowLeft /> Önceki faz
+                  </Button>
+                  <Button
+                    variant="outline"
+                    disabled={
+                      busy ||
+                      selectedIndex < 0 ||
+                      selectedIndex >= plan.drills.length - 1
+                    }
+                    onClick={() =>
+                      selectPhase(plan.drills[selectedIndex + 1].id)
+                    }
+                  >
+                    Sonraki faz <ArrowRight />
+                  </Button>
+                </div>
                 <Button
+                  className="training-open-board"
                   disabled={!selected || busy || boardLoading || Boolean(board)}
                   onClick={() => void openBoard()}
                 >
@@ -639,7 +735,11 @@ function TrainingDetail({
                 </Button>
               </div>
               {!board && !boardLoading && !boardError && (
-                <p>Yalnız açtığınız fazın tahtası yüklenir.</p>
+                <div className="training-board-placeholder">
+                  <Strategy />
+                  <h3>{selected ? selected.drill.title : 'Bir faz seçin'}</h3>
+                  <p>Seçili fazı sahada incelemek için tahtayı açın.</p>
+                </div>
               )}
               {boardLoading && <p role="status">Tahta yükleniyor…</p>}
               {boardError && (

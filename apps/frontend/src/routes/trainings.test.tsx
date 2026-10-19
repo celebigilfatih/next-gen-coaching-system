@@ -4,15 +4,18 @@ import {
   render,
   screen,
   waitFor,
+  within,
 } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import TrainingsRoute from './trainings';
+import TrainingsRoute, { trainingDayBounds } from './trainings';
+import { toLocalDateKey } from '../lib/week';
 import { setSession } from '../lib/session';
 
 const mocks = vi.hoisted(() => ({
   page: vi.fn(),
+  day: vi.fn(),
   create: vi.fn(),
   update: vi.fn(),
   remove: vi.fn(),
@@ -27,6 +30,7 @@ const mocks = vi.hoisted(() => ({
 }));
 vi.mock('../lib/api', () => ({
   getTrainingPlanPage: mocks.page,
+  getTrainingDayPage: mocks.day,
   createTrainingPlan: mocks.create,
   updateTrainingPlan: mocks.update,
   deleteTrainingPlan: mocks.remove,
@@ -85,6 +89,10 @@ describe('independent training catalog', () => {
     mocks.page.mockImplementation(async (_group, _season, after) =>
       page(after ? 'Second' : 'First', after ? null : 'cursor'),
     );
+    mocks.day.mockImplementation(
+      async (_group, _season, _from, _until, after) =>
+        page(after ? 'Day second' : 'Day first', after ? null : 'day-cursor'),
+    );
     mocks.reload.mockResolvedValue(undefined);
     mocks.update.mockResolvedValue({
       id: 'First',
@@ -112,7 +120,15 @@ describe('independent training catalog', () => {
     expect(
       screen.getByRole('heading', { name: 'Antrenman Planları' }),
     ).toBeInTheDocument();
-    expect(document.querySelector('.page-hero-image')).toBeInTheDocument();
+    expect(
+      screen.getByRole('table', { name: 'Antrenman planları' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('columnheader', { name: 'Tarih ve saat' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('columnheader', { name: 'Süre ve faz' }),
+    ).toBeInTheDocument();
     expect(
       screen.getByRole('heading', { name: 'Antrenman Akışları' }),
     ).toBeInTheDocument();
@@ -129,16 +145,17 @@ describe('independent training catalog', () => {
       '31 plan · 30 tarihli · 1 tarihsiz · 1800 dakika · 7 işaretlenmiş katılım',
     );
     expect(screen.getByText('4 faz')).toBeInTheDocument();
-    expect(screen.getByText('First').closest('[data-tone]')).toHaveAttribute(
-      'data-tone',
-      'default',
-    );
+    expect(
+      screen.getByRole('rowheader', { name: /First/ }),
+    ).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Sonraki sayfa' }));
     await screen.findByText('Second');
     expect(screen.queryByText('First')).not.toBeInTheDocument();
-    expect(screen.getByRole('navigation')).toHaveTextContent(
-      'Sayfa 2 · 1 / 31 plan',
-    );
+    expect(
+      screen.getByRole('navigation', {
+        name: 'Antrenman sayfaları',
+      }),
+    ).toHaveTextContent('Sayfa 2 · 1 / 31 plan');
     expect(mocks.page).toHaveBeenLastCalledWith('g', 's', 'cursor');
     expect(mocks.reload).not.toHaveBeenCalled();
     fireEvent.click(screen.getByRole('button', { name: 'Önceki sayfa' }));
@@ -199,7 +216,11 @@ describe('independent training catalog', () => {
     expect(mocks.page).toHaveBeenCalledWith('g', undefined, undefined);
     fireEvent.click(screen.getByRole('button', { name: 'Sonraki sayfa' }));
     await screen.findByText('Bu sayfada plan yok');
-    expect(screen.getByRole('navigation')).toHaveTextContent('0 / 31 plan');
+    expect(
+      screen.getByRole('navigation', {
+        name: 'Antrenman sayfaları',
+      }),
+    ).toHaveTextContent('0 / 31 plan');
   });
   it('does not fetch for a native team without legacy group or a loading workspace', async () => {
     mocks.workspace.group = null;
@@ -306,8 +327,163 @@ describe('independent training catalog', () => {
     expect(
       screen.queryByRole('button', { name: 'First işlemleri' }),
     ).not.toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Detay' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: /First.*Detay/ }),
+    ).toBeInTheDocument();
   });
+
+  it('reads a complete selected day, resets cursors and keeps the date input mounted', async () => {
+    render(<Harness />);
+    await screen.findByText('First');
+    fireEvent.click(screen.getByRole('button', { name: 'Sonraki sayfa' }));
+    await screen.findByText('Second');
+    const input = screen.getByLabelText('Antrenman tarihi');
+    fireEvent.change(input, { target: { value: '2026-10-20' } });
+    await screen.findByText('Day first');
+    expect(screen.getByLabelText('Antrenman tarihi')).toBe(input);
+    expect(mocks.day).toHaveBeenLastCalledWith(
+      'g',
+      's',
+      new Date(2026, 9, 20).toISOString(),
+      new Date(2026, 9, 21).toISOString(),
+      undefined,
+    );
+    expect(screen.getByRole('button', { name: 'Önceki sayfa' })).toBeDisabled();
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Sonraki plan sayfası' }),
+    );
+    await screen.findByText('Day second');
+    expect(mocks.day).toHaveBeenLastCalledWith(
+      'g',
+      's',
+      expect.any(String),
+      expect.any(String),
+      'day-cursor',
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Tüm planlar' }));
+    await screen.findByText('First');
+    expect(input).toHaveValue('');
+    expect(mocks.page).toHaveBeenLastCalledWith('g', 's', undefined);
+    expect(
+      screen.getByRole('button', { name: 'Önceki plan sayfası' }),
+    ).toBeDisabled();
+  });
+  it('ignores a late day response and keeps the selected-day empty state distinct', async () => {
+    let complete!: (value: ReturnType<typeof page>) => void;
+    mocks.day
+      .mockImplementationOnce(
+        () =>
+          new Promise((resolve) => {
+            complete = resolve;
+          }),
+      )
+      .mockResolvedValue({
+        ...page('unused'),
+        items: [],
+        summary: {
+          total: 0,
+          scheduled: 0,
+          undated: 0,
+          totalDuration: 0,
+          presentAttendance: 0,
+        },
+      });
+    render(<Harness />);
+    await screen.findByText('First');
+    fireEvent.change(screen.getByLabelText('Antrenman tarihi'), {
+      target: { value: '2026-10-20' },
+    });
+    await waitFor(() => expect(mocks.day).toHaveBeenCalledTimes(1));
+    fireEvent.change(screen.getByLabelText('Antrenman tarihi'), {
+      target: { value: '2026-10-21' },
+    });
+    await screen.findByText('Bu tarihte antrenman planı yok');
+    await act(async () => complete(page('Stale day')));
+    expect(screen.queryByText('Stale day')).not.toBeInTheDocument();
+    expect(
+      screen.queryByText('Henüz antrenman planı yok'),
+    ).not.toBeInTheDocument();
+    expect(screen.getByLabelText('Antrenman kapsamı özeti')).toHaveTextContent(
+      '0 plan',
+    );
+  });
+  it('uses the existing day endpoint with no season in all-seasons and today uses the local date', async () => {
+    mocks.workspace.season = undefined;
+    mocks.workspace.scope.clubSeasonId = '*';
+    render(<Harness />);
+    await screen.findByText('First');
+    fireEvent.click(screen.getByRole('button', { name: 'Bugün' }));
+    await screen.findByText('Day first');
+    expect(screen.getByLabelText('Antrenman tarihi')).toHaveValue(
+      toLocalDateKey(new Date()),
+    );
+    expect(mocks.day).toHaveBeenLastCalledWith(
+      'g',
+      undefined,
+      expect.any(String),
+      expect.any(String),
+      undefined,
+    );
+  });
+  it('keeps the complete purpose and an explicit, named detail link separate from mutations', async () => {
+    const purpose =
+      'İlk kontrol ve destek açıları.\nİkinci bölümde alanı daraltın; tüm oyuncularla uygulayın.';
+    mocks.page.mockResolvedValue({
+      ...page('Plan with notes'),
+      items: [
+        {
+          ...page('Plan with notes').items[0],
+          date: new Date(2026, 9, 20, 15, 30).toISOString(),
+          notes: purpose,
+        },
+      ],
+    });
+    render(<Harness />);
+    const title = await screen.findByText('Plan with notes');
+    const row = within(title.closest('tr') as HTMLElement);
+    const details = row.getByText('Planın amacı').closest('details');
+    expect(details).not.toHaveAttribute('open');
+    await userEvent.click(row.getByText('Planın amacı'));
+    expect(details).toHaveAttribute('open');
+    expect(row.getByText(/İkinci bölümde/)).toBeVisible();
+    const link = row.getByRole('link', { name: /Plan with notes.*Detay/ });
+    expect(link).toHaveAttribute('href', '/app/trainings/Plan with notes');
+    expect(link.querySelector('button')).toBeNull();
+    await userEvent.click(link);
+    expect(await screen.findByText('Created detail')).toBeInTheDocument();
+    expect(mocks.update).not.toHaveBeenCalled();
+    expect(mocks.remove).not.toHaveBeenCalled();
+  });
+  it('does not fall back to an unfiltered read for an unsupported date input', async () => {
+    render(<Harness />);
+    await screen.findByText('First');
+    fireEvent.change(screen.getByLabelText('Antrenman tarihi'), {
+      target: { value: '10000-10-19' },
+    });
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'Geçerli bir antrenman tarihi seçin.',
+    );
+    expect(mocks.page).toHaveBeenCalledTimes(1);
+    expect(mocks.day).not.toHaveBeenCalled();
+  });
+  it.each(['', 'not-a-date', '2026-02-30', '2026-13-01'])(
+    'rejects invalid date bounds: %s',
+    (value) => {
+      expect(trainingDayBounds(value)).toBeNull();
+    },
+  );
+  it.each(['2026-03-29', '2026-10-25', '2026-12-31'])(
+    'uses local midnight through the next exclusive midnight: %s',
+    (value) => {
+      const bounds = trainingDayBounds(value)!;
+      expect(new Date(bounds.from).getHours()).toBe(0);
+      expect(new Date(bounds.until).getHours()).toBe(0);
+      expect(toLocalDateKey(new Date(bounds.from))).toBe(value);
+      const next = new Date(bounds.from);
+      next.setDate(next.getDate() + 1);
+      expect(bounds.until).toBe(next.toISOString());
+    },
+  );
 
   async function openCreate() {
     render(<Harness />);

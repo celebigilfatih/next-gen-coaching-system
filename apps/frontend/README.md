@@ -1,5 +1,15 @@
 # NGCS frontend
 
+Egzersiz detayı aynı kompakt dilde Uygulama/Saha/Kaynak sekmelerini, numaralı
+adımları ve gerçek yaş uyarlamasını sunar. Mobil44px kontroller ve dört hücreli
+özet; açık saha seçimi, mevcut plan seçimi ve klavye odağı korunur.
+[Doğrulama](../../docs/30-quality/LIBRARY_DETAIL_UX_2026-10-19.md).
+
+Egzersiz kütüphanesinde kompakt liste, sürekli görünür arama, kaydırılabilir
+filtre paneli ve açık seçimle yüklenen uygulama/saha önizlemesi kullanılır.
+Mobil44px kontroller/16px alanlar, tam açıklama ve ayrı detay bağlantısı korunur.
+[Doğrulama](../../docs/30-quality/LIBRARY_UX_2026-10-19.md).
+
 ADR-0009 ile onaylanan koç öncelikli frontend, React/TypeScript ve React Router
 Framework Mode SPA olarak bu workspace'te uygulanır. shadcn/Radix, Tailwind CSS,
 Phosphor ve React-Konva tabanı ADR-0011 ile; taktik tahta sözleşmesi ADR-0012 ile
@@ -18,6 +28,12 @@ detayları kimlikli alt rotalardır. Masaüstü tam navigasyonu dokuz girişi g�
 mobil alt navigasyon beş ana görevi korur ve destek rotaları menü Sheet'i içindedir.
 
 ## Yerel çalışma
+
+2026-10-19 yerel düzeltmesi: ignored `.env.local` içinde kalıcı oturum açıktır;
+backend'in eşleşen flag'i ve exact localhost3132 origin'i de açık tutulmalıdır.
+Tam yenileme ve yeni sekmede tekrar giriş istemediği doğrulandı. Varsayılan env
+örneği kapalı kalır; farklı ortamlarda iki taraf birlikte yapılandırılır.
+[Kanıt](../../docs/30-quality/SESSION_PERSISTENCE_LOCAL_2026-10-19.md).
 
 ```bash
 npm install

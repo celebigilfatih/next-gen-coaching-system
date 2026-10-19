@@ -28,6 +28,7 @@ export default [
     route('players', 'routes/players.tsx'),
     route('players/:personId', 'routes/player-detail.tsx'),
     route('settings', 'routes/settings.tsx'),
+    route('setup', 'routes/club-setup.tsx'),
     route('settings/users', 'routes/account-access.tsx'),
   ]),
 ] satisfies RouteConfig;

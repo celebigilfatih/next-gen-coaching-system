@@ -3,6 +3,7 @@ import {
   fireEvent,
   render,
   screen,
+  within,
   waitFor,
 } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
@@ -94,7 +95,9 @@ describe('independent match catalog', () => {
       screen.getByRole('link', { name: 'First maç detayını aç' }),
     ).toHaveAttribute('href', '/app/matches/First');
     expect(screen.getByText('Tahta hazır')).toBeInTheDocument();
-    expect(screen.getByText('Coach note')).toBeInTheDocument();
+    expect(screen.getByLabelText('First maçı koç notu')).toHaveTextContent(
+      'Coach note',
+    );
     expect(screen.getByText('2 - 1')).toBeInTheDocument();
     expect(screen.getByText('İç saha')).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Sonraki sayfa' }));
@@ -114,10 +117,14 @@ describe('independent match catalog', () => {
   it('filters through local half-open day bounds and clears back to the full catalog', async () => {
     render(<Harness />);
     await screen.findByText('First');
+    const dateInput = screen.getByLabelText('Maç tarihi');
+    dateInput.focus();
     fireEvent.change(screen.getByLabelText('Maç tarihi'), {
       target: { value: '2026-09-01' },
     });
     await screen.findByText('Filtered');
+    expect(screen.getByLabelText('Maç tarihi')).toBe(dateInput);
+    expect(dateInput).toHaveFocus();
     const from = new Date(2026, 8, 1);
     const until = new Date(2026, 8, 2);
     expect(mocks.day).toHaveBeenLastCalledWith(
@@ -216,5 +223,55 @@ describe('independent match catalog', () => {
     expect(screen.getByLabelText('Maç kapsamı özeti')).toHaveTextContent(
       '0 maç',
     );
+  });
+  it('keeps table semantics, away order and full long notes accessible without inventing missing data', async () => {
+    const note =
+      'ÖRNEK: Resmi fikstür değildir. ' +
+      'Uzun koç notu ve kaynak bilgisi. '.repeat(30);
+    const first = page().items[0];
+    mocks.page.mockResolvedValue({
+      ...page(),
+      items: [
+        { ...first, opponent: 'Uzun Rakip Adı', location: 'AWAY', notes: note },
+        {
+          ...first,
+          id: 'empty',
+          opponent: 'Diğer Rakip',
+          result: null,
+          location: '',
+          competition: '',
+          notes: '',
+          ourFormation: '',
+          hasBoard: false,
+        },
+      ],
+    });
+    render(<Harness />);
+    const table = await screen.findByRole('table');
+    expect(within(table).getAllByRole('columnheader')).toHaveLength(6);
+    const day = within(table).getByRole('rowgroup', {
+      name: '1 Eylül 2026 Salı',
+    });
+    const rows = within(day).getAllByRole('row');
+    expect(rows).toHaveLength(2);
+    expect(rows[0].textContent?.indexOf('Uzun Rakip Adı')).toBeLessThan(
+      rows[0].textContent!.indexOf('U17'),
+    );
+    const summary = screen.getByLabelText('Uzun Rakip Adı maçı koç notu');
+    const disclosure = summary.closest('details')!;
+    expect(disclosure).not.toHaveAttribute('open');
+    fireEvent.click(summary);
+    expect(disclosure).toHaveAttribute('open');
+    expect(disclosure.querySelector('p')).toHaveTextContent(note.trim());
+    fireEvent.click(summary);
+    expect(disclosure).not.toHaveAttribute('open');
+    expect(within(rows[1]).getByText('Saha belirtilmedi')).toBeInTheDocument();
+    expect(
+      within(rows[1]).getByText('Diziliş belirtilmedi'),
+    ).toBeInTheDocument();
+    expect(
+      within(rows[1]).getByText('Koç notu eklenmedi.'),
+    ).toBeInTheDocument();
+    expect(within(rows[1]).getByText('VS')).toBeInTheDocument();
   });
 });

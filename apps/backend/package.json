@@ -8,6 +8,7 @@
   "scripts": {
     "build": "nest build",
     "build:check": "nest build --path tsconfig.quality-build.json",
+    "build:quality": "nest build --path tsconfig.gate-build.json",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "format:check": "prettier --check \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
@@ -17,6 +18,7 @@
     "lint": "eslint \"{src,test}/**/*.ts\"",
     "lint:fix": "eslint \"{src,test}/**/*.ts\" --fix",
     "typecheck": "tsc --noEmit -p tsconfig.json",
+    "typecheck:quality": "tsc --noEmit -p tsconfig.quality-check.json",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",

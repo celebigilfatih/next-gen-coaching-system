@@ -131,6 +131,8 @@ export class TrainingPlansController {
       body.phase,
       body.order,
       body.notes,
+      body.expectedVersionId,
+      req.user,
     );
   }
 
@@ -149,7 +151,7 @@ export class TrainingPlansController {
         this.authorization.assertDrillView(req.user, drillId),
       ),
     );
-    return this.plans.replaceDrills(id, drills);
+    return this.plans.replaceDrills(id, drills, req.user);
   }
 
   @Put(':planId/drills/:planDrillId/board')

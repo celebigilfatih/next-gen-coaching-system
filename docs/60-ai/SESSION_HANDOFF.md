@@ -1,5 +1,36 @@
 # Session Handoff
 
+## Final publication check — 2026-10-19
+
+User requests commit/push to existing codex/mvp-stabilization; main must stay.
+Fresh full root17/17 exits0: backend918/frontend509/Sites4/tooling8, all types,
+lint/format/build, CDSK36 documents/47 ADRs,180-file links and whitespace pass.
+Additional dedicated PostgreSQL HTTP36/36 (setup6/content9/planning21), operator
+guards8 and JS syntax9 pass. Two opt-in operator DB tests are skipped, not counted.
+Output baselines/helpers, env and Python caches are excluded from Git; staged
+text hygiene scan has no findings. No deployment/migration/retained data write.
+Use explicit HEAD:refs/heads/codex/mvp-stabilization without force; local/remote
+main baseline is1b831e087b727b80bfed0d47005bb0b95fa0852f. No hook bypass configured;
+existing repository identity is supplied only to the commit command. Verify final
+commit/upstream and clean tree in Git; this dated report records the pre-push gate.
+[Review](../30-quality/PRE_PUSH_REVIEW_2026-10-19.md).
+
+## Repository-owned CDSK — 2026-10-19
+
+Explicit user request authorized the local validator model in Accepted ADR-0046.
+Node wrapper defaults to tracked scripts/cdsk/validate_project.py; Python3.9+
+standard library only. CDSK0.1.0 manifest/36-file baseline, Boot/Constitution/ADR
+structure and safe paths are enforced by documented project profile revision1.
+Upstream rule parity remains unverified; do not describe it as vendored official
+code. Eight tooling tests include17 Python cases (16 pass/one Windows symlink
+privilege skip). Full root17/17 passes with exit0: backend913/frontend509/Sites4/
+tooling8, types/lint/format/builds,178-file links, CDSK36 documents/46 distinct ADRs
+and whitespace. Final focused8/8 passes after parser/identity fixes too. BL-061
+complete. Temporary duplicate0045 was resolved by assigning this task's new
+validator decision0046; four-match planning retains0045. Preserve all concurrent
+application/data/UI edits and persistent sessions; no migration/reset is needed.
+[Evidence](../30-quality/CDSK_LOCAL_VALIDATOR_2026-10-19.md).
+
 ## Repository publication preparation — 2026-10-19
 
 User requested commit and push. Delivery target is the existing

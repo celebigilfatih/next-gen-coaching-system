@@ -48,6 +48,11 @@ export class DrillsController {
     return this.content.createDraft(req.user, body);
   }
 
+  @Post('content/starter-pack/publish')
+  publishStarterPack(@Req() req: { user: AuthPrincipal }) {
+    return this.content.publishStarterPack(req.user);
+  }
+
   @Post('content/:versionId/submit')
   submitContent(
     @Req() req: { user: AuthPrincipal },

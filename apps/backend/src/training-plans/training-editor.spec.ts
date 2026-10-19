@@ -119,6 +119,7 @@ describe('training editor reads', () => {
             phase: true,
             order: true,
             notes: true,
+            contentSnapshot: true,
             drill: { select: { id: true, title: true, durationMin: true } },
           },
         },

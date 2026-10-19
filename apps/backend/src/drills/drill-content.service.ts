@@ -27,6 +27,7 @@ import {
   rethrowTacticalConflict,
 } from '../tactics/tactical-persistence';
 import { validateTacticalBoardDocument } from '../tactics/tactical-board';
+import { starterDrillIds } from './drill-starter-pack';
 
 @Injectable()
 export class DrillContentService {
@@ -176,6 +177,17 @@ export class DrillContentService {
   async publish(principal: AuthPrincipal, versionId: string) {
     if (principal.role !== 'SYSTEM_ADMIN') this.deny();
     const version = await this.version(versionId);
+    if (starterDrillIds.includes(version.drillId)) {
+      const released = await this.prisma.drillVersion.findMany({
+        where: { drillId: { in: starterDrillIds }, publishedAt: { not: null } },
+        distinct: ['drillId'],
+        select: { drillId: true },
+      });
+      if (released.length !== 120)
+        throw new BadRequestException(
+          'İlk yayın 120 egzersiz birlikte tamamlanmalıdır. Başlangıç paketini yayımlayın.',
+        );
+    }
     if (version.status !== DrillContentStatus.APPROVED || !version.reviewedById)
       throw new BadRequestException(
         'Expert approval is required before publishing',
@@ -183,48 +195,7 @@ export class DrillContentService {
     return this.prisma
       .$transaction(
         async (tx) => {
-          const target = await tx.drill.findUnique({
-            where: { id: version.drillId },
-            select: { jsonData: true },
-          });
-          if (!target) throw new NotFoundException('Drill not found');
-          assertLegacyTacticalWrite(target.jsonData);
-          validateTacticalBoardDocument(version.boardDocument);
-          await tx.drillVersion.updateMany({
-            where: {
-              drillId: version.drillId,
-              status: DrillContentStatus.PUBLISHED,
-              id: { not: version.id },
-            },
-            data: {
-              status: DrillContentStatus.ARCHIVED,
-              archivedAt: new Date(),
-            },
-          });
-          const updated = await tx.drillVersion.update({
-            where: { id: versionId },
-            data: {
-              status: DrillContentStatus.PUBLISHED,
-              publishedById: principal.id,
-              publishedAt: new Date(),
-            },
-            include: this.contentInclude,
-          });
-          const primary = updated.ageVariants[0];
-          await tx.drill.update({
-            where: { id: updated.drillId },
-            data: {
-              title: updated.title,
-              category: updated.category,
-              ageGroup: primary?.ageGroup ?? 'TBD',
-              durationMin: primary?.durationMin ?? updated.durationMin,
-              difficulty: updated.difficulty,
-              equipment: updated.equipmentItems.join(', '),
-              jsonData: updated.boardDocument as never,
-            },
-          });
-          await this.audit(tx, principal, 'DRILL_CONTENT_PUBLISHED', updated);
-          return updated;
+          return this.publishApprovedVersion(tx, principal, version);
         },
         { isolationLevel: 'Serializable' },
       )
@@ -232,6 +203,97 @@ export class DrillContentService {
         if (error instanceof HttpException) throw error;
         rethrowTacticalConflict(error);
         this.logger.error('DRILL_CONTENT_PUBLISH_FAILED');
+        throw new InternalServerErrorException('Internal server error');
+      });
+  }
+
+  private async publishApprovedVersion(
+    tx: Prisma.TransactionClient,
+    principal: AuthPrincipal,
+    version: { id: string; drillId: string; boardDocument: Prisma.JsonValue },
+  ) {
+    const target = await tx.drill.findUnique({
+      where: { id: version.drillId },
+      select: { jsonData: true },
+    });
+    if (!target) throw new NotFoundException('Drill not found');
+    assertLegacyTacticalWrite(target.jsonData);
+    validateTacticalBoardDocument(version.boardDocument);
+    await tx.drillVersion.updateMany({
+      where: {
+        drillId: version.drillId,
+        status: DrillContentStatus.PUBLISHED,
+        id: { not: version.id },
+      },
+      data: {
+        status: DrillContentStatus.ARCHIVED,
+        archivedAt: new Date(),
+      },
+    });
+    const updated = await tx.drillVersion.update({
+      where: {
+        id: version.id,
+        status: DrillContentStatus.APPROVED,
+        reviewedById: { not: null },
+      },
+      data: {
+        status: DrillContentStatus.PUBLISHED,
+        publishedById: principal.id,
+        publishedAt: new Date(),
+      },
+      include: this.contentInclude,
+    });
+    const primary = updated.ageVariants[0];
+    await tx.drill.update({
+      where: { id: updated.drillId },
+      data: {
+        title: updated.title,
+        category: updated.category,
+        ageGroup: primary?.ageGroup ?? 'TBD',
+        durationMin: primary?.durationMin ?? updated.durationMin,
+        difficulty: updated.difficulty,
+        equipment: updated.equipmentItems.join(', '),
+        jsonData: updated.boardDocument as never,
+      },
+    });
+    await this.audit(tx, principal, 'DRILL_CONTENT_PUBLISHED', updated);
+    return updated;
+  }
+
+  async publishStarterPack(principal: AuthPrincipal) {
+    if (principal.role !== 'SYSTEM_ADMIN') this.deny();
+    return this.prisma
+      .$transaction(
+        async (tx) => {
+          const versions = await tx.drillVersion.findMany({
+            where: {
+              drillId: { in: starterDrillIds },
+              status: DrillContentStatus.APPROVED,
+            },
+            orderBy: { version: 'desc' },
+            distinct: ['drillId'],
+          });
+          if (
+            versions.length !== 120 ||
+            versions.some(
+              (version) =>
+                !version.reviewedById ||
+                version.reviewedById === version.createdById,
+            )
+          )
+            throw new BadRequestException(
+              'Başlangıç paketindeki 120 egzersizin tamamı bağımsız uzman tarafından onaylanmalıdır.',
+            );
+          for (const version of versions)
+            await this.publishApprovedVersion(tx, principal, version);
+          return { published: versions.length };
+        },
+        { isolationLevel: 'Serializable', timeout: 30000 },
+      )
+      .catch((error: unknown) => {
+        if (error instanceof HttpException) throw error;
+        rethrowTacticalConflict(error);
+        this.logger.error('DRILL_STARTER_PACK_PUBLISH_FAILED');
         throw new InternalServerErrorException('Internal server error');
       });
   }
@@ -306,6 +368,11 @@ export class DrillContentService {
     await this.assertDrillView(principal, drill);
     const version = drill.versions[0];
     if (!version) {
+      const versions = await this.prisma.drillVersion.count({
+        where: { drillId },
+      });
+      if (versions)
+        throw new NotFoundException('Published drill content not found');
       return {
         drill,
         version: null,
@@ -322,11 +389,11 @@ export class DrillContentService {
       },
       version,
       variant:
-        version.ageVariants.find(
-          (item) => item.ageGroup === requestedAgeGroup,
-        ) ??
-        version.ageVariants[0] ??
-        null,
+        requestedAgeGroup === undefined
+          ? (version.ageVariants[0] ?? null)
+          : (version.ageVariants.find(
+              (item) => item.ageGroup === requestedAgeGroup,
+            ) ?? null),
       provenance: version.source.license,
     };
   }

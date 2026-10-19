@@ -3,31 +3,32 @@ import {
   CaretLeft,
   CaretRight,
   Clock,
-  Funnel,
-  MagnifyingGlass,
+  Eye,
   Plus,
   Ruler,
   SlidersHorizontal,
-  Strategy,
   Users,
 } from '@phosphor-icons/react';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Alert, AlertDescription } from '../components/ui/alert';
-import { useAssignmentPage } from '../lib/use-assignment-page';
+import { useCallback, useState } from 'react';
 import { Link } from 'react-router';
+import {
+  DrillCatalogFilterFields,
+  useDrillCatalogFilters,
+} from '../components/drill-catalog-filters';
+import { DrillPreview } from '../components/drill-preview';
+import { Alert, AlertDescription } from '../components/ui/alert';
 import { Badge } from '../components/ui/badge';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
-import { NativeSelect } from '../components/ui/native-select';
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from '../components/ui/sheet';
-import { FootballCard } from '../components/domain/football-card';
 import { Skeleton } from '../components/ui/skeleton';
 import {
   Tabs,
@@ -42,11 +43,10 @@ import {
   type DrillCatalogFilters,
   type DrillPhase,
 } from '../lib/api';
+import { useAssignmentPage } from '../lib/use-assignment-page';
 import { useWorkspace } from '../lib/workspace-context';
 import { getSession } from '../lib/session';
-import teamsHero from '../assets/teams-hero.png';
-import { MetricCard } from '../components/presentation/metric-card';
-import { PageHero } from '../components/presentation/page-hero';
+import '../styles/library-workspace.css';
 
 const phases: { value: 'ALL' | DrillPhase; label: string }[] = [
   { value: 'ALL', label: 'Tümü' },
@@ -55,7 +55,6 @@ const phases: { value: 'ALL' | DrillPhase; label: string }[] = [
   { value: 'TACTICAL', label: 'Taktik' },
   { value: 'COOL_DOWN', label: 'Soğuma' },
 ];
-
 const sources: Array<{
   value: 'ALL' | NonNullable<DrillCatalogFilters['source']>;
   label: string;
@@ -65,23 +64,9 @@ const sources: Array<{
   { value: 'CLUB', label: 'Kulüp' },
   { value: 'MINE', label: 'Benim içeriklerim' },
 ];
-
-const objectives = [
-  ['ALL', 'Tüm amaçlar'],
-  ['pas', 'Pas'],
-  ['ilk-kontrol', 'İlk kontrol'],
-  ['bitiricilik', 'Bitiricilik'],
-  ['topa-sahip-olma', 'Topa sahip olma'],
-  ['geriden-oyun', 'Geriden oyun'],
-  ['pres', 'Pres'],
-  ['hucum-gecisi', 'Hücum geçişi'],
-  ['savunma-gecisi', 'Savunma geçişi'],
-] as const;
-
 export function meta() {
   return [{ title: 'Egzersiz Kütüphanesi | NGCS' }];
 }
-
 export default function LibraryRoute() {
   const { group, scope, loading, error, reload } = useWorkspace();
   const key = JSON.stringify([
@@ -90,36 +75,31 @@ export default function LibraryRoute() {
     scope.teamId,
     group?.id,
   ]);
-  const systemAdmin = getSession()?.user.role === 'SYSTEM_ADMIN';
   return (
-    <div className="page-shell library-reference">
-      <PageHero
-        className="library-reference__hero"
-        image={teamsHero}
-        eyebrow="Antrenman içeriği"
-        title="Egzersiz Kütüphanesi"
-        description={`${group?.name ?? 'Takım TBD'} için erişilebilir global ve kulüp egzersizlerini kategoriye göre yönetin.`}
-        actions={
-          <>
-            {systemAdmin ? (
-              <Button asChild variant="outline">
-                <Link to="/app/library/manage">İçerik yönetimi</Link>
-              </Button>
-            ) : null}
-            <Button asChild>
-              <Link to="/app/tactics/new">
-                <Plus /> Tahta egzersizi oluştur
-              </Link>
-            </Button>
-          </>
-        }
-      />
-      {loading ? (
-        <div className="loading-grid">
-          <Skeleton className="h-48" />
-          <Skeleton className="h-48" />
-          <Skeleton className="h-48" />
+    <div className="page-shell library-workspace">
+      <header className="library-heading">
+        <div>
+          <h1>Egzersiz Kütüphanesi</h1>
+          <p>
+            {group?.name ?? 'Takım TBD'} · Çalışmaları bulun, uygulamasını
+            inceleyin ve antrenmanınızı hazırlayın.
+          </p>
         </div>
+        <div className="library-heading-actions">
+          {getSession()?.user.role === 'SYSTEM_ADMIN' && (
+            <Button asChild variant="outline">
+              <Link to="/app/library/manage">İçerik yönetimi</Link>
+            </Button>
+          )}
+          <Button asChild>
+            <Link to="/app/tactics/new">
+              <Plus /> Tahta egzersizi oluştur
+            </Link>
+          </Button>
+        </div>
+      </header>
+      {loading ? (
+        <Skeleton className="h-48" />
       ) : error ? (
         <Alert role="alert">
           <AlertDescription>{error}</AlertDescription>
@@ -133,185 +113,127 @@ export default function LibraryRoute() {
     </div>
   );
 }
-
 function LibraryCatalog({ groupId }: { groupId: string }) {
   const [category, setCategory] = useState('ALL');
-  const [source, setSource] =
-    useState<(typeof sources)[number]['value']>('ALL');
-  const [searchDraft, setSearchDraft] = useState('');
-  const [search, setSearch] = useState('');
-  const [ageGroup, setAgeGroup] = useState('');
-  const [objective, setObjective] = useState('ALL');
-  const [difficulty, setDifficulty] = useState('ALL');
-  useEffect(() => {
-    const timeout = window.setTimeout(() => setSearch(searchDraft.trim()), 250);
-    return () => window.clearTimeout(timeout);
-  }, [searchDraft]);
-  const filters = useMemo<DrillCatalogFilters>(
-    () => ({
-      q: search || undefined,
-      ageGroup: ageGroup || undefined,
-      objective: objective === 'ALL' ? undefined : objective,
-      difficulty:
-        difficulty === 'ALL'
-          ? undefined
-          : (difficulty as DrillCatalogFilters['difficulty']),
-      source: source === 'ALL' ? undefined : source,
-    }),
-    [ageGroup, difficulty, objective, search, source],
-  );
-  const hasFilters = Object.values(filters).some(Boolean);
-  const renderFilterFields = () => (
-    <>
-      <label className="library-reference__search">
-        <span className="sr-only">Egzersiz ara</span>
-        <MagnifyingGlass aria-hidden="true" />
-        <Input
-          value={searchDraft}
-          onChange={(event) => setSearchDraft(event.target.value)}
-          placeholder="Başlık, amaç veya etiket ara"
-        />
-      </label>
-      <NativeSelect
-        aria-label="Yaş grubu"
-        value={ageGroup}
-        onChange={(event) => setAgeGroup(event.target.value)}
-      >
-        <option value="">Takım yaşı</option>
-        <option value="U12">U12</option>
-        <option value="U14">U14</option>
-        <option value="U16">U16</option>
-        <option value="U18">U18</option>
-        <option value="SENIOR">A Takım</option>
-      </NativeSelect>
-      <NativeSelect
-        aria-label="Egzersiz amacı"
-        value={objective}
-        onChange={(event) => setObjective(event.target.value)}
-      >
-        {objectives.map(([value, label]) => (
-          <option key={value} value={value}>
-            {label}
-          </option>
-        ))}
-      </NativeSelect>
-      <NativeSelect
-        aria-label="Zorluk"
-        value={difficulty}
-        onChange={(event) => setDifficulty(event.target.value)}
-      >
-        <option value="ALL">Tüm zorluklar</option>
-        <option value="EASY">Başlangıç</option>
-        <option value="MEDIUM">Orta</option>
-        <option value="HARD">İleri</option>
-      </NativeSelect>
-      <Button
-        type="button"
-        variant="ghost"
-        disabled={!hasFilters && !searchDraft}
-        onClick={() => {
-          setSearchDraft('');
-          setSearch('');
-          setAgeGroup('');
-          setObjective('ALL');
-          setDifficulty('ALL');
-          setSource('ALL');
-        }}
-      >
-        <Funnel /> Filtreleri temizle
-      </Button>
-    </>
-  );
+  const { draft, setDraft, filters } = useDrillCatalogFilters();
+  const source = draft.source ?? 'ALL';
+  const advancedCount = Object.entries(draft).filter(
+    ([key, value]) =>
+      key !== 'q' && key !== 'source' && value !== undefined && value !== '',
+  ).length;
   return (
     <Tabs
-      className="library-reference__tabs"
+      className="library-panel"
       value={category}
       onValueChange={setCategory}
     >
-      <section className="library-reference__catalog">
-        <header className="library-reference__catalog-head">
-          <div>
-            <p className="page-kicker">Egzersiz kataloğu</p>
-            <h2>Antrenman İçerikleri</h2>
-            <p>
-              Sunucu tarafında filtrelenen kategori ve sayfalı gerçek kayıtlar.
-            </p>
-          </div>
-          <div
-            className="library-reference__source-tabs"
-            aria-label="İçerik kaynağı"
-          >
-            {sources.map((item) => (
-              <Button
-                key={item.value}
-                type="button"
-                size="sm"
-                variant={source === item.value ? 'default' : 'outline'}
-                aria-pressed={source === item.value}
-                onClick={() => setSource(item.value)}
-              >
-                {item.label}
-              </Button>
-            ))}
-          </div>
-        </header>
-        <div
-          className="library-reference__filters library-reference__filters--desktop"
-          aria-label="Egzersiz filtreleri"
-        >
-          {renderFilterFields()}
+      <header className="library-panel-heading">
+        <div>
+          <h2>Antrenman İçerikleri</h2>
+          <p>
+            Önizlemeyle çalışmayı tanıyın; detayından mevcut bir plana ekleyin.
+          </p>
         </div>
-        <div className="library-reference__mobile-filter">
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button type="button" variant="outline">
-                <SlidersHorizontal /> Filtreler
-              </Button>
-            </SheetTrigger>
-            <SheetContent>
-              <SheetHeader>
-                <SheetTitle>Egzersiz filtreleri</SheetTitle>
-                <SheetDescription>
-                  Yaşa, amaca ve zorluk seviyesine uygun çalışmaları daraltın.
-                </SheetDescription>
-              </SheetHeader>
-              <div className="library-reference__filters library-reference__filters--sheet">
-                {renderFilterFields()}
-              </div>
-            </SheetContent>
-          </Sheet>
-        </div>
-        <TabsList className="library-tabs">
-          {phases.map((phase) => (
-            <TabsTrigger key={phase.value} value={phase.value}>
-              {phase.label}
-            </TabsTrigger>
+        <div className="library-sources" aria-label="İçerik kaynağı">
+          {sources.map((item) => (
+            <Button
+              key={item.value}
+              type="button"
+              variant={source === item.value ? 'default' : 'outline'}
+              aria-pressed={source === item.value}
+              onClick={() =>
+                setDraft({
+                  ...draft,
+                  source: item.value === 'ALL' ? undefined : item.value,
+                })
+              }
+            >
+              {item.label}
+            </Button>
           ))}
-        </TabsList>
-        <TabsContent value={category}>
-          <LibraryPage
-            key={JSON.stringify([category, filters])}
-            groupId={groupId}
-            category={category === 'ALL' ? undefined : (category as DrillPhase)}
-            filters={filters}
-            categoryLabel={
-              phases.find((phase) => phase.value === category)?.label ?? 'Tümü'
-            }
+        </div>
+      </header>
+      <div className="library-toolbar">
+        <label className="library-search">
+          Egzersiz ara
+          <Input
+            aria-label="Egzersiz ara"
+            maxLength={80}
+            placeholder="Başlık, amaç veya etiket ara"
+            value={draft.q ?? ''}
+            onChange={(e) => setDraft({ ...draft, q: e.target.value })}
           />
-        </TabsContent>
-      </section>
+        </label>
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button variant="outline">
+              <SlidersHorizontal /> Filtreler
+              {advancedCount > 0 ? ' (' + advancedCount + ')' : ''}
+            </Button>
+          </SheetTrigger>
+          <SheetContent className="library-filter-panel">
+            <SheetHeader>
+              <SheetTitle>Egzersiz filtreleri</SheetTitle>
+              <SheetDescription>
+                Yaş, amaç, süre ve oyuncu sayısına göre daraltın. Sonuçlar
+                anında güncellenir.
+              </SheetDescription>
+            </SheetHeader>
+            <div className="library-filter-scroll">
+              <DrillCatalogFilterFields
+                value={draft}
+                onChange={setDraft}
+                showSearch={false}
+              />
+            </div>
+            <footer>
+              <SheetClose asChild>
+                <Button>Sonuçları göster</Button>
+              </SheetClose>
+            </footer>
+          </SheetContent>
+        </Sheet>
+        {Object.values(draft).some(Boolean) && (
+          <Button variant="ghost" onClick={() => setDraft({})}>
+            Tümünü temizle
+          </Button>
+        )}
+      </div>
+      {advancedCount > 0 && (
+        <p className="library-active-filters" role="status">
+          {advancedCount} ayrıntılı filtre etkin
+          {draft.ageGroup
+            ? ' · ' + (draft.ageGroup === 'SENIOR' ? 'A Takım' : draft.ageGroup)
+            : ''}
+          {draft.minDuration ? ' · En az ' + draft.minDuration + ' dk' : ''}
+          {draft.maxDuration ? ' · En çok ' + draft.maxDuration + ' dk' : ''}
+        </p>
+      )}
+      <TabsList className="library-phases" aria-label="Egzersiz fazı">
+        {phases.map((phase) => (
+          <TabsTrigger key={phase.value} value={phase.value}>
+            {phase.label}
+          </TabsTrigger>
+        ))}
+      </TabsList>
+      <TabsContent value={category}>
+        <LibraryPage
+          key={JSON.stringify([category, filters])}
+          groupId={groupId}
+          category={category === 'ALL' ? undefined : (category as DrillPhase)}
+          filters={filters}
+        />
+      </TabsContent>
     </Tabs>
   );
 }
 function LibraryPage({
   groupId,
   category,
-  categoryLabel,
   filters,
 }: {
   groupId: string;
   category?: DrillPhase;
-  categoryLabel: string;
   filters: DrillCatalogFilters;
 }) {
   const load = useCallback(
@@ -323,74 +245,35 @@ function LibraryPage({
   );
   const state = useAssignmentPage(load);
   const page = state.data;
-  return (
-    <div className="library-reference__catalog-body">
-      {page && (
-        <>
-          <p className="sr-only" aria-label="Egzersiz kapsamı özeti">
-            {page.total} egzersiz
-          </p>
-          <section
-            className="library-reference__metrics"
-            aria-label="Egzersiz özeti"
-          >
-            <MetricCard
-              icon={Books}
-              label="Toplam egzersiz"
-              value={page.total}
-              detail="Aktif kategori toplamı"
-            />
-            <MetricCard
-              icon={Strategy}
-              label="Aktif filtre"
-              value={categoryLabel}
-              detail="Sunucu tarafında uygulanır"
-              tone="violet"
-            />
-            <MetricCard
-              icon={Clock}
-              label="Bu sayfa"
-              value={page.items.length}
-              detail={`Sayfa ${state.pageNumber}`}
-              tone="teal"
-            />
-          </section>
-        </>
-      )}
-      <div className="library-reference__results">
-        {state.loading ? (
-          <div role="status" aria-label="Egzersizler yükleniyor">
-            <Skeleton className="h-48" />
-          </div>
-        ) : state.error ? (
-          <Alert role="alert">
-            <AlertDescription>{state.error}</AlertDescription>
-            <Button onClick={state.retry}>Tekrar dene</Button>
-          </Alert>
-        ) : !page?.items.length && state.pageNumber > 1 ? (
-          <p>Bu sayfada egzersiz yok</p>
-        ) : (
-          <DrillGrid drills={page?.items ?? []} />
-        )}
-      </div>
-      <nav aria-label="Egzersiz sayfaları">
+  const [preview, setPreview] = useState<{
+    drill: DrillCatalogItem;
+    ageGroup?: string;
+  }>();
+  const pager = (bottom = false) => (
+    <nav
+      className="library-pager"
+      aria-label={bottom ? 'Alt egzersiz sayfaları' : 'Egzersiz sayfaları'}
+    >
+      <p role="status">
+        Sayfa {state.pageNumber}
+        {page
+          ? ' · ' + page.items.length + ' / ' + page.total + ' egzersiz'
+          : ''}
+      </p>
+      <div>
         <Button
           variant="outline"
           size="icon"
-          aria-label="Önceki sayfa"
+          aria-label={bottom ? 'Önceki egzersiz sayfası' : 'Önceki sayfa'}
           disabled={state.loading || state.pageNumber === 1}
           onClick={state.previous}
         >
           <CaretLeft />
         </Button>
-        <p role="status">
-          Sayfa {state.pageNumber}
-          {page ? ` · ${page.items.length} / ${page.total} egzersiz` : ''}
-        </p>
         <Button
           variant="outline"
           size="icon"
-          aria-label="Sonraki sayfa"
+          aria-label={bottom ? 'Sonraki egzersiz sayfası' : 'Sonraki sayfa'}
           disabled={state.loading || !page?.nextCursor}
           onClick={() => {
             if (page?.nextCursor) state.next(page.nextCursor);
@@ -398,49 +281,88 @@ function LibraryPage({
         >
           <CaretRight />
         </Button>
-      </nav>
-    </div>
-  );
-}
-function DrillGrid({ drills }: { drills: DrillCatalogItem[] }) {
-  if (!drills.length)
-    return (
-      <div className="empty-state">
-        <Books weight="duotone" />
-        <h2>Bu kategoride egzersiz yok</h2>
-        <p>Kulüp egzersizleri oluşturulduğunda burada görünecek.</p>
       </div>
-    );
+    </nav>
+  );
   return (
-    <div className="catalog-grid">
-      {drills.map((drill) => {
-        const board = drill.isBoard;
-        const card = (
-          <FootballCard
-            tone={board ? 'board' : 'default'}
-            title={drill.title}
-            badge={
-              <div className="library-reference__badges">
-                <Badge
-                  variant={drill.scope === 'GLOBAL' ? 'secondary' : 'default'}
-                >
-                  {sourceLabel(drill)}
-                </Badge>
-                {drill.source?.license === 'LEGACY_UNVERIFIED' ? (
-                  <Badge variant="outline">Kaynak doğrulanmadı</Badge>
-                ) : null}
+    <div className="library-results">
+      {page && (
+        <div
+          className="library-result-summary"
+          aria-label="Egzersiz kapsamı özeti"
+        >
+          <strong>{page.total} egzersiz</strong>
+          {page.ageGroup && (
+            <span>
+              {page.ageGroup === 'SENIOR' ? 'A Takım' : page.ageGroup} için
+              sonuçlar
+            </span>
+          )}
+        </div>
+      )}
+      {pager()}
+      {state.loading ? (
+        <div role="status" aria-label="Egzersizler yükleniyor">
+          <Skeleton className="h-48" />
+        </div>
+      ) : state.error ? (
+        <Alert role="alert">
+          <AlertDescription>{state.error}</AlertDescription>
+          <Button onClick={state.retry}>Tekrar dene</Button>
+        </Alert>
+      ) : !page?.items.length ? (
+        <div className="empty-state">
+          <Books />
+          <h2>
+            {state.pageNumber > 1
+              ? 'Bu sayfada egzersiz yok'
+              : 'Bu kategoride egzersiz yok'}
+          </h2>
+          <p>
+            Seçilen yaş ve filtreler için çalışma bulunamadı. Filtreleri
+            temizleyebilir veya yaş seçimini kontrol edebilirsiniz.
+          </p>
+        </div>
+      ) : (
+        <ul className="library-register" aria-label="Egzersizler">
+          {page.items.map((drill) => (
+            <li key={drill.id}>
+              <div className="library-drill-main">
+                <div className="library-drill-title">
+                  <Link to={'/app/library/' + drill.id}>{drill.title}</Link>
+                  <Badge variant="secondary">{sourceLabel(drill)}</Badge>
+                  {drill.source?.license === 'LEGACY_UNVERIFIED' && (
+                    <Badge variant="outline">Kaynak doğrulanmadı</Badge>
+                  )}
+                </div>
+                {drill.objectiveLabel && (
+                  <strong className="library-objective">
+                    {drill.objectiveLabel}
+                  </strong>
+                )}
+                {drill.summary ? (
+                  <details className="library-description">
+                    <summary>Egzersiz açıklaması</summary>
+                    <p>{drill.summary}</p>
+                  </details>
+                ) : (
+                  <p>
+                    {drill.equipment ||
+                      'Uygulamayı egzersiz detayında inceleyin.'}
+                  </p>
+                )}
               </div>
-            }
-            metadata={
-              <>
+              <div className="library-drill-facts">
                 <span>
                   <Clock /> {drill.durationMin} dk
                 </span>
-                <span>{phaseLabel(drill.category)}</span>
-                <span>{difficultyLabel(drill.difficulty)}</span>
+                <span>
+                  {phaseLabel(drill.category)} ·{' '}
+                  {difficultyLabel(drill.difficulty)}
+                </span>
                 {drill.playerMin && drill.playerMax ? (
                   <span>
-                    <Users /> {drill.playerMin}–{drill.playerMax}
+                    <Users /> {drill.playerMin}–{drill.playerMax} oyuncu
                   </span>
                 ) : null}
                 {drill.areaLengthM && drill.areaWidthM ? (
@@ -448,57 +370,53 @@ function DrillGrid({ drills }: { drills: DrillCatalogItem[] }) {
                     <Ruler /> {drill.areaLengthM}×{drill.areaWidthM} m
                   </span>
                 ) : null}
-              </>
-            }
-            detail={
-              <div className="library-reference__card-detail">
-                {drill.objectiveLabel ? (
-                  <strong>{drill.objectiveLabel}</strong>
-                ) : null}
-                <p>
-                  {drill.summary ||
-                    drill.equipment ||
-                    'Ayrıntılar egzersiz kartında.'}
-                </p>
               </div>
-            }
-            action={
-              <>
-                <Strategy /> Egzersizi incele
-              </>
-            }
-          />
-        );
-        return (
-          <Link
-            className="list-link"
-            to={`/app/library/${drill.id}`}
-            key={drill.id}
-          >
-            {card}
-          </Link>
-        );
-      })}
+              <div className="library-drill-actions">
+                <Button
+                  id={'preview-' + drill.id}
+                  variant="outline"
+                  aria-label={drill.title + ' önizle'}
+                  onClick={() => setPreview({ drill, ageGroup: page.ageGroup })}
+                >
+                  <Eye /> Önizle
+                </Button>
+                <Button asChild variant="ghost">
+                  <Link
+                    to={'/app/library/' + drill.id}
+                    aria-label={drill.title + ' detay'}
+                  >
+                    Detay <CaretRight />
+                  </Link>
+                </Button>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+      {pager(true)}
+      {preview && (
+        <DrillPreview
+          key={JSON.stringify([preview.drill.id, preview.ageGroup])}
+          drillId={preview.drill.id}
+          ageGroup={preview.ageGroup}
+          catalogItem={preview.drill}
+          detailHref={'/app/library/' + preview.drill.id}
+          returnFocusId={'preview-' + preview.drill.id}
+          onClose={() => setPreview(undefined)}
+        />
+      )}
     </div>
   );
 }
-
 function sourceLabel(drill: DrillCatalogItem) {
   if (drill.scope === 'CLUB') return 'Kulüp';
   if (drill.source?.kind === 'NGCS_ORIGINAL') return 'NGCS';
   if (drill.source?.kind === 'OPEN_LICENSE') return 'Açık lisans';
   return 'Global';
 }
-
 function difficultyLabel(value: DrillCatalogItem['difficulty']) {
   return { EASY: 'Başlangıç', MEDIUM: 'Orta', HARD: 'İleri' }[value];
 }
-
 function phaseLabel(value: DrillPhase) {
-  return {
-    WARM_UP: 'Isınma',
-    TECHNICAL: 'Teknik',
-    TACTICAL: 'Taktik',
-    COOL_DOWN: 'Soğuma',
-  }[value];
+  return phases.find((phase) => phase.value === value)?.label ?? value;
 }

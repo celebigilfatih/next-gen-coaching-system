@@ -53,6 +53,8 @@ import {
 import { getSession, subscribeSession, type SessionUser } from '../lib/session';
 import { logout as endSession } from '../lib/api';
 import { WorkspaceProvider, useWorkspace } from '../lib/workspace-context';
+import { useClubTheme } from '../lib/use-club-theme';
+import '../styles/club-branding.css';
 import { WorkspaceScopeSelector } from '../components/workspace-scope-selector';
 import { MatchNotifications } from '../components/match-notifications';
 import '../workspace.css';
@@ -137,6 +139,8 @@ export default function AppLayout() {
 }
 
 function Shell({ user }: { user: SessionUser }) {
+  const { club } = useWorkspace();
+  useClubTheme(club);
   const navigate = useNavigate();
   const searchInputRef = useRef<HTMLInputElement>(null);
   const visibleNavigation = navigation.filter(
@@ -281,9 +285,19 @@ function Shell({ user }: { user: SessionUser }) {
 }
 
 function Brand() {
+  const { club } = useWorkspace();
+  const logo = club?.logo;
   return (
     <NavLink to="/app/dashboard" className="ngcs-brand">
-      <ShieldChevron className="ngcs-brand-mark" weight="duotone" />
+      {logo && /^data:image\/(png|jpeg|webp);base64,/.test(logo) ? (
+        <img
+          src={logo}
+          alt={`${club.name} logosu`}
+          className="ngcs-club-logo"
+        />
+      ) : (
+        <ShieldChevron className="ngcs-brand-mark" weight="duotone" />
+      )}
       <span>
         <strong>NGCS</strong>
         <small>Next Generation Coaching System</small>

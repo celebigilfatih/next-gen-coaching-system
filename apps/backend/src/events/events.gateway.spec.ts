@@ -3,6 +3,8 @@ import { WsException } from '@nestjs/websockets';
 import { EventsGateway } from './events.gateway';
 
 describe('EventsGateway authorization', () => {
+  const originalFlag = process.env.PERSISTENT_SESSIONS_ENABLED;
+  const originalOrigin = process.env.FRONTEND_ORIGIN;
   const jwt = { verifyAsync: jest.fn() };
   const prisma = {
     refreshSession: { findFirst: jest.fn() },
@@ -22,6 +24,7 @@ describe('EventsGateway authorization', () => {
   const emit = jest.fn();
 
   beforeEach(() => {
+    process.env.PERSISTENT_SESSIONS_ENABLED = 'false';
     jest.clearAllMocks();
     (gateway as any).connectedUsers.clear();
     prisma.playerGroup.findMany.mockResolvedValue([]);
@@ -31,6 +34,14 @@ describe('EventsGateway authorization', () => {
     gateway.server = {
       to: jest.fn().mockReturnValue({ emit }),
     } as any;
+  });
+
+  afterEach(() => {
+    if (originalFlag === undefined)
+      delete process.env.PERSISTENT_SESSIONS_ENABLED;
+    else process.env.PERSISTENT_SESSIONS_ENABLED = originalFlag;
+    if (originalOrigin === undefined) delete process.env.FRONTEND_ORIGIN;
+    else process.env.FRONTEND_ORIGIN = originalOrigin;
   });
 
   it('rejects unauthenticated socket connections', async () => {
@@ -145,52 +156,67 @@ describe('EventsGateway authorization', () => {
     }
   });
 
-  it('derives socket identity from JWT plus current database state', async () => {
-    jwt.verifyAsync.mockResolvedValue({ sub: 'user-1', ver: 2 });
-    prisma.user.findUnique.mockResolvedValue({
-      id: 'user-1',
-      name: 'Current User',
-      email: 'current@example.com',
-      role: 'CLUB_ADMIN',
-      status: 'ACTIVE',
-      authVersion: 2,
-      clubId: 'club-a',
-    });
-    prisma.playerGroup.findMany.mockResolvedValue([
-      { id: 'group-a' },
-      { id: 'group-b' },
-    ]);
-    prisma.user.findMany.mockResolvedValue([
-      {
+  it.each([false, true])(
+    'derives socket identity from current state (persistent=%s)',
+    async (persistent) => {
+      process.env.PERSISTENT_SESSIONS_ENABLED = String(persistent);
+      process.env.FRONTEND_ORIGIN = 'http://localhost:3500';
+      prisma.refreshSession.findFirst.mockResolvedValue({ id: 'active-row' });
+      jwt.verifyAsync.mockResolvedValue({
+        sub: 'user-1',
+        ver: 2,
+        ...(persistent
+          ? { sid: 'active-family', exp: Date.now() / 1000 + 900 }
+          : {}),
+      });
+      prisma.user.findUnique.mockResolvedValue({
+        id: 'user-1',
+        name: 'Current User',
+        email: 'current@example.com',
+        role: 'CLUB_ADMIN',
+        status: 'ACTIVE',
+        authVersion: 2,
+        clubId: 'club-a',
+      });
+      prisma.playerGroup.findMany.mockResolvedValue([
+        { id: 'group-a' },
+        { id: 'group-b' },
+      ]);
+      prisma.user.findMany.mockResolvedValue([
+        {
+          id: 'user-1',
+          name: 'Current User',
+          role: 'CLUB_ADMIN',
+          authVersion: 2,
+        },
+      ]);
+      const client = {
+        id: 'socket-2',
+        handshake: {
+          auth: { token: 'valid-token' },
+          headers: { origin: 'http://localhost:3500' },
+        },
+        data: {},
+        disconnect: jest.fn(),
+        join: jest.fn(),
+      };
+
+      await gateway.handleConnection(client as any);
+      const result = await gateway.handleUserJoin(
+        { userId: 'spoofed', name: 'Spoofed User' },
+        client as any,
+      );
+
+      expect(client.join).toHaveBeenCalledWith('group:group-a');
+      expect(client.join).toHaveBeenCalledWith('group:group-b');
+      expect(client.join).not.toHaveBeenCalledWith('club:club-a');
+      expect(result.user).toEqual({
         id: 'user-1',
         name: 'Current User',
         role: 'CLUB_ADMIN',
-        authVersion: 2,
-      },
-    ]);
-    const client = {
-      id: 'socket-2',
-      handshake: { auth: { token: 'valid-token' }, headers: {} },
-      data: {},
-      disconnect: jest.fn(),
-      join: jest.fn(),
-    };
-
-    await gateway.handleConnection(client as any);
-    const result = await gateway.handleUserJoin(
-      { userId: 'spoofed', name: 'Spoofed User' },
-      client as any,
-    );
-
-    expect(client.join).toHaveBeenCalledWith('group:group-a');
-    expect(client.join).toHaveBeenCalledWith('group:group-b');
-    expect(client.join).not.toHaveBeenCalledWith('club:club-a');
-    expect(result.user).toEqual({
-      id: 'user-1',
-      name: 'Current User',
-      role: 'CLUB_ADMIN',
-    });
-  });
+      });
+    },
+  );
 
   it('does not broadcast a plan event outside the principal scope', async () => {
     authorization.assertPlanManage.mockRejectedValue(new ForbiddenException());

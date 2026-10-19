@@ -29,3 +29,9 @@ olarak sunulmamalıdır.
 Sportif kalite onayı ile platform operasyonu ayrılır. İlk 120 kayıt teknik olarak
 doğrulansa bile reviewer `TBD` iken kullanıcı kataloğuna yayınlanmaz. Capability
 ataması ve production operasyon sahibi ayrı yönetişim sorumluluğudur.
+
+2026-10-19: [ADR-0041](ADR-0041-local-starter-review-exception.md) yalnız mevcut
+Windows yerel başlangıç paketinin değişmemiş 120 ilk sürümü için açıkça onaylanan
+aynı-hesap istisnasıdır. Fatih Çelebigil'in onayı ve istisna audit edilir;
+bağımsız inceleme olarak sunulmaz. Genel runtime kuralları, production ve
+gelecekteki sürümlerin bağımsız inceleme gereksinimi korunur.
