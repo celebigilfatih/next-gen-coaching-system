@@ -2,9 +2,11 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { resolveBrowserOrigins } from './auth/persistent-session.config';
+import { configureBodyParsers } from './tactics/tactical-body-parser';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { bodyParser: false });
+  configureBodyParsers(app);
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   app.enableCors({
     origin: resolveBrowserOrigins(),

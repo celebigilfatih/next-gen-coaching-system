@@ -3,7 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import type { UserRole } from '@prisma/client';
+import type { SportingCapability, UserRole } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import type { AuthPrincipal } from './auth-principal';
 
@@ -28,6 +28,112 @@ export class AuthorizationService {
     if (principal.role === 'SYSTEM_ADMIN') return;
     if (principal.role !== 'CLUB_ADMIN') this.deny();
     if (!principal.clubId || principal.clubId !== clubId) this.deny();
+  }
+
+  async assertSportingCapability(
+    principal: AuthPrincipal,
+    capability: SportingCapability,
+    clubId: string,
+    teamId?: string,
+    _at = new Date(),
+  ) {
+    if (principal.role === 'SYSTEM_ADMIN') return;
+    if (!principal.clubId || principal.clubId !== clubId) this.deny();
+    if (principal.role === 'CLUB_ADMIN') return;
+    const actor = await this.prisma.user.findUnique({
+      where: { id: principal.id },
+      select: { personId: true },
+    });
+    if (!actor?.personId) this.deny();
+    const at = new Date();
+    const assignment = await this.prisma.sportingAssignment.findFirst({
+      where: {
+        clubId,
+        personId: actor.personId,
+        validFrom: { lte: at },
+        AND: [
+          { OR: [{ validTo: null }, { validTo: { gt: at } }] },
+          ...(teamId ? [{ OR: [{ teamId }, { teamId: null }] }] : []),
+        ],
+        roleDefinition: { capabilities: { some: { capability } } },
+      },
+      select: { id: true },
+    });
+    if (!assignment) this.deny();
+  }
+
+  async canViewPersonCapability(
+    principal: AuthPrincipal,
+    personId: string,
+    capability: SportingCapability,
+    at = new Date(),
+  ) {
+    try {
+      await this.assertPersonCapability(principal, personId, capability, at);
+      return true;
+    } catch (error) {
+      if (error instanceof ForbiddenException) return false;
+      throw error;
+    }
+  }
+
+  async assertPersonCapability(
+    principal: AuthPrincipal,
+    personId: string,
+    capability: SportingCapability,
+    at = new Date(),
+  ) {
+    const target = await this.prisma.person.findUnique({
+      where: { id: personId },
+      select: {
+        id: true,
+        clubId: true,
+        account: { select: { id: true } },
+      },
+    });
+    if (!target) throw new NotFoundException('Person not found');
+    if (principal.role === 'SYSTEM_ADMIN') return;
+    if (!principal.clubId || principal.clubId !== target.clubId) this.deny();
+    if (principal.role === 'CLUB_ADMIN' || target.account?.id === principal.id)
+      return;
+    if (principal.role === 'PLAYER') this.deny();
+
+    const actor = await this.prisma.user.findUnique({
+      where: { id: principal.id },
+      select: { personId: true },
+    });
+    if (!actor?.personId) this.deny();
+    const now = new Date();
+    const assignment = await this.prisma.sportingAssignment.findFirst({
+      where: {
+        clubId: target.clubId,
+        personId: actor.personId,
+        validFrom: { lte: now },
+        OR: [{ validTo: null }, { validTo: { gt: now } }],
+        roleDefinition: { capabilities: { some: { capability } } },
+        AND: [
+          {
+            OR: [
+              { teamId: null },
+              {
+                team: {
+                  assignments: {
+                    some: {
+                      personId,
+                      clubId: target.clubId,
+                      validFrom: { lte: at },
+                      OR: [{ validTo: null }, { validTo: { gt: at } }],
+                    },
+                  },
+                },
+              },
+            ],
+          },
+        ],
+      },
+      select: { id: true },
+    });
+    if (!assignment) this.deny();
   }
 
   async assertGroupView(principal: AuthPrincipal, groupId: string) {
@@ -202,7 +308,7 @@ export class AuthorizationService {
     const membership = await this.prisma.groupMember.findFirst({
       where: {
         userId: principal.id,
-        group: { clubId: principal.clubId },
+        group: { clubId: principal.clubId, archivedAt: null },
       },
       select: { id: true },
     });
@@ -221,7 +327,7 @@ export class AuthorizationService {
   async isGroupMember(userId: string, groupId: string) {
     return Boolean(
       await this.prisma.groupMember.findFirst({
-        where: { userId, groupId },
+        where: { userId, groupId, group: { archivedAt: null } },
         select: { id: true },
       }),
     );
@@ -317,9 +423,10 @@ export class AuthorizationService {
   private async getGroup(groupId: string) {
     const group = await this.prisma.playerGroup.findUnique({
       where: { id: groupId },
-      select: { id: true, clubId: true },
+      select: { id: true, clubId: true, archivedAt: true },
     });
-    if (!group) throw new NotFoundException('Group not found');
+    if (!group || group.archivedAt)
+      throw new NotFoundException('Group not found');
     return group;
   }
 

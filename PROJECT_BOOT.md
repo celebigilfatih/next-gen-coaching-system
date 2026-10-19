@@ -1,18 +1,388 @@
 # Next Generation Coaching System — Project Boot
 
-- **Document version:** 2.7
+- **Document version:** 2.107
 - **CDSK version:** 0.1.0
-- **Last updated:** 2026-09-05
+- **Last updated:** 2026-10-19
 
 > Bu belge güncel çalışma özetidir. Bilinmeyen alan `TBD`, geçersiz alan kısa
 > gerekçeyle `N/A` bırakılır.
 
 ## Project Compass
 
+- **Repository publication preparation (2026-10-19):** user requested commit
+  and push of accumulated approved work on `codex/mvp-stabilization`.
+  `main` is not the publication target; no force push, data rollout or V2 flag
+  activation. Temporary Playwright CLI recordings are excluded from Git.
+  Verify commit/remote outcome in Git; this entry is not a deployment claim.
+
+- **Latest — combined tactical acceptance (BL-058e.4):** repository V1/V2
+  drill/copy → phase snapshot → match and JSON/static export acceptance passed.
+  Disposable HTTP 18/18, migrations current/diff empty; actual route/API/PG
+  browser flow preserves full scenes and source isolation. Three viewports and
+  bounded 12-scene/1,500-element/50-undo observation passed. Root quality:
+  843 backend / 446 frontend / 4 Sites. Acceptance tests/context only this slice;
+  no retained data or flag change. BL-058/REQ-025 implemented in repository;
+  separately authorized retained rollout pending, broader pro-club pilot TBD.
+  [Evidence](docs/30-quality/TACTICAL_COMBINED_ACCEPTANCE_2026-10-03.md).
+
+- **Previous — training integration (BL-058e.3):** training detail loads only the
+  explicitly opened phase through the V1/V2 document adapter. Whole-scene
+  snapshots retain source authorization, isolation and token conflicts; failed
+  writes preserve drafts without automatic retry. First snapshot saves preserve
+  undo history. Mobile hero overflow fixed. Disposable HTTP 16/16; migration
+  status current and schema diff empty. No retained data or V2 flag change.
+  Root quality: 843 backend / 442 frontend / 4 Sites tests; all gates passed.
+  Next e.4 combined integration/export acceptance; BL-058/REQ-025 In progress.
+  [Evidence](docs/30-quality/TACTICAL_TRAINING_INTEGRATION_2026-09-26.md).
+
+- **Previous — drill integration (BL-058e.2):** tactics new/detail now reads
+  board-free metadata and whole V1/V2 documents. Metadata and board updates
+  are atomic; club copies recheck source visibility/token and derive ownership
+  on the server. Drafts survive failed writes; readonly roles and mobile layout
+  verified. Disposable HTTP 14/14; migrations current and schema diff empty.
+  No retained data or V2 flag change. Next e.3 training snapshot, e.4 combined
+  acceptance; BL-058/REQ-025 remain In progress.
+  Root quality: 840 backend / 429 frontend / 4 Sites tests; all gates passed.
+  [Evidence](docs/30-quality/TACTICAL_DRILL_INTEGRATION_2026-09-26.md).
+
+- **Previous — match integration (BL-058e.1):** match detail now uses authorized
+  board-free metadata and lazy token-bound document reads/writes. V1/V2 editor,
+  playback, conflict draft retention and guarded tab transitions are connected.
+  PLAYER is readonly; session/scope changes release the prior resource.
+  Disposable PostgreSQL HTTP suite passes 9/9; synthetic real-route browser QA
+  covers desktop/tablet/mobile. Retained V2 writes remain off, no data rollout.
+  Next BL-058e.2 drill metadata/create/copy and e.3 plan snapshot integration;
+  full BL-058/REQ-025 remains In progress.
+  Quality: 824 backend / 416 frontend / 4 Sites tests; all gates passed.
+  [Evidence](docs/30-quality/TACTICAL_MATCH_INTEGRATION_2026-09-26.md).
+
+- **Previous — playback (BL-058d):** opt-in scene editor now has explicit play,
+  pause, restart, seek, 0.5/1/2 speed, loop and reduced-motion support. Preview
+  locks edits/save and never becomes a persisted scene. Visibility, modal,
+  route/scope and unmount interruptions stop playback without auto-resume.
+  Root quality passed: 821 backend / 405 frontend / 4 Sites tests. Synthetic
+  real-Konva QA passed at 1672/1024/390 widths; retained data untouched.
+  Existing routes remain V1 and V2 writes remain off. Next BL-058e route/token,
+  snapshot/match/copy/export integration and separately authorized rollout.
+  [Evidence](docs/30-quality/TACTICAL_PLAYBACK_2026-09-26.md).
+
+- **Previous — scene editor (BL-058c):** opt-in scene strip, full-document
+  undo/dirty/explicit Save, strict scene operations and token-aware client
+  adapters implemented. 36 focused tests and synthetic three-viewport canvas
+  QA passed. Existing routes remain V1; retained data and V2 write flag unchanged.
+  Next BL-058d playback, then BL-058e real route integration/rollout gate.
+  Final root quality: 821 backend / 390 frontend / 4 Sites tests, all gates pass.
+  [Evidence](docs/30-quality/TACTICAL_SCENE_EDITOR_2026-09-19.md).
+
+- **Latest — animation persistence (BL-058b):** additive drill/plan/match
+  document APIs, Serializable token writes, source/snapshot provenance,
+  legacy downgrade/read guards and route-scoped HTTP limits implemented.
+  Disposable PostgreSQL HTTP gate: 8/8. V2 writes stay default-off; no retained
+  data, schema, dependency or UI change. Next BL-058c scene editor.
+  Final root quality passed: 821 backend / 369 frontend / 4 Sites tests.
+  [Evidence](docs/30-quality/TACTICAL_V2_API_2026-09-19.md).
+
+- **Previous — animation foundation:** ADR-0036 A–D explicitly Accepted;
+  CR-026 approved, REQ-025/BL-058 In progress. BL-058a pure V1/V2 validator and
+  absolute-time sampler implemented; targeted 63 backend / 63 frontend tests.
+  Root quality passes: 788 backend, 369 frontend and 4 Sites tests.
+  Legacy V1 HTTP/editor paths unchanged; no V2 writes/UI yet. Next BL-058b
+  token/CAS/legacy protection. [Evidence](docs/30-quality/TACTICAL_V2_FOUNDATION_2026-09-19.md).
+
+- **Tactical increment 3:** roster names can fill an existing player/goalkeeper
+  position after confirmation. Geometry/team/type remain; old numbers clear.
+  One-step undo and explicit Save preserved; no identity link or DB change.
+  [Evidence](docs/30-quality/TACTICAL_SLOT_ASSIGNMENT_2026-09-19.md).
+
+- **Tactical increment 2:** current-roster name snapshots and multi-selection/
+  unit move/copy/delete implemented on unchanged V1. Live A Team read and
+  isolated canvas drag/undo verified. No Person link or auto-sync is claimed.
+  [Evidence](docs/30-quality/TACTICAL_ROSTER_SELECTION_2026-09-19.md).
+
+- **Latest tactical studio slice (2026-09-19):** ADR-0035 introduces the
+  pitch-first 2D editor, shirt/disc view, shared canvas/SVG equipment art,
+  zoom/pan/fit and focus/inspector controls. V1/API/database contracts remain
+  unchanged. The compact route removes the photographic editor hero and keeps
+  metadata collapsible. See [verification](docs/30-quality/TACTICAL_STUDIO_2026-09-19.md).
+  Next: real roster identities and tactical group tools, followed by animation,
+  offline match-day and optional 3D in separately specified slices. Do not
+  interpret this delivery as completion of the whole professional-board roadmap.
+
+- **Latest professional drill-library gate (2026-09-09):** ADR-0032–0034 add
+  immutable DrillVersion, age variants, source/license/checksum evidence and an
+  author → independent reviewer → SystemAdmin publication workflow. The
+  repository contains 120 original Turkish DRAFT exercises with 24 primary
+  items per U12/U14/U16/U18/SENIOR and minimum 4/8/8/4 phase distribution.
+  Catalog/detail/manage UI and strict filtered APIs are implemented. Clean
+  PostgreSQL 16 migration/status/diff, five-record legacy backfill and
+  idempotent disposable import (`120 created`, then `120 skipped`) pass. The
+  named football expert is `TBD`; therefore no new item is claimed as verified
+  or published. The two additive migrations and, after separate explicit user
+  approval, the 120-item DRAFT package were applied to retained
+  `ngcs_local_session_dev`. Replay skipped all 120 existing records; postconditions
+  are 120 DRAFT, 5 unchanged PUBLISHED legacy versions, 120 original-source rows
+  and 120 draft-created audit events. Production was not changed. Root quality
+  passes with 725 backend, 286 frontend and 4 Sites tests.
+  Tracking:
+  CR-024, REQ-023, BL-056; [evidence](docs/30-quality/PROFESSIONAL_DRILL_LIBRARY_2026-09-09.md).
+  **Next:** appoint the expert and begin the first 40-item sporting-review wave;
+  publication remains blocked until independent approval.
+  Follow-up console QA confirmed that two SystemAdmin self-approval attempts were
+  correctly rejected by ADR-0034 and that no active independent reviewer account
+  exists locally. The UI now disables self-review with an explicit explanation;
+  root hydration fallback and favicon remove the reported loading/404 noise.
+  Targeted 9-test, typecheck, lint and clean-browser 0-warning/0-error gates pass.
+
+- **Latest Player 360 / player-notes gate (2026-09-09):** Player 360 now uses a
+  compact localized identity, real Activity, journey-only date scope and
+  URL-backed Overview/Notes/Activity/Journey views. Account-independent notes
+  are Person-linked, team-scoped, revisioned, conflict-safe and archived rather
+  than deleted; controlled same-club team sharing and body-free audit metadata
+  enforce the accepted privacy boundary. Two additive migrations passed clean
+  disposable PostgreSQL 16 verification and were then applied to retained local
+  `ngcs_local_session_dev` without changing existing business counts. Disposable
+  HTTP E2E, authenticated Chrome desktop QA and root quality pass with 720
+  backend, 285 frontend and 4 Sites tests. Responsive breakpoints and component
+  regressions pass; no new exact-size responsive capture is claimed. Tracking:
+  ADR-0031, CR-023, REQ-022, BL-055. No production, credential reset, retained
+  note mutation, commit or push. **Next:** product gap audit or the next
+  explicitly selected feature.
+
+- **Latest A Team roster-center gate (2026-09-09):**
+  `/app/teams/first-team` now opens the active A Team roster directly and aligns
+  the workspace team without dropping the nested route. It presents real squad
+  summaries, URL-backed search/position/name sorting, Player 360 and four scoped
+  operation links. The paged player API adds strict filters, versioned
+  `displayName + id` cursors and self-scope-safe totals while preserving legacy
+  no-sort ID cursors. Backend 712, frontend 284 and disposable PostgreSQL E2E 2/2
+  pass. No schema/migration/dependency/retained-data/production, commit or push.
+  Tracking: ADR-0030, CR-022, REQ-021, BL-054.
+
+- **Latest team-navigation/name gate (2026-09-09):** A Takım and Altyapı are
+  separate sidebar/mobile-Sheet destinations at `/app/teams/first-team` and
+  `/app/teams/academy`; the directory has no in-page tabs. `/app/teams` remains
+  a legacy-query-aware compatibility redirect. The retained five local squads
+  now expose 90/90 unique deterministic synthetic Turkish names with zero
+  Demo/E2E placeholders; account-linked Person/User display names match while
+  e-mail/password/role/session data is unchanged. Second fixture run: zero
+  creates and zero renames. Authenticated Chrome and root quality pass with 706
+  backend, 279 frontend and 4 Sites tests plus 121 Markdown links/CDSK/whitespace.
+  No API/schema/migration/dependency/production, commit or push. Tracking:
+  ADR-0029, CR-021, REQ-020, BL-053.
+
+- **Latest local squad gate (2026-09-09):** The retained local club/season has
+  A Takım plus U12/U14/U16/U18, each linked to the selected TeamSeason and holding
+  18 active players. Existing U18 identity/history and its two players were
+  preserved; 88 synthetic Persons were added without user accounts,
+  e-mail, password or invented birth dates. The guarded Serializable fixture is
+  idempotent (second run: zero creates). `/app/squad` now consumes the canonical
+  account-independent roster instead of legacy GroupMember. Authenticated Chrome
+  QA confirms the A Takım card, four academy cards and the 18-player U12 roster.
+  Root quality passes with 706 backend, 276 frontend and 4 Sites tests, plus
+  Markdown/CDSK/whitespace gates. No production, reset, deletion, archive,
+  commit or push. Tracking: BL-052.
+
+- **Latest team-management gate (2026-09-08):** `/app/teams` now separates the
+  protected A Takım from the academy directory. SYSTEM_ADMIN can create the one
+  active first team per club; system/same-club admins can edit it, while archive
+  is forbidden. Admins can create academy teams only for a concrete ClubSeason,
+  edit, archive without deleting history and restore the same identity; coach and
+  player remain read-only. ADR-0028 adds atomic legacy/canonical projection,
+  configurable age labels, archive fields, partial uniqueness and audit actions.
+  Backend 706, frontend 276, disposable PostgreSQL lifecycle E2E 3/3,
+  migration/status/diff and clone backfill hashes pass. Live Chrome QA opened
+  controls without submitting retained-team mutations. No production, seed/reset,
+  commit or push. `BL-050` was already assigned, so this delivery is `BL-051`.
+  Next: product gap audit or separately approved department-specific team work.
+
+- **Latest local credential operation (2026-09-08):** With explicit user
+  approval, the retained `ngcs_local_session_dev` database received its first
+  platform `SYSTEM_ADMIN` through the guarded bootstrap and one same-club
+  `CLUB_ADMIN` through authenticated invitation/acceptance. Both accounts are
+  ACTIVE and real login succeeded. Verification refresh sessions were revoked;
+  both accounts end with zero open sessions and token-free audit evidence.
+  Passwords were returned only in the conversation and were not written to the
+  repository. No role promotion of an existing account, migration, seed/reset,
+  production, commit or push occurred.
+
+- **Latest access-management gate (2026-09-08):** Admin-only account directory
+  and `/app/settings/users` now expose the existing invitation, role/club,
+  suspend/reactivate, password-reset and session-revoke lifecycle. System admin
+  has platform/selected-club scope; club admin is server-forced to its own club;
+  coach/player are denied. Responses use strict bounded queries and minimum
+  projection. The existing technical role matrix and sporting capabilities are
+  visible, but capability grants remain read-only. Backend 676, frontend 273,
+  Sites 4, disposable PostgreSQL HTTP E2E 21/21, production build, CDSK/docs and
+  1440/1024/390 browser gates pass. No schema/dependency/production or retained-
+  account change. Next: separate product gap audit or separately approved
+  capability-grant administration.
+
+- **Latest lifecycle gate (2026-09-08):** Training catalogue/detail now expose
+  role-safe edit and explicit permanent delete. Edit is title/date/purpose only;
+  linked DayPlan projection and permanent deletion of DayPlan, Attendance,
+  PlanDrill/snapshot and TrainingPlan are Serializable and fail atomically.
+  Pointer/disabled cursors, focus return, five-metric responsive layout, auto-fit
+  cards and long-copy wrapping are repaired; unsupported catalogue board status
+  is removed. Targeted unit/frontend suites, disposable PostgreSQL 16 HTTP E2E
+  and root quality (663 backend, 268 frontend, 4 Sites) pass. Combined visual QA
+  has no actionable P0/P1/P2. No schema/dependency/production or retained-data
+  change. Next: separate product gap audit.
+
+- **Latest visual gate (2026-09-08):** Settings now uses the approved white
+  shadcn system with the shared photographic hero, four truthful account/scope
+  metrics, compact profile/context cards and the existing session security and
+  logout behavior. Exact-size 1672×941, 1024×900 and 390×844 captures are
+  retained; [design QA](design-qa.md) has no actionable P0/P1/P2 and the mobile
+  document matches its viewport. Root quality passes with 657 backend, 264
+  frontend and 4 Sites tests. No API/schema/data change. All approved BL-048
+  page slices are visually complete; next is the separate product gap audit.
+
+- **Latest visual gate (2026-09-08):** Players, Player 360, Squad and Attendance
+  now use the approved white shadcn system with photographic heroes, verified
+  scope metrics, compact player/plan cards and the existing dated assignment and
+  attendance controls. Twelve exact-size 1536×1024, 1024×900 and 390×844
+  captures are retained; [design QA](design-qa.md) has no actionable P0/P1/P2.
+  Server search, cursor totals/history, role/tenant visibility, Player 360
+  evidence boundaries and uncertain attendance writes remain unchanged. Root
+  quality passes with 657 backend, 264 frontend and 4 Sites tests. No
+  API/schema/data change. Next: Settings.
+
+- **Latest visual gate (2026-09-08):** Match detail now uses the approved white
+  visual system with the shared photographic hero, five verified match facts,
+  compact analysis/facts composition and the existing tactical-board editor.
+  Six exact-size 1672×941, 1024×900 and 390×844 captures are retained;
+  [design QA](design-qa.md) has no actionable P0/P1/P2. The independent
+  authorized read, explicit analysis save, board state, import/export and dirty
+  behavior remain intact. Root quality passes with 657 backend, 264 frontend
+  and 4 Sites tests. No API/schema/data change. Next: Players, Player 360,
+  Squad and Attendance.
+
+- **Latest visual gate (2026-09-08):** Egzersiz Kütüphanesi, Taktik Tahtası ve
+  yeni tahta editörü onaylı beyaz görsel sisteme taşındı. Fotoğraflı hero,
+  doğrulanmış gerçek metrikler, kategori kataloğu, tahta araçları özeti ve kompakt
+  editör chrome'u için dokuz exact-size 1672×941, 1024×900 ve 390×844 kanıtı
+  saklanır; [design QA](design-qa.md) içinde açık P0/P1/P2 yoktur. Kategori/kind
+  sayfalaması, global/kulüp görünürlüğü, import/export, undo/redo, dirty-state ve
+  yetki davranışları korundu. Root quality 657 backend, 263 frontend ve 4 Sites
+  testiyle geçer. API/schema/data değişmedi. Next: Match detail.
+
+- **Latest visual gate (2026-09-08):** Trainings and training detail now use the
+  approved white system with photographic heroes, five verified catalogue
+  metrics, compact editor summary/tabs and responsive plan/phase cards. Six exact
+  1672×941, 1024×900 and 390×844 captures are retained; [design QA](design-qa.md)
+  passes without actionable P0/P1/P2. Cursor/retry/stale behavior, plan creation,
+  on-demand board reads, dirty transitions, uncertain-save reconciliation,
+  attendance and permissions remain intact. Root quality passes with 657 backend,
+  260 frontend and 4 Sites tests. No API/schema/data change. Next: Library and
+  Tactical Board.
+
+- **Latest visual gate (2026-09-08):** Week now uses the approved white visual
+  system with a photographic training-ground hero, compact date controls and a
+  responsive seven-day board. Exact 1672×941, 1024×900 and 390×844 evidence is
+  retained; [design QA](design-qa.md) passes with no actionable P0/P1/P2.
+  Existing local Monday–Sunday boundaries, seven independent daily plan/match
+  reads, full totals, cursor histories, retry and stale-response behavior remain
+  intact. Root quality passes with 657 backend, 258 frontend and 4 Sites tests.
+  No API/schema/data change. Next: Trainings and training detail.
+
+- **Latest visual gate (2026-09-08):** Matches now matches the approved reference
+  with the shared photographic hero, local-day date filter and date-grouped real
+  catalogue rows. Exact 1672×941, 1024×900 and 390×844 evidence is retained;
+  [design QA](design-qa.md) passes with no actionable P0/P1/P2. Cursor history,
+  full totals, stale-scope rejection, retries, all-seasons and detail behavior
+  remain intact. Root quality passes with 657 backend, 257 frontend and 4 Sites
+  tests. No API/schema/data change. Dashboard, Teams and Matches reference gates
+  are closed; next is Week.
+
+- **Latest visual gate (2026-09-08):** Teams now matches the approved reference
+  through the shared white shell, photographic training-ground hero, real-data
+  team card and accessible compact table. Exact 1536×1024, 1024×900 and 390×844
+  captures are retained; [design QA](design-qa.md) passes without actionable
+  P0/P1/P2. Search, cursors, stale-response rejection, work-team selection and
+  detail links remain intact. Root quality passes with 657 backend, 256 frontend
+  and 4 Sites tests. No API, schema or business-data change. The next approved
+  visual slice is Matches.
+
+- **Latest visual gate (2026-09-08):** Dashboard now has retained exact-size
+  browser evidence at 1672×941, 1024×900 and 390×844 plus the open mobile Sheet.
+  Source and implementation were reopened together; no actionable P0/P1/P2
+  remains and [design QA](design-qa.md) passes. The Dashboard gate is closed.
+  This is the completed predecessor to the Teams gate above.
+
+- **Historical verification follow-up (2026-09-08):** Stopped local services were
+  restarted on frontend 3132/backend 4000 against the retained database with
+  documented persistent-session flags. Existing coach login and real Dashboard
+  reads work; desktop/tablet/mobile and Sheet were rechecked. No code, seed/reset
+  or migration change. The former screenshot-export gate was later closed with
+  the explicitly approved local capture fallback; see [QA evidence](design-qa.md).
+
 - **North star:** Futbol sezonu, antrenman ve taktik çalışma akışlarını tek bir
   izlenebilir dijital çalışma alanında toplamak.
-- **Current mission:** Dar MVP'yi, runtime/migrator artifact'larını ve ADR-0018
-  opt-in kalıcı oturumu doğrulayarak M4 production girdilerini toplamak.
+- **Current mission:** BL-048 sayfa bazlı referans geçişi, BL-049 antrenman yaşam
+  döngüsü, BL-050 hesap/yetki yönetimi, BL-051 takım yaşam döngüsü ve BL-052 yerel
+  A Takım/U12/U14/U16/U18 kadroları kapandı. Sportif capability grant düzenleme
+  ayrıca onaylanana kadar salt okunur kalır. Sıradaki çalışma ayrı ürün gap audit'i
+  veya ayrıca onaylanmış takım
+  departman akışıdır. Mevcut REST/Prisma/yetki,
+  tarih, cursor ve gerçek-veri sınırları korunacak, desteklenmeyen içerik
+  üretilmeyecek. Görsel kabul [design-qa.md](design-qa.md) üzerinden izlenir.
+  Aşağıdaki BL-047 faz sırası önceki teslim bağlamıdır.
+  Kullanıcının UI migration brief'i doğrultusunda BL-047
+  sekiz aşamalı shadcn yakınsamasını yürütmek: faz 1 token temeli ve mevcut
+  primitive yüzey bağlantıları, faz 2 etkileşim kapısı ve faz 3 dashboard/settings
+  layout pilotu geçti. Mobil kullanıcı menüsü görünür ve adlandırılmıştır.
+  Faz 4A giriş/davet/parola yenileme formları ortak Input/Button/FormField ve
+  FormError düzenine geçti. Faz 4B.1 antrenman oluşturma diyalogu aynı alan/hata
+  düzenine geçti. Faz 4B.2 sportif atama diyalogu ortak FormField/NativeSelect
+  düzeniyle doğrulandı; faz 4 hedefleri tamamlandı. Faz 5A Oyuncular/Takımlar
+  ortak boş/yükleniyor/hata ve sayfalama pilotu tamamlandı; atama geçmişi de
+  aynı sayfalama sunumunu kullanır. Faz 5B çalışma kapsamı ve atama seçenekleri
+  ortak OptionPagination kullanır; farklı cursor/başarı politikaları korunur.
+  Faz 5C antrenman, maç, kütüphane ve taktik kataloglarını ortak FootballCard
+  sunumuna taşır; linkler, alan anlamları, toplamlar ve izinler korunur. Faz 5
+  tamamlandı. Faz 6 Hafta, Trainings/training detail, Library/Tactical Board/
+  editor ve Match detail modüllerinde geçti; geniş sayfa/shell yayılımı Players,
+  Player 360, Squad ve Attendance ile sürer.
+  Native control/asChild tipografi ortak PageActions içinde hizalandı; global
+  font reset yapılmadı. API/iş kuralları
+  değişmez. Önceki teslim bağlamı: Onaylı Phase 2 P0.1 sportif organizasyon ve oyuncu yolculuğu
+  temelinde P0.1a/b repository ve kontrollü yerel teslimi korumak; BL-043
+  tamamlanan sayfalı okumaların pilot kapasite ve sorgu bütçelerini doğrulamak.
+  BL-043i sentetik beşli okuma ölçümü üç süreçte tekrarlandı: 30/300 oyuncuda
+  36 sorgu ve yaklaşık 16 KB/grup. Bu production kapasitesi değildir. Editor
+  2→50 sentetik fazda 34→853 KB büyüdü. BL-046/CR-017 ve ADR-0025 Option A
+  onaylandı; a backend hafif faz metadata + tekil effective board okumaları
+  doğrulandı. Kaynak yetkisi/snapshot önceliği korunur, yeni limit yoktur.
+  BL-046b frontend hafif metadata + açık tekil faz açmaya geçti; dirty
+  save/discard/cancel ve ilk kayıtta undo korunur. BL-046c üç eşleşen 2/50-faz
+  ölçümü ve son regresyonla geçti; BL-046/CR-017 uygulaması kapandı. 50 fazda
+  JSON toplamı 996.545 → 24.040 byte; iki yeni istek toplam 12, eski tek istek
+  6 SQL olayıdır. BL-043j karma 5 GET/2 POST ve ayrı SELECT row-work ölçümü
+  üç temiz başlangıçta geçti: 30/300 oyuncu ve 150/1500 seçili planda 47 SQL
+  olayı; bazı tarama işleri hacimle büyür. Production SLO değildir. BL-043
+  pilot kabulü owner/hacim/ortam/bütçe TBD olarak açık. BL-045 “Tüm sezonlar”
+  etiketi yan menü/üst çubuk/Hafta/Genel Bakış/Ayarlar'da düzeltildi; gerçek
+  eksik sezon TBD kalır. BL-044 başta olmak üzere kalan karar girdilerini
+  onaya hazır plana toplamak hâlâ açıktır; yeni politika/production etkinleştirilmez.
+  Antrenman/Genel Bakış/Hafta/Yoklama bağımsız sayfa/özet okumalarına geçti;
+  provider'ın tam plan dizisi kaldırıldı.
+  BL-043f.1 Egzersiz Kütüphanesi bağımsız sayfalı kategori okumalarına geçti;
+  BL-043f.2 Genel Bakış tam egzersiz toplamını bağımsız minimal okumadan alıyor.
+  BL-043f.3 Taktik Tahtası sunucu kind filtresiyle bağımsız sayfalara geçti.
+  BL-043f.4 antrenman detay seçeneklerini sayfaladı; ortak tam egzersiz
+  fetch/state kaldırıldı. Tekli ekleme mevcut POST ile snapshot'ları korur.
+  BL-043g.1 sayfalı/minimal maç okuma API'si hazır; BL-043g.2 Maçlar bağımsız
+  25'lik sayfalara geçti. BL-043g.3 Genel Bakış ilk üç kronolojik maçı limit=3
+  ve tam toplamla okur. BL-043g.4 Hafta yerel günlük sınırlarla bağımsız
+  25'lik maç sayfaları/tam toplam kullanır. BL-043g.5 maç detayı bağımsız
+  yetkili tekil okuma, shell sayacı limit=1/tam total kullanır. Provider ortak
+  matches dizisi kaldırıldı; legacy metadata çağrısı maç yüklemez.
+  BL-043h.1 Kadro bağımsız 25'lik üye sayfalarını, Genel Bakış oyuncu sayacı
+  limit=1/tam toplamı kullanır. BL-043h.2 antrenman yoklamasını bağımsız sayfa/
+  tam toplama geçirir; editor katılım/grup üyelerini indirmez. Son shared üyeler
+  dizisi ve tam fetch kaldırıldı. Eski API'ler ve katılım yazma yetkileri korunur.
+  BL-043a/b/c/d oyuncu, takım/workspace, tarihli kadro/atama geçmişi, seçili legacy
+  metadata ve diyalog seçenekleri tamamlandı. Production rollout ayrı kapıda bekler.
 - **Success signal:** Antrenörün sezon bağlamında antrenman planlayabilmesi,
   katılımı takip edebilmesi ve taktik analiz kaydı oluşturabilmesi.
 - **Accepted trade-offs:** Mevcut sağlık, ileri analitik ve scouting modülleri
@@ -32,14 +402,15 @@
 
 ## 2. Current Status
 
-- **Phase:** M3.2 stabilizasyonu, ADR-0017 artifact ayrımı ve ADR-0018 opt-in oturum tamamlandı;
-  2026-09-05 remediation review hükmü **Pass**.
+- **Phase:** M5 / Phase 2 P0.1a/b repository teslimi; M3.2 stabilizasyonu korunur.
 - **Version:** Ürün sürümü `TBD`.
-- **Active milestone:** M4 production session hazırlığı; zorunlu girdiler, owner ve
-  hedef tarih `TBD`.
-- **Current focus:** ADR-0010/0018 production rollout girdileri ve BL-024 log/DTO/lint
-  borcunu hazırlamak; doğrulanmış artifact'lar için production registry,
-  orchestrator ve DB rol sınırlarını belirlemek.
+- **Active milestone:** M5 repository ve yerel rollout tamamlandı; BL-043 ölçek
+  ve M4 production session hazırlığı bekleyen işlerdir.
+- **Current focus:** P0.1a Person/Team/TeamSeason, capability API, tarihsel kadro,
+  Player 360 ve yolculuk kanıtı repository'de doğrulandı. BL-042 ile mevcut
+  group/season/member write yollarının atomik sportif projection'ı, admin parity
+  raporu ve kalıcı Club/Season/Team shell seçimi tamamlandı. BL-024/F-008 ve ADR-0019 attendance
+  tekillik çalışmaları tamamlanmış olarak korunur.
 - **Critical risks:** Kalıcı oturum varsayılan kapalı; production deployment, ayrı
   runtime/migrator DB rolleri, secret, readiness, backup ve observability modeli;
   sağlık/ileri analitik gizlilik politikası. Prisma advisory'si ADR-0016
@@ -47,8 +418,10 @@
   zincirini taşımaz.
 - **Blocking decisions:** Exact production domain/provider, proxy/secret modeli,
   operasyon sahibi, security audit ve sağlık verisi retention politikası `TBD`.
-  Session lifetime ve refresh-record retention ADR-0018 ile onaylanmıştır.
-- **Last status update:** 2026-09-05
+  BL-046 Option A teslimi tamamlandı; geniş BL-043 pilot bütçeleri henüz TBD.
+  Session lifetime ve refresh-record retention ADR-0018 ile, vendor-neutral
+  SMTP/recovery sınırı ADR-0020 ile onaylanmıştır. Provider hesabı ve rollout `TBD`.
+- **Last status update:** 2026-09-07
 
 ## 3. Repository Navigation
 
@@ -70,6 +443,9 @@
 - **Data/storage:** PostgreSQL; baseline ve additive taktik-tahta migration'ı temiz
   PostgreSQL 16 üzerinde uygulandı. ADR-0018 üçüncü additive RefreshSession
   migration'ını ekler; deploy/status ve canlı schema diff doğrulandı.
+  P0.1 altıncı additive migration ile Person/account ayrımı, Team/TeamSeason,
+  işlevsel rol/capability ve etkili tarihli SportingAssignment eklenir; boş ve
+  legacy-verili disposable PostgreSQL backfill/diff provası geçmiştir.
 - **Deployment model:** Docker Compose backend için runtime-only target, açık
   operations profili için ayrı migrator target kullanır; production registry,
   orchestrator ve credential modeli `TBD`.
@@ -79,29 +455,38 @@
   Ayarlar rotaları; kulüp egzersizi, plan snapshot'ı ve maç tahtası gerçek REST
   API'ye bağlıdır. Mobil alt navigasyon beş ana görevi korur; destek rotaları tam
   menü Sheet'i içindedir.
+  Phase 2 ile Takımlar, tarihe göre takım kadrosu, Oyuncular ve izin filtreli
+  Player 360 rotaları aynı shadcn shell'e eklenmiştir.
 
 ## 5. Decision Snapshot
 
-| Decision | Status | ADR / source |
-|---|---|---|
-| CDSK 0.1.0 kullanımı | Accepted | `docs/50-decisions/ADR-0001-cdsk-adoption.md` |
-| Dar MVP sınırı | Accepted | `docs/50-decisions/ADR-0002-mvp-boundary.md` |
-| Frontend repository topolojisi | Accepted; monorepo workspace reserved | ADR-0003 |
-| Authentication/bootstrap güvenlik tabanı | Accepted | ADR-0004 |
-| SYSTEM_ADMIN / CLUB_ADMIN rol ve tenant sınırı | Accepted | ADR-0005 |
-| Prisma uzlaştırma ve rol geçiş yaklaşımı | Accepted; clean baseline verified | ADR-0006 |
-| Çekirdek kaynak yetkilendirme matrisi | Accepted; unit/E2E verified | ADR-0007 |
-| Davet tabanlı hesap yaşam döngüsü | Accepted; migration/unit/E2E verified | ADR-0008 |
-| Koç öncelikli web frontend ve ilk akış | Accepted; vertical slice verified | ADR-0009 |
-| Production origin ve kalıcı tarayıcı oturumu | Accepted; rollout inputs TBD; amended by ADR-0018 | ADR-0010 |
-| Rotalı shadcn koç çalışma alanı | Accepted; implemented | ADR-0011 |
-| Kapsamlı egzersiz ve taktik tahta sözleşmesi | Accepted; implemented | ADR-0012 |
-| Genişletilmiş koç navigasyonu ve shadcn shell | Accepted; implemented | ADR-0013 |
-| Grup izolasyonu ve gerçek zamanlı olay alıcıları | Accepted; verified | ADR-0014 |
-| Atomik recovery ve güvenli SVG serialization | Accepted; verified | ADR-0015 |
-| Prisma CLI advisory risk disposition | Accepted; production re-review required | ADR-0016 |
-| Runtime ve migrator image ayrımı | Accepted; image/migration/runtime/E2E verified | ADR-0017 |
-| Provider-neutral kalıcı oturum | Accepted; opt-in implementation; default disabled | ADR-0018 |
+| Decision                                          | Status                                                  | ADR / source                                  |
+| ------------------------------------------------- | ------------------------------------------------------- | --------------------------------------------- |
+| CDSK 0.1.0 kullanımı                              | Accepted                                                | `docs/50-decisions/ADR-0001-cdsk-adoption.md` |
+| Dar MVP sınırı                                    | Accepted                                                | `docs/50-decisions/ADR-0002-mvp-boundary.md`  |
+| Frontend repository topolojisi                    | Accepted; monorepo workspace reserved                   | ADR-0003                                      |
+| Authentication/bootstrap güvenlik tabanı          | Accepted                                                | ADR-0004                                      |
+| SYSTEM_ADMIN / CLUB_ADMIN rol ve tenant sınırı    | Accepted                                                | ADR-0005                                      |
+| Prisma uzlaştırma ve rol geçiş yaklaşımı          | Accepted; clean baseline verified                       | ADR-0006                                      |
+| Çekirdek kaynak yetkilendirme matrisi             | Accepted; unit/E2E verified                             | ADR-0007                                      |
+| Davet tabanlı hesap yaşam döngüsü                 | Accepted; migration/unit/E2E verified                   | ADR-0008                                      |
+| Koç öncelikli web frontend ve ilk akış            | Accepted; vertical slice verified                       | ADR-0009                                      |
+| Production origin ve kalıcı tarayıcı oturumu      | Accepted; rollout inputs TBD; amended by ADR-0018       | ADR-0010                                      |
+| Rotalı shadcn koç çalışma alanı                   | Accepted; implemented                                   | ADR-0011                                      |
+| Kapsamlı egzersiz ve taktik tahta sözleşmesi      | Accepted; implemented                                   | ADR-0012                                      |
+| Genişletilmiş koç navigasyonu ve shadcn shell     | Accepted; implemented                                   | ADR-0013                                      |
+| Grup izolasyonu ve gerçek zamanlı olay alıcıları  | Accepted; verified                                      | ADR-0014                                      |
+| Atomik recovery ve güvenli SVG serialization      | Accepted; verified                                      | ADR-0015                                      |
+| Prisma CLI advisory risk disposition              | Accepted; production re-review required                 | ADR-0016                                      |
+| Runtime ve migrator image ayrımı                  | Accepted; image/migration/runtime/E2E verified          | ADR-0017                                      |
+| Provider-neutral kalıcı oturum                    | Accepted; opt-in implementation; default disabled       | ADR-0018                                      |
+| Attendance tekilliği ve atomik upsert             | Accepted; migration/unit/E2E verified                   | ADR-0019                                      |
+| Hesap e-postası ve break-glass recovery           | Accepted; vendor-neutral implementation verified        | ADR-0020                                      |
+| Phase 2 futbol kulübü işletim sistemi sınırı      | Accepted                                                | ADR-0021                                      |
+| Sportif organizasyon ve oyuncu yolculuğu kernel'i | Accepted; P0.1 repository implementation verified       | ADR-0022                                      |
+| Capability ve sportif uygunluk veri sınırı        | Accepted; P0.1 verified                                 | ADR-0023                                      |
+| Provider-neutral intelligence sınırı              | Accepted; future gate, no AI runtime                    | ADR-0024                                      |
+| İsteğe bağlı plan editor tahta okumaları          | Accepted; backend/frontend/matched measurement verified | ADR-0025                                      |
 
 ## 6. AI Context
 
@@ -109,7 +494,7 @@
 - **Constraints:** Bilinmeyeni tahmin etme; kritik kararı onaysız uygulama; secret
   veya kişisel veriyi kalıcı bağlama alma.
 - **Open questions:** Başarı metrikleri, ölçülebilir erişilebilirlik hedefi,
-  ADR-0010 production rollout girdileri, e-posta delivery/recovery, production
+  ADR-0010 production rollout girdileri, e-posta provider/rollout, production
   migration sahibi, sağlık retention/audit ve production modeli.
 - **Recent decisions:** CDSK 0.1.0, dar MVP kapsamı, ADR-0004 auth/bootstrap tabanı,
   ADR-0003 monorepo topolojisi, ADR-0005 rol/tenant sınırı, ADR-0006 migration süreci
@@ -122,6 +507,15 @@
   aynı site origin ve dönen refresh-session yaklaşımı olarak Option 1'i kabul eder.
   ADR-0018 provider-neutral uygulamayı ve 15m access/7d idle/30d absolute,
   beş family/30d refresh-record retention politikasını kabul eder; rollout `TBD`.
+  ADR-0019 Option 1 attendance duplicate durumunda sessiz veri silmeyen fail-fast
+  migration, birleşik unique constraint, atomik upsert ve son-commit-kazanır
+  davranışını kabul eder.
+  ADR-0020 Option A production'da SMTP teslimi, development/test operator fallback'i,
+  public completion rotaları ve mevcut SYSTEM_ADMIN için hedefli break-glass
+  recovery'yi kabul eder; provider/account ve production rollout onaylanmamıştır.
+  ADR-0021–0024 Phase 2 ürün sınırını, Person/Team/TeamSeason/Assignment kernel'ini,
+  capability tabanlı erişimi, yalnız sportif uygunluk özetini ve gelecekteki
+  provider/AI sınırını kabul eder. Klinik veri ve AI runtime onaylanmamıştır.
 - **Recently completed:** Temiz Prisma baseline; current-database principal; HTTP ve
   Socket.IO kulüp/grup authorization; cross-club negatif testleri; passwordHash,
   throttling ve bounded season generation güvenlik tabanı; kırık frontend gitlink'inin
@@ -159,12 +553,42 @@
 
 ## 7. Current Priorities
 
-1. ADR-0010/0018 için exact domain/provider, proxy/secret, staging ve operasyon
-   sahibini belirlemek; onaylı session politikasıyla rollout hazırlamak.
-2. Kabul edilmiş runtime/migrator artifact'ları için provider, registry,
-   orchestrator, signing/SBOM ve ayrı DB-role girdilerini tamamlamak.
-3. BL-024 structured/redacted logging, DTO ve analytics lint borcunu planlamak.
-4. Sağlık/ileri analitik politikası ile formal WCAG ve başarı metriklerini ayrı
+Yerel çalışma önceliklidir: `http://localhost:3132/login` ve backend `4000`;
+`ngcs_local_session_dev` DB kopyası üzerinde iki session flag'i açıktır.
+Yerel koç hesabı kullanıcı onayıyla sıfırlandı; API login 201 ve logout 200
+doğrulandı. Browser yeni sekme/reload, hafta geçişi, kütüphane, maç analizi,
+kadro ve boş plan/yoklama durumu geçti. Yeni tahta oyuncu ekle/undo çalıştı;
+henüz kaydedilmemiş taslaktaki “Kaydedildi” etiketi BL-029 ile düzeltildi.
+Kullanıcı yerel demo tarih/süre/içerik seçimlerini asistana devretti; bu ayrıntılar
+tekrar sorulmadan açıkça demo olarak seçilebilir. Bu yetki production, güvenlik
+veya MVP kapsamı onay kapılarını kaldırmaz; gerçek katılım uydurulmaz.
+İlk demo planı oluşturuldu: 7 Eylül 2026 18:00 Europe/Istanbul, 75 dk,
+12/24/30/9 dakikalık dört faz; katılım kaydı yok.
+Güncel teslim Phase 2 P0.1a/b'dir. Additive sporting migration, backfill doğrulaması,
+capability sınırı, tarihsel kadro/Player 360 API'si ve responsive frontend
+uygulanmıştır. Disposable PostgreSQL'de U17→U19→A takım yolculuğu ve iki-kulüp
+izolasyonu; Chromium'da Takımlar/Player 360 1440/1024/390 px akışı geçmiştir.
+Retained yerel DB'ye P0.1 migration yedek/restore provası sonrası uygulandı;
+altı migration güncel, iki kulüp IN_SYNC ve yerel browser smoke geçti. Ayrıntılı sıra:
+[Backlog](docs/20-execution/BACKLOG.md). Production işleri beklemededir.
+
+1. P0.1b root kalite/CDSK kapanışı: 396 backend ve 27 frontend unit, iki build,
+   Sites 4/4; disposable PostgreSQL 29/29 ve Chromium opt-in 6/6 doğrulandı.
+2. BL-042 tamamlandı: ortak transaction adapter, tarihsel membership kapanışı,
+   current-grant yetki kontrolü, admin parity ve kalıcı scope selector.
+   [P0.1b raporu](docs/30-quality/P01B_COMPATIBILITY_VERIFICATION_2026-09-06.md).
+3. Retained yerel rollout tamamlandı; özel yedek ve veri koruma kanıtı
+   [yerel raporda](docs/30-quality/P01_LOCAL_ROLLOUT_2026-09-06.md). BL-043a–j
+   sayfalı okumalar ve sentetik karma yük/SELECT row-work ölçümleri teslim;
+   BL-046 editör ayrıştırması kapalıdır. BL-043 temsilî pilot kabulü için
+   owner/hacim/workload/ortam/bütçe TBD. BL-045 sezon etiketi/regresyonu tamamlandı;
+   sırada BL-044 ve kalan pilot/production karar girdilerinin onay planı vardır.
+4. Beklemedeki M4: ADR-0010/0018/0020 exact origin/provider, proxy/secret, staging,
+   registry/orchestrator, ayrı DB rolleri ve operasyon sahibini belirlemek.
+   [M4 karar girdileri](docs/40-operations/M4_ROLLOUT_INPUTS.md) ve BL-028;
+   production flag-off CORS/rollback henüz hazır değildir.
+5. BL-044 minor/safeguarding ve sağlık/ileri analitik politikası ile formal WCAG
+   ve başarı metriklerini ayrı
    onay kapılarında karara bağlamak.
 
 ## 8. Known Constraints
@@ -198,27 +622,977 @@
 - [x] Resmî CDSK validator geçiyor.
 - [x] Yerel belge bağlantıları ve `git diff --check` geçiyor.
 - [x] Prisma clean baseline ephemeral PostgreSQL 16 üzerinde uygulandı; status güncel
-  ve schema diff boş doğrulandı. Frontend topolojisi ADR-0003 ile düzeltildi.
-- [x] Backend bağımlılıkları kuruldu; 17 unit suite / 68 test ve build geçti.
+      ve schema diff boş doğrulandı. Frontend topolojisi ADR-0003 ile düzeltildi.
+- [x] Backend bağımlılıkları kuruldu; 32 unit suite / 371 test ve build geçti.
 - [x] Frontend typecheck, lint, format, unit/component, production build ve Sites
-  worker testleri geçti; masaüstü/tablet browser ve görsel QA sonucu `passed`.
-- [x] Frontend 4 Vitest dosyası / 13 test geçti.
-- [x] Dedicated PostgreSQL 16 üzerinde backend tenant/group/reset/session E2E
-  18/18 ve koç/dirty-navigation/session Playwright opt-in 4/4, flag-off 3/3 geçti.
+      worker testleri geçti; masaüstü/tablet browser ve görsel QA sonucu `passed`.
+- [x] Frontend 6 Vitest dosyası / 21 test geçti (BL-029/030 dahil).
+- [x] Dedicated PostgreSQL 16 üzerinde backend tenant/group/reset/session/DTO E2E
+      25/25 geçti. Önceki koç/dirty-navigation/session Playwright opt-in 4/4,
+      flag-off 3/3 kanıtı korunur; son BL-024 hata-containment dilimlerinde browser E2E
+      tekrarlanmadı.
 - [x] Kök `npm run quality` komutu typecheck, salt-okunur lint/format, unit test,
-  build, Sites, Markdown link, CDSK ve diff kontrolleriyle geçti.
+      build, Sites, Markdown link, CDSK ve diff kontrolleriyle geçti.
 - [x] Kapanış handoff'u güncellendi.
 - [x] Tam MVP review için aynı revision'da quality, disposable migration/schema
-  diff, backend/frontend E2E ve responsive runtime audit tekrarlandı.
+      diff, backend/frontend E2E ve responsive runtime audit tekrarlandı.
 - [x] MVP kabul kapısı geçiyor; F-001–F-006 kapalı ve remediation hükmü **Pass**.
 
 ## 11. AI Handoff
 
+Publication preparation: accumulated approved work is being committed/pushed on
+`codex/mvp-stabilization` at the user's request (2026-10-19). Confirm the final
+commit and upstream with Git, not a predicted hash in this document. `main`,
+retained DB and V2 flag stay unchanged; publication is not production rollout.
+Temporary CLI recordings and local environment files are excluded.
+Fresh publication quality passed 2026-10-19: 843 backend / 446 frontend / 4 Sites,
+typecheck/lint/format/build, 143 Markdown links, CDSK and whitespace; Node script
+syntax checks passed. No package/lockfile version changes during installation.
+Pre-commit root-ESLint routing is incompatible with workspace configs (BL-059).
+Use the explicit root quality gate and script syntax checks as evidence; record
+any command-scoped hook skip, without permanently disabling hooks.
+
+Latest: BL-058e.4 combined repository acceptance passed. Actual route/API/PG
+browser flow verifies whole JSON interchange, selected static PNG/SVG, explicit
+phase snapshot and match persistence with independent tokens. Source edits do
+not alter phase/match records or plan duration. Disposable HTTP 18/18; root
+quality 843 backend / 446 frontend / 4 Sites; migration status/diff clean.
+Three viewports and bounded 12-scene/1,500-element/50-undo observation recorded.
+See [evidence](docs/30-quality/TACTICAL_COMBINED_ACCEPTANCE_2026-10-03.md).
+BL-058/REQ-025 repository implementation accepted; retained rollout pending.
+Do not activate the flag or convert actual records without separate approval.
+Next is controlled rollout preparation/approval, not a new schema or automatic
+data conversion. V2-aware reads/legacy guards must survive flag-off rollback.
+Offline, video, 3D and representative professional-club acceptance remain TBD.
+
+Previous: BL-058e.3 training phase integration implemented. Metadata stays
+board-free; explicit phase opening uses document GET with additive phase
+identity/origin. Save writes the full V1/V2 snapshot with the original token;
+valid successful response advances the token without remounting the editor.
+An uncertain response can be acknowledged without PUT only after an explicit
+verification finds the identical persisted snapshot. Different server content
+never supplies a force-overwrite token. Source authorization remains required.
+HTTP 16/16, migration status/diff and three-viewport synthetic browser QA passed.
+Root quality: 843 backend / 442 frontend / 4 Sites; all gates passed.
+See [evidence](docs/30-quality/TACTICAL_TRAINING_INTEGRATION_2026-09-26.md).
+Next e.4 combined integration/export acceptance. Retained V2 flag stays off;
+no local data rollout is authorized by this integration completion.
+
+Previous: BL-058e.2 drill route cutover implemented. Use board-free GET
+`/drills/:id/tactical-editor`, then existing document GET. Atomic editor PUT
+and create/copy POST preserve whole documents and authorize target/source in
+one transaction. Tokens advance only on valid successful responses; no auto
+retry. PLAYER/non-owner coach readonly; global immutable editorial stays V1.
+HTTP 14/14, migration status/diff and three-viewport synthetic browser QA passed.
+Root quality: 840 backend / 429 frontend / 4 Sites; all repository gates passed.
+See [evidence](docs/30-quality/TACTICAL_DRILL_INTEGRATION_2026-09-26.md).
+Next e.3 training phase/snapshot, then e.4 combined integration/export QA.
+Retained V2 flag stays off; do not claim rollout or enable without approval.
+
+Previous: BL-058e.1 match route cutover implemented. Use board-free
+`GET /matches/catalog/metadata/:matchId` with strict group/season scope, then
+the document adapter on opening the board tab. `ResourceBoard` owns the token;
+failed writes never refresh it or retry. Guard tab exit through editor.transition:
+cancel retains, discard unmounts, Save-and-leave waits for success. Return reads
+fresh persisted state. PLAYER cannot mutate analysis or board. No retained
+flag/data change. [Evidence](docs/30-quality/TACTICAL_MATCH_INTEGRATION_2026-09-26.md).
+Next e.2 drill metadata/create/copy coordination (legacy GET rejects V2), then
+e.3 training phase/snapshot integration and e.4 combined export/rollout gate.
+Do not mark BL-058 complete or turn on retained V2 writes. Approved ADR-0036
+already covers these integration steps; no new product/data-model decision.
+
+Previous: BL-058d playback implemented in the opt-in shared editor; see the
+[verification](docs/30-quality/TACTICAL_PLAYBACK_2026-09-26.md).
+Root quality: 821 backend / 405 frontend / 4 Sites; all gates pass. Transport
+uses elapsed monotonic time, not frame counts. Preview is read-only, explicit
+static-scene return restores editing, and source documents stay unchanged.
+15 new tests plus isolated real-Konva three-viewport QA cover the slice.
+Next BL-058e actual resource/token/metadata integration, copy/snapshot/match/
+export E2E and rollout gate. Existing routes remain V1; do not enable retained
+V2 writes or claim the animation UI is live. No new ADR approval is needed
+for the already accepted integration scope. An initial unexplained dirty QA
+state did not recur in the clean replay; keep the report's caveat visible.
+
+Previous: BL-058c opt-in shared scene editor implemented; see the
+[verification](docs/30-quality/TACTICAL_SCENE_EDITOR_2026-09-19.md).
+Final root quality: 821 backend / 390 frontend / 4 Sites; all gates pass.
+Full-document undo/dirty/save and three adapter clients are tested, including
+conflict draft retention. Synthetic headed canvas QA passed at three sizes.
+Existing route containers still use V1; new callback is `onSaveDocument`.
+Do not enable retained V2 writes. Next BL-058d playback; BL-058e owns actual
+resource/token loading and cross-route integration, metadata-reader compatibility,
+disposable E2E and the separate rollout gate. No new ADR approval is needed.
+
+Previous: BL-058b server compatibility is implemented; follow the
+[verification](docs/30-quality/TACTICAL_V2_API_2026-09-19.md). New document APIs
+use token/Serializable writes; legacy paths cannot overwrite or silently read
+V2 as V1. The flag is off by default and retained settings were not changed.
+Next BL-058c scene editor and token-aware explicit Save, then playback/UI QA.
+Do not re-request ADR-0036 A–D approval or claim a visible animation UI yet.
+Final quality: 821 backend, 369 frontend, 4 Sites; disposable HTTP 8/8 and
+schema/status/diff passed. One Radix/jsdom teardown flake did not reproduce in
+the 15-test focused run or final full quality run; retained records unchanged.
+
+Previous foundation handoff (superseded by BL-058b above): ADR-0036 A–D explicitly Accepted. BL-058a validator/time foundation
+implemented without wiring legacy controllers or editor. Mirrored pure cores
+are compiled-parity-tested and share synthetic fixtures. Continue BL-058b
+API/token/legacy guard before enabling V2 writes; c–e/UI still open. No retained
+data change. Do not ask for the same A–D approval again or claim full animation.
+Root quality passes: 788 backend, 369 frontend and 4 Sites tests.
+
+Latest: increment 3 formation-slot name assignment implemented and verified in
+isolated browser QA. Root quality passes 725/306/4. Next is scene/animation
+contract design, not an unapproved extension to V1. Persistent identities,
+offline and 3D remain open. No real records were mutated.
+
+Latest follow-up: ADR-0035 increment 2 provides roster-name snapshots and unit
+tools; no new persistent identity. Real Chrome read succeeded, but write QA
+used isolated synthetic data. Continue with explicit contracts for persistent
+roster binding/scenes rather than silently extending V1.
+
+Latest slice: ADR-0035 / BL-057 2D tactical studio is implemented; refer to the
+2026-09-19 verification report for gates and authenticated QA limitation.
+Do not mark roster binding, animation, offline match-day or 3D complete.
+
+- **Latest local credential operation (2026-09-08):** User explicitly approved
+  creation/reset of administrator credentials. The guarded first-admin bootstrap
+  created `system.admin@ngcs.local`; authenticated invitation/acceptance created
+  `club.admin@ngcs.local` in the retained NGCS club. Both ACTIVE roles and real
+  logins were verified, then all verification refresh sessions were revoked
+  through lifecycle APIs (zero open sessions; authVersion 1). Passwords are not
+  stored in repository/docs/log output and were disclosed only to the user. No
+  existing-account promotion, migration, destructive seed/reset, production,
+  commit or push. **Next:** user can sign in at frontend port 3132 and should
+  rotate these temporary credentials after first use.
+
+- **Latest access-management delivery (2026-09-08):** Added strict admin-only
+  `GET /accounts` and `/app/settings/users`. SYSTEM_ADMIN can inspect platform or
+  selected club; CLUB_ADMIN is server-forced to its own club; COACH/PLAYER are
+  denied in controller, service, route and navigation layers. The page supports
+  existing invite, role/access, suspend/reactivate, reset and session-revoke
+  operations with explicit confirmations and one-time token handling. Technical
+  and sporting permission matrices are visible; sporting capability grants are
+  intentionally read-only. Quality: backend 676, frontend 273, Sites 4,
+  disposable PostgreSQL HTTP E2E 21/21, build/CDSK/docs/whitespace and exact
+  1440/1024/390 browser checks pass. No migration/dependency/retained-data,
+  commit, push or deployment. **Next:** product gap audit, unless the user
+  separately approves capability-grant administration.
+
+- **Latest UI delivery (2026-09-08):** Players, Player 360, Squad and Attendance
+  now use the approved white reference system. Photographic heroes, verified
+  server/scope metrics, compact player/plan surfaces and responsive 3/2/1-column
+  behavior were added without changing player search, cursor histories, dated
+  assignment evidence, role visibility or attendance write safety. Twelve exact
+  1536/1024/390 captures are retained; every 390px document matches its viewport
+  and same-input QA has no actionable P0/P1/P2. Root quality passes with 657
+  backend, 264 frontend and 4 Sites tests. No API/schema/business-data,
+  migration, seed/reset, commit, push or deployment. **Next:** Settings.
+
+- **Latest UI delivery (2026-09-08):** Week reference-system slice is complete.
+  A shared raster hero, compact week controls and responsive seven-day cards now
+  match the approved white shell. Local date boundaries, independent daily
+  plan/match reads, totals, cursor histories, retries and stale-response rejection
+  are unchanged. Exact 1672/1024/390 evidence passes same-input design QA; live
+  next/previous navigation worked and runtime error capture was empty. No API,
+  schema, business data, migration, seed/reset, commit, push or deployment. Root
+  quality passes with 657 backend, 258 frontend and 4 Sites tests.
+  **Next:** Trainings and training-detail page slice.
+
+- **Latest UI delivery (2026-09-08):** Approved Matches reference is implemented
+  with the shared raster hero, local-day filter and date-grouped match rows.
+  Existing catalogue totals, cursor/retry/stale-scope/all-season/detail contracts
+  are unchanged. Retained exact-size 1672/1024/390 browser evidence passes matched
+  design QA; filter/clear worked and browser logs are empty. Root quality passes
+  with 657 backend, 257 frontend and 4 Sites tests. No backend/schema/data,
+  seed/reset/migration, commit, push or deployment. **Next:** Week page slice.
+
+- **Latest UI delivery (2026-09-08):** Approved Teams reference is implemented
+  with generated hero/category raster assets, API-backed cards and a semantic
+  native table. Search debounce, stale responses, cursor paging, work-team
+  selection and details are unchanged. Retained exact-size 1536/1024/390 browser
+  evidence passes matched design QA; browser error logs are empty. Root quality
+  passes with 657 backend, 256 frontend and 4 Sites tests. No backend, schema,
+  business-data, seed/reset/migration, commit, push or deployment.
+  **Next:** implement the approved Matches reference slice.
+
+- **Latest UI correction (2026-09-08):** Approved Dashboard layout is implemented
+  using existing API totals, a separately paginated local-day read and generated
+  raster assets. Scope remounts reject stale reads; player count stays unavailable
+  to PLAYER. Login/root/app index all target Dashboard. No backend/schema,
+  business-data, seed/reset/migration, commit or push action in this slice.
+  Targeted Dashboard/login tests pass (24); root quality passes with 657 backend,
+  255 frontend and 4 Sites tests. Desktop/tablet/mobile and Sheet/focus were
+  inspected. Durable screenshot export remains blocked; see the root QA report.
+  Next is retained Dashboard QA evidence, not Teams until that gate passes.
+  Prior missing-login/DB blockers below are
+  historical: the local retained runtime and authenticated session are available.
+
+- **Latest credential operation (2026-09-08):** Explicit user approval reset
+  only the retained local `coach.local@ngcs.test` account in one serializable
+  transaction. `COACH`, `ACTIVE` and club scope were preserved; `authVersion`
+  advanced to 3, two open refresh sessions and zero reset tokens were revoked,
+  and one token-free `PASSWORD_RESET_COMPLETED` operator audit was recorded.
+  Hash and postconditions passed. Real in-app-browser login at canonical frontend
+  port 3132 succeeded; `/app/week` loaded real workspace data and one new current
+  refresh family exists. The generated password was returned only to the user and
+  is absent from repository files. No migration, seed, role/club/business-data
+  change, commit, push or deployment. **Next:** run the now-unblocked BL-048
+  Dashboard visual comparison, then proceed to Teams.
+
+- **Latest local operation (2026-09-08):** Frontend development and default
+  browser E2E port were standardized on strict `3132`. Backend HTTP and Socket.IO
+  allow that exact loopback origin through the shared origin resolver; persistent
+  local startup uses `FRONTEND_ORIGIN=http://localhost:3132`. Frontend `3132` and
+  backend `4000` are running against the retained `ngcs_local_session_dev` copy.
+  Root quality passes with 657 backend and 246 frontend tests, both builds, four
+  Sites tests, CDSK/docs/static gates; the live backend origin response passes.
+  Database discovery was read-only and no migration, seed, reset or business-data
+  write was initiated; normal runtime session maintenance may occur while the
+  backend is active. No credential file, commit, push or deployment was made.
+  The old reset invalidated browser sessions and its replacement password
+  exists only with the user, so authenticated visual QA still requires that
+  credential to be entered. **Next:** complete local sign-in, capture BL-048
+  Dashboard at 1672×941/1024×900/390×844, then proceed to Teams.
+
+- **Current visual delivery (2026-09-07, BL-048 slice 1):** The user approved
+  the supplied Dashboard, Teams and Matches screenshots as the new visual truth.
+  The first slice moves the shared application shell and Dashboard toward its
+  compact white sidebar/topbar system, keeps only active routes, moves workspace
+  selection to the topbar, adds existing route-search keyboard focus and uses a
+  generated coach hero asset with real bounded dashboard reads. `PageHero`,
+  `MetricCard` and `SectionCard` are reusable presentation components. No REST,
+  schema, session, role, pagination or date behavior changed. Frontend typecheck,
+  lint and 246 tests pass. The local runtime configuration was restored on
+  2026-09-08 without a data write; authenticated comparison now awaits the
+  user-held local coach password. [Design QA](design-qa.md).
+  **Next:** complete sign-in, capture/compare the
+  authenticated Dashboard at 1672×941 and 1024/390, close this visual gate, then
+  start the Teams slice. No commit/push/deploy.
+
+- **Latest engineering delivery (2026-09-07, BL-047 phase 5C):** Ortak,
+  presentation-only FootballCard antrenman, maç, egzersiz kütüphanesi ve taktik
+  kataloglarında default/board/match varyantlarıyla kullanılır. Mevcut detail/
+  editor linkleri, tahtasız egzersizin linksiz kalması, global/kulüp rozeti,
+  metadata/fallback metinleri, pagination/tam toplam ve izin davranışı değişmedi.
+  Sekiz yalnız-kart legacy selector bloğu referans taraması sonrası kaldırıldı.
+  Dört yeni test; 34 hedef test ve root quality 655 backend/245 frontend/dört
+  Sites geçti. Gerçek koç oturumunda salt-okunur 1440/1024/390 QA tamamlandı;
+  retained taktik fixture boş olduğu için pitch kartı görseli test kanıtıyla
+  sınırlıdır. İlk sandbox build'i localhost bind `EPERM` ile durdu; izinli aynı
+  build geçti. [Kanıt](docs/30-quality/UI_FOOTBALL_CARDS_2026-09-07.md).
+  **Next:** Faz 6 Hafta modülü; yerel tarih gezinmesi, bağımsız plan/maç okumaları,
+  tam toplamlar ve scope korunur. Faz 7–8 ve BL-043/044/009/M4 açık. Veri yazımı,
+  API/schema/session/dependency değişikliği, commit/push/deploy yok.
+
+- **Latest engineering delivery (2026-09-07, BL-047 phase 5B):** Compact
+  OptionPagination, CatalogControls ve AssignmentCatalogSelect tarafından
+  kullanılır. Group/label/live sayaç, ghost/sm/type=button korunur; 12px/600
+  tipografi, tabular sayaç ve dar alanda sarma ortak sunumdadır. Workspace
+  yalnız başarılı okumada cursor değiştirir; atama istenen sayfaya hemen geçer,
+  hata olursa aynı sayfada retry eder. İki politika birleştirilmedi. Tek sayfalı
+  workspace kontrolü gizli, atama kontrolü görünür kalır; pinned seçim korunur.
+  15 yeni test; 39 hedef test ve quality 655 backend/241 frontend/dört Sites
+  geçti. Eşleşen 1440/1024/390 görselleri ve Escape odak dönüşü doğrulandı.
+  Genel kalite ve görsel kanıt için
+  [rapor](docs/30-quality/UI_OPTION_PAGINATION_2026-09-07.md).
+  **Next:** Faz 5C mevcut futbol kartlarını inceleyip ortak görsel desenlere
+  geçir; antrenman/maç/drill anlamı, linkler, sayaçlar ve yetki davranışı korunur.
+  Faz 5 bütünü, 6–8 ve BL-043/044/009/M4 açık. API/hook/session/schema/dependency/
+  CSS silme veya gerçek veri yazımı yok; yeni ADR gerekmiyor.
+
+- **Latest engineering delivery (2026-09-07, BL-047 phase 5A):** Ortak
+  PagePagination ve EmptyState/LoadingState/ErrorState iki sportif dizine
+  uygulandı. AssignmentPageControls aynı görsel sayfalama desenine bağlandı;
+  takım kadrosu/Player 360 consumer'ları aynı cursor/tam toplam sözleşmesini
+  korur. API çağrıları, 250 ms arama, scope reset, stale guard ve retry değişmedi.
+  Dizinler yalnız gösterilen sayıyı, atamalar count/total değerini bildirir;
+  error/loading sırasında yeni boş veri veya sahte toplam üretilmez.
+  14 yeni test; 26 hedef test ve root quality 655 backend/226 frontend/dört
+  Sites geçti. İki dizinde 1440/1024/390 karşılaştırma, mobil boş arama kontrolü
+  yapıldı. Gerçek yazım/dependency/ADR/schema/session/CSS silme yok.
+  [Kanıt](docs/30-quality/UI_DATA_PATTERNS_2026-09-07.md).
+  **Next:** Faz 5B compact katalog/seçenek sayfalama sunumu; başarılı okuma
+  sonrası cursor güncellemesi, pinned seçim, loading/error/retry sınırları korunur.
+  Sonra futbol kartları; faz 5 bütünü, 6–8 ve BL-043/044/009/M4 açık.
+
+- **Latest engineering delivery (2026-09-07, BL-047 phase 4B.2):** Sportif atama
+  diyalogu ortak FormField, native semantiği koruyan NativeSelect, scoped footer
+  ve yerel kısa ekran kaydırması kullanır. Submit handler, teknik rol UI ipucu,
+  backend capability sınırı, sayfalı katalog/seçimin korunması, beş atama türü,
+  UTC varsayılan gün ve 12:00Z payload değişmedi. Başlangıç required; mevcut
+  min/max yoktur, eklenmedi. Hatalar toast ile bildirilir; değerler korunur,
+  yeniden açma sıfırlar. Sezon seçici veya dirty guard eklenmedi.
+  15 yeni regresyon; 24 hedef test, quality 655 backend/212 frontend ve dört
+  Sites testi geçti. 1440/1024/390 eşleşen görseller ve 390×430 kısa ekran
+  klavye erişimi doğrulandı; gerçek atama POST'u yok.
+  [Kanıt](docs/30-quality/UI_ASSIGNMENT_DIALOG_2026-09-07.md).
+  **Next:** Faz 5 ortak sayfalama/boş/yükleniyor/hata sunumu; cursor/tam toplam,
+  retry ve izin davranışlarını koru. Faz 4 seçili hedefleri kapalı; geniş sayfa
+  yayılımı ve faz 5–8, BL-043/044/009, M4 açık. Yeni ADR/dependency/API/session/
+  migration/reset/commit/push/deploy yok; korunan diff hash aynı.
+
+- **Latest engineering delivery (2026-09-07, BL-047 phase 4B.1):** Yeni plan
+  diyalogu üç ortak FormField, FormError ve scoped footer tipografisi kullanır.
+  Input/Textarea/Radix ve createPlan handler korunur; yeni required/min/max,
+  Enter submit veya dirty confirmation eklenmedi. Mevcut title/date düğme
+  koşulu, yerel tarih→ISO, raw başlık/not payload, create→reload→navigate sırası
+  korunur. Yalnız bu DialogContent kısa ekranda sınırlı yükseklikle kaydırılır.
+  Dokuz yeni test; hedef 15 test, root quality 655/197 ve dört Sites testi geçti.
+  Eşleşen 1440/1024/390 görselleri, 390×430 iç kaydırma/klavye erişimi ve Escape
+  odak dönüşü doğrulandı. Gerçek plan POST'u yok; korunan backend/API/session/
+  workspace/package diff hash aynı. [Kanıt](docs/30-quality/UI_PLAN_DIALOG_2026-09-07.md).
+  **Next:** Faz 4B.2 `player-detail.tsx` sportif atama diyalogu; mevcut capability,
+  katalog seçimi, tarih/min/max, validation/busy/error/Escape/dirty kurallarını
+  değiştirmeden ortak form düzeni. Geniş migration, faz 5–8, BL-043/044/009 ve
+  M4 açık. Yeni ADR/dependency/migration/reset/commit/push/deploy yok.
+
+- **Latest engineering delivery (2026-09-07, BL-047 phase 4A):** Login,
+  accept-invitation ve reset-password gerçek shadcn Input/Button, ortak FormField,
+  Alert tabanlı FormError ve PageActions kullanır. Required/type/autocomplete/
+  minLength=12, parola eşleşmesi, token fragment temizleme, API payload, busy,
+  retry ve yönlendirmeler korundu. OnSubmit/session/token kodu değişmedi.
+  16 yeni test; iki hedef dosyada 18 test ve root quality 655/188, dört packaging
+  testi geçti. Davet aynı boş/geçersiz durumla 1440/1024/390 önce-sonra; login
+  aynı boyutlarda son görünüm, reset mobil ve klavye/native validation kontrolü.
+  Login eski görüntüleri autofill kişisel veri içerdiği için tutulmadı; son
+  görüntüler yalnız sentetik metinli. Gerçek login/reset/davet POST'u yok.
+  Korunan backend/API/session/workspace/package diff hash aynı; yeni ADR,
+  dependency/migration/reset/commit/push/deploy yok. [Kanıt](docs/30-quality/UI_ACCOUNT_FORMS_2026-09-07.md).
+  **Next:** Faz 4B plan oluşturma diyalogu, sonra atama formları. Required/min/max,
+  yerel tarihler, busy/error, başarılı kapanış ve Escape/focus-return/dirty
+  davranışlarını koru. Bu 4A dilimi tüm faz 4 veya migration kapanışı değildir.
+  Faz 4B–8, BL-043/044/009 ve M4 ayrı açık; WCAG/dark mode sertifikasyonu yok.
+
+- **Latest engineering delivery (2026-09-07, BL-047 phase 3 pilot):** Ortak
+  PageContainer/Header/Actions dashboard ve settings tarafından kullanılıyor.
+  NGCS renkleri, başlık ölçüleri, responsive grid ve okunabilir 1080px genişlik
+  korunur. Mobil kullanıcı menüsüne açık ad eklendi; yalnız ad/rol metni gizlenir,
+  avatar görünür. PageActions native/asChild tipografi 14px/600; global reset yok.
+  Sekiz yeni test; root quality 655 backend/172 frontend ve dört packaging testi
+  geçti. İki sayfa 1440/1024/390, mobil menu keyboard/Escape/settings geçişi ve
+  320px settings taşma kontrolü geçti. Canlı dashboard verisi iki çekim arasında
+  1→2 antrenmana değişti; pixel-identical/data-freeze iddiası yok. Bu dilimde iş
+  kaydı yazılmadı; protected backend/API/session/workspace/package diff hash aynı.
+  Yeni ADR, dependency, API, migration, commit/push/deploy/reset yok.
+  [Kanıt](docs/30-quality/UI_LAYOUT_PILOT_2026-09-07.md).
+  **Next:** Faz 4 login/account-completion form pilotu, sonra plan oluşturma ve
+  atama formları; validation/busy/error/dirty kurallarını koru. Diğer sayfalara
+  layout yayılımı faz 6, kapsamlı shell/dirty QA ve uzun board overflow faz 6/8.
+  Faz 4–8, BL-043/044/009, M4, WCAG ve dark-mode doğrulaması açık kalır.
+
+- **Latest engineering delivery (2026-09-07, BL-047 phase 2):** İki test dosyasında
+  12 yeni regresyon: Select controlled/form/disabled/ref/Escape, Dropdown klavye/
+  tekil eylem/focus return, Tooltip klavye/pointer/Escape, ScrollArea çocukları,
+  Card/Avatar/Separator ve gerçek Sonner render/konum/klavye kapatma/plain text.
+  jsdom eksik API shim'leri test dosyasıyla sınırlı ve restore edilir; fiziksel
+  scroll kanıtı değildir. Root quality 655/164 ve dört packaging testi geçti.
+  Yerel 1024×900 dropdown, tooltip, bildirim, kategori Escape ve son araç Tab
+  erişimi doğrulandı; iş kaydı/board öğesi oluşturulmadı. Runtime/CSS/API/DB/
+  dependency değişmedi, protected diff hash aynı. UI fixture iç ScrollArea'da
+  taşmadığı için uzun overflow listesi faz 6/8'de doğrulanacak. Typography/density
+  mevcut değerlerle ölçüldü; native font:inherit ile asChild farklılığı tüketici
+  bazlı faz 3/4 geçişine kaydedildi. Tam UI migration/WCAG/dark mode tamamlanmadı.
+  [Kanıt](docs/30-quality/UI_PRIMITIVES_VERIFICATION_2026-09-07.md).
+  **Next:** Faz 3 dashboard/settings PageContainer/Header/Actions pilotu ve mobil
+  kullanıcı menüsü adı/görünürlüğü; API/scope/dirty kurallarını koru. Form alan
+  aralıkları faz 4; BL-043/044/009 ve M4 ayrı açık. Yeni ADR gerekmedi. Dashboard
+  açık ve geçici viewport kaldırıldı; commit/push/deploy/seed/reset yapılmadı.
+
+- **Latest engineering delivery (2026-09-07, BL-047 phase 1):** UI brief'i
+  mevcut React Router/shadcn yönünü koruyan sekiz aşamalı plana çevrildi; bu tüm
+  frontend migration'ının bitişi değildir. 17 UI module / 2.727 başlangıç global
+  CSS satırı envanteri; tokens.css, 33 legacy muted-text alias bağlantısı,
+  13 primitive semantic surface ve aynı değerli shell/gutter/modal ölçü tokenları.
+  İnaktif dark palet hazır; toggle veya tam dark mode yok. Dokuz yeni regresyon;
+  root quality 655 backend/152 frontend, dört packaging testi ve build/lint/
+  typecheck/format/CDSK/link/whitespace geçti. Dashboard 1440/1024/390 ve açık
+  plan diyaloğu eşleşen önce/sonra karşılaştırıldı; modal/Sheet Escape ve focus
+  return çalışıyor. Tüm sayfalar görsel denetlenmiş veya formal WCAG uyumlu sayılmaz.
+  Yerel koç normal login ile doğrulandı; form kaydı, iş verisi yazımı, seed/reset/
+  migration yok. Backend/API/session/workspace/dependency diff fingerprint aynı;
+  önceki kullanıcı değişiklikleri korundu. Commit/push/deploy yok. Mevcut ADR-0011/
+  0013 yeterli; yeni ADR gerekmedi. Yerel dashboard açık, viewport override kaldırıldı.
+  [Plan](docs/20-execution/UI_MIGRATION_PLAN.md),
+  [kanıt](docs/30-quality/UI_MIGRATION_FOUNDATION_2026-09-07.md).
+  **Next:** Faz 2 kalan primitive etkileşim kapsamı ve type/density incelemesi;
+  ardından dashboard/settings PageContainer/Header pilotu. Mobil kullanıcı menüsü
+  erişilebilir adı/görünürlüğü faz 3, yeni-plan alan aralığı faz 4 açık bulgularıdır.
+  BL-043/044/009 ve M4 bu UI teslimiyle kapanmaz; owner/pilot/production TBD kalır.
+
+- **Latest local operation (2026-09-07):** Explicit user approval ile yalnız
+  retained yerel koç hesabının parolası hedefli operator transaction'ında
+  sıfırlandı; rol/status/club değiştirilmedi. AuthVersion bir artırıldı, bir
+  açık refresh session iptal edildi; açık reset tokenı yoktu. Hash doğrulaması,
+  sıfır açık session/reset ve iş verisi/diğer hesap fingerprint eşitliği aynı
+  serializable transaction'da geçti. Tokensız approval/source audit eklendi;
+  parola yalnız kullanıcıya verildi, repository/dosyaya yazılmadı. Bu yerel
+  bakım production recovery veya admin-only API yetkisini genişletmez.
+  Eski oturumla devam edilemez; kullanıcı yeni parolayla giriş yapmalı.
+  API login bu operasyonda denenmedi; doğrulama hash/veri bütünlüğü kapsamındadır.
+  Kod/şema değişmedi; sıradaki BL-044 karar planı aynı kalır.
+
+- **Latest engineering delivery (2026-09-07, BL-045):** Ortak etiket helper'ı
+  yalnız doğrulanmış `clubSeasonId='*'` için “Tüm sezonlar” gösterir. Yan menü,
+  üst çubuk, Hafta, Genel Bakış ve Ayarlar düzeltildi; seçili ad ve gerçek eksik
+  TBD korunur. Legacy sezon eksikliğine ClubSeason adı tahminî fallback yapılmaz.
+  Altı helper + dört component regresyonu; focused 33, root 655/143 unit ve
+  tüm kalite kapıları geçti. İlk build sandbox EPERM sonrası izinli tam rerun
+  geçti. Yerel browser exact/all geçişleri ve 1280×720 görünüm doğrulandı;
+  ayrı API/browser E2E ve migration bu frontend-only turda çalıştırılmadı.
+  Kapalı dev server'lar 3001/4000'de mevcut ayarlarla yeniden başladı; yeni
+  preview dashboard/orijinal all-seasons kapsamında açık bırakıldı. Retained
+  fingerprint 24 tablo/25 satır aynı; iş yazımı/seed/reset/migration yok.
+  Backend/şema/izin/dependencies aynı, stage/commit/push yok. Yeni ADR gerekmedi.
+  [Kanıt](docs/30-quality/BL045_SEASON_LABELS_2026-09-07.md).
+  **Next:** BL-044 safeguarding başta olmak üzere kalan karar girdilerini onaya
+  hazır plana toplamak. BL-043 temsilî pilot owner/workload/ortam/bütçe TBD;
+  BL-009 ve M4 ayrı. Politika, hukuki dayanak veya production onayı tahmin etme.
+  ADR-0025 karar tablosundaki eski pending özeti BL-046 kanıtıyla düzeltildi.
+
+- **Latest engineering delivery (2026-09-07, BL-043j):** Opt-in karma 5 GET/
+  2 attendance POST ve ayrı SELECT EXPLAIN ölçümü üç temiz DB başlangıcında
+  geçti. 30/300 oyuncu, 150/1500 planda 47 SQL olayı; plan sayacı tarama çıktısı
+  150→1500 büyür. Bu benzersiz fiziksel satır/I/O veya production kapasitesi
+  değildir. Son durum/tekillik, aynı kayda yarış ve yetkisiz yazma reddi geçti.
+  Root kalite 655/133 unit; API 48 pass/3 opt-in skip. Üç DB'de altı migration/
+  status/diff temiz, üç geçici DB kaldırıldı. Retained 24 tablo/25 satır aynı.
+  Yalnız backend E2E testi ve belgeler değişti; runtime/frontend/şema aynı.
+  Browser bu tur çalıştırılmadı; stage/commit/push yok. Yeni ADR gerekmedi.
+  [Kanıt](docs/30-quality/BL043_READ_WRITE_ROW_WORK_2026-09-07.md).
+  **Next:** BL-045 “Tüm sezonlar” etiketi ve regresyonu. BL-043 pilot kabulü
+  açık: owner, temsilî veri/workload, ortam ve bütçeler TBD. Süreğen/kalıcı
+  session ve geniş sportif yazım yükü bu sentetik ölçümle doğrulanmış sayılmaz.
+  BL-044/009/M4 ayrı kapılar; yeni keyfî hacimlerden production SLO çıkarma.
+
+- **Latest engineering delivery (2026-09-07, BL-046c):** Üç ayrı süreçte
+  eşleşen geçerli 2/50-faz ölçümü geçti. 50 fazda legacy 996.545, metadata
+  14.145, seçili tahta 9.895 byte; toplam %97,59 daha az JSON. Her GET 6 SQL
+  olayı; metadata+tahta toplam 12 olduğundan sorgu azalması iddiası yok.
+  Metadata 0, seçili tahta 1 JSON projection; seçilmeyen legacy büyümesi
+  metadata/aktif belgeyi değiştirmez. Kaynak egzersizi değiştiren browser
+  snapshot izolasyon regresyonu eklendi. Root kalite 655/133 unit, API
+  48 pass/2 opt-in skip, Chromium 12/12; üç viewport görüldü, mobil iç scroll
+  düzeni korunur. BL-046 Done, CR-017 implemented/verified; yeni ADR yok.
+  [Kanıt](docs/30-quality/BL046_MATCHED_EDITOR_MEASUREMENT_2026-09-07.md).
+  **Next:** BL-043 geniş read/write workload ve kontrollü DB row-work planı/
+  ölçümü; gerçek pilot owner/hacim/donanım/bütçeleri TBD bırak. BL-045 etiket,
+  BL-044 safeguarding, BL-009 sağlık politikası ve M4 ayrı açık. Yalnız test/
+  belgeler değişti, runtime/şema/izin/dependencies aynı; retained veri korunur.
+  Altı migration/status/diff temiz; disposable DB kaldırıldı. Retained iş
+  parmak izi 24 tablo/25 satır aynı. Stage/commit/push yok; production kapasitesi
+  veya SLO ilan etme.
+
+- **Latest engineering delivery (2026-09-07, BL-046b):** Antrenman detayı
+  tam hafif faz metadata ve açık “Tahtayı aç” GET'ine geçti; eski editor
+  runtime çağrısı, eager JSON tarama ve otomatik fallback yok. Tek aktif draft,
+  phase/tab/route/workspace save-discard-cancel, geç yanıt reddi, ilk snapshot
+  kaydında history ve 50 undo korunur. Belirsiz PUT tekrarlanmaz; kullanıcı
+  GET ile doğrular, eşleşen snapshot ikinci PUT olmadan onaylanabilir.
+  Taktik egzersizi ilk kaydında erken remount/yönlendirme regresyonu düzeltildi.
+  Root kalite 655/133 unit; browser 12/12, API 48 pass/1 opt-in skip; üç viewport
+  kontrol edildi. Altı migration/status/diff temiz, disposable DB kaldırıldı;
+  retained parmak izi 24 tablo/25 satır aynı.
+  390px tahta mevcut iç yatay kaydırma düzenini kullanır; full-fit iddiası yok.
+  [Kanıt](docs/30-quality/BL046_EDITOR_FRONTEND_CUTOVER_2026-09-07.md).
+  **Next:** Onaylı BL-046c matched 2/50 geçerli tahta ölçümü ve son regresyon;
+  tekrar onay isteme. BL-046 ölçüm tamamlanmadan kapatılmaz. Backend/şema/
+  dependencies değişmedi; retained veri korunur. SLO/owner TBD, BL-043 geniş
+  workload ve BL-044/045/M4 açık; stage/commit/push yok.
+
+- **Latest engineering delivery (2026-09-07, BL-046a):** ADR-0025 Option A,
+  açık uygulama sorusuna verilen devam talebiyle Accepted; CR-017 Approved.
+  Tam scalar faz metadata ve seçili effective board GET'leri, bounded ID/query
+  doğrulaması, plan/source yetkisi ve JSON null-aware snapshot önceliği hazır.
+  Bozuk JSON dışarı verilmez; eski GET/POST/PUT aynıdır. 43 yeni unit/8 yeni
+  HTTP; root quality 655 backend/115 frontend, tam API 48 pass + 1 opt-in skip.
+  Build'in sandbox loopback EPERM engeli izinli aynı tam kapıyla geçti.
+  Altı migration/status/diff disposable DB'de temiz; test DB kaldırıldı.
+  Retained iş parmak izi 24 tablo/25 satır aynı; reset/seed/migration yok.
+  Yerel root 200, yeni anonim GET 401, frontend 200. Browser E2E yeniden
+  çalıştırılmadı; frontend kodu/eski sözleşmesi değişmedi. 100 Markdown/yerel
+  bağlantı, CDSK ve diff geçti. Commit/push yok.
+  [Kanıt](docs/30-quality/BL046_EDITOR_READ_FOUNDATION_2026-09-07.md).
+  **Next:** BL-046b frontend metadata/one-board geçişi, explicit-open ve
+  dirty save-discard-cancel/history korunması; sonra c matched 2/50 ölçüm,
+  browser E2E/üç viewport. Eski editor frontend'de henüz kaldırılmadı; ilk yük
+  küçüldü deme. Phase cap/write optimizasyonu yok; SLO/owner TBD; BL-043 geniş
+  workload, BL-044/045 ve M4 açık. Onaylanan b/c için tekrar onay isteme.
+
+- **Latest design delivery (2026-09-07, BL-046):**
+  [ADR-0025](docs/50-decisions/ADR-0025-on-demand-training-editor-boards.md)
+  Proposed; [tasarım](docs/10-architecture/BL046_EDITOR_READ_DESIGN.md) hazır.
+  Tam hafif faz metadata + yalnız açılan effective board önerildi. Snapshot
+  önceliği/invalid state, yeni GET kaynak yetkisi, tam ID/order bilgisi, mevcut
+  POST/PUT, dirty save-discard-cancel ve ilk kayıtta undo korunması tanımlandı.
+  Yeni API/UX/güvenlik etkisi açık onay bekler; kabul edilmiş gibi kodlama yapma.
+  Onay sonrası sıra: BL-046a backend → b frontend → c izole ölçüm/tam QA.
+  Bu teslim yalnız belge: uygulama/şema/DB değişmedi; unit/E2E tekrar edilmedi.
+  99 Markdown/yerel bağlantı, CDSK ve diff kontrolleri geçti. Retained DB
+  reset/seed/migration yok; stage/commit/push yok. SLO/owner TBD; BL-043 geniş
+  workload, BL-044/045 ve M4 açık. Faz limiti veya write-payload optimizasyonu
+  bu önerinin kapsamında değil.
+
+- **Latest engineering delivery (2026-09-07, BL-043i):** Opt-in karma GET
+  ölçümü üç süreçte geçti: 30/300 oyuncu, 1/3 beşli okuma grubu; grup başına
+  36 sorgu ve yaklaşık 16 KB. Test eşikleri production bütçesi değildir.
+  Editor 2/50 fazda 34.394/853.304 byte, altı sorgu: BL-046/CR-017 on-demand
+  okuma tasarımı Proposed; uygulama ve yeni limit onaylanmadı. Root kalite
+  612 backend/115 frontend unit, normal API 40 pass + 1 opt-in skip; browser
+  yeniden çalıştırılmadı, runtime/UI/şema değişmedi. Altı migration/diff temiz,
+  sentetik DB kaldırıldı; retained fingerprint aynı (24 tablo/25 satır).
+  97 Markdown/CDSK geçti. Sonraki güvenli iş BL-046 tasarım/etki analizi;
+  kapsamlı read/write pilot, owner/hacim/SLO ve BL-044/045/M4 açık kalır.
+  [Doğrulama](docs/30-quality/BL043_MIXED_READ_CAPACITY_2026-09-07.md).
+
+- **Latest engineering delivery (2026-09-07, BL-043h.2):** Plan yetkisinden
+  grup/self kapsamı türeten sayfalı yoklama ve tam sayaçlar eklendi. Editor
+  plan/drill grafiğini korur, tüm attendance/grup üyelerini taşımaz. Ortak son
+  members fetch/state kaldırıldı. Açık tekli yazım, aynı sayfa yeniden okuma,
+  hata/boş/scope reset ve PLAYER read-only self görünümü doğrulandı.
+  Şema/migration/yazma yetkisi değişmedi; yeni ADR yok. Root kalite 612 backend/
+  115 frontend unit ve 40 API E2E geçti. Sırada BL-043 karma kullanım ölçümü ve
+  sorgu/payload bütçesi var; owner/hacim/SLO TBD, BL-044/045/M4 ayrı açık kalır.
+  Final Chromium 12/12 ve üç viewport geçti. Disposable altı migration/diff
+  temiz; sentetik DB kaldırıldı. Retained fingerprint aynı (24 tablo/25 satır),
+  yerel katılım 0/2 salt okunur doğrulandı. 96 Markdown/CDSK geçti.
+  [Doğrulama](docs/30-quality/BL043_ATTENDANCE_MEMBER_CUTOVER_2026-09-07.md).
+
+- **Latest engineering delivery (2026-09-07, BL-043h.1):** JWT/mevcut grup-rol
+  yetkili player membership sayfası, minimal projection ve cursor öncesi tam
+  toplam eklendi. Kadro 25'lik sayfalar, bağımsız retry ve scope reset; Genel
+  Bakış limit=1/tam oyuncu toplamı kullanır. PLAYER yetkisi genişletilmedi.
+  Güncel legacy PLAYER üyeliğidir; tarihli sportif kadro veya yeni status
+  filtresi değildir. Antrenman detayındaki yoklama bağımlılığı saptandı; shared
+  members/full fetch bu nedenle korunur. Sırada h.2 bu tüketicinin ayrılması ve
+  ardından ortak listenin kaldırılması var. Şema/migration/yazma/izin değişmedi.
+  Root kalite 597 backend/109 frontend unit, 40 API ve 12 Chromium E2E geçti.
+  Üç viewport doğrulandı; altı migration/diff temiz, sentetik DB kaldırıldı.
+  Retained fingerprint aynı (24 tablo/25 satır), yerel Kadro/dashboard toplamı
+  2 doğrulandı. 95 Markdown/CDSK geçti; pilot owner/hacim/SLO TBD, BL-044/045/M4 açık.
+  [Doğrulama](docs/30-quality/BL043_MEMBER_READS_2026-09-07.md).
+
+- **Latest engineering delivery (2026-09-07, BL-043g.5):** Tekil scope-bound
+  match detail GET ve maç içermeyen legacy-metadata GET eklendi; eski tam liste
+  sözleşmeleri korunur. Frontend ortak matches state/fetch kaldırıldı; detay
+  ayrı retry/draft, shell limit=1/tam toplam kullanır. Scope/ID reset ve geç
+  yanıt reddi hazır; şema, yazma ve izin politikası değişmedi.
+  Root kalite 581 backend/104 frontend unit ve 39 API E2E geçti.
+  Chromium E2E 11/11 ve üç viewport geçti; yerel maç analizi/notları salt okunur
+  doğrulandı. Disposable migration/diff temiz, test DB kaldırıldı. Retained
+  fingerprint değişmedi (24 tablo/25 satır); 94 Markdown/CDSK/bağlantılar geçti.
+  Sonraki iş BL-043 üye listesi ve Kadro/dashboard tüketicileri; pilot owner/
+  hacim/SLO TBD, BL-044/045/M4 açık. Yeni ADR yok.
+  [Doğrulama](docs/30-quality/BL043_MATCH_CUTOVER_2026-09-07.md).
+
+- **Latest engineering delivery (2026-09-07, BL-043g.4):** Hafta maçları yerel
+  günlük [from, until) sınırlarıyla bağımsız limit=25 okumalarına geçti; tam
+  toplam, ayrı sayfalama/retry, scope/hafta reset ve geç yanıt reddi hazır.
+  Boş gün mesajı iki kaynağın doğrulanmış sıfır toplamını bekler; eksik seçili
+  sezon kapsamı genişletmez. Root kalite, 571 backend/98 frontend unit ve
+  39 API E2E geçti; New York 23 saatlik DST günü dahil 12 odaklı test geçti.
+  Final Chromium E2E 11/11 geçti; 30 maçta 25+5 sayfa, detay ve üç viewport
+  doğrulandı. Disposable migration/diff temiz; test DB kaldırıldı. Retained
+  fingerprint aynı (24 tablo/25 satır); yerel Hafta salt okunur doğrulandı.
+  Yeni şema/API/izin/ADR değişikliği yok. Önceki tüketici özetinin atladığı
+  shell bildirim sayacı da shared matches kullanıyor. Sırada BL-043g.5 maç
+  detayı ve minimal shell sayacı; ikisi ayrılmadan tam shared fetch'i kaldırma.
+  Üye/pilot owner/SLO TBD, BL-044/045/M4 açık kalır.
+  [Doğrulama](docs/30-quality/BL043_WEEK_MATCH_READS_2026-09-07.md).
+
+- **Latest engineering delivery (2026-09-07, BL-043g.3):** Genel Bakış maç
+  özeti mevcut API limit=3/no-cursor kullanır; ilk üç kronolojik kayıt ve tam
+  toplam korunur, yeni future-only filtresi yoktur. Scalar hasBoard kartları,
+  bağımsız yüklenme/hata/retry, scope reset ve eksik seçili sezonda kapsamı
+  genişletmeme doğrulandı. Root kalite, 571 backend/93 frontend unit ve 39 API/
+  11 Chromium E2E geçti. 31 maçta 3/31, rozetler, detay ve üç viewport test edildi.
+  Disposable migration/diff temiz; test DB kaldırıldı, retained fingerprint aynı
+  (24 tablo/25 satır); yerel Genel Bakış 1/1. Backend/API/şema/izin değişmedi.
+  Sırada BL-043g.4 Hafta maç okumaları, sonra bağımsız detay; ikisi ayrılmadan
+  shared matches/legacyContext tam listesini kaldırma. Üye/pilot owner/SLO TBD,
+  BL-044/045/M4 ayrı kalır.
+  [Doğrulama](docs/30-quality/BL043_DASHBOARD_MATCH_READS_2026-09-07.md).
+
+- **Latest engineering delivery (2026-09-07, BL-043g.2):** Maçlar shared matches
+  yerine 25'lik scalar API sayfaları ve tam total kullanır. shadcn/amber kartlar,
+  hasBoard, detay bağlantıları korunur; scope reset/geç yanıt reddi, ayrı retry
+  ve boş devam sayfası hazır. Eksik seçili sezon tüm sezonlara genişletilmez.
+  Root kalite, 571 backend/89 frontend unit, 39 API/11 Chromium E2E geçti;
+  31 maçta 25+6, ikinci sayfa detay ve 1440/1024/390 px kontrolleri doğrulandı.
+  Disposable migration/diff temiz; test DB kaldırıldı, retained fingerprint aynı
+  (24 tablo/25 satır). Yerel Maçlar 1/1 kaydı gösteriyor. Backend sözleşmesi,
+  şema/izin değişmedi. Sırada BL-043g.3 Genel Bakış maç okumaları, sonra Hafta
+  ve bağımsız detay; üç tüketici ayrılmadan shared matches'i kaldırma.
+  Üye/pilot owner/SLO TBD, BL-044/045/M4 ayrı kalır.
+  [Doğrulama](docs/30-quality/BL043_MATCH_CATALOG_UI_2026-09-07.md).
+
+- **Latest engineering delivery (2026-09-07, BL-043g.1):** JWT/grup kapsamlı
+  GET /matches/catalog/page; optional seasonId, 25/max100 kayıt, tarih/ID cursor,
+  yarı açık yerel dönem filtresi ve tam total doğrulandı. Scalar kartlar/hasBoard
+  JSON indirmez; yetki sezonun kulüp/grup sahipliğine bağlı kalır. Root kalite,
+  571 backend/84 frontend unit ve 39 API E2E geçti. Disposable migration/diff
+  temiz; test DB kaldırıldı, retained fingerprint aynı (24 tablo/25 satır).
+  Şema/migration/izin ve frontend değişmedi; browser E2E bu dilimde çalıştırılmadı.
+  Sırada BL-043g.2 Maçlar ekranı var. Genel Bakış/Hafta/detay da ayrılmadan
+  legacyContext/provider matches dizisini kaldırma veya ilk sayfayla değiştirme.
+  Üye/pilot owner/SLO TBD, BL-044/045/M4 ayrı kalır.
+  [Doğrulama](docs/30-quality/BL043_MATCH_READ_FOUNDATION_2026-09-07.md).
+
+- **Latest engineering delivery (2026-09-07, BL-043f.4):** Antrenman detayında
+  planın grubuna bağlı 25'lik minimal egzersiz seçenekleri, sayfa dışı seçim,
+  attached-ID filtresi ve yüklenme/hata/retry hazır. Dört tüketici ayrıldığı
+  için provider'ın tam drills fetch/state'i kaldırıldı. Ekleme eski replacement
+  PUT yerine mevcut tekli POST kullanır; ikinci eklemede mevcut snapshot/row ID
+  korunur. POST sonrası GET hatası yalnız okuma retry'si sunar. Root kalite,
+  538 backend/84 frontend unit, 38 API/11 Chromium E2E geçti. Disposable
+  migration/diff temiz; test DB kaldırıldı. Retained fingerprint aynı
+  (24 tablo/25 satır); yerel 75 dk/4 faz demo detayında salt okunur kontrol yapıldı.
+  Backend/API sözleşmesi, şema ve izin politikası değişmedi. Sırada maç/üye
+  okumaları ve pilot kapasite var; owner/SLO TBD, BL-044/045/M4 ayrı kalır.
+  [Doğrulama](docs/30-quality/BL043_DRILL_CUTOVER_2026-09-07.md).
+
+- **Latest engineering delivery (2026-09-07, BL-043f.3):** Taktik Tahtası ortak
+  drills dizisinden ayrıldı; mevcut catalog/page optional kind=tactical-board
+  filtresini page/count öncesinde uygular. Kategori ile tahta türü karıştırılmaz,
+  tahta JSON'u kartlara taşınmaz. 25'lik sayfalar, tam toplam, scope reset/geç
+  yanıt reddi, retry ve boş devam sayfasından dönüş hazır. Root kalite,
+  538 backend/78 frontend unit, 38 API/11 Chromium E2E geçti. Browser 30 tahtayı
+  25+5 sayfayla ve ikinci sayfa editör bağlantısıyla doğruladı. Disposable
+  migration/diff temiz; test DB kaldırıldı. Retained fingerprint aynı
+  (24 tablo/25 satır); yerel Taktik Tahtası gerçek sıfır durumunu gösteriyor.
+  İlk API ölçek koşusu timeout/ECONNRESET aldı;
+  aynı paket değişiklik yapılmadan tekrar geçti. Şema/migration/izin değişmedi.
+  Sırada antrenman detayında sayfalı egzersiz seçenekleri ve sonra ortak drills
+  fetch/state kaldırılması var. Seçimi/fazları kıracak kısmi dizi ikamesi yapma.
+  Maç/üye ve pilot owner/SLO TBD, BL-044/045/M4 ayrı kalır.
+  [Doğrulama](docs/30-quality/BL043_TACTICS_PAGINATION_2026-09-07.md).
+
+- **Latest engineering delivery (2026-09-07, BL-043f.2):** Genel Bakış egzersiz
+  sayacı ortak drills dizisinden ayrıldı. Mevcut catalog/page limit=1 çağrısının
+  tam total alanını kullanır; tek kart sayısını toplam sanmaz ve JSON taşımaz.
+  Scope reset/geç yanıt reddi, gerçek sıfır ile yüklenme/hata ayrımı ve bağımsız
+  retry doğrulandı. Root kalite, 532 backend/73 frontend unit ve 38 API/11 Chromium
+  E2E geçti. Browser toplam 35→36 yeni egzersiz sonrası yenilemeyi doğruladı.
+  Disposable migration/diff temiz; test DB kaldırıldı. Retained fingerprint aynı
+  (24 tablo/25 satır); yerel Genel Bakış 5 egzersiz gösterir. Backend/API/şema/izin
+  değişikliği yok. Sırada sunucu board-kind filtresiyle taktik kataloğu, ardından
+  antrenman egzersiz seçenekleri var. Bunlar ayrılmadan ortak drills/full GET'i
+  kaldırma veya ilk sayfayla değiştirme. Diğer maç/üye okumaları, pilot owner/SLO
+  TBD ve BL-044/045/M4 ayrı kalır.
+  [Doğrulama](docs/30-quality/BL043_DASHBOARD_DRILL_READS_2026-09-07.md).
+
+- **Latest engineering delivery (2026-09-06, BL-043f.1):** Egzersiz Kütüphanesi
+  bağımsız 25'lik sayfalar, sunucu kategori filtresi ve tam toplamlar kullanır.
+  Additive /drills/catalog/page mevcut grup/rol görünürlüğünü ve grup metadata'sından
+  gelen yaş filtresini korur. Kartlar tahta JSON'u taşımaz; isBoard yalnız dönen
+  kimliklerden hesaplanır. Scope/kategori reset, geç yanıt reddi ve retry hazır.
+  532 backend/70 frontend unit, 38 API/11 Chromium E2E ve root kalite geçti.
+  Disposable migration/diff temiz; test DB kaldırıldı. Retained fingerprint
+  aynı (24 tablo/25 satır); yerel kütüphane 5/5 egzersiz gösterir.
+  Sırada dashboard tam egzersiz sayaçları, taktik kataloğu ve antrenman egzersiz
+  seçenekleri var; bu tüketiciler ayrılmadan ortak drills dizisini kaldırma veya
+  ilk sayfayla değiştirme. Ardından maç/üye okumaları ve pilot sorgu bütçeleri.
+  Şema/migration/dependency/izin değişikliği yok. Pilot owner/SLO TBD;
+  BL-043 devam ediyor, BL-044/045 ve M4 ayrı kalır.
+  [Doğrulama](docs/30-quality/BL043_DRILL_LIBRARY_2026-09-06.md).
+
+- **Latest engineering delivery (2026-09-06, BL-043e.5):** Yoklama bağımsız
+  25'lik catalog/attendance/page okumalarına geçti. Plan başına PRESENT sayısı,
+  tam plan/katılım ve güncel oyuncu toplamı sunucudan gelir; PLAYER yalnız kendisi.
+  Mevcut tenant/sezon/draft/period ve atomik işaretleme sınırları korundu.
+  WorkspaceProvider tam plan fetch/state'i kaldırıldı; eski REST liste ucu ve
+  detay/yazım uçları korundu. Drill ekleme → sayfalı katalog yeni toplam regresyonu
+  ve provider'ın tam listeyi çağırmama kontrolü geçti. 508 backend/65 frontend
+  unit, 37 API/11 Chromium E2E ve root kalite geçti. Katılım yazımı → Yoklama/
+  Genel Bakış yenilenmesi ve sıfır full-list GET tarayıcıda doğrulandı.
+  Disposable migration/diff temiz; test DB kaldırıldı. Retained fingerprint
+  aynı (24 tablo/25 satır); yerel Yoklama 1 plan/2 oyuncu/0 katılım gösteriyor.
+  Sırada egzersiz kütüphanesi bounded read/tam toplamlar; ardından maç/üye
+  tüketicileri ve pilot sorgu bütçeleri. Shared drill/member dizilerini ilk
+  sayfayla değiştirme. Pilot owner/SLO TBD, BL-044/045 ve M4 ayrı kalır.
+  [Doğrulama](docs/30-quality/BL043_ATTENDANCE_CUTOVER_2026-09-06.md).
+
+- **Latest engineering delivery (2026-09-06, BL-043e.4):** Hafta ekranı ortak
+  plans dizisini okumaz; yerel gün sınırlarında bağımsız 25'lik sayfalar ve tam
+  günlük plan/süre toplamlarını kullanır. Catalog API'ye paired from/until
+  filtresi eklendi: half-open, en fazla sekiz gün, mevcut sezon/grup sınırıyla
+  kesişir. Şema/migration/izin politikası aynı. Tarihsiz taslaklar katalogda;
+  stale/reset/retry, gün sayfalaması ve URL scope koruması test edildi.
+  504 backend/60 frontend unit, 36 API/11 Chromium E2E ve root kalite geçti.
+  Disposable migration/diff temiz; test DB kaldırıldı. Retained iş verisi aynı
+  (24 tablo/25 satır); yerelde 7 Eylül 18:00, 1 plan/75 dk doğrulandı.
+  Sırada yoklama bounded read/tam oyuncu toplamları var. Yoklama ve mutation
+  refresh senaryoları geçmeden provider'ın tam plan okumasını kaldırma.
+  Maç/egzersiz/üye kaynakları, pilot owner/SLO TBD ve BL-044/045/M4 ayrı kalır.
+  [Doğrulama](docs/30-quality/BL043_WEEK_READS_2026-09-06.md).
+
+- **Latest engineering delivery (2026-09-06, BL-043e.3):** Genel Bakış'ın
+  antrenman/PRESENT sayaçları tam sunucu özetinden, son üç planı `limit=3`
+  catalog projection'ından okunur; ortak plans dizisini tüketmez. Scope reset,
+  stale-read koruması, yükleniyor/hata/boş ayrımı ve bağımsız retry doğrulandı.
+  API/şema/migration/izin değişikliği yok. 492 backend/55 frontend unit, 35 API
+  E2E, 11 Chromium E2E ve root kalite geçti. Disposable migration/diff temiz;
+  test DB kaldırıldı. Retained fingerprint aynı (24 tablo/25 satır).
+  Hafta/yoklama hâlâ tam plan okur; bunlar ayrılmadan provider'ın tam okumasını
+  kaldırma. Sırada hafta dönem/gün okumaları, ardından yoklama özetleri var.
+  Diğer iş listeleri, pilot owner/SLO TBD, BL-044/045 ve M4 açık.
+  [Güncel doğrulama](docs/30-quality/BL043_DASHBOARD_TRAINING_READS_2026-09-06.md).
+
+- **Latest engineering delivery (2026-09-06, BL-043e.2):** Antrenmanlar ekranı
+  typed catalog client ile bağımsız 25'lik sayfalar ve tam sunucu toplamlarını
+  kullanır. Scope değişiminde reset, eski yanıtı yok sayma, hata/retry, tarihsiz
+  taslak ve boş devam sayfası ayrımı; create hatasını gösterme eklendi.
+  Workspace'in tam plan listesi dashboard/hafta/yoklama için korunur; bu dilim
+  tüm shared okuma maliyetini kaldırmaz. Sırada bu üç tüketiciyi tam counter,
+  recent-plan, dönem/gün ve yoklama özetlerine geçirmek; ancak sonra shared
+  full read kaldırılır. API/şema/migration/dependency/izin politikası değişmedi.
+  492 backend/50 frontend unit, 35 API/11 Chromium E2E ve root kalite geçti.
+  Retained fingerprint aynı (24 tablo/25 satır); yerel 75 dk/dört fazlı plan
+  doğrulandı, Antrenmanlar açık bırakıldı. Yeni veri yazımı yapılmadı.
+  [Güncel doğrulama](docs/30-quality/BL043_TRAINING_CATALOG_UI_2026-09-06.md).
+
+- **Latest engineering delivery (2026-09-06, BL-043e.1):** Additive
+  `/training-plans/catalog/page` ile date/null/ID keyset, minimal plan kayıtları
+  ve sayfadan bağımsız tam plan/süre/PRESENT toplamları tamamlandı. Grup/tenant,
+  sezon/taslak ve PLAYER self-attendance sınırları korunur. EXPLAIN bulgusuyla
+  faz sayımı yalnız dönen plan kimliklerine indirildi; yeni indeks/migration yok.
+  492 backend/44 frontend unit, 35 API E2E ve root kalite geçti. Yerel ölçüm
+  25 kayıt için 5.416 bayt/8 SQL; pilot SLO değildir. Frontend kaynakları ve eski
+  API'ler değişmedi, browser E2E bu backend diliminde tekrar çalıştırılmadı.
+  Sonraki adım antrenman sayfa state'i ve ortak dashboard/hafta/yoklama özet
+  sözleşmelerini geçirmek; tüm tüketiciler hazır olmadan shared tam plan listesini
+  sayfayla değiştirme. Egzersiz/maç/üye listeleri, pilot owner/hedef TBD ve
+  BL-044/045/M4 ayrı kalır. [Kanıt](docs/30-quality/BL043_TRAINING_READ_FOUNDATION_2026-09-06.md).
+
+- **Latest engineering delivery (2026-09-06, BL-043d):** Shell tüm grup/sezon
+  metadata dizileri yerine seçili, bağımsız legacy üyelik kontrolü yapan bağlam
+  ucunu kullanır. Tüm sezon maçları kesilmeden tek relational sorguda döner.
+  Atama diyaloğu yalnız açıldığında 25'lik takım/PLAYER rol sayfaları yükler;
+  sayfa dışı seçim korunur, açık seçim gerekir ve yeniden açılışta sıfırlanır.
+  468 backend/44 frontend unit, 33 API/10 Chromium E2E ve root kalite geçti.
+  Mevcut altı migration güncel, diff boş; yeni şema/migration/dependency veya
+  retained iş verisi yazımı yok. Geçici DB kaldırıldı; 24 tablo/25 satır retained
+  fingerprint aynı. Yerel Player 360 açık; atama diyaloğu kayıtsız kontrol edildi.
+  Sırada iş kaydı listeleri için tam toplamları koruyan sayfa/aggregate kapsamı ve
+  sorgu planları; BL-043 pilot owner/hedef TBD, BL-044/045 ve M4 ayrı kalır.
+  [Dilim kanıtı](docs/30-quality/BL043_LEGACY_METADATA_2026-09-06.md).
+
+- **Latest engineering delivery (2026-09-06, BL-043c):** Tarihli kadro ve Player
+  360 atama geçmişi için additive sayfalı uçlar; validFrom/ID cursor, full count,
+  tarih/kaynak değişiminde reset, retry ve eski yanıtı yok sayma eklendi. Önceki
+  array API'ler korunur. Person yetkisi aynı politikayla relational EXISTS kullanır;
+  mevcut grant geçmiş tarihte de yeniden denetlenir. 456 backend/41 frontend unit,
+  32 API/9 Chromium E2E ve root kalite geçti. Yeni şema/migration/dependency veya retained iş
+  verisi yazımı yok. Sırada BL-043d legacy metadata ve atama diyaloğu seçenekleri;
+  pilot hedef/owner, BL-044/045 ve M4 kapıları açık.
+  [Dilim kanıtı](docs/30-quality/BL043_ASSIGNMENT_PAGINATION_2026-09-06.md).
+
+- **Latest engineering delivery (2026-09-06, BL-043b):** Takımlar ekranına
+  sunucu araması/sayfalama; shell'e bounded kulüp/sezon/takım katalogları ve
+  sayfadan bağımsız seçim çözümleyicisi eklendi. Eski array API'ler korundu.
+  Aktif seçim sayfa dışında tutulur; katalog gezinmesi scope değiştirmez;
+  açık seçim mevcut dirty-navigation guard'ından geçer. 432 backend/35 frontend
+  unit, 31 API ve 8 Chromium E2E/root kalite geçti. Şema/migration/dependency ve retained
+  iş verisi değişmedi. Sırada BL-043c tarihli kadro/Player 360 atama geçmişi;
+  legacy metadata/diyalog seçenekleri ve pilot hedef/owner hâlâ açık.
+  [Katalog kanıtı ve sınırlar](docs/30-quality/BL043_WORKSPACE_CATALOGS_2026-09-06.md).
+
+- **Latest engineering delivery (2026-09-06, BL-043a):** Oyuncu listesi için
+  additive `/sporting/players/page`, bounded ID-keyset, sunucu araması ve güncel
+  team/capability/self filtreleri eklendi; eski array API korundu. UI 25 kayıtlık
+  sayfa, önceki/sonraki, retry ve scope değişiminde sıfırlama kullanır. İzole
+  1.000 oyuncu/3.000 atama testinde sayfa bütünlüğü ve negatif yetkiler geçti;
+  416 backend/30 frontend unit, 30 API/7 Chromium ve root kalite doğrulandı.
+  Şema/migration/dependency veya korunan iş verisi değişmedi. BL-043 kısmen açık:
+  sırada takım/workspace listesi, ardından roster/Player 360 history sayfalaması.
+  Pilot kapasite, SLO ve owner TBD; BL-044/M4 kapıları korunur.
+  [Kanıt ve sınırlar](docs/30-quality/BL043_PLAYER_PAGINATION_2026-09-06.md).
+
+- **Latest local delivery (2026-09-06):** Kontrollü P0.1 yerel rollout tamamlandı.
+  Özel yedek ayrı DB'ye restore edildi; iki migration önce provada, sonra yalnız
+  `ngcs_local_session_dev` üzerinde geçti. 26 legacy tablo/83 kayıt fingerprint'i
+  korundu; altı migration güncel, diff boş, iki kulüp IN_SYNC. Dev server'lar
+  3001/4000 açık; mevcut session, scope/reload, takım/Player 360, 75 dk plan ve
+  maç notları browser'da geçti. Prova DB kaldırıldı, yedek saklandı; reset/seed,
+  parola veya production değişikliği yok. Sırada BL-043 pagination/ölçüm;
+  M4 ve BL-044 onay kapıları korunur.
+  [Operasyon kanıtı](docs/30-quality/P01_LOCAL_ROLLOUT_2026-09-06.md).
+
+- **Latest engineering delivery (2026-09-06):** BL-042/P0.1b tamamlandı. Legacy
+  group/member/season yazımı ile sportif projection aynı transaction'dadır;
+  invitation acceptance Person/profile oluşturur. Üyelik kaldırma geçmişi kapatır,
+  bağımsız primary/guest/staff korunur; geçmiş `asOf` güncel actor grant'i ister.
+  Admin parity sayım endpoint'i ve Club/Season/Team seçimleri; kullanıcıya göre
+  yalnız ID saklama, stale-response koruması ve dirty-router uyarısı eklendi.
+  396 backend/27 frontend unit, PostgreSQL 29/29, güncel altı migration/boş diff,
+  Chromium opt-in 6/6 doğrulandı. Yeni migration, retained DB rollout veya push
+  yapılmadı. Sonraki operasyon adımı kontrollü retained geçiş/parity; uygulama
+  backlog'unda BL-043 pagination/ölçek, BL-044 privacy/minor kapısı kalır.
+
+- **Latest engineering delivery (2026-09-06):** Kullanıcı ADR-0020 Option A'yı
+  onayladı. Vendor-neutral Nodemailer SMTP portu, production fail-closed config,
+  development/test operator fallback'i ve no-store issuance uygulandı. SMTP
+  yanıtı ham token içermez; ret/timeout yeni tokenı revoke edip generic 503 üretir.
+  `/accept-invitation` ve `/reset-password` fragment tokenını URL'den temizler.
+  Additive `SYSTEM_ADMIN_RECOVERED` migration'ı ve yalnız mevcut sistem yöneticisini
+  reaktive/parola değiştir/authVersion artır/session-reset revoke/audit eden
+  maintenance komutu eklendi. Provider/account/DNS/ücretli kaynak, production
+  rollout ve korunan yerel DB migration'ı yapılmadı. Root quality 35 backend
+  suite/379 test, 7 frontend dosyası/23 test, iki build, Sites 4/4 ve docs/CDSK
+  kapılarıyla geçti. Disposable PostgreSQL beş migration/repeat/status/boş diff,
+  fake-SMTP backend E2E 27/27 ve break-glass ACTIVE/authVersion=1/audit=1,
+  açık refresh/reset=0/0 provasıyla doğrulandı; geçici hedef kaldırıldı. Chromium
+  smoke'un bulduğu Strict Mode fragment kaybı ref tabanlı tek tüketimle kapatıldı;
+  public rotalarda gereksiz refresh yok, tokensız reset submit'i disabled.
+- **Latest engineering delivery (2026-09-06):** ADR-0019 Option 1 açık kullanıcı
+  onayıyla uygulandı. `(planId, playerId)` unique constraint, duplicate varsa
+  hiçbir satırı değiştirmeden duran additive migration ve tek Prisma upsert
+  `findFirst` → create yarışını kapattı. Korunan yerel DB salt-okunur envanteri
+  0 attendance/0 duplicate gösterdi. Üç focused
+  suite 24/24; disposable PostgreSQL 16 clean/repeat/status/empty diff ve
+  concurrent HTTP dahil backend E2E 26/26 geçti. Duplicate fixture migrationı
+  `23505/P3018` ile reddedildi; iki satır korundu ve index oluşmadı. Root quality
+  32 backend suite/368 test, 6 frontend dosyası/21 test, iki build ve bütün static,
+  Sites, docs/CDSK kapılarıyla geçti. Ayrı açık onayla additive migration korunan
+  yerel DB'ye reset yapmadan uygulandı; status güncel, attendance 0 ve unique index
+  sayısı 1. Backend/frontend HTTP sağlık kontrolleri 200 geçti.
+- **Latest engineering delivery (2026-09-06):** BL-024 onuncu dilimi / BL-038:
+  training-plan create/update/delete, tek faz ekleme, faz listesini değiştirme ve
+  board snapshot lookup/write persistence yolları cause-free generic 500 ve işlem
+  türüne özel sabit olaylara indirildi. Transaction içindeki explicit 400,
+  authorization, atomik mutation, başarılı sonuç ve opsiyonel season-day fail-soft
+  bağlantısı korundu. On bir yeni error-boundary testiyle 122 focused training-plan
+  testi; root quality 32 backend suite/371 test, 6 frontend dosyası/21 test, Sites
+  4/4 ve bütün static/build/docs kapıları geçti. Disposable PostgreSQL 16'da üç
+  migration, güncel status, boş schema diff ve mevcut 25/25 E2E tekrar geçti.
+  Container ve anonim test volume'u kaldırıldı; korunan yerel DB değişmedi.
+  Statik yeniden taramada onaylı MVP mutation body/log kapsamı temiz bulundu;
+  BL-024/F-008 bu kapsamda kapandı. Browser E2E tekrarlanmadı;
+  API/şema/dependency/production değişmedi.
+- **Previous engineering delivery (ninth slice):** BL-024 dokuzuncu dilimi / BL-037:
+  season/week/day/match create, update, delete, toggle, tactical-board ve
+  week-generation persistence/missing-record yolları cause-free generic 500 ve
+  işlem türüne özel sabit olaylara indirildi. Transaction içindeki explicit 400,
+  mevcut missing-record status'u, authorization ve başarılı sonuçlar korundu.
+  Sekiz yeni error-boundary testiyle 42 focused season testi; root quality 31
+  backend suite/360 test, 6 frontend dosyası/21 test, Sites 4/4 ve bütün
+  static/build/docs kapıları geçti. Disposable PostgreSQL 16'da üç migration,
+  güncel status, boş schema diff ve mevcut 25/25 E2E tekrar geçti. Container ve
+  anonim test volume'u kaldırıldı; korunan yerel DB değişmedi. Browser E2E
+  tekrarlanmadı; API/şema/dependency/production değişmedi.
+- **Previous engineering delivery (eighth slice):** BL-024 sekizinci dilimi:
+  attendance lookup/update/create persistence hataları cause-free generic 500 ve
+  `ATTENDANCE_MARK_FAILED` sabit olayına indirildi. DTO, controller plan/oyuncu
+  yetkisi ve başarılı find-then-update/create akışı korundu. Üç yeni error-boundary
+  testiyle 27 focused attendance testi; root quality 351 backend/21 frontend,
+  Sites 4/4 ve bütün static/build/docs kapıları geçti. Disposable PostgreSQL 16'da
+  üç migration, güncel status, boş schema diff ve mevcut 25/25 E2E tekrar geçti.
+  Geçici test verileri kaldırıldı; korunan demo DB değişmedi. Şema incelemesinde
+  `(planId, playerId)` unique constraint olmadığı ve concurrent duplicate riski
+  bulundu; F-013/CR-014/BL-036 Proposed bırakıldı, migration uygulanmadı. Browser
+  E2E tekrarlanmadı; frontend/dependency/production değişmedi.
+- **Previous engineering delivery (seventh slice):** BL-024 yedinci dilimi: MVP body
+  envanteri, club update ve drill create/update/delete hata/body sınırı. MVP'de
+  `any` mutation body kalmadı; health/analytics yolları MVP dışı karar kapısında.
+  F-012/BL-034 ile dört persistence sink'i cause-free generic 500 + sabit olaya,
+  drill null/array/primitive body kontrollü 400'e bağlandı; update kaynak yetkisi
+  önce çalışır. 12 yeni regresyon, 56 focused club/drill testi; root quality 348
+  backend/21 frontend, Sites 4/4 ve bütün static/build/docs kapıları geçti. İlk
+  quality çağrısı sandbox loopback `EPERM` nedeniyle frontend build'de durdu;
+  sandbox dışında aynı kapı geçti. Disposable PostgreSQL 16'da üç migration,
+  güncel status, boş schema diff ve 25/25 E2E doğrulandı. Geçici test verileri
+  kaldırıldı; korunan demo DB değişmedi. Browser E2E tekrarlanmadı;
+  şema/dependency/production değişmedi.
+- **Previous engineering delivery (sixth slice):** BL-024 altıncı dilimi:
+  group update/delete ile membership add/remove persistence/duplicate/missing hata
+  yolları cause-free generic 500 ve sabit olaylara indirildi. F-011/BL-033 ile
+  üyelik temizliği ve grup silme tek transaction'a alındı; ana silme foreign-key
+  nedeniyle reddedilirse üyelikler geri alınır. Mevcut başarılı sonuç ve
+  duplicate/missing 500 status davranışı korundu. 11 yeni error-boundary testi,
+  56 focused group testi; root quality 336 backend/21 frontend, Sites 4/4 ve bütün
+  static/build/docs kapıları geçti. Disposable PostgreSQL 16'da üç migration,
+  güncel status, boş schema diff ve 24/24 E2E doğrulandı. İlk DB adı session E2E
+  güvenlik kapısına uymadığı için suite başlamadan reddedildi; `e2e` adlı aynı
+  disposable hedefte bütün suite tekrar geçti. Geçici test verileri kaldırıldı,
+  korunan demo DB değişmedi. Browser E2E tekrarlanmadı; şema/dependency/production
+  değişmedi.
+- **Previous engineering delivery (fifth slice):** BL-024 beşinci dilimi:
+  group/club create/update/member runtime DTO. F-010/BL-032 kapsamında POST /clubs
+  istemci kimlik/timestamp/nested ilişki yazıları explicit field projection ile
+  kapatıldı. Club ve club-group create persistence hataları cause-free generic 500
+  ve sabit olayla sınırlandı. Enum/default/null/empty davranışları korundu.
+  Bağımsız review'da bulunan `/groups` auth-before-validation regresyonu clubId-only
+  parse ile kapandı. 84 focused test; root quality 325 backend/21 frontend, Sites
+  4/4 ve tüm static/build/docs kapıları geçti. Disposable PostgreSQL 16'da üç
+  migration deploy/status, boş schema diff ve 23/23 E2E doğrulandı. Yalnız geçici
+  test container/verileri kaldırıldı; demo DB korundu. Browser E2E tekrarlanmadı;
+  şema/dependency/production değişmedi.
+- **Previous engineering delivery (fourth slice):** BL-024 dördüncü dilimi:
+  season/week/day/match runtime DTO. F-009/BL-031 kapsamında hafta nested-write,
+  reparent ve maç create doğrulanmamış board yolu explicit field projection ile
+  kapatıldı; ADR-0007/0012/0014 kaynak/sözleşme sınırı uygulanır. Date-only/local
+  ISO/offset, nullable/default/JSON davranışları ve group invariant'ları korundu.
+  31 yeni unit/iki HTTP regresyonu; bağımsız patch review ve 33 focused test geçti.
+  Root quality 250 backend/21 frontend, Sites 4/4 ve tüm static/build/docs kapıları
+  geçti. Disposable PostgreSQL 16'da üç migration deploy/status, boş schema diff ve
+  22/22 E2E doğrulandı. Yalnız geçici test container/verileri kaldırıldı; demo DB
+  korunur. Browser E2E tekrarlanmadı; dependency/migration/production değişmedi.
+- **Previous engineering delivery (third slice):** BL-024 üçüncü dilimi: plan create/update
+  runtime DTO controller ve service girişlerinde uygulanır. Principal kimlik
+  türetme, nullable alanlar, timestamp offset'i, Int şema sınırı ve serializable
+  group aggregate'leri korunur. 58 yeni unit ve iki HTTP/Prisma regresyonu eklendi.
+  Root quality 219 backend/21 frontend, Sites 4/4, build/typecheck/lint/format,
+  CDSK/link/diff geçti. Ayrı disposable PostgreSQL 16'da üç migration deploy,
+  status ve boş schema diff ile backend E2E 20/20 geçti. Test container kaldırıldı;
+  korunan demo DB'ye dokunulmadı. Browser E2E tekrarlanmadı; şema/dependency aynı.
+- **Previous engineering delivery (second slice):** BL-024 ikinci dilimi: POST /groups hatası
+  sabit olay ve raw cause taşımayan HttpException ile sınırlandı; mevcut genel
+  500 zarfı, başarılı create/category default'u korunur. Attendance ve tek faz
+  ekleme mevcut enum/alan kurallarıyla controller ve servis girişinde doğrulanır;
+  yetki kontrolleri ve field projection korunur. 51 yeni regresyon; root quality
+  161 backend/21 frontend, Sites 4/4, build/typecheck/lint/format, CDSK ve 65
+  Markdown/0 kırık link geçti. HTTP/DB/browser E2E tekrarlanmadı; DB ve şema
+  değişmedi. Ayrı club-group create ve diğer framework log yolları açık kalır.
+- **Previous engineering delivery:** BL-024 ilk dilimi: analytics lint 0 hata/uyarı;
+  mutation alan eleme/dönüşümleri ve null rejection korunur. Plan-season link
+  yalnız sabit olay loglar; raw-error/metadata/debug sorguları kaldırıldı ve
+  opsiyonel başarısızlık plan oluşturmayı bozmaz. Replace-drills body mevcut
+  servis kurallarıyla controller'da doğrulanır; plan/drill authorization korunur.
+  42 yeni regresyon; root quality 110 backend/21 frontend, Sites 4/4, iki build,
+  typecheck/lint/format, CDSK, 65 Markdown/0 kırık link ve diff geçti.
+  API'nin geçerli payload/rol sözleşmesi, şema ve DB değişmedi; HTTP/DB E2E bu
+  dilimde tekrarlanmadı. BL-024 kısmen açık; production onayı verilmedi.
+- **Latest local delivery:** Kullanıcının tarih/süre/içerik delegasyonuyla
+  `cmtotozut0005r1puwqggqc2r` demo planı yalnız `ngcs_local_session_dev` üzerinde
+  oluşturuldu. 7 Eylül 18:00, dört faz ve 75 dakika browser/DB okumasıyla
+  doğrulandı; attendance 0. Faz ekleme sonrası workspace özetinde kalan 0 dk
+  BL-030 ile düzeltildi; ortak veri reload'u ve route/context regresyonu eklendi.
+  Root quality 68 backend/21 frontend testiyle geçti. Gerçek yoklama işaretlenmedi.
+- **Local continuation:** Kullanıcı production yerine yerelde devam etmeyi istedi.
+  Çalışmayan dev server'lar 3001/4000'de başlatıldı. `ngcs_local_test` değiştirilmeden
+  `ngcs_local_session_dev` kopyası oluşturuldu; üçüncü additive migration yalnız
+  kopyaya uygulandı, status güncel. Kalıcı oturum process flag'leri yerelde açık;
+  repository varsayılanları kapalı kaldı. HTTP smoke ve login ekranı doğrulandı;
+  ilk kayıtlı login reddedildi. Ardından doğru yerel koç hesabı explicit kullanıcı
+  onayıyla yalnız kopyada sıfırlandı; authVersion artırıldı, aktif refresh/reset
+  kayıtları iptal edildi ve token-free audit yazıldı. Yeni parola hash doğrulaması,
+  API login 201/persistent ve logout 200 geçti; kullanıcı/plan/drill/maç/katılım
+  sayıları korundu. Credential repository'ye yazılmadı. Sonraki browser smoke'ta
+  yeni sekme/reload oturumu, hafta, kütüphane, maç/kadro, boş plan/yoklama ve
+  tahta oyuncu/undo doğrulandı. İş verisi kaydedilmedi. Yanıltıcı yeni-taslak kayıt
+  etiketi BL-029/P3 olarak kaydedildi ve sonraki adımda düzeltildi: yeni egzersiz,
+  maç ve snapshot bağlamları persisted bilgisini ayrı aktarır. Yedi component
+  regresyonu, yeni taslak/maç browser smoke ve root quality (68 backend/20 frontend
+  test) geçti. API/şema ve yerel iş verisi değiştirilmedi; DB E2E tekrarlanmadı.
+- **Latest continuation:** M4 karar girdileri ve BL-028 hazırlandı; domain,
+  provider, bütçe, bölge, pilot kapasite ve owner kullanıcıdan bekleniyor.
+  Architecture Overview'daki eski implementation-bekliyor ifadesi ADR-0018 ile
+  hizalandı. Flag-off CORS'un localhost'a dönüşü production rollback kapısı olarak
+  kaydedildi. Bu adımda yalnız belgeler değişti; deployment veya migration yapılmadı.
 - **Session summary:** Kullanıcı onaylı ADR-0018 provider-neutral kalıcı oturum
   paketi uygulandı. Additive migration, rotation/replay ve family revoke, frontend
   bootstrap/logout doğrulandı. Backend E2E 18/18; browser opt-in 4/4 ve flag-off
   3/3 (opt-in testi skipped). Production rollout yapılmadı; flag'ler kapalıdır.
-- **Documents updated:** ADR-0014–0017, review raporu, BL-017–BL-026, CR-009–012,
+- **Documents updated:** ADR-0014–0020, review raporu, BL-011/017–038, CR-009–015,
   requirements, mimari güvenlik/veri/API/entegrasyon belgeleri, operations,
   roadmap, milestone, changelog ve handoff; ADR-0018, BL-027, CR-013 ve session
   API/veri/operations sözleşmesi eklendi.
@@ -227,41 +1601,229 @@
   password reset'te transaction içi conditional single-winner claim; Prisma CLI
   advisory'si hosted runtime için geçici `not_actionable` risk kabulü; serving
   runtime ile migration artifact'ının ayrılması; default-disabled persistent
-  session, 15m/7d/30d/beş-family ve 30d refresh-record retention.
-- **Remaining risk:** Log/DTO/lint borcu, production provider,
-  registry/orchestrator, ayrı DB rolleri, readiness ve operasyon sözleşmesi M4
-  riski olarak sürer.
-- **Recommended next step:** ADR-0010/0018 rollout girdilerini ve doğrulanmış
-  artifact'ların production registry/orchestrator/DB-role sözleşmesini tamamlamak.
+  session, 15m/7d/30d/beş-family ve 30d refresh-record retention. ADR-0019
+  attendance fail-fast migration + unique constraint + atomic upsert paketini
+  kabul eder. ADR-0020 hesap teslimi ve break-glass recovery için Option A'yı
+  kabul eder; vendor-neutral uygulama tamamlanmış, provider/rollout `TBD`dir.
+- **Remaining risk:** Global log retention,
+  production provider, registry/orchestrator, ayrı DB rolleri, readiness ve
+  operasyon sözleşmesi M4 veya ayrı karar kapılarında sürer.
+- **Recommended next step:** BL-048 Settings sayfasını aynı beyaz görsel sisteme
+  taşı; kapsam, oturum, rol/yetki ve kullanıcı tercih davranışları korunur.
+  Global log retention/
+  veri sınıflandırma kararı, provider hesabı, ücretli kaynak, DNS ve production
+  rollout kendi karar kapılarında `TBD` kalır.
 
 ## Revision History
 
-| Version | Date | Summary |
-|---|---|---|
-| 0.1 | 2026-08-31 | CDSK başlangıç bağlamı oluşturuldu |
-| 0.2 | 2026-08-31 | İlk güvenlik containment ve test tabanı kaydedildi |
-| 0.3 | 2026-08-31 | ADR-0004 Accepted olarak kaydedildi |
-| 0.4 | 2026-08-31 | ADR-0005 rol/tenant sınırı Accepted olarak kaydedildi |
-| 0.5 | 2026-08-31 | Prisma drift envanteri ve Proposed ADR-0006 kaydedildi |
-| 0.6 | 2026-08-31 | ADR-0006 kabul edildi; migration uygulama adımı ayrıştırıldı |
-| 0.7 | 2026-08-31 | Temiz Prisma baseline ve yeni rol enum'u doğrulandı |
-| 0.8 | 2026-08-31 | ADR-0007 çekirdek authorization matrisi ve negatif E2E doğrulandı |
-| 0.9 | 2026-08-31 | ADR-0003 monorepo topolojisi uygulandı; kırık gitlink kaldırıldı |
-| 1.0 | 2026-09-01 | ADR-0008 invitation lifecycle ve session revocation doğrulandı |
-| 1.1 | 2026-09-01 | ADR-0009 koç öncelikli frontend teknolojisi ve ilk akışı kabul edildi |
-| 1.2 | 2026-09-01 | Koç frontend dikey dilimi ve browser/design QA tamamlandı |
-| 1.3 | 2026-09-01 | Gerçek login–plan–katılım API entegrasyonu ve browser E2E doğrulandı |
-| 1.4 | 2026-09-01 | Gerçek maç taktik analizi API entegrasyonu ve ikinci browser E2E doğrulandı |
-| 1.5 | 2026-09-01 | Fazlı drill/not kalıcılığı ve üçüncü browser E2E doğrulandı |
-| 1.6 | 2026-09-01 | Tekrarlanabilir kök kalite kapısı geçti; BL-005/BL-006 tamamlandı |
-| 1.7 | 2026-09-01 | Production origin ve kalıcı session için Proposed ADR-0010 hazırlandı |
-| 1.8 | 2026-09-04 | Rotalı shadcn çalışma alanı, scoped drills ve ortak taktik tahta doğrulandı |
-| 1.9 | 2026-09-05 | ADR-0010 Option 1 kabul edildi; M4 zorunlu girdileri görünürleştirildi |
-| 2.0 | 2026-09-05 | shadcn shell dokuz masaüstü menüsü ve dört MVP destek rotasıyla genişletildi |
-| 2.1 | 2026-09-05 | dokuz rota UI audit'i tamamlandı; mobil sıra ve kütüphane sekmeleri düzeltildi |
-| 2.2 | 2026-09-05 | doğrulanmış UI audit kanıtı düzenlenebilir Figma panosuna taşındı |
-| 2.3 | 2026-09-05 | tam MVP review Fail hükmü, bulgular ve remediation backlog'u kaydedildi |
-| 2.4 | 2026-09-05 | A–D stabilizasyonu tamamlandı; F-001–F-006 kapandı ve remediation review Pass oldu |
-| 2.5 | 2026-09-05 | Prisma advisory geçici risk kabulü kaydedildi; runtime/migrator ayrımı Proposed oldu |
-| 2.6 | 2026-09-05 | ADR-0017 kabul edildi; runtime-only backend ve ayrı migrator artifact'ı doğrulandı |
-| 2.7 | 2026-09-05 | ADR-0018 opt-in kalıcı oturum, additive migration ve browser reload/logout doğrulandı |
+2.90 — 2026-09-09: A Takım route'u doğrudan kadro merkezine geçirildi; ortak
+responsive oyuncu dizini, URL filtre/sıra, deterministik cursor ve self-scope
+özetleri backend 712/frontend 284 ve disposable E2E 2/2 ile doğrulandı.
+
+2.80 — 2026-09-08: Players, Player 360, Squad ve Attendance fotoğraflı hero,
+doğrulanmış kapsam metrikleri ve kompakt oyuncu/plan yüzeyleriyle tamamlandı;
+on iki exact-size QA kanıtı geçti. Quality: 657 backend, 264 frontend ve 4 Sites
+testi. Sırada Settings.
+
+2.79 — 2026-09-08: Match detail fotoğraflı hero, beş gerçek maç özeti,
+kompakt analiz/olgu düzeni ve mevcut taktik editörüyle tamamlandı; altı exact-size
+QA kanıtı geçti. Quality: 657 backend, 264 frontend ve 4 Sites testi. Sırada
+Players, Player 360, Squad ve Attendance.
+
+2.78 — 2026-09-08: Library, Tactical Board ve yeni tahta editörü fotoğraflı
+hero, gerçek metrikler, kategori kataloğu, doğrulanmış araç özeti ve kompakt
+editor chrome ile tamamlandı; dokuz exact-size QA kanıtı geçti. Quality: 657
+backend, 263 frontend ve 4 Sites testi. Sırada Match detail.
+
+2.77 — 2026-09-08: Trainings ve training-detail referans-sistem dilimi fotoğraflı
+hero, beş gerçek metrik, kompakt editör özeti/sekmeleri ve responsive plan/faz
+kartlarıyla tamamlandı; altı exact-size QA kanıtı geçti. Quality: 657 backend,
+260 frontend ve 4 Sites testi. Sırada Library ve Tactical Board.
+
+2.76 — 2026-09-08: Week referans-sistem dilimi fotoğraflı hero, kompakt tarih
+kontrolleri ve responsive yedi günlük board ile tamamlandı; 1672/1024/390
+exact-size QA geçti. Sırada Trainings ve training detail.
+Quality: 657 backend, 258 frontend ve 4 Sites testi.
+
+2.75 — 2026-09-08: Matches referans dilimi fotoğraflı hero, yerel gün filtresi
+ve tarih gruplu gerçek satırlarla tamamlandı; 1672/1024/390 exact-size QA geçti.
+Quality 657 backend/257 frontend/4 Sites. Sırada Week.
+
+2.74 — 2026-09-08: Teams referans dilimi fotoğraflı hero, gerçek takım kartı ve
+native tabloyla tamamlandı; 1536/1024/390 exact-size QA kanıtı P0/P1/P2 olmadan
+geçti. Search/cursor/seçim/detay davranışları korundu. Sırada Matches.
+
+2.71 — 2026-09-08: Onaylı Dashboard referans düzeltmesi; altı gerçek metrik,
+üç sütunlu içerik, günlük sayfalama, Inter/fotoğraf ve 185/78px shell. Root quality
+657 backend/255 frontend/4 Sites geçti; canlı responsive/Sheet/login kontrol edildi.
+Kalıcı screenshot dışa aktarımı nedeniyle görsel teslim kapısı açık.
+
+2.67 — 2026-09-07: BL-047 faz 5C ortak futbol kartları dört katalogda geçti;
+4 yeni/34 hedef ve quality 655/245. Faz 5 kapalı, sırada faz 6 Hafta modülü.
+
+2.66 — 2026-09-07: BL-047 faz 5B ortak compact seçenek sayfalaması; farklı
+cursor politikaları korundu, 15 yeni/39 hedef ve quality 655/241 testleri geçti.
+Sırada faz 5C futbol kartları.
+
+2.65 — 2026-09-07: BL-047 faz 5A ortak veri durumu/sayfalama, Oyuncular/Takımlar
+pilotu ve atama sayfalama adaptörü; 14 yeni test, quality 655/226. Faz 5B sırada.
+
+2.64 — 2026-09-07: BL-047 faz 4B.2 sportif atama ortak form düzeni; 15 yeni
+test, quality 655/212, responsive/kısa ekran QA. Faz 4 hedefleri kapalı; sırada faz 5.
+
+2.63 — 2026-09-07: BL-047 faz 4B.1 yeni plan diyalogu ortak alan/hata düzeni,
+kısa ekran iç kaydırma; dokuz yeni test, quality 655/197. Sırada sportif atama.
+
+2.62 — 2026-09-07: BL-047 faz 4A giriş/davet/parola yenileme ortak form geçişi;
+16 yeni test, quality 655/188 ve public form görsel kontrolü. Sırada faz 4B
+plan/atama diyalogları; API, token ve session davranışı değişmedi.
+
+2.61 — 2026-09-07: BL-047 faz 3 dashboard/settings ortak layout pilotu ve mobil
+kullanıcı menüsü düzeltmesi; sekiz yeni test, quality 655/172 ve responsive QA.
+Sonraki faz 4 forms/dialogs; tüm uygulama migration'ı tamamlanmış değildir.
+
+2.60 — 2026-09-07: BL-047 faz 2 etkileşim kapısı; 12 yeni test, root quality
+655/164 ve yerel klavye/notification doğrulaması. Sonraki faz 3 layout pilotu.
+
+2.59 — 2026-09-07: BL-047 sınıflandırılmış UI envanteri ve sekiz aşamalı plan;
+faz 1 token/primitive yüzey geçişi, 9 regresyon ve eşleşen responsive görsel QA.
+Geniş migration tamamlanmadı; sırada faz 2 kalan kontroller ve faz 3 layout pilotu.
+
+2.58 — 2026-09-07: Kullanıcı onaylı hedefli yerel koç parola sıfırlaması,
+oturum iptali ve transaction içi veri koruma doğrulaması; secret kaydedilmedi.
+
+2.57 — 2026-09-07: BL-045 explicit all-seasons/gerçek eksik sezon ayrımı,
+10 regresyon ve yerel browser doğrulaması; kalan işler karar kapılarında.
+
+2.56 — 2026-09-07: BL-043j sentetik karma okuma/yazma ve ayrı SELECT row-work
+kanıtı; pilot kabul girdileri TBD olarak ayrıldı. Sırada bağımsız BL-045.
+
+2.55 — 2026-09-07: BL-046c eşleşen geçerli tahta ölçümü ve tam QA; BL-046/
+CR-017 uygulama kapanışı. Sırada BL-043 geniş workload/row-work doğrulaması.
+
+2.54 — 2026-09-07: BL-046b frontend explicit-open, dirty geçiş/history
+koordinasyonu ve belirsiz kayıt doğrulaması; c matched ölçüm sırada.
+
+2.53 — 2026-09-07: ADR-0025 Accepted; BL-046a backend okumaları ve 43 unit/8
+HTTP doğrulaması, tam kalite/API kapıları; frontend/ölçüm b/c sırada.
+
+2.52 — 2026-09-07: BL-046 tasarım/etki analizi, Proposed ADR-0025 Option A ve
+üç uygulama kapısı; yalnız dokümantasyon, açık uygulama onayı bekleniyor.
+
+2.51 — 2026-09-07: BL-043i tekrarlanabilir karma GET ölçümü ve test eşikleri;
+editor JSON büyümesi BL-046/Proposed CR-017 ile ayrıldı, production SLO TBD.
+
+2.50 — 2026-09-07: BL-043h.2 sayfalı antrenman yoklaması, tam sayaçlar ve
+katılım/grup üyesi taşımayan editor; ortak full-member fetch/state kaldırıldı.
+
+2.49 — 2026-09-07: BL-043h.1 sayfalı Kadro ve bağımsız tam oyuncu toplamı;
+mevcut rol/grup yetkisi korunur, antrenman detayındaki üye bağımlılığı h.2'ye taşınır.
+
+2.48 — 2026-09-07: BL-043g.5 tekil yetkili maç detayı, minimal shell sayacı
+ve metadata-only workspace; ortak tam maç fetch/state kaldırıldı.
+
+2.47 — 2026-09-07: BL-043g.4 Hafta günlük minimal maç sayfaları/tam toplam,
+bağımsız retry ve DST-safe sınırlar; shell sayacı cutover bağımlılığı netleştirildi.
+
+2.46 — 2026-09-07: BL-043g.3 Genel Bakış limit=3 scalar maç/tam toplam,
+bağımsız retry ve scope reset; 93 frontend unit/11 Chromium E2E doğrulandı.
+
+2.45 — 2026-09-07: BL-043g.2 Maçlar bağımsız sayfa/tam total/hasBoard
+kartlarına geçti; 89 frontend unit ve 11 Chromium E2E doğrulandı.
+
+2.44 — 2026-09-07: BL-043g.1 maç sayfa/tam toplam API temeli, 33 yeni unit
+test ve 39 API E2E doğrulandı; frontend tüketicileri sonraki dilimlere bırakıldı.
+
+2.43 — 2026-09-07: BL-043f.4 sayfalı antrenman egzersiz seçicisi, snapshot
+koruyan mevcut tekli POST ve ortak tam drill fetch/state kaldırılması doğrulandı.
+
+2.42 — 2026-09-07: BL-043f.3 sunucu board-kind filtresi ve sayfalı taktik
+kataloğu; antrenman detay egzersiz seçenekleri/shared drill kaldırma hâlâ açık.
+
+2.41 — 2026-09-07: BL-043f.2 Genel Bakış egzersiz sayacı limit=1 minimal
+okuma/tam total, scope reset ve bağımsız retry; taktik/detay tüketicileri açık.
+
+2.40 — 2026-09-06: BL-043f.1 sayfalı Egzersiz Kütüphanesi/sunucu kategori
+filtresi ve minimal kart projection'ı; diğer shared drill tüketicileri açık.
+
+2.39 — 2026-09-06: BL-043e.5 sayfalı Yoklama/tam oyuncu toplamları ve dört
+antrenman tüketicisi tamamlanarak shared full-plan fetch/state kaldırıldı.
+
+2.38 — 2026-09-06: BL-043e.4 yerel dönem/gün filtresi ve bağımsız Hafta
+sayfaları; ortak tam plan okumasının kalan tüketicisi Yoklama'dır.
+
+2.37 — 2026-09-06: BL-043e.3 Genel Bakış tam antrenman/PRESENT toplamları
+ve son üç minimal plan okuması; hafta/yoklama ayrıştırması açık kaldı.
+
+2.36 — 2026-09-06: BL-043e.2 Antrenmanlar sayfalı UI/tam toplam geçişi;
+dashboard/hafta/yoklama tam okumaları ve diğer iş listeleri açık kalır.
+
+2.35 — 2026-09-06: BL-043e.1 antrenman sayfalı okuma/tam toplam API temeli ve
+EXPLAIN tabanlı faz sayımı daraltması; frontend/shared-array cutover henüz yapılmadı.
+
+2.34 — 2026-09-06: BL-043d seçili legacy bağlamı ve sayfalı atama seçenekleri;
+tam maç sonuçları ve bağımsız yetki kontrolü korunur. İş listeleri/pilot kapısı açık.
+
+2.33 — 2026-09-06: BL-043c tarihli kadro/geçmiş sayfalaması, ayrı toplam sayaçlar,
+bounded person yetki sorgusu; legacy metadata/diyalog ve pilot ölçek kapısı açık.
+
+2.32 — 2026-09-06: BL-043b takım listesi ve workspace katalog sayfalaması;
+sayfa dışı seçimi koruma, güncel yetki filtreleri ve izole ölçüm. Kadro/geçmiş açık.
+
+2.31 — 2026-09-06: BL-043a oyuncu ID-keyset sayfalaması, sunucu araması,
+scope/retry UI ve 1.000 oyunculu izole ölçüm; takım/atama sayfalaması açık.
+
+2.30 — 2026-09-06: Yedek/restore provası ve korunan yerel P0.1 migration/parity,
+iş verisi bütünlüğü ve oturumlu browser smoke doğrulandı; production değişmedi.
+
+| Version | Date       | Summary                                                                                                                      |
+| ------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| 0.1     | 2026-08-31 | CDSK başlangıç bağlamı oluşturuldu                                                                                           |
+| 0.2     | 2026-08-31 | İlk güvenlik containment ve test tabanı kaydedildi                                                                           |
+| 0.3     | 2026-08-31 | ADR-0004 Accepted olarak kaydedildi                                                                                          |
+| 0.4     | 2026-08-31 | ADR-0005 rol/tenant sınırı Accepted olarak kaydedildi                                                                        |
+| 0.5     | 2026-08-31 | Prisma drift envanteri ve Proposed ADR-0006 kaydedildi                                                                       |
+| 0.6     | 2026-08-31 | ADR-0006 kabul edildi; migration uygulama adımı ayrıştırıldı                                                                 |
+| 0.7     | 2026-08-31 | Temiz Prisma baseline ve yeni rol enum'u doğrulandı                                                                          |
+| 0.8     | 2026-08-31 | ADR-0007 çekirdek authorization matrisi ve negatif E2E doğrulandı                                                            |
+| 0.9     | 2026-08-31 | ADR-0003 monorepo topolojisi uygulandı; kırık gitlink kaldırıldı                                                             |
+| 1.0     | 2026-09-01 | ADR-0008 invitation lifecycle ve session revocation doğrulandı                                                               |
+| 1.1     | 2026-09-01 | ADR-0009 koç öncelikli frontend teknolojisi ve ilk akışı kabul edildi                                                        |
+| 1.2     | 2026-09-01 | Koç frontend dikey dilimi ve browser/design QA tamamlandı                                                                    |
+| 1.3     | 2026-09-01 | Gerçek login–plan–katılım API entegrasyonu ve browser E2E doğrulandı                                                         |
+| 1.4     | 2026-09-01 | Gerçek maç taktik analizi API entegrasyonu ve ikinci browser E2E doğrulandı                                                  |
+| 1.5     | 2026-09-01 | Fazlı drill/not kalıcılığı ve üçüncü browser E2E doğrulandı                                                                  |
+| 1.6     | 2026-09-01 | Tekrarlanabilir kök kalite kapısı geçti; BL-005/BL-006 tamamlandı                                                            |
+| 1.7     | 2026-09-01 | Production origin ve kalıcı session için Proposed ADR-0010 hazırlandı                                                        |
+| 1.8     | 2026-09-04 | Rotalı shadcn çalışma alanı, scoped drills ve ortak taktik tahta doğrulandı                                                  |
+| 1.9     | 2026-09-05 | ADR-0010 Option 1 kabul edildi; M4 zorunlu girdileri görünürleştirildi                                                       |
+| 2.0     | 2026-09-05 | shadcn shell dokuz masaüstü menüsü ve dört MVP destek rotasıyla genişletildi                                                 |
+| 2.1     | 2026-09-05 | dokuz rota UI audit'i tamamlandı; mobil sıra ve kütüphane sekmeleri düzeltildi                                               |
+| 2.2     | 2026-09-05 | doğrulanmış UI audit kanıtı düzenlenebilir Figma panosuna taşındı                                                            |
+| 2.3     | 2026-09-05 | tam MVP review Fail hükmü, bulgular ve remediation backlog'u kaydedildi                                                      |
+| 2.4     | 2026-09-05 | A–D stabilizasyonu tamamlandı; F-001–F-006 kapandı ve remediation review Pass oldu                                           |
+| 2.5     | 2026-09-05 | Prisma advisory geçici risk kabulü kaydedildi; runtime/migrator ayrımı Proposed oldu                                         |
+| 2.6     | 2026-09-05 | ADR-0017 kabul edildi; runtime-only backend ve ayrı migrator artifact'ı doğrulandı                                           |
+| 2.7     | 2026-09-05 | ADR-0018 opt-in kalıcı oturum, additive migration ve browser reload/logout doğrulandı                                        |
+| 2.8     | 2026-09-05 | M4 karar girdileri, BL-028 ve production CORS/rollback kapısı kaydedildi                                                     |
+| 2.9     | 2026-09-05 | Production beklemeye alındı; yerel DB kopyası/migration ve opt-in dev server'lar başlatıldı                                  |
+| 2.10    | 2026-09-05 | BL-029 kayıt durumu düzeltildi; 7 yeni regresyon, browser smoke ve root quality geçti                                        |
+| 2.11    | 2026-09-05 | İlk 75 dk demo planı oluşturuldu; BL-030 ortak süre senkronizasyonu ve kalite kapısı doğrulandı                              |
+| 2.12    | 2026-09-05 | BL-024 ilk dilimi: analytics lint ve plan-link log temizliği, replace-drills runtime DTO, 42 regresyon                       |
+| 2.13    | 2026-09-05 | BL-024 ikinci dilimi: POST /groups log containment, attendance/add-drill runtime DTO, 51 regresyon                           |
+| 2.14    | 2026-09-05 | BL-024 plan create/update DTO, 58 unit/2 HTTP regresyonu; disposable PostgreSQL backend E2E 20/20                            |
+| 2.15    | 2026-09-06 | BL-024 season/week/day/match DTO; F-009/BL-031 nested-write düzeltmesi, 250 unit ve 22 E2E doğrulandı                        |
+| 2.16    | 2026-09-06 | BL-024 group/club DTO; F-010/BL-032 club mass-assignment düzeltmesi, 325 unit ve 23 E2E doğrulandı                           |
+| 2.17    | 2026-09-06 | BL-024 group mutation error containment; F-011/BL-033 atomik grup silme, 336 unit ve 24 E2E doğrulandı                       |
+| 2.18    | 2026-09-06 | BL-024 club update/drill error-body sınırı; F-012/BL-034, 348 unit ve 25 E2E doğrulandı                                      |
+| 2.19    | 2026-09-06 | BL-024 attendance error containment; BL-035, 351 unit/25 E2E; F-013/CR-014 uniqueness kararı Proposed                        |
+| 2.20    | 2026-09-06 | BL-024 season mutation error containment; BL-037, 42 focused/360 total unit ve 25 E2E doğrulandı                             |
+| 2.21    | 2026-09-06 | BL-024 training-plan mutation error containment; BL-038, 122 focused/371 total unit ve 25 E2E; F-008 closed for approved MVP |
+| 2.22    | 2026-09-06 | ADR-0019 attendance uniqueness/upsert Option 1 Proposed; no schema, migration, service or retained-DB change                 |
+| 2.23    | 2026-09-06 | ADR-0019 Accepted; fail-fast unique migration, atomic upsert, 24 focused unit and disposable PostgreSQL 26/26 E2E            |
+| 2.24    | 2026-09-06 | ADR-0019 additive migration applied to approved local retained DB; status/index and HTTP health verified                     |
+| 2.25    | 2026-09-06 | ADR-0020 SMTP delivery/public completion/break-glass recovery Option A Proposed; implementation and provider not approved    |
+| 2.26    | 2026-09-06 | ADR-0020 Accepted; SMTP port/public completion/break-glass recovery implemented; provider and retained-DB rollout TBD        |
+| 2.27    | 2026-09-06 | ADR-0021–0024 Accepted; Phase 2 P0.1 sporting kernel, Player 360, migration/backfill and E2E verified in repository          |
+| 2.28    | 2026-09-06 | P0.1a integrity closure: as-of history cutoff, primary-period overlap guards, 396 backend tests; BL-042 remains P0.1b        |
+| 2.29    | 2026-09-06 | BL-042/P0.1b atomic legacy adapter, history/revocation, parity and persistent workspace scope; 29 API and 6 browser E2E      |

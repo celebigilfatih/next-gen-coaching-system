@@ -1,9 +1,10 @@
 # Integrations
 
-| Integration | Purpose | Owner | Contract | Failure/fallback |
-|---|---|---|---|---|
-| PostgreSQL 16 | Kalıcı uygulama verisi | Backend / TBD | Prisma schema ve migrations | Backup/restore `TBD` |
-| Socket.IO | Backend gerçek zamanlı plan ve katılım olayları; frontend consumer doğrulanmadı | Events module / TBD | ADR-0014; current JWT `auth.token`, group rooms, per-emit current-recipient check ve minimum payload | Retry/reconciliation ve distributed presence `TBD` |
-| Frontend | Koç öncelikli responsive web arayüzü | Frontend owner TBD | ADR-0009/0011: React Router SPA ve REST bearer JWT | Dokuz rota uygulanmıştır; memory-only oturum reload'da kapanır |
+| Integration   | Purpose                                                                         | Owner                         | Contract                                                                                             | Failure/fallback                                                                                                                 |
+| ------------- | ------------------------------------------------------------------------------- | ----------------------------- | ---------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| PostgreSQL 16 | Kalıcı uygulama verisi                                                          | Backend / TBD                 | Prisma schema ve migrations                                                                          | Backup/restore `TBD`                                                                                                             |
+| Socket.IO     | Backend gerçek zamanlı plan ve katılım olayları; frontend consumer doğrulanmadı | Events module / TBD           | ADR-0014; current JWT `auth.token`, group rooms, per-emit current-recipient check ve minimum payload | Retry/reconciliation ve distributed presence `TBD`                                                                               |
+| Frontend      | Koç öncelikli responsive web arayüzü                                            | Frontend owner TBD            | ADR-0009/0011: React Router SPA ve REST bearer JWT                                                   | Dokuz rota uygulanmıştır; memory-only oturum reload'da kapanır                                                                   |
+| SMTP          | Davet ve yönetici-başlatmalı reset e-postası                                    | Security/operations owner TBD | ADR-0020 vendor-neutral Nodemailer port; provider/account TBD                                        | Development/test operator fallback; production eksik/yanlış config'de fail-closed, delivery hatasında token revoke + generic 503 |
 
 Doğrulanmış üçüncü taraf SaaS, dosya depolama, video veya AI entegrasyonu yoktur.

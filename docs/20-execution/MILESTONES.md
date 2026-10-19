@@ -75,3 +75,31 @@
 - **Risks:** Zorunlu girdiler `TBD`; ADR-0016 advisory kabulü production öncesi
   yeniden incelenmelidir.
 - **Status:** In progress — provider-neutral sessions implemented, production inputs TBD.
+
+## Milestone M5 — Phase 2 P0.1 sportif temel
+
+- **Outcome:** Kulüp, takım, sezon, kişi ve oyuncu/staff atama geçmişi güvenilir
+  bir sportif organizasyon çekirdeğinde birleşir.
+- **Dependencies:** M3.2; ADR-0021, ADR-0022, ADR-0023 ve ADR-0024.
+- **Exit criteria:** Additive migration ve legacy backfill provası; capability,
+  mass-assignment ve iki-kulüp testleri; U17→U19→A takım yolculuk E2E'si; takım
+  ve Player 360 rotalarının 1440/1024/390 px doğrulaması; BL-042 atomik compatibility,
+  parity, scope persistence ve dirty-navigation doğrulaması; root kalite kapısı.
+- **Risks:** Doğrudan DB/eski uygulama yazımlarında parity; minor/safeguarding,
+  sağlık retention ve production rollout politikaları `TBD`.
+- **Status:** Completed in repository and approved local environment 2026-09-06.
+  Backup/restore, migration, parity and browser smoke passed; production rollout
+  not performed. [Local evidence](../30-quality/P01_LOCAL_ROLLOUT_2026-09-06.md).
+
+## Milestone M5.3 — Profesyonel egzersiz kütüphanesi
+
+- **Outcome:** Global kütüphane immutable sürüm, yaş varyantı, kaynak/lisans
+  kanıtı ve ayrık author-reviewer-publisher akışıyla yönetilir.
+- **Dependencies:** M3, M5; ADR-0032, ADR-0033, ADR-0034; named football expert.
+- **Exit criteria:** 120 özgün Türkçe kayıt üç 40'lık dalgada uzman incelemesi
+  alır; migration/backfill, strict API, katalog/detail/manage UI, idempotent
+  import, E2E ve responsive kalite kapıları geçer.
+- **Risks:** Futbol uzmanı ve hukuk/production sahipleri `TBD`; bu kişiler
+  atanmadıkça taslaklar doğrulanmış veya yayınlanmış içerik sayılmaz.
+- **Status:** In progress — repository foundation ve 120 DRAFT manifest hazır;
+  uzman incelemesi, retained import ve yayın yapılmadı.

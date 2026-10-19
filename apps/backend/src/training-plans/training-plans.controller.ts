@@ -1,3 +1,5 @@
+import { UseInterceptors } from '@nestjs/common';
+import { LegacyTacticalReadInterceptor } from '../tactics/legacy-tactical-read.interceptor';
 import {
   BadRequestException,
   Body,
@@ -18,9 +20,19 @@ import { Roles } from '../auth/roles.decorator';
 import { RolesGuard } from '../auth/roles.guard';
 import { TrainingPlansService } from './training-plans.service';
 import { validateTacticalBoardDocument } from '../tactics/tactical-board';
+import {
+  parsePlanDrillBody,
+  parseReplacePlanDrillsBody,
+} from './dto/replace-plan-drills.dto';
+import {
+  parseCreateTrainingPlanBody,
+  parseUpdateTrainingPlanBody,
+  trainingPlanBody,
+} from './dto/training-plan.dto';
 
 @Controller('training-plans')
 @UseGuards(AuthGuard('jwt'))
+@UseInterceptors(LegacyTacticalReadInterceptor)
 export class TrainingPlansController {
   constructor(
     private readonly plans: TrainingPlansService,
@@ -52,28 +64,25 @@ export class TrainingPlansController {
     return this.plans.get(id, req.user);
   }
 
+  @Get(':id/editor')
+  async editor(@Req() req: { user: AuthPrincipal }, @Param('id') id: string) {
+    await this.authorization.assertPlanView(req.user, id);
+    return this.plans.getEditor(id);
+  }
+
   @Post()
   @UseGuards(RolesGuard)
   @Roles('SYSTEM_ADMIN', 'CLUB_ADMIN', 'COACH')
-  async create(
-    @Req() req: { user: AuthPrincipal },
-    @Body()
-    body: {
-      title: string;
-      clubId?: string;
-      coachId?: string;
-      groupId?: string;
-      date?: string | Date;
-      notes?: string;
-    },
-  ) {
+  async create(@Req() req: { user: AuthPrincipal }, @Body() input: unknown) {
     const principal = req.user;
-    const clubId =
-      principal.role === 'SYSTEM_ADMIN' ? body.clubId : principal.clubId;
-    const coachId = principal.role === 'COACH' ? principal.id : body.coachId;
-    if (!clubId || !coachId) {
-      throw new BadRequestException('clubId and coachId are required');
-    }
+    const requested = trainingPlanBody(input);
+    const body = parseCreateTrainingPlanBody({
+      ...requested,
+      clubId:
+        principal.role === 'SYSTEM_ADMIN' ? requested.clubId : principal.clubId,
+      coachId: principal.role === 'COACH' ? principal.id : requested.coachId,
+    });
+    const { clubId, coachId } = body;
 
     if (principal.role === 'CLUB_ADMIN') {
       this.authorization.assertClubManage(principal, clubId);
@@ -111,15 +120,10 @@ export class TrainingPlansController {
   async addDrill(
     @Req() req: { user: AuthPrincipal },
     @Param('id') id: string,
-    @Body()
-    body: {
-      drillId: string;
-      phase: 'WARM_UP' | 'TECHNICAL' | 'TACTICAL' | 'COOL_DOWN';
-      order: number;
-      notes?: string;
-    },
+    @Body() input: unknown,
   ) {
     await this.authorization.assertPlanManage(req.user, id);
+    const body = parsePlanDrillBody(input);
     await this.authorization.assertDrillView(req.user, body.drillId);
     return this.plans.addDrill(
       id,
@@ -136,23 +140,16 @@ export class TrainingPlansController {
   async replaceDrills(
     @Req() req: { user: AuthPrincipal },
     @Param('id') id: string,
-    @Body()
-    body: {
-      drills: Array<{
-        drillId: string;
-        phase: 'WARM_UP' | 'TECHNICAL' | 'TACTICAL' | 'COOL_DOWN';
-        order: number;
-        notes?: string;
-      }>;
-    },
+    @Body() body: unknown,
   ) {
     await this.authorization.assertPlanManage(req.user, id);
+    const { drills } = parseReplacePlanDrillsBody(body);
     await Promise.all(
-      [...new Set(body.drills.map((entry) => entry.drillId))].map((drillId) =>
+      [...new Set(drills.map((entry) => entry.drillId))].map((drillId) =>
         this.authorization.assertDrillView(req.user, drillId),
       ),
     );
-    return this.plans.replaceDrills(id, body.drills);
+    return this.plans.replaceDrills(id, drills);
   }
 
   @Put(':planId/drills/:planDrillId/board')
@@ -180,16 +177,10 @@ export class TrainingPlansController {
   async update(
     @Req() req: { user: AuthPrincipal },
     @Param('id') id: string,
-    @Body()
-    body: {
-      title?: string;
-      totalDuration?: number;
-      groupId?: string;
-      date?: string | Date;
-      notes?: string;
-    },
+    @Body() input: unknown,
   ) {
     const plan = await this.authorization.assertPlanManage(req.user, id);
+    const body = parseUpdateTrainingPlanBody(input);
     if (body.groupId) {
       const group =
         req.user.role === 'COACH'

@@ -3,6 +3,12 @@ import {
   type BoardElement,
   type TacticalBoardDocumentV1,
 } from './tactical-board';
+import {
+  elementArt,
+  pitchArt,
+  type BoardArt,
+  type PlayerAppearance,
+} from './board-art';
 
 const elementLabels: Record<BoardElement['type'], string> = {
   player: 'Oyuncu',
@@ -34,16 +40,32 @@ function escapeXml(value: string | number) {
   );
 }
 
-export function boardSvg(document: TacticalBoardDocumentV1) {
+function artSvg(shape: BoardArt): string {
+  const x = shape.x ?? 0;
+  const y = shape.y ?? 0;
+  const style = `fill="${escapeXml(shape.fill ?? 'none')}" stroke="${escapeXml(shape.stroke ?? 'none')}" stroke-width="${escapeXml(shape.strokeWidth ?? 0)}" opacity="${escapeXml(shape.opacity ?? 1)}" stroke-linejoin="round" stroke-linecap="round"${shape.dash ? ` stroke-dasharray="${escapeXml(shape.dash.join(' '))}"` : ''}`;
+  if (shape.type === 'circle')
+    return `<circle cx="${escapeXml(x)}" cy="${escapeXml(y)}" r="${escapeXml(shape.radius ?? 0)}" ${style}/>`;
+  if (shape.type === 'rect')
+    return `<rect x="${escapeXml(x)}" y="${escapeXml(y)}" width="${escapeXml(shape.width ?? 0)}" height="${escapeXml(shape.height ?? 0)}" rx="${escapeXml(shape.cornerRadius ?? 0)}" ${style}/>`;
+  if (shape.type === 'line')
+    return `<${shape.closed ? 'polygon' : 'polyline'} points="${escapeXml((shape.points ?? []).join(' '))}" ${style}/>`;
+  const fontSize = shape.fontSize ?? 16;
+  const textX = x + (shape.align === 'center' ? (shape.width ?? 0) / 2 : 0);
+  return `<text x="${escapeXml(textX)}" y="${escapeXml(y + fontSize * 0.8)}" transform="rotate(${escapeXml(shape.rotation ?? 0)})" text-anchor="${shape.align === 'center' ? 'middle' : 'start'}" font-family="Inter, sans-serif" font-weight="700" font-size="${escapeXml(fontSize)}" ${style}>${escapeXml(shape.text ?? '')}</text>`;
+}
+
+export function boardSvg(
+  document: TacticalBoardDocumentV1,
+  appearance: PlayerAppearance = 'shirt',
+) {
   const valid = validateBoard(document);
   const elements = valid.elements
     .map((element) => {
-      const color =
-        element.team === 'away' ? '#ef4444' : (element.color ?? '#1687ff');
-      return `<g transform="translate(${escapeXml(element.x)} ${escapeXml(element.y)}) rotate(${escapeXml(element.rotation ?? 0)})"><circle r="${escapeXml(element.radius ?? 14)}" fill="${escapeXml(color)}"/><title>${escapeXml(elementLabels[element.type])}</title></g>`;
+      return `<g transform="translate(${escapeXml(element.x)} ${escapeXml(element.y)}) rotate(${escapeXml(element.rotation ?? 0)})"><title>${escapeXml(elementLabels[element.type])}</title>${elementArt(element, appearance).map(artSvg).join('')}</g>`;
     })
     .join('');
   const width = escapeXml(valid.pitch.width);
   const height = escapeXml(valid.pitch.height);
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}"><rect width="100%" height="100%" fill="#16844e"/><rect x="12" y="12" width="${escapeXml(valid.pitch.width - 24)}" height="${escapeXml(valid.pitch.height - 24)}" fill="none" stroke="#fff" stroke-width="4"/>${elements}</svg>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">${pitchArt(valid.pitch).map(artSvg).join('')}${elements}</svg>`;
 }

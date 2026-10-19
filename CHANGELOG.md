@@ -1,9 +1,907 @@
 # Changelog
 
+## 2026-10-19 — Repository publication preparation
+
+- Prepare accumulated approved implementation, tests, assets and CDSK records
+  for commit/publication on `codex/mvp-stabilization`; do not modify `main`.
+- Exclude temporary Playwright CLI recordings from Git. Local environment files,
+  generated output and database data remain outside the delivery.
+- Publication does not activate retained V2 writes or authorize production rollout.
+- Legacy pre-commit invokes root ESLint across workspaces and reports invalid
+  browser-global/CommonJS errors. Track BL-059; use explicit workspace quality
+  verification rather than changing runtime code to satisfy the wrong config.
+- Fresh lockfile installs completed without version changes. Explicit quality
+  passed: 843 backend, 446 frontend and 4 Sites tests; typecheck/lint/format,
+  builds, 143 Markdown files, CDSK and whitespace. Script syntax checks passed.
+  Use command-scoped `HUSKY=0` for this publication; hooks remain configured.
+
+## 2026-10-03 — Combined tactical acceptance (BL-058e.4)
+
+- Added four editor JSON/static SVG/import rejection regressions and combined
+  V1/V2 club-copy → plan snapshot → match HTTP tests. Full HTTP suite 18/18;
+  source isolation, resource tokens, duration and flag-off compatibility pass.
+- Actual routes/NestJS/disposable PostgreSQL browser flow verifies complete
+  JSON and selected PNG/SVG; three viewports and bounded 12-scene/1,500-element/
+  50-undo observation. Migration deploy/status/diff and root quality pass:
+  843 backend / 446 frontend / 4 Sites tests.
+- BL-058/REQ-025 implemented in repository; retained rollout separately pending.
+  No runtime, schema, dependency, retained-data/flag, deploy, commit or push change.
+  [Evidence](docs/30-quality/TACTICAL_COMBINED_ACCEPTANCE_2026-10-03.md).
+
+## 2026-09-26 — Training tactical integration (BL-058e.3)
+
+- Training detail loads only the explicitly opened phase as a whole V1/V2
+  document, using additive phase provenance and existing token-bound snapshot
+  writes. First snapshot save preserves undo; source edits cannot alter it.
+- Conflicts, disabled writes and uncertain responses retain drafts. Explicit
+  verification may acknowledge identical persisted content without resubmitting;
+  different content never refreshes the draft token. PLAYER remains readonly.
+- Added 16 unit/client/route regressions and two disposable HTTP scenarios;
+  complete HTTP suite 16/16, migrations current and schema diff empty.
+  Three-viewport real-canvas QA; mobile hero gutter overflow fixed.
+- Root quality: 843 backend / 442 frontend / 4 Sites; all gates passed.
+  No retained data/flag, schema, dependency, production, commit or push change.
+  [Evidence](docs/30-quality/TACTICAL_TRAINING_INTEGRATION_2026-09-26.md).
+
+## 2026-09-26 — Drill tactical integration (BL-058e.2)
+
+- Tactics new/detail now reads board-free metadata and complete V1/V2 documents.
+  Metadata and token-bound board updates are atomic; authorized club creation
+  and source-checked copies preserve all scenes and server-owned identity.
+- Global editorial V1 stays unchanged. Readonly roles, draft retention, busy
+  fields and navigation guards are tested; mobile horizontal overflow fixed.
+- Disposable PostgreSQL HTTP suite passes 14/14, including injected rollback
+  and scoped payload limits; migration status and schema diff are clean.
+  No retained data/flag, dependency, migration, commit or push changes.
+  Root quality: 840 backend / 429 frontend / 4 Sites; all gates passed.
+  [Evidence](docs/30-quality/TACTICAL_DRILL_INTEGRATION_2026-09-26.md).
+
+## 2026-09-26 — Match tactical integration (BL-058e.1)
+
+- Match detail now uses authorized board-free metadata and independently loads
+  the V1/V2 tactical document only when opening its tab. Token-bound saves keep
+  conflicts and disabled-write drafts intact; no automatic retry/overwrite.
+- Tab changes use the editor's dirty guard; confirmed discard releases the
+  local draft and reopening re-reads persistence. PLAYER mutations are hidden;
+  session/scope changes release old resources. Mobile timeline clipping fixed.
+- Added metadata, resource and real-editor route regressions; disposable
+  PostgreSQL HTTP suite passes 9/9. No retained flag/data, schema, dependency,
+  production, commit or push changes. Drill/copy and plan integration remain.
+  Root quality: 824 backend / 416 frontend / 4 Sites; all gates passed.
+  [Evidence](docs/30-quality/TACTICAL_MATCH_INTEGRATION_2026-09-26.md).
+
+## 2026-09-26 — Tactical playback (BL-058d)
+
+- Added explicit play/pause/restart/seek, 0.5/1/2 speed and loop to the opt-in
+  scene editor, using the absolute-time sampler and existing Konva renderer.
+- Preview locks mutations and Save; static-scene return restores editing.
+  Hidden tabs, modals, scope/route changes and unmount stop playback. Reduced
+  motion never auto-starts or auto-resumes animation.
+- Added 15 transport/component regressions, real-canvas interpolation/source
+  preservation checks and three-viewport QA. Root quality passes with
+  821 backend / 405 frontend / 4 Sites tests.
+- Existing route containers remain V1; V2 writes stay off. No retained data,
+  schema, dependencies, production, commit or push changed. BL-058e remains.
+  [Evidence](docs/30-quality/TACTICAL_PLAYBACK_2026-09-26.md).
+
+## 2026-09-19 — Tactical scene editor (BL-058c)
+
+- Added opt-in scene conversion/duplicate/order/confirmed removal and timing
+  settings with whole-document undo, dirty state and explicit Save.
+- Added typed token-preserving document clients; save errors retain drafts,
+  pending writes block edits, and V2 cannot silently save through a V1 callback.
+- Bounded JSON import is undoable; JSON includes all scenes, static exports name
+  their selected scene. Existing route containers remain V1 pending integration.
+- 36 focused tests and three-viewport synthetic canvas QA pass. No retained-data,
+  write-flag, backend, schema, dependency, commit or push change.
+  Final root quality: 821 backend / 390 frontend / 4 Sites; all gates pass.
+  [Evidence](docs/30-quality/TACTICAL_SCENE_EDITOR_2026-09-19.md).
+
+## 2026-09-19 — Tactical V2 safe persistence (BL-058b)
+
+- Added authorized drill, plan-phase and match document GET/PUT adapters with
+  canonical write tokens and Serializable compare/write, including source
+  provenance and snapshot isolation. V2 writes remain default-off.
+- Guarded legacy drill/phase/bulk-replace/match/editorial writes against V2
+  downgrade; old GET clients receive an explicit conflict instead of an empty
+  board. Metadata-only updates preserve the document.
+- Added route-scoped 600,000-byte JSON parsing with independent domain limits,
+  bounded gzip and generic parser/persistence errors. Disposable PostgreSQL
+  HTTP suite passes 8/8; 120 draft manifests remain valid.
+- No UI/schema/migration/dependency/retained-data change, commit or push.
+  Final root quality passes 821 backend, 369 frontend and 4 Sites tests plus
+  build/typecheck/lint/format/CDSK/links/whitespace; disposable schema diff is clean.
+  [Evidence](docs/30-quality/TACTICAL_V2_API_2026-09-19.md).
+
+## 2026-09-19 — Tactical V2 foundation (BL-058a)
+
+- Recorded explicit A–D approval as Accepted ADR-0036 / Approved CR-026.
+- Added isolated strict V1/V2 core, bounded scenes and deterministic absolute-
+  time player/goalkeeper/ball interpolation. Validated core-copy parity and
+  shared synthetic fixtures with 63 tests in each app.
+- Root quality passed: 788 backend, 369 frontend and 4 Sites tests plus all
+  build/typecheck/lint/format/documentation gates.
+- Kept legacy validators, HTTP writers and editor V1-only pending BL-058b.
+  No API, DB, migration, dependency or retained-data change; 120 draft exercises
+  still validate. [Evidence](docs/30-quality/TACTICAL_V2_FOUNDATION_2026-09-19.md).
+
+## 2026-09-19 — Tactical animation contract proposal
+
+- Prepared Proposed ADR-0036 / CR-026 / REQ-025 / BL-058: versioned scenes,
+  deterministic linear playback, bounded payload and token-guarded persistence.
+- Documented V1 compatibility, all-writer downgrade protection, independent
+  snapshots, staged rollout and the five implementation gates.
+- A–D approval remains pending. Documentation only; no code, API, database,
+  dependency, runtime or migration changes. [Design](docs/10-architecture/TACTICAL_ANIMATION_V2.md).
+
+## 2026-09-19 — Assign roster names to existing tactical positions
+
+- Added explicit formation-slot selection and confirmation without moving,
+  duplicating or changing the target marker. Old numbers are cleared, never inferred.
+- Assignment supports undo/redo and the element cap; modal focus and background
+  keyboard isolation are covered. Existing save and read-only behavior remain.
+- No database/API changes. [Verification](docs/30-quality/TACTICAL_SLOT_ASSIGNMENT_2026-09-19.md).
+
+## 2026-09-19 — Tactical roster snapshots and unit tools
+
+- Added current-team paged/searchable roster panel to tactics, training and
+  match editors; copy names into V1 without storing Person ids or guessing
+  shirt numbers. Read-only users cannot use the new mutation controls.
+- Added additive selection, home/away selection, bounded unit drag/nudge,
+  duplicate/delete and one-step undo. Arrow endpoints move with the unit.
+- Made history/index atomic and kept Konva multi-drag separate from the single
+  transform tool; PNG omits selection rings. No backend/schema/local-data write.
+- [Verification](docs/30-quality/TACTICAL_ROSTER_SELECTION_2026-09-19.md).
+
+## 2026-09-19 — Professional 2D tactical studio, first slice
+
+- Replaced the editor's photo hero with a compact heading and collapsible
+  exercise metadata; added pitch-focused layout, zoom/pan/fit, inspector toggle
+  and focus mode with responsive tool access.
+- Added shirt/disc presentation and player names; upgraded equipment drawings
+  and differentiated toolbar icons. Konva and SVG share domain geometry;
+  PNG excludes selection handles and exports independently of viewport zoom.
+- View preferences do not modify V1 documents, undo or persistence state.
+  ADR-0035 / CR-025 / REQ-024 / BL-057 track this incremental delivery.
+  [Verification](docs/30-quality/TACTICAL_STUDIO_2026-09-19.md).
+
+## 2026-09-09 — Drill review-boundary and loading UX follow-up
+
+- Preserved ADR-0034 self-review denial while disabling approve/reject actions
+  for the author before any forbidden API request; the management card now
+  explains the independent football-reviewer requirement.
+- Added an NGCS hydration fallback and favicon, removing the reported React Router
+  loading guidance and `/favicon.ico` 404 from a clean page load. React DevTools
+  remains an expected development-only message.
+- Targeted library tests passed 9/9 with frontend typecheck/lint. Clean Playwright
+  login load reported zero warnings/errors and `/favicon.svg` returned 200.
+  No capability, content status, retained data or production state was changed.
+
+## 2026-09-09 — Professional drill library foundation and 120 drafts
+
+- Added immutable drill versions, age variants, source/license/checksum records,
+  editorial statuses and database constraints while preserving existing Drill
+  identities, plan links and snapshots.
+- Added strict author/reviewer/SystemAdmin publication separation, self-review
+  denial, audit events and fail-closed direct global mutation.
+- Extended the published catalog with professional filters and age resolution;
+  added library detail, provenance, mobile filter Sheet and management queue.
+- Added a deterministic, validated and idempotent repository package containing
+  120 original Turkish DRAFT exercises. No competitor/FIFA content was copied
+  and no live external import was added.
+- Clean PostgreSQL 16 migration/status/diff, five-record legacy backfill and
+  disposable `120 imported → 120 skipped` replay passed. The two additive
+  migrations were applied locally. After separate explicit user approval, all
+  120 records were imported as DRAFT; replay imported 0/skipped 120. Postconditions
+  confirm 120 drafts, 5 unchanged published legacy versions and 120 audit events.
+  Expert review and publication remain `TBD`; production was unchanged. Root
+  quality passed with 725 backend, 286 frontend and 4 Sites tests.
+- Recorded ADR-0032–0034, CR-024, REQ-023 and BL-056.
+
+## 2026-09-09 — Player 360 and account-independent player notes
+
+- Replaced the oversized generic Player 360 hero and repeated evidence cards
+  with a compact identity header, localized football profile, real activity and
+  URL-backed Overview, Notes, Activity and Journey views.
+- Added Person-linked, team-scoped player notes with category/follow-up filters,
+  controlled same-club team sharing, optimistic version checks, immutable
+  revisions and archive/restore instead of permanent deletion. Note bodies are
+  excluded from security-audit metadata and application logs.
+- Added strict capability/tenant/active-team authorization and the paged REST
+  contracts for notes, revisions and activity. The legacy account-linked note
+  model remains available for compatibility and is not used by the new screen.
+- Applied the two additive migrations to the retained local database after clean
+  disposable PostgreSQL 16 deploy/status/diff validation. Retained business row
+  counts were unchanged and the new tables started empty.
+- Recorded ADR-0031, CR-023, REQ-022 and BL-055. Disposable HTTP E2E,
+  authenticated Chrome desktop QA and root quality pass with 720 backend, 285
+  frontend and 4 Sites tests; no production deployment, credential reset,
+  retained note mutation, commit or push occurred.
+
+## 2026-09-09 — First-team roster center and player directory
+
+- Changed `/app/teams/first-team` from an intermediate management card into the
+  direct A Team roster center with route-preserving workspace-team alignment,
+  real squad summaries, Player 360 and scoped operational links.
+- Added one accessible responsive player-list presentation for the A Team,
+  Players, Squad and team-detail surfaces; desktop/tablet use a native table and
+  mobile uses compact card styling without duplicate content.
+- Extended the paged player API with strict position/name-sort parameters,
+  deterministic versioned cursors and scope-safe totals/position summaries while
+  preserving the legacy parameterless ID cursor.
+- Recorded ADR-0030, CR-022, REQ-021 and BL-054. Backend 712, frontend 284 and
+  disposable PostgreSQL player-page E2E 2/2 passed; no schema, migration,
+  dependency, retained-data, production, commit or push change occurred.
+
+## 2026-09-09 — Separate team navigation and synthetic roster names
+
+- Replaced the in-page A Takım/Altyapı tabs with separate sidebar and mobile
+  Sheet destinations: `/app/teams/first-team` and `/app/teams/academy`.
+- Kept `/app/teams` as a compatibility redirect that maps the former `view`
+  query to the canonical route; team lifecycle, authorization and API behavior
+  are unchanged.
+- Replaced all 90 visible Demo/E2E roster labels with unique deterministic
+  synthetic Turkish names. Existing account-linked Person/User display names
+  remain synchronized; e-mail, password, role and session data were untouched.
+- Recorded ADR-0029, CR-021, REQ-020 and BL-053. Authenticated Chrome QA and
+  root quality passed with 706 backend, 279 frontend and 4 Sites tests; 121
+  Markdown links, CDSK and whitespace checks also pass.
+
+## 2026-09-09 — Local A Team and academy demo squads
+
+- Added an explicitly gated, idempotent local squad-population script and used it
+  for the retained local club/season only.
+- Created A Takım, U12, U14 and U16; renamed the existing mismatched U17 record to
+  U18 while preserving its identity, season history and two current players.
+- Completed all five teams to 18 active players with 88 clearly named synthetic
+  account-independent Persons. No birth date, e-mail, password or login account
+  was invented.
+- Cut the `/app/squad` read from legacy account-bound GroupMember data to the
+  existing canonical paged team roster so accountless sporting identities appear.
+- Verified transaction safety, audit records, team/season/roster postconditions,
+  a zero-create second run, authenticated Chrome rendering and full root quality
+  with 706 backend, 276 frontend and 4 Sites tests. Markdown links, CDSK and
+  whitespace gates also pass. No production, reset, delete, archive, commit or
+  push occurred.
+
+## 2026-09-08 — A Takım and academy team lifecycle
+
+- Split `/app/teams` into URL-persisted A Takım and Altyapı views, replacing the
+  duplicated card/table presentation with one protected first-team card and a
+  paged academy card directory.
+- Added manager-only first-team create/edit and academy create/edit/archive/
+  restore flows; coach/player views remain read-only and archive communication
+  explicitly preserves sporting history.
+- Added the strict team lifecycle REST contract, Serializable legacy/canonical
+  writes, active catalogue/workspace filtering and security audit events.
+- Added configurable age labels, archive timestamps and the database-enforced
+  one-active-first-team-per-club invariant through an additive migration.
+- Recorded ADR-0028, CR-020, REQ-019 and BL-051. Disposable PostgreSQL migration,
+  clone backfill, lifecycle E2E, unit/frontend suites and live read-only browser
+  QA passed; no production deploy, seed/reset, commit or push occurred.
+
+## Local administrator credential provisioning — 2026-09-08
+
+- With explicit user approval, created the first retained-local system admin via
+  the guarded bootstrap and one same-club club admin via authenticated invitation
+  and acceptance. Both accounts are ACTIVE and their real login paths passed.
+- Revoked all refresh sessions created during verification through the account
+  lifecycle API, leaving zero open sessions. Credentials were not written to the
+  repository. No existing account was promoted and no migration, broad seed/reset
+  or production operation was performed.
+
+## Account and permission administration — 2026-09-08
+
+- Added an admin-only, keyset-paginated account directory with strict search,
+  role/status/club filters, minimum response projection and service-enforced
+  tenant scope. `SYSTEM_ADMIN` can use platform/club scope; `CLUB_ADMIN` is
+  forced to its own club; `COACH` and `PLAYER` are denied.
+- Added `/app/settings/users` with invite, role/access, suspend/reactivate,
+  password-reset and session-revoke controls backed by the existing lifecycle
+  API and confirmation boundaries. One-time operator links remain ephemeral;
+  SMTP mode does not expose tokens.
+- Exposed the accepted technical account-role matrix and existing sporting
+  capability matrix without enabling capability-grant mutation. Backend/frontend
+  tests, disposable PostgreSQL 16 HTTP E2E and 1440/1024/390 browser QA pass.
+  No schema migration, dependency, production deployment or retained-account
+  mutation was made.
+
+## Training plan edit, permanent delete and UI repair — 2026-09-08
+
+- Added shared shadcn create/edit and permanent-delete Dialogs to the training
+  catalogue and detail view. Edit sends only title, local date/time and purpose;
+  PLAYER mutation controls stay hidden, failures retain the record/draft and
+  controlled Dialogs restore focus. Active controls now use pointer and disabled
+  controls use not-allowed cursors.
+- Training-plan updates synchronize linked calendar projections in a Serializable
+  transaction. Confirmed deletion atomically removes linked calendar days,
+  attendance, phases/board snapshots and the plan behind the existing
+  authorization and cause-free error boundary. No schema migration or new
+  dependency was added.
+- Repaired the five-card metric grid, auto-fit catalogue cards, long text/action
+  wrapping and pagination/hero actions; removed the unsupported catalogue board
+  status label. Targeted frontend/backend suites and disposable PostgreSQL 16
+  lifecycle E2E pass; retained local records were not deleted. Final root quality
+  passes with 663 backend, 268 frontend and 4 Sites tests, and the combined
+  before/after visual review has no actionable P0/P1/P2 finding.
+
+## Settings reference-system migration — 2026-09-08
+
+- Rebuilt Settings in the approved white shadcn system with the shared
+  photographic hero, four truthful user/session/team/season metrics and compact
+  profile, active-context and session-security surfaces. Persistent/temporary
+  session messaging, workspace season semantics, awaited logout and failure
+  handling remain unchanged. Exact-size 1672×941, 1024×900 and 390×844 captures
+  passed visual QA; root quality passes with 657 backend, 264 frontend and 4
+  Sites tests. No API, schema, authorization or business-data change. This
+  closes the approved BL-048 page-by-page visual sequence.
+
+## Player operations reference-system migration — 2026-09-08
+
+- Rebuilt Players, Player 360, Squad and Attendance in the approved white
+  shadcn system with photographic heroes, verified scope metrics, compact
+  player/plan surfaces and responsive layouts. Server search, cursor totals and
+  histories, dated assignment evidence, role/tenant visibility and uncertain
+  attendance-write handling remain unchanged. Twelve exact-size 1536×1024,
+  1024×900 and 390×844 captures passed visual QA; root quality passes with 657
+  backend, 264 frontend and 4 Sites tests. No API, schema, authorization or
+  business-data change.
+
+## Match detail reference-system migration — 2026-09-08
+
+- Rebuilt Match detail in the approved white shadcn system with the shared
+  photographic hero, five verified match facts, compact analysis/facts layout
+  and the existing tactical-board editor. The independent authorized read,
+  explicit analysis save, board state, import/export and dirty behavior remain
+  unchanged. Six exact-size 1672×941, 1024×900 and 390×844 captures passed
+  visual QA; root quality passes with 657 backend, 264 frontend and 4 Sites
+  tests. No API, schema, authorization or business-data change.
+
+## Library and Tactical Board reference-system migration — 2026-09-08
+
+- Rebuilt the Drill Library, Tactical Board catalogue and new-board editor in the
+  approved white shadcn system with photographic heroes, real server totals,
+  category controls, verified editor capability guidance and compact board
+  chrome. Category/kind pagination, global/club visibility, import/export,
+  undo/redo, dirty navigation and authorization behavior remain unchanged.
+  Nine exact-size 1672×941, 1024×900 and 390×844 captures passed visual QA;
+  root quality passes with 657 backend, 263 frontend and 4 Sites tests. No API,
+  schema, authorization or business-data change.
+
+## Trainings reference-system migration — 2026-09-08
+
+- Rebuilt the Trainings catalogue and training-detail presentation in the
+  approved white shadcn system with photographic heroes, five server-backed
+  catalogue metrics, compact editor summary/tabs and responsive plan/phase
+  cards. Cursor history, stale/retry behavior, create semantics, on-demand board
+  reads, dirty transitions, uncertain-save handling, attendance and permissions
+  remain unchanged. Six exact-size 1672×941, 1024×900 and 390×844 captures passed
+  visual QA. Root quality passes with 657 backend, 260 frontend and 4 Sites tests.
+  No API, schema, authorization or business-data change.
+
+## Week reference-system migration — 2026-09-08
+
+- Rebuilt the Week presentation in the approved white shadcn visual system with
+  the existing training-ground raster hero, compact previous/today/next/date
+  controls and responsive seven-day cards. Local Monday–Sunday behavior, seven
+  independent daily plan/match reads, full totals, cursor histories, retry and
+  stale-response rejection remain unchanged. Exact-size 1672×941, 1024×900 and
+  390×844 captures passed visual QA. Root quality passes with 657 backend, 258
+  frontend and 4 Sites tests. Unsupported aggregates were not introduced; no
+  API, schema, permission or business-data change.
+
+## Matches reference migration — 2026-09-08
+
+- Rebuilt the Matches presentation against the approved 1672×941 reference with
+  the shared photographic hero, compact date filtering and date-grouped match
+  rows. Opponent, local date/time, competition, location, result, formation,
+  board state, notes and details use the existing catalogue. The daily filter
+  uses local half-open boundaries and clears to the full cursor catalogue.
+  Exact-size 1672×941, 1024×900 and 390×844 captures passed visual QA; root
+  quality passes with 657 backend, 257 frontend and 4 Sites tests. Unsupported
+  tabs, aggregates, team filter and create action remain absent; no API/schema/
+  business-data change.
+
+## Teams reference migration — 2026-09-08
+
+- Rebuilt the Teams presentation against the approved 1536×1024 reference with
+  the shared white shell, generated training-ground/category photographs,
+  API-backed team cards and an accessible compact native table. Search debounce,
+  stale-response protection, cursor paging, work-team selection and detail links
+  remain unchanged. Exact-size 1536×1024, 1024×900 and 390×844 captures passed
+  matched visual QA with no actionable P0/P1/P2. Root quality passes with 657
+  backend, 256 frontend and 4 Sites tests. Unsupported aggregate and create-team
+  claims remain absent; no API, schema or business-data change.
+
+## Dashboard visual QA gate — 2026-09-08
+
+- Retained exact-size desktop, tablet, mobile and mobile-Sheet browser captures,
+  repeated the same-source comparison and closed Dashboard design QA with no
+  actionable P0/P1/P2 finding. No runtime behavior or business data changed.
+
+## Local verification follow-up — 2026-09-08
+
+- Restarted stopped frontend/backend services with documented local session and
+  retained database settings; existing coach login and Dashboard reads verified.
+  Repeated desktop/tablet/mobile and mobile Sheet inspection. No application-code
+  or business-data changes. Durable screenshot export remains blocked; Teams is
+  gated pending an explicitly authorized screenshot-capture fallback.
+
 ## [Unreleased]
+
+### Fixed
+
+- Dashboard reference correction (2026-09-08): 185px white sidebar and 78px
+  topbar, club footer, Inter welcome heading and new generated football
+  photographs. Six server-backed metrics and a three-column panel composition
+  replace the four-metric/two-panel pilot. Independent local-day training pages,
+  latest/recent plans, dated/undated distribution, scoped matches and working
+  quick links preserve read/role/retry boundaries. Home and login now land on
+  `/app/dashboard`; title is “Ana Sayfa | NGCS”. No API/schema/data change.
+  Final visual acceptance is tracked in [design-qa.md](design-qa.md).
+
+- Local frontend port alignment (2026-09-08): Vite development and browser E2E
+  defaults now use strict `3132`; backend HTTP and Socket.IO accept the same exact
+  loopback origin through the shared persistent-session resolver. Root quality
+  passes with 657 backend and 246 frontend tests, both builds, four Sites tests,
+  CDSK/docs/static gates and the live CORS response. The database target was
+  resolved read-only; no migration, seed, reset or business-data write was
+  initiated. Runtime session maintenance remains possible while the backend is
+  active. No credential file, commit, push or deployment was made.
 
 ### Added
 
+- Local coach credential operation (2026-09-08): explicit user approval reset
+  only `coach.local@ngcs.test` in retained `ngcs_local_session_dev`. One
+  serializable transaction preserved `COACH`/`ACTIVE`/club scope, incremented
+  `authVersion` to 3, revoked two open refresh sessions and zero open reset
+  tokens, and wrote one token-free `PASSWORD_RESET_COMPLETED` operator audit.
+  Hash/postconditions passed; browser login on canonical port 3132 succeeded and
+  created one current refresh family. The generated password was returned only
+  to the user and was not written to repository files. No migration, seed,
+  role/club/business-data change, commit, push or deployment.
+
+- BL-048 shell/Dashboard visual-system slice (2026-09-07): added the approved
+  compact white shell, top-bar workspace selectors, route-search `⌘K`/`Ctrl+K`
+  focus, generated coach hero asset, and reusable PageHero/MetricCard/SectionCard
+  presentation components. Dashboard continues to use bounded real API reads for
+  training, player, drill, attendance and match summaries; unsupported health and
+  analytics claims remain absent. Typecheck, lint and 246 frontend tests passed.
+  Authenticated design QA is blocked because local API startup has no `DATABASE_URL`;
+  no database/configuration write, seed, reset, migration or deployment was made.
+
+- BL-047 phase 5C (2026-09-07): shared presentation-only FootballCard now
+  composes training, match, drill-library and tactical-board catalog cards with
+  default/board/match accents. Existing detail/editor links, boardless drill
+  non-link behavior, field values, fallbacks, pagination, totals and permissions
+  remain unchanged. Eight proven card-only legacy selector blocks were removed.
+  Four new tests, 34 targeted and quality 655/245 plus four Sites tests passed;
+  1440/1024/390 browser QA completed without a data write. Phase 5 is complete;
+  next: phase 6 Week module.
+  [Evidence](docs/30-quality/UI_FOOTBALL_CARDS_2026-09-07.md).
+
+- BL-047 phase 5B (2026-09-07): shared compact OptionPagination for workspace
+  catalogs and assignment selectors; scoped 12px/600 type, tabular counter and
+  wrapping. Original success-only workspace cursor and request-time assignment
+  cursor policies, pinned selection, visibility and disabled rules retained.
+  Fifteen new regressions, 39 targeted and quality 655/241 plus four Sites tests
+  passed; responsive and Escape checks verified. No API/state/dependency/CSS deletion
+  or real data write. Next: football cards.
+  [Evidence](docs/30-quality/UI_OPTION_PAGINATION_2026-09-07.md).
+
+- BL-047 phase 5A (2026-09-07): shared PagePagination and loading/error/empty
+  patterns for Players/Teams; assignment pagination keeps its typed cursor/total
+  adapter. Scoped action typography and mobile summary/action rows replace
+  inconsistent wrapping. Requests, search, scope, retry and totals unchanged.
+  Fourteen new tests; 26 targeted and quality 655/226 plus four Sites tests
+  passed. Matched responsive/browser empty-result QA; no data write, new
+  dependency or CSS deletion. Next: compact catalog pagination, then football
+  cards. [Evidence](docs/30-quality/UI_DATA_PATTERNS_2026-09-07.md).
+
+- BL-047 phase 4B.2 (2026-09-07): sporting assignment dialog uses shared
+  FormField, owned native-select presentation, scoped footer type and local
+  short-viewport scrolling. Native selection/validation, paginated catalogs,
+  five mutation dispatches, UTC date and failure/reset behavior retained.
+  Only unused assignment CSS removed. Fifteen new tests, quality 655/212 and
+  four Sites tests passed; matched responsive and keyboard checks without a real
+  assignment write. Phase 4 selected targets complete; next: phase 5 data display.
+  [Evidence](docs/30-quality/UI_ASSIGNMENT_DIALOG_2026-09-07.md).
+
+- BL-047 phase 4B.1 (2026-09-07): training creation dialog uses shared field/error
+  presentation, consistent footer typography and local short-viewport scrolling.
+  Existing title/date gate, local-date ISO conversion, payload and create/reload/
+  navigate sequence retained; no new submit/validation/dirty behavior. Nine new
+  tests; quality 655/197 and four Sites tests passed, matched responsive and short
+  viewport keyboard checks completed without creating a plan. Next: sporting
+  assignment dialog. [Evidence](docs/30-quality/UI_PLAN_DIALOG_2026-09-07.md).
+
+- BL-047 phase 4A (2026-09-07): Login, invitation acceptance and password reset
+  use shared FormField/FormError, shadcn Input/Button and PageActions. Native
+  validation, fragment token handling, payloads, busy/errors/retry and redirects
+  retained; 16 new tests, quality 655/188 and four packaging tests passed.
+  NGCS public shell retained; measured field/action density and error surfaces
+  converge without a global reset. No real account mutation or new dependency.
+  Next: phase 4B training creation and assignment dialogs.
+  [Evidence](docs/30-quality/UI_ACCOUNT_FORMS_2026-09-07.md).
+
+- BL-047 phase 3 pilot (2026-09-07): shared PageContainer/Header/Actions for
+  Dashboard and Settings, scoped action typography, named mobile user menu with
+  visible avatar. Eight new regressions; quality 655 backend/172 frontend and
+  four packaging tests passed. Matched 1440/1024/390 layout checks and mobile
+  keyboard/settings navigation verified. No API/session/business/dependency change.
+  Next: phase 4 forms/dialogs; broader layout consumers remain phase 6.
+  [Evidence](docs/30-quality/UI_LAYOUT_PILOT_2026-09-07.md).
+
+- BL-047 phase 2 (2026-09-07): 12 regression tests for Select, DropdownMenu,
+  Tooltip, ScrollArea, retained display primitives and real Sonner behavior.
+  Quality 655 backend/164 frontend and four packaging tests passed; current
+  local keyboard menu/tooltip/select, notification and final-tool reachability
+  verified without saving business data. Existing native-control font inheritance
+  is measured and assigned to per-consumer phase 3/4 migration; long internal
+  board overflow remains phase 6/8 QA. Tests/docs only, no runtime/CSS/API or
+  dependency change. Next: shared page layout pilot and mobile account-menu fix.
+  [Evidence](docs/30-quality/UI_PRIMITIVES_VERIFICATION_2026-09-07.md).
+
+- BL-047 phase 1 (2026-09-07): classified UI inventory and eight-phase shadcn
+  migration plan; centralized NGCS/semantic tokens, explicit legacy muted-text
+  compatibility, inactive dark palette, unchanged-value layout/modal dimensions
+  and 13 existing primitive surface bindings. No new dependency, route, API,
+  business/session logic or domain renderer. Nine new regressions; quality
+  655 backend/152 frontend and four packaging tests passed. Matched dashboard
+  1440/1024/390 and new-plan dialog comparisons preserve the visual identity;
+  Escape/focus-return smoke passes. Existing mobile account-menu naming and form
+  spacing issues remain assigned to later phases. Migration is not complete.
+  [Plan](docs/20-execution/UI_MIGRATION_PLAN.md),
+  [evidence](docs/30-quality/UI_MIGRATION_FOUNDATION_2026-09-07.md).
+
+- Local operation (2026-09-07): user-approved targeted coach password reset in
+  the retained development database. Auth version incremented, one refresh
+  session revoked, no open reset tokens remained. Password hash and unchanged
+  business/other-account fingerprints verified inside the serializable
+  transaction; token-free operator audit added. No credential stored in files,
+  no role/status/club or application/schema change; HTTP login not exercised.
+
+- BL-045 (2026-09-07): shared explicit all-seasons labels in sidebar, top bar,
+  week, dashboard and settings; actual missing seasons keep TBD. Corrected the
+  inverse top-bar fallback too. Six helper/four component regressions; focused
+  33 and root quality 655/143 unit passed. Local browser exact/all transitions
+  verified; existing dev servers restarted, retained business data unchanged.
+  Frontend presentation only; no API/filter/schema/permission/dependency changes.
+  BL-043 pilot acceptance, BL-044/009 and M4 remain open approval gates.
+  [Evidence](docs/30-quality/BL045_SEASON_LABELS_2026-09-07.md).
+
+- BL-043j (2026-09-07): opt-in mixed five-GET/two-attendance-write benchmark
+  and separate SELECT row-work evidence across three clean-start databases.
+  At 30/300 players and 150/1,500 plans: 47 batch SQL events; plan count scan-row
+  emissions grow 150→1,500. Settled totals, uniqueness, same-key races and denied
+  writes verified. Quality 655/133 unit; API 48 pass/3 opt-in skip. No fresh
+  browser claim. Six migrations/status/diff clean in all three disposable DBs;
+  all removed, retained business data unchanged. Test/docs only; no runtime,
+  schema, dependency or permission changes. BL-043 pilot acceptance stays open
+  with owner/workload/environment/budgets TBD; next independent item BL-045.
+  [Evidence](docs/30-quality/BL043_READ_WRITE_ROW_WORK_2026-09-07.md).
+
+- BL-046c (2026-09-07): opt-in matched valid-board benchmark passed in three
+  separate runs. At 50 phases: 996,545 legacy versus 24,040 combined metadata/
+  selected JSON bytes (97.59% smaller); two new GETs use 12 SQL events versus
+  6 for the old GET. No production SLO claim. Browser regression now changes
+  source after snapshot save and confirms isolation. Quality 655/133 unit,
+  API 48 pass/2 opt-in skip, Chromium 12/12 and three viewport checks passed.
+  BL-046/CR-017 implementation closed; broader BL-043 and M4 remain open.
+  Tests/docs only; runtime, schema and dependencies unchanged.
+  [Evidence](docs/30-quality/BL046_MATCHED_EDITOR_MEASUREMENT_2026-09-07.md).
+
+- BL-046b (2026-09-07): training detail now uses lightweight phase metadata and
+  explicitly opened boards. Coordinated dirty transitions, stale-response guards,
+  first-snapshot history and explicit uncertain-write reconciliation preserve
+  drafts without autosave. Fixed first-create tactics redirect remount regression.
+  Quality passed (655 backend / 133 frontend unit), API 48 pass / 1 opt-in skip,
+  Chromium 12/12; three viewport checks retain the existing mobile board scroll.
+  Backend/schema/dependencies and retained business data unchanged. BL-046c
+  matched 2/50-phase measurement remains open.
+  [Evidence](docs/30-quality/BL046_EDITOR_FRONTEND_CUTOVER_2026-09-07.md).
+
+- BL-046a (2026-09-07): ADR-0025 Option A accepted; additive authenticated
+  metadata and single effective-board GETs, strict source checks, null-aware
+  snapshot priority and invalid-content suppression. Old GET/POST/PUT contracts
+  preserved; frontend, schema and dependencies unchanged. Root quality passed
+  (655 backend / 115 frontend tests), 48 API E2E passed with one opt-in skip;
+  new coverage is 43 unit and 8 HTTP cases. Disposable migration/diff clean;
+  test DB removed and retained business fingerprint unchanged. Frontend cutover
+  and matched measurement/browser QA remain BL-046b/c.
+  [Evidence](docs/30-quality/BL046_EDITOR_READ_FOUNDATION_2026-09-07.md).
+
+- BL-046 design (2026-09-07): Proposed ADR-0025 Option A and implementation
+  contract for metadata/selected-board reads, explicit phase-open UX, source
+  authorization and coordinated dirty/history transitions. Backend/frontend/
+  measurement slices defined; no API or runtime implementation, schema change,
+  phase limit or production budget approved. Documentation-only verification;
+  application suites and databases not run or changed in this delivery.
+  [Design](docs/10-architecture/BL046_EDITOR_READ_DESIGN.md).
+
+- BL-043i (2026-09-07): opt-in mixed-read benchmark with synthetic page/query
+  regression guards; three repeat runs at 30/300 members and 1/3 five-read
+  groups. Observed 36 queries and about 16 KB per group; not production capacity.
+  Editor graph growth (34,394→853,304 bytes for 2→50 synthetic phases) tracked
+  as BL-046 / Proposed CR-017. No runtime/API/schema/index/dependency changes.
+  Root quality and 40 API regressions passed; benchmark passed separately three
+  times. Disposable migration/diff clean; synthetic DB removed, retained data
+  unchanged. Browser E2E not rerun for this test/document-only change.
+  [Measurement](docs/30-quality/BL043_MIXED_READ_CAPACITY_2026-09-07.md).
+
+- BL-043h.2 (2026-09-07): plan-authorized, player-self-filtered attendance
+  pages with full counters and minimal status projection; editor detail omits
+  complete attendance and group members. Shared members fetch/state removed.
+  Explicit serialized attendance writes re-read the same page; failed reads
+  never repeat successful writes. Existing full APIs and write guards remain.
+  Root quality, 612 backend/115 frontend unit and 40 API E2E passed. No schema,
+  migration, dependency or permission-policy change.
+  Final Chromium 12/12 and three viewports passed; disposable migration/diff
+  clean and test DB removed. Retained 24-table/25-row fingerprint unchanged.
+  [Verification](docs/30-quality/BL043_ATTENDANCE_MEMBER_CUTOVER_2026-09-07.md).
+
+- BL-043h.1 (2026-09-07): bounded authenticated player-membership page with
+  existing group/role authority, minimal user projection and cursor-independent
+  total. Kadro uses 25-record pages; dashboard player count uses limit=1/full
+  total, independent retry and scope reset. Training-detail attendance still
+  needs shared members; final full-member cutover is deferred to h.2.
+  Root quality, 597 backend/109 frontend unit, 40 API and 12 Chromium E2E
+  passed; three viewports verified. Disposable migration/diff clean; synthetic
+  database removed and retained 24-table/25-row fingerprint unchanged.
+  No schema/migration/dependency/write or permission-policy change.
+  [Verification](docs/30-quality/BL043_MEMBER_READS_2026-09-07.md).
+
+- BL-043g.5 (2026-09-07): scoped single-match detail and metadata-only workspace
+  endpoints preserve current authority and existing complete-list contracts.
+  Frontend shared matches state/fetch is removed; detail owns read/draft/retry,
+  shell count uses catalog limit=1/full total with distinct failure and zero
+  states. Root quality, 581 backend/104 frontend unit, 39 API and 11 Chromium
+  E2E passed. Three viewports verified; retained data unchanged. Disposable
+  migration/diff clean and synthetic database removed.
+  No schema/migration/dependency/write-contract or permission-policy change.
+  [Verification](docs/30-quality/BL043_MATCH_CUTOVER_2026-09-07.md).
+
+- BL-043g.4 (2026-09-07): Hafta reads independent 25-record daily match pages
+  with full totals, local half-open/DST-safe bounds, separate retry/pagination
+  and scope/week reset. Confirmed training and match totals govern empty days;
+  missing concrete-season context never widens the request. Compact accessible
+  controls preserve the existing amber cards. Shared matches still serve detail
+  and the shell notification count; this previously omitted cutover dependency
+  is now explicit. Root quality, 571 backend/98 frontend unit and 39 API E2E
+  and final 11 Chromium E2E passed. Retained data unchanged; disposable
+  migration/diff clean and synthetic database removed. No backend/API/schema/
+  permission change.
+  [Verification](docs/30-quality/BL043_WEEK_MATCH_READS_2026-09-07.md).
+
+- BL-043g.3 (2026-09-07): dashboard match summary uses the existing catalog
+  with limit=3/no cursor, preserving chronological cards and adding full-total
+  context. Shared matches are no longer consumed here; week/detail still need
+  them. Scalar hasBoard, independent retry and scope/missing-season guards are
+  verified. Root quality, 571 backend/93 frontend unit, 39 API/11 Chromium E2E
+  passed. Retained data unchanged; disposable migration/diff clean and test DB
+  removed. No backend/API/schema/permission change.
+  [Verification](docs/30-quality/BL043_DASHBOARD_MATCH_READS_2026-09-07.md).
+
+- BL-043g.2 (2026-09-07): Maçlar uses independent 25-record match catalog
+  pages/full totals, scalar board presence, scope reset, stale-response rejection
+  and independent retry. Existing shadcn cards/detail links remain; missing
+  concrete-season context never broadens to all seasons. Shared matches remain
+  for dashboard/week/detail. Root quality, 571 backend/89 frontend unit and
+  39 API/11 Chromium E2E passed; responsive 25+6 browsing verified. Retained
+  data unchanged; disposable migration/diff clean and synthetic database removed.
+  No backend runtime/API/schema/permission change.
+  [Verification](docs/30-quality/BL043_MATCH_CATALOG_UI_2026-09-07.md).
+
+- BL-043g.1 (2026-09-07): authenticated minimal match catalog with current
+  group/season ownership, chronological keyset pages, full totals and optional
+  half-open local periods. Page-only board presence reads avoid JSON transfer.
+  No schema/migration/dependency, permission, write or frontend change; shared
+  matches remain until all consumers migrate. Root quality, 571 backend/84
+  frontend unit and 39 API E2E passed. Disposable migration/diff clean and test
+  database removed; retained business data unchanged. Browser suite not rerun.
+  [Verification](docs/30-quality/BL043_MATCH_READ_FOUNDATION_2026-09-07.md).
+
+- BL-043f.4 (2026-09-07): training-detail drill options use independent minimal
+  pages with off-page selection and attached-ID exclusion. The last shared
+  full drill fetch/state is removed. Existing single-add POST replaces the
+  frontend replacement PUT, preserving prior row IDs and board snapshots;
+  post-write refresh failures offer GET-only retry. No backend/schema or
+  permission-policy change. Root quality, 538 backend/84 frontend unit and
+  38 API/11 Chromium E2E passed. Disposable migration/diff clean and test DB
+  removed; retained data unchanged.
+  [Verification](docs/30-quality/BL043_DRILL_CUTOVER_2026-09-07.md).
+
+- BL-043f.3 (2026-09-07): optional board-kind filter intersects the authorized
+  drill catalog before pagination/counting. Tactics now owns 25-record minimal
+  pages, full totals, scope reset and retry; shared drills remain for training
+  detail only. Board/category distinction, current access and editor actions
+  are preserved. No schema/migration/dependency or permission-policy change.
+  Root quality, 538 backend/78 frontend unit and 38 API/11 Chromium E2E passed;
+  initial API scale-test timeout and unchanged successful repeat are recorded.
+  Retained data unchanged; disposable migration/diff clean and test DB removed.
+  [Verification](docs/30-quality/BL043_TACTICS_PAGINATION_2026-09-07.md).
+
+- BL-043f.2 (2026-09-07): dashboard exercise total reads the existing catalog
+  with limit=1, renders the full total and no longer consumes shared drills.
+  Scope resets, stale-response rejection and independent loading/error/retry
+  preserve existing counters and shadcn cards. Tactics/training detail still
+  need the shared list. No backend/API/schema/migration/permission change.
+  Root quality, 532 backend/73 frontend unit and 38 API/11 Chromium E2E passed.
+  Browser verified 35→36 total after drill creation; retained data unchanged,
+  disposable migration/diff clean and synthetic test database removed.
+  [Verification](docs/30-quality/BL043_DASHBOARD_DRILL_READS_2026-09-07.md).
+
+- BL-043f.1 (2026-09-06): authenticated minimal drill catalog with stable keyset
+  pages, full age/category totals and existing role visibility. Exercise Library
+  uses independent 25-record pages, server category filtering, scope reset and
+  retry; board JSON is not transferred in card reads. Shared full drill reads
+  remain for other consumers. No schema/migration/dependency or permission change.
+  Root quality, 532 backend/70 frontend unit and 38 API/11 Chromium E2E passed;
+  retained business data unchanged and disposable test database removed.
+  [Verification](docs/30-quality/BL043_DRILL_LIBRARY_2026-09-06.md).
+
+- BL-043e.5 (2026-09-06): bounded attendance-plan projection with page-local
+  PRESENT counts and full current-player/plan totals; PLAYER remains self-only.
+  Attendance UI gains independent pages, scope reset and retry. With all four
+  plan consumers separated, the workspace full-plan fetch/state is removed.
+  Drill-write/catalog refresh regression remains covered. Legacy REST list,
+  detail/write contracts, schema/migrations and permission policy are unchanged.
+  Root quality, 508 backend/65 frontend unit and 37 API/11 Chromium E2E passed;
+  retained data unchanged and disposable test database removed.
+  [Verification](docs/30-quality/BL043_ATTENDANCE_CUTOVER_2026-09-06.md).
+
+- BL-043e.4 (2026-09-06): week training reads use independent 25-record local-day
+  pages with full daily totals, stale-scope protection and actionable retry.
+  The catalog adds validated paired half-open from/until filters (max eight
+  elapsed days) intersecting existing tenant/season scope. Week URL changes keep
+  context; undated drafts remain in the catalog. No schema/migration/security
+  policy change. Attendance still needs the shared full plan read.
+  Root quality, 504 backend/60 frontend unit and 36 API/11 Chromium E2E passed;
+  disposable migration/diff clean and retained business data unchanged.
+  [Verification](docs/30-quality/BL043_WEEK_READS_2026-09-06.md).
+
+- BL-043e.3 (2026-09-06): dashboard training/PRESENT counters use full server
+  summaries and recent cards use a three-record scalar projection. Scope-safe
+  reads, unavailable/loading/error states and independent retry are verified.
+  Week/attendance still retain the shared full plan read; no full workspace
+  optimization or backend/schema/migration/security change is claimed.
+  Root quality, 492 backend/55 frontend unit and 35 API/11 Chromium E2E passed.
+  [Verification](docs/30-quality/BL043_DASHBOARD_TRAINING_READS_2026-09-06.md).
+
+- BL-043e.2 (2026-09-06): training catalog UI consumes 25-record pages with full
+  server totals, scalar phase counts, scope resets, stale-response protection,
+  retry and explicit empty continuation. Create failures remain actionable.
+  Shared full plan reads are retained for dashboard/week/attendance; complete
+  workspace read optimization is not claimed. No API/schema/migration change.
+  Root quality, 492 backend/50 frontend unit and 35 API/11 Chromium E2E passed.
+  [Verification](docs/30-quality/BL043_TRAINING_CATALOG_UI_2026-09-06.md).
+
+- BL-043e.1 (2026-09-06): additive authenticated training catalog pages with
+  full-scope plan/duration/PRESENT totals, null-date/draft-safe keysets and
+  PLAYER-only self-attendance counts. EXPLAIN evidence narrowed phase aggregation
+  to returned plan IDs. 492 backend/44 frontend unit, 35 API E2E and root quality
+  passed. No frontend cutover, index/schema/migration, retained business write or
+  production change. Shared consumer separation and pilot capacity remain open.
+  [Evidence and next steps](docs/30-quality/BL043_TRAINING_READ_FOUNDATION_2026-09-06.md).
+
+- BL-043d (2026-09-06): selected legacy workspace metadata with independent
+  group authorization replaces whole group/season catalogs. Complete all-seasons
+  matches use one relational read. Player 360 assignment options load only in the
+  open dialog with 25-record team/PLAYER-role pages and pinned explicit choices.
+  Old APIs and mutation authority remain unchanged. 468 backend/44 frontend unit,
+  33 API/10 Chromium E2E and root quality passed; no schema/migration/dependency
+  or retained business write. Business-list/aggregate contracts, query plans and
+  pilot capacity remain open.
+  [Verification](docs/30-quality/BL043_LEGACY_METADATA_2026-09-06.md).
+
+- BL-043c (2026-09-06): dated roster and Player 360 assignment keyset pages,
+  full filtered counters independent of visible rows, explicit asOf, stale-read
+  protection and retry. Existing array contracts and permission policy remain;
+  person capability now checks relational existence without full assignment
+  arrays. 456 backend/41 frontend unit, 32 API/9 Chromium E2E and root quality passed.
+  No new migration/dependency or retained business write. Legacy metadata,
+  assignment-dialog options and pilot capacity remain open.
+  [Verification](docs/30-quality/BL043_ASSIGNMENT_PAGINATION_2026-09-06.md).
+
+- BL-043b (2026-09-06): additive bounded team/club/season catalogs and a separate
+  workspace selection resolver; team server search and shadcn page controls.
+  Selected records remain available outside the current page; browsing a catalog
+  does not change scope. Current grants filter every query and each team carries
+  at most one season summary. 432 backend / 35 frontend unit, 31 API and 8 Chromium E2E tests
+  passed with root quality. No schema/migration, new dependency or retained
+  business-data change. Roster/history and pilot capacity remain open.
+  [Verification](docs/30-quality/BL043_WORKSPACE_CATALOGS_2026-09-06.md).
+
+- BL-043a (2026-09-06): additive team-scoped player page API with bounded ID
+  keyset reads, server search, current capability/self filters and one current
+  assignment per card; shadcn previous/next, retry and stale-scope protection.
+  416 backend / 30 frontend unit, 30 API and 7 Chromium E2E tests passed. Local
+  1,000-player / 3,000-assignment measurement recorded; pilot/SLO values remain
+  TBD. No schema/migration or retained business-data change. Team and assignment
+  pagination remain open under BL-043.
+
+- Controlled local P0.1 rollout (2026-09-06): private backup and isolated restore
+  rehearsal verified; the two pending accepted migrations were applied only to
+  `ngcs_local_session_dev`. Six migrations current, empty schema diff, both clubs
+  IN_SYNC, 26 legacy tables / 83 rows preserved. Local 3001/4000 servers and
+  retained-session sporting/training/match browser smoke passed. No reset, seed,
+  password change or production rollout. See
+  [local rollout evidence](docs/30-quality/P01_LOCAL_ROLLOUT_2026-09-06.md).
+
+- BL-042 / P0.1b (2026-09-06): shared transactional legacy-to-sporting adapter for
+  group, membership, season and account identity; history-preserving removal,
+  current-time capability revocation, count-only admin parity endpoint and
+  user-specific Club/Season/Team scope selector. Scope changes use the existing
+  dirty-navigation guard; stale requests and cross-team season fallback are
+  contained. 396 backend unit, 27 frontend unit, PostgreSQL 29/29 and Chromium
+  opt-in 6/6 verified. No new migration or retained/production rollout.
+
+- Accepted ADR-0021–0024 / CR-016 / BL-039–041 (2026-09-06): Phase 2 P0.1
+  Person/account, Team/ClubSeason/TeamSeason, işlevsel rol/capability ve etkili
+  tarihli SportingAssignment additive temeli; tarihsel takım kadrosu ve izin
+  filtreli Player 360 API'si; shadcn Takımlar/Oyuncular/Player 360 rotaları.
+  Legacy-verili backfill primarilik tahmin etmeden `LEGACY_MEMBER` üretir.
+  Sporting unit 17/17, disposable PostgreSQL backend E2E 28/28, schema diff ve
+  Chromium 4/4 (bir opt-in skip) responsive akış geçti. Retained DB ve production
+  rollout yapılmadı; dual-write, kalıcı scope cutover, pagination ve
+  minor/safeguarding BL-042–044'te. Tarihsel Player 360 gelecekteki atamaları
+  göstermez; açık veya sınırlı birincil atama dönem çakışmaları reddedilir. Root
+  kalite 396 backend ve 23 frontend testiyle geçti.
+- Accepted ADR-0020 / CR-015 / BL-011 (2026-09-06): production'da zorunlu
+  vendor-neutral Nodemailer SMTP portu ve fail-closed config, development/test
+  operator fallback'i, no-store/no-token issuance sözleşmesi, fragment tokenını
+  temizleyen public invitation/reset rotaları, delivery failure revoke + generic
+  503 ve yalnız mevcut SYSTEM_ADMIN için atomik/auditli break-glass recovery.
+  Additive audit migration eklendi; provider/account/DNS/ücretli kaynak, korunan
+  yerel DB migration'ı ve production rollout yapılmadı. Root quality 379 backend/
+  23 frontend testle; disposable PostgreSQL beş migration/boş diff, fake-SMTP
+  backend E2E 27/27 ve break-glass ACTIVE/authVersion/audit/revoke provasıyla geçti.
+- Accepted ADR-0019 / CR-014 / BL-036 (2026-09-06): attendance duplicate
+  durumunda veri silmeyen fail-fast migration, `(planId, playerId)` unique
+  constraint, atomik upsert, son-commit-kazanır davranışı ve geri dönüş kapıları.
+  Retained envanter 0 satır/0 duplicate; ayrı açık onayla yerel çalışma DB'sine
+  reset yapmadan uygulandı ve unique index doğrulandı. Clean/duplicate PostgreSQL
+  kanıtı, 24 focused unit, concurrent HTTP dahil 26/26 E2E ve root quality geçti.
+- BL-024 onuncu dilimi / BL-038 (2026-09-06): training-plan mutation hata
+  containment'ı için on bir regresyon; toplam 122 focused training-plan testi,
+  32 backend suite/371 test ve disposable PostgreSQL 25/25 E2E. Onaylı MVP için
+  BL-024/F-008 kapanış envanteri.
+- BL-024 dokuzuncu dilimi / BL-037 (2026-09-06): season/week/day/match mutation
+  hata containment'ı için sekiz regresyon; toplam 42 focused season testi,
+  31 backend suite/360 test ve disposable PostgreSQL 25/25 E2E.
+- BL-024 sekizinci dilimi (2026-09-06): attendance lookup/update/create hata
+  containment'ı için üç regresyon; toplam 27 focused attendance testi, 351 backend
+  testi ve disposable PostgreSQL 25/25 E2E. Attendance tekillik riski için
+  F-013/CR-014/BL-036 Proposed kaydı; migration uygulanmadı.
+- BL-024 yedinci dilimi (2026-09-06): club update ve drill create/update/delete
+  hata/body sınırı için 12 yeni regresyon ve bir gerçek HTTP/Prisma senaryosu;
+  toplam 56 focused club/drill testi ve 25/25 backend E2E. F-012/BL-034 kaydı.
+- BL-024 altıncı dilimi (2026-09-06): grup update/delete ve üyelik add/remove
+  hata yolları için 11 yeni error-boundary testi ve bir gerçek HTTP/Prisma
+  senaryosu; toplam 56 focused group testi ve 24/24 backend E2E. F-011/BL-033
+  kısmi üyelik kaybı bulgusu ve doğrulama kaydı.
+- BL-024 beşinci dilimi (2026-09-06): kulüp/grup runtime DTO'ları için 84
+  focused regresyon ve bir gerçek HTTP/Prisma senaryosu; toplam 23/23 backend E2E.
+  F-010/BL-032 kulüp-create mass-assignment bulgusu ve yetki-sırası incelemesi.
+- BL-024 dördüncü dilimi (2026-09-06): sezon/hafta/gün/maç için 31 yeni unit ve
+  iki HTTP/Prisma regresyonu; disposable PostgreSQL 16 üzerinde 22/22 backend E2E.
+  F-009/BL-031 nested-write bulgusu ve doğrulama kaydı.
+- BL-024 üçüncü dilimi: plan create/update için 58 unit ve iki gerçek HTTP/Prisma
+  regresyonu. Disposable PostgreSQL 16'da 20 backend E2E geçti; korunan demo DB
+  kullanılmadı. Plan identity/null-clear/date-offset/invalid-write kontrolleri.
+- BL-024 ikinci yerel dilimi: grup create hatasının gerçek Nest exception filter
+  üzerinden veri sızdırmadan işlenmesi, yoklama ve tek faz ekleme için 51 yeni
+  regresyon; mevcut yetki ve başarılı mutation sözleşmeleri korunur.
+- BL-024 ilk yerel dilimi için 42 backend regresyonu: analytics alan eleme/dönüşüm,
+  opsiyonel sezon bağlantısı log minimizasyonu ve plan-drill replace girdi sınırı.
+- Kullanıcı tarafından asistana devredilen yerel demo seçimleriyle ilk 75 dakikalık
+  dört fazlı antrenman kaydı ve browser/DB kalıcılık kanıtı; katılım boş bırakıldı.
+- Yerel kalıcı oturum/new-tab/reload, hafta ve koç ekranları için etkileşimli smoke
+  kanıtı; yeni taktik taslağının yanlış “Kaydedildi” etiketi için BL-029/P3.
+- M4 staging/production karar girdileri, sıralı onay kapıları ve BL-028 rollout
+  hazırlığı; domain/provider/bütçe/bölge/owner değerleri TBD bırakıldı.
+- Production browser rollback için session flag-off CORS'un localhost'a dönmesi
+  rollout kapısı olarak kaydedildi; runtime davranışı değiştirilmedi.
 - Accepted ADR-0018: varsayılan kapalı, provider-neutral kalıcı oturum; 15m access,
   7d idle/30d absolute refresh, beş aktif family ve 30d refresh-record retention.
 - Additive RefreshSession migration'ı, hash-only credential lineage, atomik rotation,
@@ -85,6 +983,61 @@
 
 ### Changed
 
+- Training-plan create/update/delete, add/replace drill ve board snapshot
+  persistence hataları işlem türüne özel sabit olaylar ve cause-free generic 500
+  üretir. Explicit 400, authorization, atomik mutation, başarılı sonuç ve
+  opsiyonel season-day fail-soft davranışı korunur.
+- Season/week/day/match create, update, delete, toggle, tactical-board ve
+  week-generation persistence/missing-record yolları işlem türüne özel sabit
+  olaylar ve cause-free generic 500 üretir. Transaction içindeki açık 400
+  doğrulamaları, başarılı sonuçlar, authorization ve mevcut status'lar korunur.
+- Attendance persistence hataları raw Prisma/Error yerine yalnız
+  `ATTENDANCE_MARK_FAILED` ve cause-free generic 500 üretir; DTO, authorization ve
+  başarılı find-then-update/create davranışı korunur.
+- Club update ile drill create/update/delete persistence hataları cause-free generic
+  500 ve sabit olay üretir. Drill create/update body'leri runtime'da JSON nesnesi
+  olmalıdır; null/array/primitive 400 olur ve update'te kaynak yetkisi önce çalışır.
+- Grup silme, üyelik temizliği ile ana kaydı tek Prisma transaction'ında siler;
+  foreign-key reddinde üyelikler geri alınır. Grup update/delete ve membership
+  persistence/duplicate/missing yolları yalnız sabit olay ve cause-free generic
+  500 üretir; mevcut success ve duplicate/missing status davranışı korunur.
+- Kulüp create/update, grup create/update ve membership body'leri controller/service
+  sınırında doğrulanır. `POST /clubs` yalnız name/logo/description aktarır; istemci
+  kimliği, timestamp ve nested ilişkiler Prisma'ya ulaşmaz. Grup yaş/kategori
+  enumları, create default'u, nullable/empty davranışlar ve auth-before-validation
+  korunur. Kulüp/club-group create hataları generic 500 ve sabit olayla sınırlandı.
+- Sezon/hafta/gün/maç girdileri controller/service runtime DTO ile doğrulanır;
+  nullable/default/date/JSON davranışı ve mevcut group kontrolleri korunur.
+  BL-031: hafta body'lerinin nested Prisma yazma/reparent alanları elenir;
+  maç create gövdesi doğrulanmamış tacticalBoard yazamaz. ADR-0007/0012/0014
+  mevcut kaynak/sözleşme sınırı uygulanır; migration veya yeni rol politikası yoktur.
+- Plan create/update body'leri ortak runtime DTO ile controller ve service
+  girişinde doğrulanır; scalar alan projeksiyonu, principal kimlik türetme,
+  nullable alanlar ve serializable group aggregate kontrolleri korunur. Bozuk
+  tip/tarih/Int girdileri persistence işleminden önce kontrollü 400 üretir.
+- `POST /groups` artık tek sabit hata olayı ve raw cause içermeyen genel HTTP 500
+  üretir; doğrudan console ve framework üzerinden ikinci ham log yolu kapatıldı.
+  Yoklama ve tek faz ekleme controller/service girişlerinde mevcut alan/enum
+  kurallarıyla doğrulanır; malformed body kontrollü 400 olur.
+- BL-024: Analytics CRUD adapter'ı aynı alan eleme ve dönüşüm kurallarını ortak
+  yardımcıyla korur; 41 lint uyarısı kaldırıldı. Opsiyonel plan-season bağlantısı
+  ham error/metadata yerine sabit olaylar loglar; normal/fail-soft sonuç korunur.
+  Plan-drill replace, mevcut 50-eleman ve alan kurallarını controller ve service
+  girişinde paylaşır; bozuk liste artık `.map()` hatası yerine kontrollü 400 verir.
+- BL-030: egzersiz ekleme sonrası ortak workspace verisi yenilenerek takvim/liste
+  süre özetinin eski kalması giderildi; route/context regresyonu ve root quality geçti.
+- BL-029 kapatıldı: ortak taktik editörü yeni egzersiz, boş maç tahtası ve henüz
+  snapshot'ı olmayan planı “Henüz kaydedilmedi” olarak gösterir. Başarılı save,
+  bekleyen save, hata/retry ve dirty/undo durumları 7 component regresyonuyla
+  doğrulandı; root quality ve yerel browser smoke geçti. API/şema değişmedi.
+- Açık kullanıcı onayıyla yalnız yerel çalışma kopyasındaki koç parolası sıfırlandı;
+  authVersion, session/reset revoke ve audit atomik uygulandı. Login/logout API
+  kontrolü geçti; uygulama kodu, planlar ve diğer hesaplar değiştirilmedi.
+- Kullanıcı isteğiyle production karar toplama beklemeye alındı; yerel demo DB'si
+  korunarak ayrı çalışma kopyasına session migration'ı uygulandı ve opt-in dev
+  server'lar başlatıldı. Kod ve varsayılan feature flag'ler değiştirilmedi.
+- Mimari özette beklemede görünen session/migration durumu Accepted ADR-0018'in
+  doğrulanmış opt-in uygulamasıyla hizalandı.
 - ADR-0010 implementation gate'i ADR-0018 ile provider-neutral çalışma için
   genişletildi; production domain/provider/proxy/secret/rollout girdileri TBD kalır.
 - Opt-in modda frontend login/refresh/logout credentialed cookie kullanır; business
@@ -182,8 +1135,10 @@
   analitik veri politikası açık karar kapılarıdır.
 - E2E suite tablo temizliği yaptığı için yalnız caller-supplied dedicated ve
   silinebilir veritabanında çalıştırılabilir.
-- Backend legacy analytics adapter'ında 41 unused-variable lint uyarısı görünür
-  teknik borç olarak kalıyor; repository lint hatası yoktur.
+- Backend analytics'in 41 unused-variable lint uyarısı BL-024 ilk diliminde
+  kapatıldı. POST /groups log containment tamamlandı; diğer çekirdek DTO yolları,
+  ayrı club-group create ve implicit framework logları ile genel production log
+  politikası BL-024 kapsamında açık kalır.
 - `npm audit --omit=dev` Prisma CLI / `@prisma/config` / `deepmerge-ts` zincirinde
   3 high advisory raporluyor. ADR-0016 bunu hosted runtime için `not_actionable`
   ve production öncesi yeniden incelemeli geçici kabul olarak kaydeder; otomatik

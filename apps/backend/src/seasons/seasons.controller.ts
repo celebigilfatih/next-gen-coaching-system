@@ -1,3 +1,5 @@
+import { UseInterceptors } from '@nestjs/common';
+import { LegacyTacticalReadInterceptor } from '../tactics/legacy-tactical-read.interceptor';
 import {
   BadRequestException,
   Body,
@@ -17,9 +19,19 @@ import { Roles } from '../auth/roles.decorator';
 import { RolesGuard } from '../auth/roles.guard';
 import { SeasonsService } from './seasons.service';
 import { validateTacticalBoardDocument } from '../tactics/tactical-board';
+import { seasonBody } from './dto/season-input';
+import {
+  parseCreateSeasonBody,
+  parseCreateWeekBody,
+  parseUpdateWeekBody,
+  parseCreateDayBody,
+  parseCreateMatchBody,
+  parseUpdateMatchBody,
+} from './dto/season.dto';
 
 @Controller('seasons')
 @UseGuards(AuthGuard('jwt'))
+@UseInterceptors(LegacyTacticalReadInterceptor)
 export class SeasonsController {
   constructor(
     private readonly seasons: SeasonsService,
@@ -31,18 +43,15 @@ export class SeasonsController {
   @Roles('SYSTEM_ADMIN', 'CLUB_ADMIN', 'COACH')
   async createSeason(
     @Request() req: { user: AuthPrincipal },
-    @Body()
-    body: {
-      name: string;
-      startDate: string;
-      endDate: string;
-      clubId?: string;
-      groupId: string;
-    },
+    @Body() input: unknown,
   ) {
-    const clubId =
-      req.user.role === 'SYSTEM_ADMIN' ? body.clubId : req.user.clubId;
-    if (!clubId) throw new BadRequestException('clubId is required');
+    const requested = seasonBody(input);
+    const body = parseCreateSeasonBody({
+      ...requested,
+      clubId:
+        req.user.role === 'SYSTEM_ADMIN' ? requested.clubId : req.user.clubId,
+    });
+    const { clubId } = body;
     if (req.user.role === 'CLUB_ADMIN') {
       this.authorization.assertClubManage(req.user, clubId);
     }
@@ -62,8 +71,8 @@ export class SeasonsController {
       name: body.name,
       clubId,
       groupId: body.groupId,
-      startDate: new Date(body.startDate),
-      endDate: new Date(body.endDate),
+      startDate: body.startDate,
+      endDate: body.endDate,
     });
   }
 
@@ -89,20 +98,10 @@ export class SeasonsController {
   async createWeek(
     @Request() req: { user: AuthPrincipal },
     @Param('seasonId') seasonId: string,
-    @Body()
-    body: {
-      weekNumber: number;
-      startDate: string;
-      endDate: string;
-      notes?: string;
-    },
+    @Body() input: unknown,
   ) {
     await this.authorization.assertSeasonManage(req.user, seasonId);
-    return this.seasons.createWeek(seasonId, {
-      ...body,
-      startDate: new Date(body.startDate),
-      endDate: new Date(body.endDate),
-    });
+    return this.seasons.createWeek(seasonId, parseCreateWeekBody(input));
   }
 
   @Get(':seasonId/weeks/:weekNumber')
@@ -121,10 +120,10 @@ export class SeasonsController {
   async updateWeek(
     @Request() req: { user: AuthPrincipal },
     @Param('weekId') weekId: string,
-    @Body() body: { notes?: string; totalLoad?: number },
+    @Body() input: unknown,
   ) {
     await this.authorization.assertWeekManage(req.user, weekId);
-    return this.seasons.updateWeek(weekId, body);
+    return this.seasons.updateWeek(weekId, parseUpdateWeekBody(input));
   }
 
   @Post('weeks/:weekId/days')
@@ -133,20 +132,10 @@ export class SeasonsController {
   async createOrUpdateDay(
     @Request() req: { user: AuthPrincipal },
     @Param('weekId') weekId: string,
-    @Body()
-    body: {
-      dayOfWeek: number;
-      date: string;
-      type: 'TRAINING' | 'MATCH' | 'REST' | 'RECOVERY' | 'TACTICAL';
-      title?: string;
-      trainingPlanId?: string;
-      drillIds?: string[];
-      duration?: number;
-      intensity?: number;
-      notes?: string;
-    },
+    @Body() input: unknown,
   ) {
     const season = await this.authorization.assertWeekManage(req.user, weekId);
+    const body = parseCreateDayBody(input);
     if (body.trainingPlanId) {
       const plan = await this.authorization.assertPlanManage(
         req.user,
@@ -158,10 +147,7 @@ export class SeasonsController {
         );
       }
     }
-    return this.seasons.createOrUpdateDay(weekId, {
-      ...body,
-      date: new Date(body.date),
-    });
+    return this.seasons.createOrUpdateDay(weekId, body);
   }
 
   @Post('days/:dayId/toggle-completed')
@@ -192,27 +178,20 @@ export class SeasonsController {
   async createMatch(
     @Request() req: { user: AuthPrincipal },
     @Param('seasonId') seasonId: string,
-    @Body()
-    body: {
-      date: string;
-      opponent: string;
-      location: string;
-      competition?: string;
-      notes?: string;
-      groupId?: string;
-    },
+    @Body() input: unknown,
   ) {
     const season = await this.authorization.assertSeasonManage(
       req.user,
       seasonId,
     );
+    const body = parseCreateMatchBody(input);
     if (body.groupId && body.groupId !== season.groupId) {
       throw new BadRequestException('Match must use the season group');
     }
     return this.seasons.createMatch(seasonId, {
       ...body,
       groupId: season.groupId,
-      date: new Date(body.date),
+      date: body.date,
     });
   }
 
@@ -231,10 +210,10 @@ export class SeasonsController {
   async updateMatch(
     @Request() req: { user: AuthPrincipal },
     @Param('matchId') matchId: string,
-    @Body() body: any,
+    @Body() input: unknown,
   ) {
     await this.authorization.assertMatchManage(req.user, matchId);
-    return this.seasons.updateMatch(matchId, body);
+    return this.seasons.updateMatch(matchId, parseUpdateMatchBody(input));
   }
 
   @Put('matches/:matchId/tactical-board')
@@ -243,10 +222,12 @@ export class SeasonsController {
   async updateMatchTacticalBoard(
     @Request() req: { user: AuthPrincipal },
     @Param('matchId') matchId: string,
-    @Body() body: { tacticalBoard: unknown },
+    @Body() input: unknown,
   ) {
     await this.authorization.assertMatchManage(req.user, matchId);
-    const tacticalBoard = validateTacticalBoardDocument(body.tacticalBoard);
+    const tacticalBoard = validateTacticalBoardDocument(
+      seasonBody(input).tacticalBoard,
+    );
     return this.seasons.updateMatchTacticalBoard(matchId, tacticalBoard);
   }
 

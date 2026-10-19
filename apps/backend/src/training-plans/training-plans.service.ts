@@ -1,10 +1,32 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpException,
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import {
+  assertLegacyTacticalWrite,
+  rethrowTacticalConflict,
+} from '../tactics/tactical-persistence';
 import { publicUserSelect } from '../users/user.select';
 import type { AuthPrincipal } from '../auth/auth-principal';
+import {
+  PlanDrillInput,
+  validatePlanDrillEntries,
+} from './dto/replace-plan-drills.dto';
+import {
+  CreateTrainingPlanDto,
+  UpdateTrainingPlanDto,
+  parseCreateTrainingPlanBody,
+  parseUpdateTrainingPlanBody,
+} from './dto/training-plan.dto';
 
 @Injectable()
 export class TrainingPlansService {
+  private readonly logger = new Logger(TrainingPlansService.name);
+
   constructor(private prisma: PrismaService) {}
 
   async listForPrincipal(
@@ -46,6 +68,13 @@ export class TrainingPlansService {
     });
   }
 
+  async getEditor(id: string) {
+    return this.prisma.trainingPlan.findUnique({
+      where: { id },
+      include: { drills: { include: { drill: true } } },
+    });
+  }
+
   async get(id: string, principal: AuthPrincipal) {
     return this.prisma.trainingPlan.findUnique({
       where: { id },
@@ -72,24 +101,23 @@ export class TrainingPlansService {
     });
   }
 
-  async create(data: {
-    title: string;
-    clubId: string;
-    coachId: string;
-    groupId?: string;
-    date?: Date | string;
-    notes?: string;
-  }) {
-    const plan = await this.prisma.trainingPlan.create({
-      data: {
-        title: data.title,
-        clubId: data.clubId,
-        coachId: data.coachId,
-        groupId: data.groupId,
-        date: data.date,
-        notes: data.notes,
-      } as any,
-    });
+  async create(input: CreateTrainingPlanDto) {
+    const data = parseCreateTrainingPlanBody(input);
+    let plan;
+    try {
+      plan = await this.prisma.trainingPlan.create({
+        data: {
+          title: data.title,
+          clubId: data.clubId,
+          coachId: data.coachId,
+          groupId: data.groupId,
+          date: data.date,
+          notes: data.notes,
+        },
+      });
+    } catch {
+      this.persistenceFailure('TRAINING_PLAN_CREATE_FAILED');
+    }
 
     // If date is provided, try to link it to a season day plan
     if (data.date && plan.groupId) {
@@ -113,11 +141,10 @@ export class TrainingPlansService {
     try {
       // Ensure date is a Date object
       const dateObj = typeof date === 'string' ? new Date(date) : date;
-      console.log('🔗 Linking plan to season day:', {
-        planId,
-        clubId,
-        date: dateObj.toISOString(),
-      });
+      if (Number.isNaN(dateObj.getTime())) {
+        this.logger.error('PLAN_SEASON_LINK_FAILED');
+        return;
+      }
 
       // Find active season for this club that contains this date
       const seasons = await this.prisma.season.findMany({
@@ -137,52 +164,20 @@ export class TrainingPlansService {
         },
       });
 
-      console.log(`📅 Found ${seasons.length} seasons for club ${clubId}`);
-
       if (seasons.length === 0) {
-        console.warn(
-          '⚠️  No active season found for this date:',
-          dateObj.toISOString(),
-        );
-        console.warn('⚠️  Please create a season that includes this date.');
-        // Also search for ANY seasons for this club to help debugging
-        const allSeasons = await this.prisma.season.findMany({
-          where: { clubId },
-          select: { id: true, name: true, startDate: true, endDate: true },
-        });
-        console.log('📋 Available seasons for this club:', allSeasons);
+        this.logger.warn('PLAN_SEASON_LINK_SKIPPED_NO_SEASON');
         return;
       }
 
       // Access the weeks using the correct relation name
       const seasonWeeks = seasons[0].weeks || [];
       if (seasonWeeks.length === 0) {
-        console.warn('⚠️  Season found but no weeks for this date.');
-        console.warn('⚠️  Season:', seasons[0].id, seasons[0].name);
-        console.warn('⚠️  Looking for week containing:', dateObj.toISOString());
-        // Check if ANY weeks exist for this season
-        const allWeeks = await this.prisma.weekPlan.findMany({
-          where: { seasonId: seasons[0].id },
-          select: { weekNumber: true, startDate: true, endDate: true },
-          orderBy: { weekNumber: 'asc' },
-        });
-        console.log('📋 All weeks in season:', allWeeks);
-        if (allWeeks.length === 0) {
-          console.warn(
-            '⚠️  No weeks exist at all. Please generate weeks first.',
-          );
-        } else {
-          console.warn(
-            "⚠️  Weeks exist but date doesn't fall within any week range.",
-          );
-        }
+        this.logger.warn('PLAN_SEASON_LINK_SKIPPED_NO_WEEK');
         return;
       }
 
       const week = seasonWeeks[0];
       const dayOfWeek = dateObj.getDay() === 0 ? 7 : dateObj.getDay();
-
-      console.log(`📆 Found week: ${week.weekNumber}, day: ${dayOfWeek}`);
 
       // Get training plan details
       const trainingPlan = await this.prisma.trainingPlan.findUnique({
@@ -193,16 +188,12 @@ export class TrainingPlansService {
       });
 
       if (!trainingPlan) {
-        console.error('❌ Training plan not found:', planId);
+        this.logger.error('PLAN_SEASON_LINK_SKIPPED_PLAN_MISSING');
         return;
       }
 
-      console.log(
-        `📋 Creating day plan with ${trainingPlan.drills.length} drills`,
-      );
-
       // Create a day plan linked to this training plan
-      const dayPlan = await this.prisma.dayPlan.create({
+      await this.prisma.dayPlan.create({
         data: {
           weekId: week.id,
           dayOfWeek,
@@ -216,10 +207,9 @@ export class TrainingPlansService {
             `Kayıtlı Antrenman: ${trainingPlan.drills.length} drill`,
         },
       });
-
-      console.log('✅ Day plan created successfully:', dayPlan.id);
-    } catch (error) {
-      console.error('❌ Error linking plan to season day:', error);
+    } catch {
+      // Never attach raw errors, request fields or resource metadata to this event.
+      this.logger.error('PLAN_SEASON_LINK_FAILED');
       // Don't throw - this is optional functionality
     }
   }
@@ -231,156 +221,155 @@ export class TrainingPlansService {
     order: number,
     notes?: string,
   ) {
-    return this.prisma.$transaction(
-      async (transaction) => {
-        const [plan, drill] = await Promise.all([
-          transaction.trainingPlan.findUnique({
-            where: { id: planId },
-            select: { id: true, clubId: true, groupId: true },
-          }),
-          transaction.drill.findUnique({
-            where: { id: drillId },
-            select: {
-              id: true,
-              durationMin: true,
-              scope: true,
-              clubId: true,
-              groupId: true,
-            },
-          }),
-        ]);
-        if (!plan)
-          throw new BadRequestException('Training plan does not exist');
-        if (!drill) throw new BadRequestException('Drill does not exist');
-        this.assertDrillFitsPlan(plan, drill);
+    validatePlanDrillEntries([{ drillId, phase, order, notes }]);
+    try {
+      return await this.prisma.$transaction(
+        async (transaction) => {
+          const [plan, drill] = await Promise.all([
+            transaction.trainingPlan.findUnique({
+              where: { id: planId },
+              select: { id: true, clubId: true, groupId: true },
+            }),
+            transaction.drill.findUnique({
+              where: { id: drillId },
+              select: {
+                id: true,
+                durationMin: true,
+                scope: true,
+                clubId: true,
+                groupId: true,
+              },
+            }),
+          ]);
+          if (!plan)
+            throw new BadRequestException('Training plan does not exist');
+          if (!drill) throw new BadRequestException('Drill does not exist');
+          this.assertDrillFitsPlan(plan, drill);
 
-        const planDrill = await transaction.planDrill.create({
-          data: {
-            trainingPlanId: planId,
-            drillId,
-            phase: phase as any,
-            order,
-            notes,
-          },
-        });
-        const planDrills = await transaction.planDrill.findMany({
-          where: { trainingPlanId: planId },
-          include: { drill: true },
-        });
-        const totalDuration = planDrills.reduce(
-          (sum, entry) => sum + entry.drill.durationMin,
-          0,
-        );
-        await Promise.all([
-          transaction.trainingPlan.update({
-            where: { id: planId },
-            data: { totalDuration },
-          }),
-          transaction.dayPlan.updateMany({
+          const planDrill = await transaction.planDrill.create({
+            data: {
+              trainingPlanId: planId,
+              drillId,
+              phase: phase as any,
+              order,
+              notes,
+            },
+          });
+          const planDrills = await transaction.planDrill.findMany({
             where: { trainingPlanId: planId },
-            data: { duration: totalDuration },
-          }),
-        ]);
-        return planDrill;
-      },
-      { isolationLevel: 'Serializable' },
-    );
+            include: { drill: true },
+          });
+          const totalDuration = planDrills.reduce(
+            (sum, entry) => sum + entry.drill.durationMin,
+            0,
+          );
+          await Promise.all([
+            transaction.trainingPlan.update({
+              where: { id: planId },
+              data: { totalDuration },
+            }),
+            transaction.dayPlan.updateMany({
+              where: { trainingPlanId: planId },
+              data: { duration: totalDuration },
+            }),
+          ]);
+          return planDrill;
+        },
+        { isolationLevel: 'Serializable' },
+      );
+    } catch (error) {
+      if (error instanceof HttpException) throw error;
+      this.persistenceFailure('TRAINING_PLAN_DRILL_ADD_FAILED');
+    }
   }
 
-  async replaceDrills(
-    planId: string,
-    entries: Array<{
-      drillId: string;
-      phase: 'WARM_UP' | 'TECHNICAL' | 'TACTICAL' | 'COOL_DOWN';
-      order: number;
-      notes?: string;
-    }>,
-  ) {
-    const phases = new Set(['WARM_UP', 'TECHNICAL', 'TACTICAL', 'COOL_DOWN']);
-    if (!Array.isArray(entries) || entries.length > 50) {
-      throw new BadRequestException('drills must contain at most 50 entries');
-    }
-    if (
-      entries.some(
-        (entry) =>
-          !entry ||
-          typeof entry.drillId !== 'string' ||
-          !entry.drillId ||
-          !phases.has(entry.phase) ||
-          !Number.isInteger(entry.order) ||
-          entry.order < 0 ||
-          (entry.notes !== undefined && typeof entry.notes !== 'string'),
-      )
-    ) {
-      throw new BadRequestException('Invalid plan drill entry');
-    }
+  async replaceDrills(planId: string, entries: PlanDrillInput[]) {
+    validatePlanDrillEntries(entries);
 
-    return this.prisma.$transaction(
-      async (transaction) => {
-        const drillIds = [...new Set(entries.map((entry) => entry.drillId))];
-        const [plan, drills] = await Promise.all([
-          transaction.trainingPlan.findUnique({
-            where: { id: planId },
-            select: { id: true, clubId: true, groupId: true },
-          }),
-          transaction.drill.findMany({
-            where: { id: { in: drillIds } },
+    try {
+      return await this.prisma.$transaction(
+        async (transaction) => {
+          const drillIds = [...new Set(entries.map((entry) => entry.drillId))];
+          const [plan, drills] = await Promise.all([
+            transaction.trainingPlan.findUnique({
+              where: { id: planId },
+              select: { id: true, clubId: true, groupId: true },
+            }),
+            transaction.drill.findMany({
+              where: { id: { in: drillIds } },
+              select: {
+                id: true,
+                durationMin: true,
+                scope: true,
+                clubId: true,
+                groupId: true,
+              },
+            }),
+          ]);
+          if (!plan)
+            throw new BadRequestException('Training plan does not exist');
+          if (drills.length !== drillIds.length) {
+            throw new BadRequestException('One or more drills do not exist');
+          }
+          drills.forEach((drill) => this.assertDrillFitsPlan(plan, drill));
+
+          const durationByDrill = new Map(
+            drills.map((drill) => [drill.id, drill.durationMin]),
+          );
+          const totalDuration = entries.reduce(
+            (total, entry) => total + (durationByDrill.get(entry.drillId) ?? 0),
+            0,
+          );
+
+          const currentPhases = await transaction.planDrill.findMany({
+            where: { trainingPlanId: planId },
             select: {
-              id: true,
-              durationMin: true,
-              scope: true,
-              clubId: true,
-              groupId: true,
+              boardSnapshot: true,
+              drill: { select: { jsonData: true } },
             },
-          }),
-        ]);
-        if (!plan)
-          throw new BadRequestException('Training plan does not exist');
-        if (drills.length !== drillIds.length) {
-          throw new BadRequestException('One or more drills do not exist');
-        }
-        drills.forEach((drill) => this.assertDrillFitsPlan(plan, drill));
-
-        const durationByDrill = new Map(
-          drills.map((drill) => [drill.id, drill.durationMin]),
-        );
-        const totalDuration = entries.reduce(
-          (total, entry) => total + (durationByDrill.get(entry.drillId) ?? 0),
-          0,
-        );
-
-        await transaction.planDrill.deleteMany({
-          where: { trainingPlanId: planId },
-        });
-        if (entries.length > 0) {
-          await transaction.planDrill.createMany({
-            data: entries.map((entry) => ({
-              trainingPlanId: planId,
-              drillId: entry.drillId,
-              phase: entry.phase,
-              order: entry.order,
-              notes: entry.notes,
-            })),
           });
-        }
-        await transaction.dayPlan.updateMany({
-          where: { trainingPlanId: planId },
-          data: { duration: totalDuration },
-        });
-        return transaction.trainingPlan.update({
-          where: { id: planId },
-          data: { totalDuration },
-          include: {
-            attendance: true,
-            drills: {
-              include: { drill: true },
-              orderBy: [{ phase: 'asc' }, { order: 'asc' }],
+          for (const phase of currentPhases) {
+            assertLegacyTacticalWrite(
+              phase.boardSnapshot ?? phase.drill.jsonData,
+            );
+          }
+          await transaction.planDrill.deleteMany({
+            where: { trainingPlanId: planId },
+          });
+          if (entries.length > 0) {
+            await transaction.planDrill.createMany({
+              data: entries.map((entry) => ({
+                trainingPlanId: planId,
+                drillId: entry.drillId,
+                phase: entry.phase,
+                order: entry.order,
+                notes: entry.notes,
+              })),
+            });
+          }
+          await transaction.dayPlan.updateMany({
+            where: { trainingPlanId: planId },
+            data: { duration: totalDuration },
+          });
+          return transaction.trainingPlan.update({
+            where: { id: planId },
+            data: { totalDuration },
+            include: {
+              attendance: true,
+              drills: {
+                include: { drill: true },
+                orderBy: [{ phase: 'asc' }, { order: 'asc' }],
+              },
             },
-          },
-        });
-      },
-      { isolationLevel: 'Serializable' },
-    );
+          });
+        },
+        { isolationLevel: 'Serializable' },
+      );
+    } catch (error) {
+      if (error instanceof HttpException) throw error;
+      rethrowTacticalConflict(error);
+      this.persistenceFailure('TRAINING_PLAN_DRILLS_REPLACE_FAILED');
+    }
   }
 
   async updateBoardSnapshot(
@@ -388,102 +377,196 @@ export class TrainingPlansService {
     planDrillId: string,
     boardSnapshot: Record<string, unknown>,
   ) {
-    const planDrill = await this.prisma.planDrill.findFirst({
-      where: { id: planDrillId, trainingPlanId: planId },
-      select: { id: true },
-    });
-    if (!planDrill) {
-      throw new BadRequestException(
-        'Plan drill does not belong to the training plan',
-      );
-    }
-    return this.prisma.planDrill.update({
-      where: { id: planDrillId },
-      data: { boardSnapshot } as never,
-      include: { drill: true },
-    });
-  }
-
-  async update(
-    id: string,
-    data: Partial<{
-      title: string;
-      totalDuration: number;
-      groupId?: string;
-      date?: Date | string;
-      notes?: string;
-    }>,
-  ) {
-    return this.prisma.$transaction(
-      async (transaction) => {
-        if (data.groupId !== undefined) {
-          const plan = await transaction.trainingPlan.findUnique({
-            where: { id },
+    try {
+      return await this.prisma.$transaction(
+        async (tx) => {
+          const planDrill = await tx.planDrill.findFirst({
+            where: { id: planDrillId, trainingPlanId: planId },
             select: {
               id: true,
-              clubId: true,
-              drills: {
-                select: {
-                  drill: {
-                    select: {
-                      id: true,
-                      scope: true,
-                      clubId: true,
-                      groupId: true,
-                    },
-                  },
-                },
-              },
-              dayPlans: {
-                select: {
-                  week: {
-                    select: {
-                      season: { select: { clubId: true, groupId: true } },
-                    },
-                  },
-                },
-              },
+              boardSnapshot: true,
+              drill: { select: { jsonData: true } },
             },
           });
-          if (!plan) {
-            throw new BadRequestException('Training plan does not exist');
-          }
-          plan.drills.forEach(({ drill }) =>
-            this.assertDrillFitsPlan(
-              {
-                id: plan.id,
-                clubId: plan.clubId,
-                groupId: data.groupId ?? null,
-              },
-              drill,
-            ),
-          );
-          if (
-            plan.dayPlans.some(
-              ({ week }) =>
-                week.season.clubId !== plan.clubId ||
-                week.season.groupId !== data.groupId,
-            )
-          ) {
+          if (!planDrill) {
             throw new BadRequestException(
-              'Training plan group must match every linked season day',
+              'Plan drill does not belong to the training plan',
             );
           }
-        }
+          assertLegacyTacticalWrite(
+            planDrill.boardSnapshot ?? planDrill.drill.jsonData,
+          );
+          return await tx.planDrill.update({
+            where: { id: planDrillId },
+            data: { boardSnapshot } as never,
+            include: { drill: true },
+          });
+        },
+        { isolationLevel: 'Serializable' },
+      );
+    } catch (error) {
+      if (error instanceof HttpException) throw error;
+      rethrowTacticalConflict(error);
+      this.persistenceFailure('TRAINING_PLAN_BOARD_UPDATE_FAILED');
+    }
+  }
 
-        return transaction.trainingPlan.update({
-          where: { id },
-          data: {
-            title: data.title,
-            totalDuration: data.totalDuration,
-            groupId: data.groupId,
-            date: data.date,
-            notes: data.notes,
-          } as any,
-        });
-      },
-      { isolationLevel: 'Serializable' },
-    );
+  async update(id: string, input: UpdateTrainingPlanDto) {
+    const data = parseUpdateTrainingPlanBody(input);
+    try {
+      return await this.prisma.$transaction(
+        async (transaction) => {
+          const needsProjection =
+            data.groupId !== undefined ||
+            data.title !== undefined ||
+            data.date !== undefined ||
+            data.notes !== undefined;
+          const plan = needsProjection
+            ? await transaction.trainingPlan.findUnique({
+                where: { id },
+                select: {
+                  id: true,
+                  clubId: true,
+                  groupId: true,
+                  drills: {
+                    select: {
+                      drill: {
+                        select: {
+                          id: true,
+                          scope: true,
+                          clubId: true,
+                          groupId: true,
+                        },
+                      },
+                    },
+                  },
+                  dayPlans: {
+                    select: {
+                      id: true,
+                      week: {
+                        select: {
+                          season: {
+                            select: { id: true, clubId: true, groupId: true },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              })
+            : null;
+          if (needsProjection && !plan) {
+            throw new BadRequestException('Training plan does not exist');
+          }
+
+          if (data.groupId !== undefined && plan) {
+            plan.drills.forEach(({ drill }) =>
+              this.assertDrillFitsPlan(
+                {
+                  id: plan.id,
+                  clubId: plan.clubId,
+                  groupId: data.groupId ?? null,
+                },
+                drill,
+              ),
+            );
+            if (
+              plan.dayPlans.some(
+                ({ week }) =>
+                  week.season.clubId !== plan.clubId ||
+                  week.season.groupId !== data.groupId,
+              )
+            ) {
+              throw new BadRequestException(
+                'Training plan group must match every linked season day',
+              );
+            }
+          }
+
+          const date =
+            data.date === undefined || data.date === null
+              ? data.date
+              : data.date instanceof Date
+                ? data.date
+                : new Date(data.date);
+          if (data.date === null && plan?.dayPlans.length) {
+            throw new BadRequestException(
+              'Linked training plan date cannot be cleared',
+            );
+          }
+
+          const dayPlanTargets = new Map<
+            string,
+            { weekId: string; dayOfWeek: number; date: Date }
+          >();
+          if (date instanceof Date && plan?.dayPlans.length) {
+            for (const dayPlan of plan.dayPlans) {
+              const week = await transaction.weekPlan.findFirst({
+                where: {
+                  seasonId: dayPlan.week.season.id,
+                  startDate: { lte: date },
+                  endDate: { gte: date },
+                },
+                select: { id: true },
+              });
+              if (!week) {
+                throw new BadRequestException(
+                  'Training plan date must belong to every linked season week',
+                );
+              }
+              dayPlanTargets.set(dayPlan.id, {
+                weekId: week.id,
+                dayOfWeek: date.getDay() === 0 ? 7 : date.getDay(),
+                date,
+              });
+            }
+          }
+
+          const updated = await transaction.trainingPlan.update({
+            where: { id },
+            data: {
+              title: data.title,
+              totalDuration: data.totalDuration,
+              groupId: data.groupId,
+              date,
+              notes: data.notes,
+            },
+          });
+
+          if (
+            plan?.dayPlans.length &&
+            (data.title !== undefined ||
+              data.notes !== undefined ||
+              data.date !== undefined)
+          ) {
+            await Promise.all(
+              plan.dayPlans.map((dayPlan) => {
+                const target = dayPlanTargets.get(dayPlan.id);
+                return transaction.dayPlan.update({
+                  where: { id: dayPlan.id },
+                  data: {
+                    title: data.title,
+                    notes: data.notes,
+                    ...(target
+                      ? {
+                          weekId: target.weekId,
+                          dayOfWeek: target.dayOfWeek,
+                          date: target.date,
+                        }
+                      : {}),
+                  },
+                });
+              }),
+            );
+          }
+          return updated;
+        },
+        { isolationLevel: 'Serializable' },
+      );
+    } catch (error) {
+      if (error instanceof HttpException) throw error;
+      this.persistenceFailure('TRAINING_PLAN_UPDATE_FAILED');
+    }
   }
 
   private assertDrillFitsPlan(
@@ -509,6 +592,30 @@ export class TrainingPlansService {
   }
 
   async remove(id: string) {
-    return this.prisma.trainingPlan.delete({ where: { id } });
+    try {
+      return await this.prisma.$transaction(
+        async (transaction) => {
+          await transaction.dayPlan.deleteMany({
+            where: { trainingPlanId: id },
+          });
+          await transaction.attendance.deleteMany({ where: { planId: id } });
+          await transaction.planDrill.deleteMany({
+            where: { trainingPlanId: id },
+          });
+          return transaction.trainingPlan.delete({ where: { id } });
+        },
+        { isolationLevel: 'Serializable' },
+      );
+    } catch {
+      this.persistenceFailure('TRAINING_PLAN_DELETE_FAILED');
+    }
+  }
+
+  private persistenceFailure(event: string): never {
+    this.logger.error(event);
+    throw new InternalServerErrorException({
+      statusCode: 500,
+      message: 'Internal server error',
+    });
   }
 }

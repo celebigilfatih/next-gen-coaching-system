@@ -15,6 +15,7 @@ dist/
 .react-router/
 out/
 /output/playwright/
+/.playwright-cli/
 
 # Environment variables
 .env

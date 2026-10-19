@@ -1,4 +1,7 @@
-import { resolvePersistentSessionConfig } from './persistent-session.config';
+import {
+  resolveBrowserOrigins,
+  resolvePersistentSessionConfig,
+} from './persistent-session.config';
 
 describe('resolvePersistentSessionConfig', () => {
   it('keeps the legacy access lifetime while the feature is disabled', () => {
@@ -63,5 +66,24 @@ describe('resolvePersistentSessionConfig', () => {
         FRONTEND_ORIGIN: 'http://staging.example.test',
       }),
     ).toThrow('loopback hosts');
+  });
+
+  it('allows the canonical local frontend origin while sessions are disabled', () => {
+    expect(
+      resolveBrowserOrigins({
+        NODE_ENV: 'development',
+        PERSISTENT_SESSIONS_ENABLED: 'false',
+      }),
+    ).toContain('http://localhost:3132');
+  });
+
+  it('uses only the configured local origin while sessions are enabled', () => {
+    expect(
+      resolveBrowserOrigins({
+        NODE_ENV: 'development',
+        PERSISTENT_SESSIONS_ENABLED: 'true',
+        FRONTEND_ORIGIN: 'http://localhost:3132',
+      }),
+    ).toEqual(['http://localhost:3132']);
   });
 });

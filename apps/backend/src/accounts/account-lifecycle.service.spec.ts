@@ -2,6 +2,7 @@ import {
   BadRequestException,
   ConflictException,
   ForbiddenException,
+  ServiceUnavailableException,
 } from '@nestjs/common';
 import type { AuthPrincipal } from '../auth/auth-principal';
 import { AccountLifecycleService } from './account-lifecycle.service';
@@ -78,6 +79,101 @@ describe('AccountLifecycleService authorization', () => {
     expect(persisted.tokenHash).toMatch(/^[a-f0-9]{64}$/);
     expect(persisted.tokenHash).not.toBe(result.token);
     expect(persisted).not.toHaveProperty('token');
+  });
+
+  it('does not return the raw invitation token after SMTP acceptance', async () => {
+    const invitation = {
+      id: 'invite-1',
+      email: 'player@example.com',
+      role: 'PLAYER',
+      clubId: 'club-a',
+      expiresAt: new Date(),
+      createdAt: new Date(),
+    };
+    const transaction = {
+      accountInvitation: {
+        updateMany: jest.fn(),
+        create: jest.fn().mockResolvedValue(invitation),
+      },
+      securityAuditEvent: { create: jest.fn() },
+    };
+    const prisma = {
+      club: { findUnique: jest.fn().mockResolvedValue({ id: 'club-a' }) },
+      user: { findUnique: jest.fn().mockResolvedValue(null) },
+      $transaction: jest.fn((callback) => callback(transaction)),
+    };
+    const delivery = {
+      mode: 'smtp',
+      deliverInvitation: jest.fn().mockResolvedValue(undefined),
+    };
+    const service = new AccountLifecycleService(prisma as any, delivery as any);
+
+    const result = await service.createInvitation(
+      principal('SYSTEM_ADMIN', null),
+      {
+        email: 'player@example.com',
+        role: 'PLAYER',
+        clubId: 'club-a',
+      },
+    );
+
+    expect(result).toEqual({
+      invitation,
+      delivery: { status: 'accepted' },
+    });
+    expect(JSON.stringify(result)).not.toContain('rawToken');
+    expect(delivery.deliverInvitation).toHaveBeenCalledWith(
+      'player@example.com',
+      expect.stringMatching(/^[A-Za-z0-9_-]{43}$/),
+    );
+  });
+
+  it('revokes a new invitation and returns a generic 503 on delivery failure', async () => {
+    const invitation = {
+      id: 'invite-1',
+      email: 'player@example.com',
+      role: 'PLAYER',
+      clubId: 'club-a',
+      expiresAt: new Date(),
+      createdAt: new Date(),
+    };
+    const transaction = {
+      accountInvitation: {
+        updateMany: jest.fn(),
+        create: jest.fn().mockResolvedValue(invitation),
+      },
+      securityAuditEvent: { create: jest.fn() },
+    };
+    const revoke = jest.fn().mockResolvedValue({ count: 1 });
+    const prisma = {
+      club: { findUnique: jest.fn().mockResolvedValue({ id: 'club-a' }) },
+      user: { findUnique: jest.fn().mockResolvedValue(null) },
+      accountInvitation: { updateMany: revoke },
+      $transaction: jest.fn((callback) => callback(transaction)),
+    };
+    const service = new AccountLifecycleService(
+      prisma as any,
+      {
+        mode: 'smtp',
+        deliverInvitation: jest.fn().mockRejectedValue(new Error('sensitive')),
+      } as any,
+    );
+
+    await expect(
+      service.createInvitation(principal('SYSTEM_ADMIN', null), {
+        email: 'player@example.com',
+        role: 'PLAYER',
+        clubId: 'club-a',
+      }),
+    ).rejects.toBeInstanceOf(ServiceUnavailableException);
+    expect(revoke).toHaveBeenCalledWith({
+      where: {
+        id: 'invite-1',
+        consumedAt: null,
+        revokedAt: null,
+      },
+      data: { revokedAt: expect.any(Date) },
+    });
   });
 
   it('blocks a club admin from suspending another club account', async () => {
@@ -228,3 +324,15 @@ describe('AccountLifecycleService authorization', () => {
     expect(transaction.securityAuditEvent.create).not.toHaveBeenCalled();
   });
 });
+// Legacy API contract tests isolate the sporting projection. Real atomic parity
+// and failures are exercised against PostgreSQL in the E2E suite.
+jest.mock('../sporting/legacy-compatibility', () => ({
+  legacyWrite: (prisma: unknown, work: (tx: unknown) => unknown) =>
+    work(prisma),
+  syncLegacyGroup: jest.fn(),
+  syncLegacyMember: jest.fn(),
+  syncLegacySeason: jest.fn(),
+  syncLegacyPerson: jest.fn(),
+  endLegacyMembers: jest.fn(),
+  assertSportingAccountChange: jest.fn(),
+}));

@@ -55,6 +55,7 @@ export function resolveBrowserOrigins(
     : [
         'http://localhost:3000',
         'http://localhost:3001',
+        'http://localhost:3132',
         'http://localhost:3500',
         'http://localhost:9000',
         'http://localhost:9001',

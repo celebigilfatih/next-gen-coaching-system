@@ -1,5 +1,5 @@
 import { Navigate } from 'react-router';
 
 export default function HomeRoute() {
-  return <Navigate to="/app/week" replace />;
+  return <Navigate to="/app/dashboard" replace />;
 }

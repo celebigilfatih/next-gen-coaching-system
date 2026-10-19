@@ -8,68 +8,335 @@ datasource db {
 }
 
 model User {
-  id                    String               @id @default(cuid())
-  name                  String
-  email                 String               @unique
-  passwordHash          String
-  role                  UserRole
-  status                AccountStatus        @default(ACTIVE)
-  authVersion           Int                  @default(0)
-  clubId                String?
-  createdAt             DateTime             @default(now())
-  updatedAt             DateTime             @updatedAt
-  birthDate             DateTime?
-  position              Position?
-  attendances           Attendance[]
-  groups                GroupMember[]
-  playerLoads           PlayerLoad[]         @relation("PlayerLoads")
-  performances          PlayerPerformance[]
-  seasonsCreated        Season[]             @relation("SeasonCreator")
-  coachedPlans          TrainingPlan[]
-  healthLogs            PlayerHealthLog[]    @relation("PlayerHealthLogs")
-  healthStatus          PlayerHealthStatus[] @relation("PlayerHealthStatus")
-  coachNotes            PlayerCoachNote[]    @relation("PlayerCoachNotes")
-  invitationsCreated    AccountInvitation[]  @relation("InvitationCreator")
-  invitationAccepted    AccountInvitation?   @relation("InvitationAcceptedUser")
-  passwordResetsCreated PasswordResetToken[] @relation("PasswordResetCreator")
-  passwordResetTokens   PasswordResetToken[] @relation("PasswordResetTarget")
-  auditEventsAuthored   SecurityAuditEvent[] @relation("AuditActor")
-  auditEventsTargeted   SecurityAuditEvent[] @relation("AuditTarget")
-  drillsCreated         Drill[]              @relation("DrillCreator")
-  refreshSessions       RefreshSession[]
-  club                  Club?                @relation(fields: [clubId], references: [id])
+  id                         String               @id @default(cuid())
+  name                       String
+  email                      String               @unique
+  passwordHash               String
+  role                       UserRole
+  status                     AccountStatus        @default(ACTIVE)
+  authVersion                Int                  @default(0)
+  clubId                     String?
+  personId                   String?              @unique
+  createdAt                  DateTime             @default(now())
+  updatedAt                  DateTime             @updatedAt
+  birthDate                  DateTime?
+  position                   Position?
+  attendances                Attendance[]
+  groups                     GroupMember[]
+  playerLoads                PlayerLoad[]         @relation("PlayerLoads")
+  performances               PlayerPerformance[]
+  seasonsCreated             Season[]             @relation("SeasonCreator")
+  coachedPlans               TrainingPlan[]
+  healthLogs                 PlayerHealthLog[]    @relation("PlayerHealthLogs")
+  healthStatus               PlayerHealthStatus[] @relation("PlayerHealthStatus")
+  coachNotes                 PlayerCoachNote[]    @relation("PlayerCoachNotes")
+  invitationsCreated         AccountInvitation[]  @relation("InvitationCreator")
+  invitationAccepted         AccountInvitation?   @relation("InvitationAcceptedUser")
+  passwordResetsCreated      PasswordResetToken[] @relation("PasswordResetCreator")
+  passwordResetTokens        PasswordResetToken[] @relation("PasswordResetTarget")
+  auditEventsAuthored        SecurityAuditEvent[] @relation("AuditActor")
+  auditEventsTargeted        SecurityAuditEvent[] @relation("AuditTarget")
+  drillsCreated              Drill[]              @relation("DrillCreator")
+  drillVersionsAuthored      DrillVersion[]       @relation("DrillVersionAuthor")
+  drillVersionsReviewed      DrillVersion[]       @relation("DrillVersionReviewer")
+  drillVersionsPublished     DrillVersion[]       @relation("DrillVersionPublisher")
+  drillSourcesVerified       DrillSource[]        @relation("DrillSourceVerifier")
+  refreshSessions            RefreshSession[]
+  club                       Club?                @relation(fields: [clubId], references: [id])
+  person                     Person?              @relation(fields: [personId], references: [id], onDelete: SetNull)
+  sportingAssignmentsCreated SportingAssignment[] @relation("SportingAssignmentCreator")
+  playerNotesAuthored          PlayerNote[]         @relation("PlayerNoteAuthor")
+  playerNoteRevisions          PlayerNoteRevision[] @relation("PlayerNoteRevisionEditor")
+  playerNoteGrantsCreated      PlayerNoteTeamGrant[] @relation("PlayerNoteGrantActor")
+
+  @@index([personId])
 }
 
 model Club {
-  id          String               @id @default(cuid())
+  id                  String               @id @default(cuid())
+  name                String
+  logo                String?
+  description         String?
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+  groups              PlayerGroup[]
+  seasons             Season[]
+  plans               TrainingPlan[]
+  users               User[]
+  invitations         AccountInvitation[]
+  auditEvents         SecurityAuditEvent[]
+  drills              Drill[]
+  persons             Person[]
+  teams               Team[]
+  clubSeasons         ClubSeason[]
+  functionalRoles     FunctionalRole[]
+  sportingAssignments SportingAssignment[]
+  externalIdentities  ExternalIdentity[]
+  availabilityPeriods AvailabilityPeriod[]
+  teamSeasons         TeamSeason[]
+  playerNotes         PlayerNote[]
+}
+
+model Person {
+  id                  String               @id @default(cuid())
+  clubId              String
+  displayName         String
+  birthDate           DateTime?
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+  club                Club                 @relation(fields: [clubId], references: [id], onDelete: Cascade)
+  account             User?
+  playerProfile       PlayerProfile?
+  staffProfile        StaffProfile?
+  assignments         SportingAssignment[]
+  externalIdentities  ExternalIdentity[]
+  availabilityPeriods AvailabilityPeriod[]
+  auditEvents         SecurityAuditEvent[] @relation("AuditTargetPerson")
+  playerNotes         PlayerNote[]
+
+  @@index([clubId, displayName])
+}
+
+model PlayerProfile {
+  personId           String         @id
+  preferredFoot      PreferredFoot?
+  primaryPosition    Position?
+  secondaryPositions Json?
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+  person             Person         @relation(fields: [personId], references: [id], onDelete: Cascade)
+}
+
+model StaffProfile {
+  personId  String   @id
+  title     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  person    Person   @relation(fields: [personId], references: [id], onDelete: Cascade)
+}
+
+model Team {
+  id            String               @id @default(cuid())
+  clubId        String
+  name          String
+  categoryKey   String
+  categoryLabel String
+  ageGroupLabel String?
+  minimumAge    Int?
+  maximumAge    Int?
+  legacyGroupId String?              @unique
+  archivedAt    DateTime?
+  createdAt     DateTime             @default(now())
+  updatedAt     DateTime             @updatedAt
+  club          Club                 @relation(fields: [clubId], references: [id], onDelete: Cascade)
+  legacyGroup   PlayerGroup?         @relation(fields: [legacyGroupId], references: [id], onDelete: SetNull)
+  teamSeasons   TeamSeason[]
+  assignments   SportingAssignment[]
+  playerNotesOrigin PlayerNote[]          @relation("PlayerNoteOriginTeam")
+  playerNoteGrants PlayerNoteTeamGrant[]
+
+  @@index([clubId, name])
+  @@index([clubId, archivedAt])
+}
+
+model ClubSeason {
+  id          String       @id @default(cuid())
+  clubId      String
   name        String
-  logo        String?
-  description String?
-  createdAt   DateTime             @default(now())
-  updatedAt   DateTime             @updatedAt
-  groups      PlayerGroup[]
-  seasons     Season[]
-  plans       TrainingPlan[]
-  users       User[]
-  invitations AccountInvitation[]
-  auditEvents SecurityAuditEvent[]
-  drills      Drill[]
+  startDate   DateTime
+  endDate     DateTime
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  club        Club         @relation(fields: [clubId], references: [id], onDelete: Cascade)
+  teamSeasons TeamSeason[]
+
+  @@unique([clubId, name, startDate, endDate])
+  @@index([clubId, startDate, endDate])
+}
+
+model TeamSeason {
+  id            String               @id @default(cuid())
+  clubId        String
+  teamId        String
+  clubSeasonId  String
+  createdAt     DateTime             @default(now())
+  updatedAt     DateTime             @updatedAt
+  club          Club                 @relation(fields: [clubId], references: [id], onDelete: Cascade)
+  team          Team                 @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  clubSeason    ClubSeason           @relation(fields: [clubSeasonId], references: [id], onDelete: Cascade)
+  legacySeasons Season[]
+  assignments   SportingAssignment[]
+
+  @@unique([teamId, clubSeasonId])
+  @@index([clubId, clubSeasonId])
+}
+
+model FunctionalRole {
+  id           String                   @id @default(cuid())
+  clubId       String
+  key          String
+  name         String
+  description  String?
+  systemKey    FunctionalRoleSystemKey?
+  createdAt    DateTime                 @default(now())
+  updatedAt    DateTime                 @updatedAt
+  club         Club                     @relation(fields: [clubId], references: [id], onDelete: Cascade)
+  capabilities RoleCapability[]
+  assignments  SportingAssignment[]
+
+  @@unique([clubId, key])
+  @@index([clubId, systemKey])
+}
+
+model RoleCapability {
+  id               String             @id @default(cuid())
+  roleDefinitionId String
+  capability       SportingCapability
+  createdAt        DateTime           @default(now())
+  roleDefinition   FunctionalRole     @relation(fields: [roleDefinitionId], references: [id], onDelete: Cascade)
+
+  @@unique([roleDefinitionId, capability])
+  @@index([capability])
+}
+
+model SportingAssignment {
+  id               String                 @id @default(cuid())
+  clubId           String
+  personId         String
+  teamId           String?
+  teamSeasonId     String?
+  roleDefinitionId String
+  assignmentType   SportingAssignmentType
+  validFrom        DateTime
+  validTo          DateTime?
+  reason           String?
+  source           String?
+  createdById      String?
+  createdAt        DateTime               @default(now())
+  updatedAt        DateTime               @updatedAt
+  club             Club                   @relation(fields: [clubId], references: [id], onDelete: Cascade)
+  person           Person                 @relation(fields: [personId], references: [id], onDelete: Cascade)
+  team             Team?                  @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  teamSeason       TeamSeason?            @relation(fields: [teamSeasonId], references: [id], onDelete: SetNull)
+  roleDefinition   FunctionalRole         @relation(fields: [roleDefinitionId], references: [id], onDelete: Restrict)
+  createdBy        User?                  @relation("SportingAssignmentCreator", fields: [createdById], references: [id], onDelete: SetNull)
+
+  @@index([clubId, personId, validFrom, validTo])
+  @@index([teamId, validFrom, validTo])
+  @@index([teamSeasonId, validFrom, validTo])
+  @@index([roleDefinitionId])
+}
+
+model ExternalIdentity {
+  id         String    @id @default(cuid())
+  clubId     String
+  personId   String
+  provider   String
+  externalId String
+  source     String?
+  validFrom  DateTime?
+  validTo    DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  club       Club      @relation(fields: [clubId], references: [id], onDelete: Cascade)
+  person     Person    @relation(fields: [personId], references: [id], onDelete: Cascade)
+
+  @@unique([clubId, provider, externalId])
+  @@index([personId, provider])
+}
+
+model AvailabilityPeriod {
+  id                 String                     @id @default(cuid())
+  clubId             String
+  personId           String
+  status             SportingAvailabilityStatus
+  validFrom          DateTime
+  validTo            DateTime?
+  restrictionSummary String?
+  source             String?
+  createdAt          DateTime                   @default(now())
+  updatedAt          DateTime                   @updatedAt
+  club               Club                       @relation(fields: [clubId], references: [id], onDelete: Cascade)
+  person             Person                     @relation(fields: [personId], references: [id], onDelete: Cascade)
+
+  @@index([clubId, personId, validFrom, validTo])
+}
+
+model PlayerNote {
+  id             String                   @id @default(cuid())
+  clubId         String
+  personId       String
+  originTeamId   String
+  authorId       String
+  category       PlayerNoteCategory
+  body           String
+  observedAt     DateTime
+  followUpAt     DateTime?
+  followUpStatus PlayerNoteFollowUpStatus?
+  version        Int                      @default(1)
+  archivedAt     DateTime?
+  createdAt      DateTime                 @default(now())
+  updatedAt      DateTime                 @updatedAt
+  club           Club                     @relation(fields: [clubId], references: [id], onDelete: Cascade)
+  person         Person                   @relation(fields: [personId], references: [id], onDelete: Cascade)
+  originTeam     Team                     @relation("PlayerNoteOriginTeam", fields: [originTeamId], references: [id], onDelete: Restrict)
+  author         User                     @relation("PlayerNoteAuthor", fields: [authorId], references: [id], onDelete: Restrict)
+  revisions      PlayerNoteRevision[]
+  teamGrants     PlayerNoteTeamGrant[]
+
+  @@index([clubId, personId, archivedAt, observedAt, id])
+  @@index([originTeamId, archivedAt, observedAt, id])
+  @@index([authorId])
+}
+
+model PlayerNoteRevision {
+  id             String                   @id @default(cuid())
+  noteId         String
+  version        Int
+  category       PlayerNoteCategory
+  body           String
+  observedAt     DateTime
+  followUpAt     DateTime?
+  followUpStatus PlayerNoteFollowUpStatus?
+  editedById     String
+  createdAt      DateTime                 @default(now())
+  note           PlayerNote               @relation(fields: [noteId], references: [id], onDelete: Cascade)
+  editedBy       User                     @relation("PlayerNoteRevisionEditor", fields: [editedById], references: [id], onDelete: Restrict)
+
+  @@unique([noteId, version])
+  @@index([noteId, createdAt, id])
+}
+
+model PlayerNoteTeamGrant {
+  id          String     @id @default(cuid())
+  noteId      String
+  teamId      String
+  grantedById String
+  createdAt   DateTime   @default(now())
+  note        PlayerNote @relation(fields: [noteId], references: [id], onDelete: Cascade)
+  team        Team       @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  grantedBy   User       @relation("PlayerNoteGrantActor", fields: [grantedById], references: [id], onDelete: Restrict)
+
+  @@unique([noteId, teamId])
+  @@index([teamId, noteId])
 }
 
 model PlayerGroup {
-  id        String         @id @default(cuid())
-  name      String
-  clubId    String
-  ageGroup  AgeGroup
-  createdAt DateTime       @default(now())
-  updatedAt DateTime       @updatedAt
-  category  TeamCategory   @default(ALT_YAPI)
-  members   GroupMember[]
-  matches   Match[]        @relation("GroupMatches")
-  seasons   Season[]       @relation("GroupSeasons")
-  club      Club           @relation(fields: [clubId], references: [id])
-  sessions  TrainingPlan[] @relation("GroupPlans")
-  drills    Drill[]
+  id         String         @id @default(cuid())
+  name       String
+  clubId     String
+  ageGroup   String
+  archivedAt DateTime?
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+  category   TeamCategory   @default(ALT_YAPI)
+  members    GroupMember[]
+  matches    Match[]        @relation("GroupMatches")
+  seasons    Season[]       @relation("GroupSeasons")
+  club       Club           @relation(fields: [clubId], references: [id])
+  sessions   TrainingPlan[] @relation("GroupPlans")
+  drills     Drill[]
+  team       Team?
 }
 
 model GroupMember {
@@ -119,19 +386,22 @@ model PasswordResetToken {
 }
 
 model SecurityAuditEvent {
-  id           String              @id @default(cuid())
-  action       SecurityAuditAction
-  actorId      String?
-  targetUserId String?
-  clubId       String?
-  metadata     Json?
-  createdAt    DateTime            @default(now())
-  actor        User?               @relation("AuditActor", fields: [actorId], references: [id])
-  targetUser   User?               @relation("AuditTarget", fields: [targetUserId], references: [id])
-  club         Club?               @relation(fields: [clubId], references: [id])
+  id             String              @id @default(cuid())
+  action         SecurityAuditAction
+  actorId        String?
+  targetUserId   String?
+  targetPersonId String?
+  clubId         String?
+  metadata       Json?
+  createdAt      DateTime            @default(now())
+  actor          User?               @relation("AuditActor", fields: [actorId], references: [id])
+  targetUser     User?               @relation("AuditTarget", fields: [targetUserId], references: [id])
+  targetPerson   Person?             @relation("AuditTargetPerson", fields: [targetPersonId], references: [id], onDelete: SetNull)
+  club           Club?               @relation(fields: [clubId], references: [id])
 
   @@index([actorId])
   @@index([targetUserId])
+  @@index([targetPersonId])
   @@index([clubId])
   @@index([createdAt])
 }
@@ -160,7 +430,7 @@ model Drill {
   id          String        @id @default(cuid())
   title       String
   category    DrillCategory
-  ageGroup    AgeGroup
+  ageGroup    String
   durationMin Int
   difficulty  Difficulty
   equipment   String?
@@ -176,10 +446,101 @@ model Drill {
   club        Club?         @relation(fields: [clubId], references: [id], onDelete: Cascade)
   group       PlayerGroup?  @relation(fields: [groupId], references: [id], onDelete: Cascade)
   createdBy   User?         @relation("DrillCreator", fields: [createdById], references: [id], onDelete: Restrict)
+  versions    DrillVersion[]
 
   @@index([scope, clubId])
   @@index([groupId])
   @@index([createdById])
+}
+
+model DrillSource {
+  id                String            @id @default(cuid())
+  kind              DrillSourceKind
+  title             String
+  sourceUrl         String?
+  author            String?
+  license           DrillLicenseType
+  attribution       String?
+  changes           String?
+  licenseVerifiedAt DateTime?
+  verifiedById      String?
+  contentHash       String?           @unique
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  verifiedBy        User?             @relation("DrillSourceVerifier", fields: [verifiedById], references: [id], onDelete: SetNull)
+  versions          DrillVersion[]
+
+  @@index([kind, license])
+}
+
+model DrillVersion {
+  id               String             @id @default(cuid())
+  drillId          String
+  version          Int
+  status           DrillContentStatus @default(DRAFT)
+  title            String
+  summary          String
+  category         DrillCategory
+  difficulty       Difficulty
+  objectiveKey     String
+  objectiveLabel   String
+  themes           String[]
+  durationMin      Int
+  playerMin        Int?
+  playerMax        Int?
+  areaLengthM      Int?
+  areaWidthM       Int?
+  equipmentItems   String[]
+  organization     String
+  steps            Json
+  coachingPoints   Json
+  progressions     Json
+  regressions      Json
+  constraints      Json
+  safetyNotes      String?
+  boardDocument    Json?
+  searchText       String
+  sourceId         String
+  createdById      String?
+  reviewedById     String?
+  publishedById    String?
+  reviewComment    String?
+  submittedAt      DateTime?
+  approvedAt       DateTime?
+  publishedAt      DateTime?
+  archivedAt       DateTime?
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  drill            Drill              @relation(fields: [drillId], references: [id], onDelete: Cascade)
+  source           DrillSource        @relation(fields: [sourceId], references: [id], onDelete: Restrict)
+  createdBy        User?              @relation("DrillVersionAuthor", fields: [createdById], references: [id], onDelete: SetNull)
+  reviewedBy       User?              @relation("DrillVersionReviewer", fields: [reviewedById], references: [id], onDelete: SetNull)
+  publishedBy      User?              @relation("DrillVersionPublisher", fields: [publishedById], references: [id], onDelete: SetNull)
+  ageVariants      DrillAgeVariant[]
+
+  @@unique([drillId, version])
+  @@index([status, publishedAt])
+  @@index([objectiveKey, category, difficulty])
+  @@index([sourceId])
+}
+
+model DrillAgeVariant {
+  id             String       @id @default(cuid())
+  drillVersionId String
+  ageGroup       String
+  durationMin    Int
+  playerMin      Int?
+  playerMax      Int?
+  areaLengthM    Int?
+  areaWidthM     Int?
+  rules          Json
+  coachingPoints Json
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  drillVersion   DrillVersion @relation(fields: [drillVersionId], references: [id], onDelete: Cascade)
+
+  @@unique([drillVersionId, ageGroup])
+  @@index([ageGroup, durationMin, playerMin, playerMax])
 }
 
 model TrainingPlan {
@@ -221,23 +582,29 @@ model Attendance {
   createdAt DateTime         @default(now())
   plan      TrainingPlan     @relation(fields: [planId], references: [id])
   player    User             @relation(fields: [playerId], references: [id])
+
+  @@unique([planId, playerId])
 }
 
 model Season {
-  id        String      @id @default(cuid())
-  name      String
-  clubId    String
-  groupId   String
-  startDate DateTime
-  endDate   DateTime
-  userId    String
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
-  matches   Match[]
-  club      Club        @relation(fields: [clubId], references: [id])
-  group     PlayerGroup @relation("GroupSeasons", fields: [groupId], references: [id])
-  createdBy User        @relation("SeasonCreator", fields: [userId], references: [id])
-  weeks     WeekPlan[]
+  id           String      @id @default(cuid())
+  name         String
+  clubId       String
+  groupId      String
+  startDate    DateTime
+  endDate      DateTime
+  userId       String
+  teamSeasonId String?
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  matches      Match[]
+  club         Club        @relation(fields: [clubId], references: [id])
+  group        PlayerGroup @relation("GroupSeasons", fields: [groupId], references: [id])
+  createdBy    User        @relation("SeasonCreator", fields: [userId], references: [id])
+  weeks        WeekPlan[]
+  teamSeason   TeamSeason? @relation(fields: [teamSeasonId], references: [id], onDelete: SetNull)
+
+  @@index([teamSeasonId])
 }
 
 model WeekPlan {
@@ -484,6 +851,7 @@ enum AccountStatus {
 
 enum SecurityAuditAction {
   SYSTEM_ADMIN_BOOTSTRAPPED
+  SYSTEM_ADMIN_RECOVERED
   INVITATION_CREATED
   INVITATION_REVOKED
   INVITATION_ACCEPTED
@@ -498,6 +866,99 @@ enum SecurityAuditAction {
   SESSION_REFRESHED
   SESSION_LOGGED_OUT
   SESSION_REUSE_DETECTED
+  SPORTING_ASSIGNMENT_CREATED
+  SPORTING_ASSIGNMENT_ENDED
+  SPORTING_CAPABILITY_GRANTED
+  SPORTING_TEAM_CREATED
+  SPORTING_TEAM_UPDATED
+  SPORTING_TEAM_ARCHIVED
+  SPORTING_TEAM_RESTORED
+  PLAYER_NOTE_CREATED
+  PLAYER_NOTE_UPDATED
+  PLAYER_NOTE_ARCHIVED
+  PLAYER_NOTE_RESTORED
+  PLAYER_NOTE_SHARES_CHANGED
+  DRILL_CONTENT_DRAFT_CREATED
+  DRILL_CONTENT_SUBMITTED
+  DRILL_CONTENT_APPROVED
+  DRILL_CONTENT_REJECTED
+  DRILL_CONTENT_PUBLISHED
+  DRILL_CONTENT_ARCHIVED
+}
+
+enum PreferredFoot {
+  LEFT
+  RIGHT
+  BOTH
+  UNKNOWN
+}
+
+enum FunctionalRoleSystemKey {
+  PLAYER
+  HEAD_COACH
+  ASSISTANT_COACH
+  GOALKEEPER_COACH
+  FITNESS_COACH
+  PERFORMANCE_COACH
+  ANALYST
+  SCOUT
+  SPORTING_DIRECTOR
+  ACADEMY_DIRECTOR
+  MEDICAL_STAFF
+  TEAM_MANAGER
+  OTHER
+}
+
+enum SportingCapability {
+  TEAM_VIEW
+  TEAM_MANAGE
+  PLAYER_VIEW
+  PLAYER_MANAGE
+  PLAYER_HISTORY_VIEW
+  ASSIGNMENT_VIEW
+  ASSIGNMENT_MANAGE
+  AVAILABILITY_VIEW
+  PLAYER_NOTE_VIEW
+  PLAYER_NOTE_MANAGE
+  DRILL_CONTENT_AUTHOR
+  DRILL_CONTENT_REVIEW
+  DRILL_CONTENT_PUBLISH
+}
+
+enum PlayerNoteCategory {
+  GENERAL
+  TRAINING
+  MATCH
+  TECHNICAL
+  TACTICAL
+  DEVELOPMENT
+}
+
+enum PlayerNoteFollowUpStatus {
+  OPEN
+  DONE
+  CANCELLED
+}
+
+enum SportingAssignmentType {
+  LEGACY_MEMBER
+  PRIMARY_REGISTERED
+  TRAINING_GUEST
+  MATCH_ELIGIBLE
+  LOAN_IN
+  LOAN_OUT
+  INTERNATIONAL_DUTY
+  STAFF
+}
+
+enum SportingAvailabilityStatus {
+  AVAILABLE
+  MODIFIED
+  UNAVAILABLE
+  RETURNING
+  SUSPENDED
+  INTERNATIONAL_DUTY
+  OTHER
 }
 
 enum Position {
@@ -519,21 +980,32 @@ enum DrillScope {
   CLUB
 }
 
+enum DrillContentStatus {
+  DRAFT
+  IN_REVIEW
+  APPROVED
+  PUBLISHED
+  ARCHIVED
+}
+
+enum DrillSourceKind {
+  NGCS_ORIGINAL
+  OPEN_LICENSE
+  LEGACY
+}
+
+enum DrillLicenseType {
+  NGCS_PROPRIETARY
+  CC0
+  CC_BY_4_0
+  LEGACY_UNVERIFIED
+}
+
 enum Phase {
   WARM_UP
   TECHNICAL
   TACTICAL
   COOL_DOWN
-}
-
-enum AgeGroup {
-  U8
-  U10
-  U12
-  U14
-  U16
-  U18
-  SENIOR
 }
 
 enum AttendanceStatus {

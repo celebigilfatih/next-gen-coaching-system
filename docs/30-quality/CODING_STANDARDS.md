@@ -31,5 +31,6 @@
 - **Typecheck:** Kök `npm run typecheck`, backend `tsc --noEmit` ve frontend React
   Router type generation/TypeScript kontrolünü çalıştırır.
 - **Tam kapı:** `npm run quality`; E2E destructive koşulları nedeniyle ayrı tutulur.
-- Backend analytics adapter'ındaki 41 unused-variable uyarısı görünür teknik borçtur;
-  lint hatası yoktur ve yeni kodda uyarı eklenmemelidir.
+- Backend analytics adapter'ındaki 41 unused-variable uyarısı BL-024 ilk diliminde
+  mevcut alan eleme kuralları korunarak kapatıldı. Lint uyarısı/hatası eklenmemeli;
+  warning suppression ile borç gizlenmemelidir.

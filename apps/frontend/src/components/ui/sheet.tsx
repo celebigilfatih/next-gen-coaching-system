@@ -16,10 +16,10 @@ function SheetContent({
 }) {
   return (
     <DialogPrimitive.Portal>
-      <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-slate-950/45" />
+      <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-overlay/45" />
       <DialogPrimitive.Content
         className={cn(
-          'fixed inset-y-0 z-50 w-[min(88vw,390px)] bg-white p-6 shadow-2xl',
+          'fixed inset-y-0 z-50 w-[min(88vw,var(--sheet-max-width))] bg-popover p-6 shadow-2xl',
           side === 'right' ? 'right-0' : 'left-0',
           className,
         )}
@@ -27,7 +27,7 @@ function SheetContent({
       >
         {children}
         <DialogPrimitive.Close
-          className="absolute right-4 top-4 rounded-md p-1 hover:bg-secondary"
+          className="absolute right-4 top-4 cursor-pointer rounded-md p-1 hover:bg-secondary"
           aria-label="Kapat"
         >
           <X />

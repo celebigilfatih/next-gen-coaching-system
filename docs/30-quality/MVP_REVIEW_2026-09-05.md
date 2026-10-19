@@ -9,8 +9,9 @@
 - **Güncel hüküm: PASS.** İncelenen
   `1b831e087b727b80bfed0d47005bb0b95fa0852f` revision'ının ilk hükmü bir P0,
   üç P1, üç P2 ve bir P3 nedeniyle **FAIL** idi. Onaylanan remediation sonrasında
-  açık P0/P1 kalmadı; F-001–F-006 kapandı, F-007/F-008 sürdürülebilirlik backlog'u
-  olarak devam ediyor.
+  açık P0/P1 kalmadı; F-001–F-006 kapandı. Sonraki BL-023/024 çalışmasıyla
+  F-007/F-008 de onaylı MVP kapsamı için kapandı; global veya MVP dışı politikalar
+  ayrı karar kapılarında sürüyor.
 - İlk review'da kalite kapıları geçtiği halde testlerin kapsamadığı erişim ve
   veri-kaybı yolları hükmü düşürmüştü; bunlar artık doğrudan regresyon testleriyle
   korunuyor.
@@ -26,16 +27,16 @@
 
 ## Kapsam ve yöntem
 
-| Alan | İncelenen kanıt |
-|---|---|
-| Baseline | `origin/main` ve çalışma revision'ı aynı: `1b831e0`; başlangıçta çalışma ağacı temiz |
-| Ürün | Constitution, Product Spec, Scope, Roadmap, REQ-001–011, M0–M4 |
-| Kararlar | Accepted ADR-0001–0017; ADR-0010'ın M4 sınırı ve ADR-0016/0017 production koşulları |
-| Backend | Bütün controller'lar, Socket.IO gateway, authorization service, lifecycle akışları, tactical validator |
-| Veri | Prisma schema, iki migration, foreign key/unique ilişkileri, transaction yolları |
-| Frontend | Dokuz rota, shell/guard/workspace, kritik formlar, taktik editörü ve responsive runtime |
-| Test | Backend unit/E2E, frontend unit/Sites/Playwright, gereksinim ve negatif-dal eşlemesi |
-| Güvenlik | Repository-wide source scan, secret/log/dependency kontrolleri ve seçili dinamik doğrulamalar |
+| Alan     | İncelenen kanıt                                                                                        |
+| -------- | ------------------------------------------------------------------------------------------------------ |
+| Baseline | `origin/main` ve çalışma revision'ı aynı: `1b831e0`; başlangıçta çalışma ağacı temiz                   |
+| Ürün     | Constitution, Product Spec, Scope, Roadmap, REQ-001–011, M0–M4                                         |
+| Kararlar | Accepted ADR-0001–0017; ADR-0010'ın M4 sınırı ve ADR-0016/0017 production koşulları                    |
+| Backend  | Bütün controller'lar, Socket.IO gateway, authorization service, lifecycle akışları, tactical validator |
+| Veri     | Prisma schema, iki migration, foreign key/unique ilişkileri, transaction yolları                       |
+| Frontend | Dokuz rota, shell/guard/workspace, kritik formlar, taktik editörü ve responsive runtime                |
+| Test     | Backend unit/E2E, frontend unit/Sites/Playwright, gereksinim ve negatif-dal eşlemesi                   |
+| Güvenlik | Repository-wide source scan, secret/log/dependency kontrolleri ve seçili dinamik doğrulamalar          |
 
 Review hükmü kullanıcının kabul ettiği kurala göre verilmiştir: tenant ihlali,
 authentication bypass, veri kaybı riski, migration hatası veya çekirdek MVP akışı
@@ -44,23 +45,23 @@ güncel kapanış durumu “Review sonrası kabul kontrolü” bölümündedir.
 
 ## Kalite kapıları
 
-| Kapı | Sonuç | Kanıt / not |
-|---|---|---|
-| `npm run quality` | Pass | Backend/frontend typecheck, lint, format, unit, build, Sites, link, CDSK ve diff kontrolleri geçti |
-| Backend unit | Pass | 15 suite / 54 test |
-| Frontend unit | Pass | 3 dosya / 7 test |
-| Frontend Sites | Pass | 4 / 4 |
-| PostgreSQL 16 migration deploy | Pass | Disposable `ngcs_review_e2e`; iki migration uygulandı |
-| Prisma migration status | Pass | Database schema up to date |
-| Live DB → schema diff | Pass | Boş diff |
-| Migrations → schema diff | Pass | Shadow DB üzerinde boş diff |
-| Backend E2E | Pass | 9 / 9; yalnız disposable DB; tenant/group/reset concurrency dahil |
-| Frontend Playwright E2E | Pass | 3 / 3; tactical zincir, responsive rotalar ve dirty navigation |
-| Frontend production dependencies | Pass | `npm audit --omit=dev`: 0 |
-| Backend production dependencies | Pass for runtime artifact; accepted repository risk | ADR-0016: repository-local audit optional-peer zincirinde 3 entry gösterir; ADR-0017 runtime install'i 0 ve image inventory zinciri içermez |
-| Runtime/migrator artifact ayrımı | Pass | Ayrı target'lar; runtime CLI/config/test/source içermez, migrator HTTP uygulaması içermez; clean apply + idempotency + HTTP 200 smoke geçti |
-| Secret örüntüleri | Pass | İzlenen gerçek key/token bulunmadı; yalnız örnek ve test denylist değerleri |
-| Browser console | Pass | Denetlenen akışlarda error/warn görülmedi |
+| Kapı                             | Sonuç                                               | Kanıt / not                                                                                                                                 |
+| -------------------------------- | --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run quality`                | Pass                                                | Backend/frontend typecheck, lint, format, unit, build, Sites, link, CDSK ve diff kontrolleri geçti                                          |
+| Backend unit                     | Pass                                                | 15 suite / 54 test                                                                                                                          |
+| Frontend unit                    | Pass                                                | 3 dosya / 7 test                                                                                                                            |
+| Frontend Sites                   | Pass                                                | 4 / 4                                                                                                                                       |
+| PostgreSQL 16 migration deploy   | Pass                                                | Disposable `ngcs_review_e2e`; iki migration uygulandı                                                                                       |
+| Prisma migration status          | Pass                                                | Database schema up to date                                                                                                                  |
+| Live DB → schema diff            | Pass                                                | Boş diff                                                                                                                                    |
+| Migrations → schema diff         | Pass                                                | Shadow DB üzerinde boş diff                                                                                                                 |
+| Backend E2E                      | Pass                                                | 9 / 9; yalnız disposable DB; tenant/group/reset concurrency dahil                                                                           |
+| Frontend Playwright E2E          | Pass                                                | 3 / 3; tactical zincir, responsive rotalar ve dirty navigation                                                                              |
+| Frontend production dependencies | Pass                                                | `npm audit --omit=dev`: 0                                                                                                                   |
+| Backend production dependencies  | Pass for runtime artifact; accepted repository risk | ADR-0016: repository-local audit optional-peer zincirinde 3 entry gösterir; ADR-0017 runtime install'i 0 ve image inventory zinciri içermez |
+| Runtime/migrator artifact ayrımı | Pass                                                | Ayrı target'lar; runtime CLI/config/test/source içermez, migrator HTTP uygulaması içermez; clean apply + idempotency + HTTP 200 smoke geçti |
+| Secret örüntüleri                | Pass                                                | İzlenen gerçek key/token bulunmadı; yalnız örnek ve test denylist değerleri                                                                 |
+| Browser console                  | Pass                                                | Denetlenen akışlarda error/warn görülmedi                                                                                                   |
 
 İlk `npm run quality` çağrısında Vite preview sandbox `listen EPERM` ile durdu;
 aynı kapı gerekli yerel port izniyle tekrar çalıştırıldığında bütünüyle geçti. Bu,
@@ -68,44 +69,44 @@ uygulama hatası değil ortam kısıtı olarak sınıflandırıldı.
 
 ## Gereksinim izlenebilirliği
 
-| Requirement | Kod / davranış kanıtı | Test / runtime kanıtı | Review durumu |
-|---|---|---|---|
-| REQ-001 | Season/group scoped training plan controller/service | Backend E2E ve gerçek frontend akışı | Implemented |
-| REQ-002 | Atomik `replaceDrills`, faz/sıra ve plan detail include | Unit + frontend E2E | Implemented; ADR-0014 group invariant verified |
-| REQ-003 | Plan/player scoped attendance controller/service | Backend E2E, `/app/attendance` runtime | Implemented |
-| REQ-004 | Match tactical board ve plan snapshot endpoint'leri | Frontend tactical zincir E2E | Implemented |
-| REQ-005 | Current-user JWT, authorization service, tenant/group negatif yolları | Cross-club/group E2E + Socket unit | **Implemented: F-001/F-002/F-003 closed** |
-| REQ-006 | CDSK manifest ve zorunlu belgeler | Validator + Markdown link kapısı | Implemented |
-| REQ-007 | Invitation, suspension, authVersion, reset ve audit | Lifecycle unit/E2E | Implemented; F-005 closed |
-| REQ-008 | Login, app shell, week/training/attendance akışı | Playwright + dokuz rota runtime | Implemented |
-| REQ-009 | `TacticalBoardDocumentV1`, Konva tools/history/import/export | Unit/E2E + tarayıcı etkileşimi | **Implemented: F-004/F-006 closed** |
-| REQ-010 | Scoped drill create/update, owner ve mass-assignment | Unit/E2E negatif yolları | Implemented; ADR-0014 aggregate invariant verified |
-| REQ-011 | Dashboard/library/attendance/settings ve beş ana görev | 1440/1024/390 runtime | Implemented |
+| Requirement | Kod / davranış kanıtı                                                 | Test / runtime kanıtı                  | Review durumu                                      |
+| ----------- | --------------------------------------------------------------------- | -------------------------------------- | -------------------------------------------------- |
+| REQ-001     | Season/group scoped training plan controller/service                  | Backend E2E ve gerçek frontend akışı   | Implemented                                        |
+| REQ-002     | Atomik `replaceDrills`, faz/sıra ve plan detail include               | Unit + frontend E2E                    | Implemented; ADR-0014 group invariant verified     |
+| REQ-003     | Plan/player scoped attendance controller/service                      | Backend E2E, `/app/attendance` runtime | Implemented                                        |
+| REQ-004     | Match tactical board ve plan snapshot endpoint'leri                   | Frontend tactical zincir E2E           | Implemented                                        |
+| REQ-005     | Current-user JWT, authorization service, tenant/group negatif yolları | Cross-club/group E2E + Socket unit     | **Implemented: F-001/F-002/F-003 closed**          |
+| REQ-006     | CDSK manifest ve zorunlu belgeler                                     | Validator + Markdown link kapısı       | Implemented                                        |
+| REQ-007     | Invitation, suspension, authVersion, reset ve audit                   | Lifecycle unit/E2E                     | Implemented; F-005 closed                          |
+| REQ-008     | Login, app shell, week/training/attendance akışı                      | Playwright + dokuz rota runtime        | Implemented                                        |
+| REQ-009     | `TacticalBoardDocumentV1`, Konva tools/history/import/export          | Unit/E2E + tarayıcı etkileşimi         | **Implemented: F-004/F-006 closed**                |
+| REQ-010     | Scoped drill create/update, owner ve mass-assignment                  | Unit/E2E negatif yolları               | Implemented; ADR-0014 aggregate invariant verified |
+| REQ-011     | Dashboard/library/attendance/settings ve beş ana görev                | 1440/1024/390 runtime                  | Implemented                                        |
 
 REQ-005 ve REQ-009 ilk review'da `Partial` durumuna indirilmişti; remediation
 kanıtlarıyla yeniden `Implemented` durumuna getirildi.
 
 ## HTTP ve Socket.IO yetki matrisi
 
-| Yüzey | Authentication | Rol | Tenant / kaynak kapsamı | Review sonucu |
-|---|---|---|---|---|
-| `GET /` | Public | N/A | Sağlık dışı kök yanıt | Uygun |
-| `POST /auth/login` | Public | N/A | Kimlik bilgisi + throttle | Uygun |
-| `GET /auth/me` | JWT | Tümü | Güncel DB principal | Uygun |
-| Invitation accept, reset complete | Public token | N/A | Hash, süre, replay ve conditional claim | Uygun; F-005 kapalı |
-| Invitation create/revoke, user access/suspend/reactivate/reset/revoke, audit | JWT | SYSTEM_ADMIN / scoped CLUB_ADMIN; self yolları ayrı | Hedef kullanıcı ve kulüp scope | Seri yollar uygun; F-005 |
-| `GET /users`, `players`, `by-email`, `:id` | JWT | Sistem, kulüp ve group-aware roller | Self/club/shared-group projection | Uygun |
-| Health logs/status ve coach notes | JWT | SYSTEM_ADMIN | MVP dışı fail-closed | Uygun; politika M4/TBD |
-| Clubs create/list/update/groups | JWT | Create SYSTEM_ADMIN; yönetim system/own CLUB_ADMIN | Current club veya global system | Uygun |
-| Groups CRUD/member yolları | JWT | SYSTEM_ADMIN / own CLUB_ADMIN; view için assigned COACH | Club/group membership | Uygun |
-| Drills read/create/update/delete | JWT | GLOBAL yalnız SYSTEM_ADMIN; CLUB own admin/assigned owner coach | Visibility + club/group/creator | Uygun; aggregate ADR-0014 ile kapalı |
-| Training plans read/create/update/delete/drills/board | JWT | System, own club admin, assigned coach; player view | Plan club/group ve linked resource | Uygun |
-| Attendance read/write | JWT | Manage için system/admin/coach; PLAYER self/group read | Plan + player group | Uygun |
-| Seasons/weeks/days/matches | JWT | System/admin/assigned coach; player view | Season club/group | Uygun; day-plan invariant transaction içinde |
-| `GET /stats/dashboard` | JWT | SYSTEM_ADMIN / CLUB_ADMIN | Global + caller club, minimum projection | Uygun; F-001 kapalı |
-| Analytics CRUD ve match adapter | JWT | SYSTEM_ADMIN | MVP dışı fail-closed | Yetki uygun; F-007 DTO/log borcu |
-| Socket connect + `user:join` | JWT | Tümü | Current DB user/authVersion, group rooms | Uygun |
-| Socket attendance/plan/drill events | JWT | Sender resource manage | Per-emit current recipient ve minimum payload | Uygun; F-003 kapalı |
+| Yüzey                                                                        | Authentication | Rol                                                             | Tenant / kaynak kapsamı                       | Review sonucu                                |
+| ---------------------------------------------------------------------------- | -------------- | --------------------------------------------------------------- | --------------------------------------------- | -------------------------------------------- |
+| `GET /`                                                                      | Public         | N/A                                                             | Sağlık dışı kök yanıt                         | Uygun                                        |
+| `POST /auth/login`                                                           | Public         | N/A                                                             | Kimlik bilgisi + throttle                     | Uygun                                        |
+| `GET /auth/me`                                                               | JWT            | Tümü                                                            | Güncel DB principal                           | Uygun                                        |
+| Invitation accept, reset complete                                            | Public token   | N/A                                                             | Hash, süre, replay ve conditional claim       | Uygun; F-005 kapalı                          |
+| Invitation create/revoke, user access/suspend/reactivate/reset/revoke, audit | JWT            | SYSTEM_ADMIN / scoped CLUB_ADMIN; self yolları ayrı             | Hedef kullanıcı ve kulüp scope                | Seri yollar uygun; F-005                     |
+| `GET /users`, `players`, `by-email`, `:id`                                   | JWT            | Sistem, kulüp ve group-aware roller                             | Self/club/shared-group projection             | Uygun                                        |
+| Health logs/status ve coach notes                                            | JWT            | SYSTEM_ADMIN                                                    | MVP dışı fail-closed                          | Uygun; politika M4/TBD                       |
+| Clubs create/list/update/groups                                              | JWT            | Create SYSTEM_ADMIN; yönetim system/own CLUB_ADMIN              | Current club veya global system               | Uygun                                        |
+| Groups CRUD/member yolları                                                   | JWT            | SYSTEM_ADMIN / own CLUB_ADMIN; view için assigned COACH         | Club/group membership                         | Uygun                                        |
+| Drills read/create/update/delete                                             | JWT            | GLOBAL yalnız SYSTEM_ADMIN; CLUB own admin/assigned owner coach | Visibility + club/group/creator               | Uygun; aggregate ADR-0014 ile kapalı         |
+| Training plans read/create/update/delete/drills/board                        | JWT            | System, own club admin, assigned coach; player view             | Plan club/group ve linked resource            | Uygun                                        |
+| Attendance read/write                                                        | JWT            | Manage için system/admin/coach; PLAYER self/group read          | Plan + player group                           | Uygun                                        |
+| Seasons/weeks/days/matches                                                   | JWT            | System/admin/assigned coach; player view                        | Season club/group                             | Uygun; day-plan invariant transaction içinde |
+| `GET /stats/dashboard`                                                       | JWT            | SYSTEM_ADMIN / CLUB_ADMIN                                       | Global + caller club, minimum projection      | Uygun; F-001 kapalı                          |
+| Analytics CRUD ve match adapter                                              | JWT            | SYSTEM_ADMIN                                                    | MVP dışı fail-closed                          | Yetki uygun; F-007 DTO/log borcu             |
+| Socket connect + `user:join`                                                 | JWT            | Tümü                                                            | Current DB user/authVersion, group rooms      | Uygun                                        |
+| Socket attendance/plan/drill events                                          | JWT            | Sender resource manage                                          | Per-emit current recipient ve minimum payload | Uygun; F-003 kapalı                          |
 
 Mass-assignment açısından drill `scope`, `clubId`, `groupId` ve `createdById`
 değerleri sunucu tarafından türetilir; kullanıcıdan gelen sahiplik alanları
@@ -267,8 +268,33 @@ seçeneklerini zorunlu kılar; F-004 Playwright ile kapalıdır.
 
 ### F-008 — P3 — Belge, log ve lint görünür borcu
 
-- **Güncel durum:** Open — BL-024; MVP Pass hükmünü düşürmeyen sürdürülebilirlik
-  borcudur.
+- **Güncel durum:** Closed for approved MVP — BL-024 ilk yerel diliminde analytics'in 41 lint
+  uyarısı ve plan-season link metadata/raw-error logları kapatıldı; Socket consumer
+  belgesi daha önce düzeltildi. Diğer DTO/log kapsamı açık olduğundan BL-024
+  tamamlanmış sayılmaz; MVP Pass hükmü değişmez. Yeni test kanıtı
+  [Test Strategy](TEST_STRATEGY.md) içindedir; aşağıdaki ilk audit kanıtı tarihseldir.
+  İkinci dilimde POST /groups console/framework raw-error yolu kapandı;
+  attendance ve add-drill runtime DTO eklendi. Ayrı club-group create/framework
+  logları ve diğer DTO'lar nedeniyle durum yine Partial'dır.
+  Üçüncü dilimde plan create/update runtime DTO; 58 unit ve iki HTTP/Prisma
+  regresyonu eklendi. Dedicated PostgreSQL'de toplam 20 backend E2E geçti;
+  Bu üçüncü dilimin tarihsel kanıtıdır. 2026-09-06 dördüncü dilimde
+  season/week/day/match DTO tamamlandı; group/club ve framework log borcu açık.
+  Bu incelemede ayrıca aşağıdaki F-009 bulundu ve düzeltildi.
+  2026-09-06 beşinci dilimde group/club DTO ve iki club-create fixed-log yolu
+  tamamlandı; F-010 kapatıldı. Altıncı dilimde group update/delete ve membership
+  hata yolları sabit olaylara indirildi; atomik silme F-011/BL-033 ile kapandı.
+  Yedinci dilimde MVP body envanteri, club update ve drill mutation hata/body
+  sınırı tamamlandı; F-012/BL-034 kapandı. Sekizinci dilimde attendance mutation
+  hata containment'ı BL-035 ile tamamlandı; concurrency incelemesinde F-013 bulundu.
+  Dokuzuncu dilimde season/week/day/match mutation ve week-generation hata
+  containment'ı BL-037 ile tamamlandı; explicit 400 ve mevcut status davranışları
+  korundu. Onuncu dilimde training-plan create/update/delete, add/replace drill ve
+  board snapshot hata yolları BL-038 ile kapandı; explicit 400 ve opsiyonel
+  season-day fail-soft davranışı korundu. Statik yeniden taramada onaylı MVP
+  mutation body/log kapsamı temiz bulundu. Global log retention/redaction ile
+  yalnız SYSTEM_ADMIN'e açık sağlık/ileri analitik prototip politikası ayrı `TBD`
+  karar kapılarıdır ve bu finding'in MVP kapanışını engellemez.
 
 - **Konum:** `docs/10-architecture/INTEGRATIONS.md`,
   `apps/backend/src/training-plans/training-plans.service.ts`,
@@ -283,6 +309,159 @@ seçeneklerini zorunlu kılar; F-004 Playwright ile kapalıdır.
   structured/redacted logging ve analytics cleanup backlog'u uygula.
 - **Eksik test:** Log redaction assertions ve gerçek zamanlı client varsa contract
   testleri.
+
+### F-009 — P0 — Sezon mutation gövdesinden nested Prisma yazma (2026-09-06 takip)
+
+- **Güncel durum:** Closed — BL-031 explicit field projection; unit ve disposable
+  PostgreSQL HTTP regresyonları geçti. İlk 2026-09-05 audit'inde saptanmamıştır;
+  bu kayıt dar kapsamlı takip incelemesidir, yeni tam audit iddiası değildir.
+- **Konum (düzeltilmiş çalışma ağacı):**
+  `apps/backend/src/seasons/seasons.controller.ts:114`,
+  `apps/backend/src/seasons/seasons.service.ts:136`,
+  `apps/backend/src/seasons/seasons.service.ts:165`,
+  `apps/backend/src/seasons/dto/season.dto.ts:86`.
+- **Requirement:** REQ-005; ek match-create board yolu REQ-009 (ADR-0012).
+- **Etki / önkoşul:** Yönetebildiği bir haftası olan kullanıcıdan alınan body,
+  yalnız kaynak hafta yetkisi sonrasında Prisma update'e aynen geçiyordu.
+  `seasonId`/`season.connect` yeniden bağlama ve nested `days.create` üzerinden
+  yabancı plan ilişkisi, dedicated gün-plan kaynak kontrolünü atlayabiliyordu.
+  Nested yazma modeli tenant aggregate sınırını bozduğundan P0 sınıflandırıldı.
+  Week create spread'i de nested days kabul ediyordu. Maç create spread'i ise
+  tacticalBoard validator'ını atlayan ayrı bir doğrulanmamış JSON yazma yoluydu.
+- **Yeniden üretim kanıtı:** Pre-patch updateWeek unit'i notes/totalLoad yanında
+  seasonId, season.connect ve days.deleteMany alanlarının Prisma data'sına
+  geçtiğini göstererek başarısız oldu. Pre-patch gerçek DB exploit çalıştırılmadı.
+  Sonrasında `test/app.e2e-spec.ts:327` dört saldırı alanını ayrı HTTP çağrılarında
+  denedi; hafta aynı sezonda, gün kaydı yerinde, yabancı sezon değişmeden kaldı.
+  Week create nested foreign plan ve match create invalid board/id de yazılmadı.
+- **Düzeltme:** Controller ve service ortak runtime parser ile yalnız izinli
+  scalar alanları yeniden kurar. Yetki kontrolleri ve transactional aggregate
+  sınırı korunur; board yalnız dedicated validator'lı yoldan yazılır. Yeni rol,
+  şema veya güvenlik politikası değil, ADR-0007/0012/0014 uygulama düzeltmesidir.
+- **Doğrulama / eksik test:** 31 yeni unit, 33 focused season testi; iki yeni
+  HTTP testiyle toplam 22/22 E2E. Root quality 250 backend/21 frontend ve bütün
+  static/build/docs kapıları geçti; migration status güncel/schema diff boş.
+  Bağımsız fix-finding patch incelemesinde somut kalan kaçış/regresyon bulunmadı.
+  Browser E2E tekrarlanmadı; diğer modüllerin benzer DTO yolları BL-024'te açık.
+
+### F-010 — P1 — Kulüp create mass-assignment (2026-09-06 takip)
+
+- **Güncel durum:** Closed — BL-032 explicit projection, runtime DTO, sabit hata
+  olayları ve gerçek HTTP/Prisma regresyonuyla doğrulandı. İlk 2026-09-05 audit'inde
+  saptanmamıştır; bu dar kapsamlı takip kaydı yeni tam audit iddiası değildir.
+- **Konum (düzeltilmiş çalışma ağacı):**
+  `apps/backend/src/clubs/clubs.controller.ts:31`,
+  `apps/backend/src/clubs/clubs.service.ts:19`,
+  `apps/backend/src/clubs/dto/club.dto.ts:34`.
+- **Requirement:** REQ-005 / ADR-0007; invitation lifecycle için REQ-007 etkisi.
+- **Etki / önkoşul:** Geçerli SYSTEM_ADMIN kimliğiyle `POST /clubs` body'si
+  Prisma Club create data'sına aynen aktarılıyordu. İstemci `id`, timestamp ve
+  nested `users/groups/seasons/plans/...` alanlarını kullanarak endpoint'in
+  name/logo/description sözleşmesi dışındaki yaşam döngüsü ve ilişki yazılarını
+  tetikleyebilirdi. Alt rol auth bypass'ı kanıtlanmadı; ayrı yaşam döngüsü
+  kontrollerini aşan privileged integrity yolu olduğu için P1 sınıflandırıldı.
+- **Yeniden üretim:** Pre-patch focused test, istemci id/createdAt ve nested
+  users/groups nesnelerinin Prisma çağrısında kaldığını göstererek kırmızı oldu.
+  Post-patch aynı test yalnız name/logo/description gördü. Disposable DB HTTP
+  testi istemci id'sinin oluşmadığını, nested user/group/member yazılmadığını ve
+  sunucu kimliğinin kullanıldığını doğruladı.
+- **Düzeltme:** Controller ve service ortak runtime parser ile explicit alan
+  projeksiyonu uygular. Group/club body'leri mevcut enum/default/null/empty
+  sözleşmesiyle doğrulanır. `/groups` body hedefinde yalnız clubId önce parse
+  edilip tenant yetkisi diğer alanlardan önce çalışır. Club ve club-group create
+  beklenmeyen persistence hataları raw cause taşımayan generic 500 ve sabit olay
+  üretir. Yeni rol, şema veya global hata politikası eklenmemiştir.
+- **Doğrulama / kalan:** 84 focused test; bağımsız review yetki-sırası regresyonunu
+  buldu ve kapandı. Root quality 325 backend/21 frontend; disposable migration
+  status/schema diff ve backend 23/23 E2E geçti. İlk E2E fixture type hatası
+  uygulama çalışmadan düzeltildi. Browser E2E tekrarlanmadı. Group update/delete
+  ile duplicate/missing membership framework log yolları sonraki altıncı dilimde
+  F-011/BL-033 kapsamında kapatılmıştır.
+
+### F-011 — P1 — Grup silmede kısmi üyelik kaybı (2026-09-06 takip)
+
+- **Güncel durum:** Closed — BL-033 transaction ve scoped hata containment'ı;
+  unit ile gerçek PostgreSQL HTTP regresyonları geçti. İlk 2026-09-05 audit'inde
+  saptanmamıştır; bu dar takip kaydı yeni tam audit iddiası değildir.
+- **Konum (düzeltilmiş çalışma ağacı):**
+  `apps/backend/src/groups/groups.service.ts:76`,
+  `apps/backend/src/groups/groups.service.ts:92`,
+  `apps/backend/src/groups/groups.service.ts:104`,
+  `apps/backend/src/groups/groups.service.ts:126`.
+- **Requirement:** REQ-005 / ADR-0007; grup ve üyelik veri bütünlüğü.
+- **Etki / önkoşul:** Yetkili yönetici ilişkili bir grubu silmeyi denediğinde
+  servis önce bütün üyelikleri kalıcı siliyor, sonra grup kaydını siliyordu.
+  Plan/season gibi foreign key ilişkisi ana silmeyi reddederse grup yerinde kalırken
+  üyeleri kaybolabiliyordu. Tenant bypass yoktur; çekirdek veri kaybı riski P1'dir.
+- **Yeniden üretim kanıtı:** Pre-patch unit, silmenin tek transaction çağrısını
+  beklerken `0` gördü. Post-patch disposable PostgreSQL E2E, ilişkili grup için
+  generic 500 sonrasında aynı grup ve birebir aynı üye kümesini doğruladı; bağımsız
+  grup ise üyesiyle birlikte 200 yanıtıyla silindi.
+- **Düzeltme:** Üyelik `deleteMany` ve grup `delete` aynı Prisma interactive
+  transaction'ında yürür. Grup update/delete ve add/remove lookup/write ile
+  duplicate/missing üyelik yolları raw error/cause/kimlik taşımayan generic 500 ve
+  yalnız sabit olay üretir. Duplicate/missing için mevcut 500 status'u korunur;
+  yeni global error/status veya retention politikası eklenmemiştir.
+- **Doğrulama / kalan:** 11 yeni error-boundary testi, toplam 56 focused group
+  testi; root quality 28 backend suite/336 test ve 21 frontend testi; üç migration,
+  güncel status, boş schema diff ve disposable PostgreSQL 24/24 E2E geçti. Browser
+  E2E tekrarlanmadı; diğer implicit framework/body yolları BL-024'te açıktır.
+
+### F-012 — P2 — Club update ve drill mutation ham hata/body yolları (2026-09-06 takip)
+
+- **Güncel durum:** Closed — BL-034 scoped runtime body ve hata containment'ı;
+  unit ile disposable PostgreSQL HTTP regresyonları geçti. İlk 2026-09-05 audit'inde
+  saptanmamıştır; bu dar takip kaydı yeni tam audit iddiası değildir.
+- **Konum (düzeltilmiş çalışma ağacı):**
+  `apps/backend/src/clubs/clubs.service.ts:57`,
+  `apps/backend/src/drills/drills.controller.ts:48`,
+  `apps/backend/src/drills/drills.service.ts:76`,
+  `apps/backend/src/drills/drills.service.ts:132`.
+- **Requirement:** REQ-005, REQ-008 / ADR-0007 ve ADR-0012.
+- **Etki / önkoşul:** Yetkili mutation'da Prisma hatası raw framework exception
+  yoluna düşebiliyordu. Drill create/update null gövdesi kontrollü istemci hatası
+  yerine `TypeError`; array/primitive update ise alan fallback'leriyle persistence
+  yoluna kadar ilerleyebiliyordu. Tenant bypass veya veri kaybı kanıtlanmadığı için
+  P2 sınıflandırıldı.
+- **Yeniden üretim kanıtı:** Pre-patch 12 regresyonda club/drill persistence
+  girdileri beklenen `InternalServerErrorException` yerine raw Object/Error;
+  malformed drill gövdeleri `TypeError` veya resolved mutation üretti. Post-patch
+  aynı testler generic cause-free 500, sabit olay ya da kontrollü 400/no-write gördü.
+- **Düzeltme:** Drill controller/service body sınırı `unknown` + JSON nesne gate'i
+  kullanır. Update kaynak yetkisi parse öncesinde kalır. Yalnız son Prisma
+  create/update/delete sink'leri fixed-event containment'a alınmıştır; validation ve
+  authorization istisnaları sarılmaz. Club update aynı scoped modeli uygular.
+- **Doğrulama / kalan:** 12 yeni regresyon, 56/56 focused club/drill testi; root
+  quality 29 backend suite/348 test ve 21 frontend testi; üç migration, güncel
+  status, boş schema diff ve disposable PostgreSQL 25/25 E2E geçti. Browser E2E
+  tekrarlanmadı. Attendance yolu sonraki sekizinci dilimde BL-035 ile kapandı;
+  season yolu dokuzuncu dilimde BL-037, training-plan yolu onuncu dilimde BL-038
+  ile kapandı; BL-024 onaylı MVP için tamamlandı.
+  Sağlık/analitik body politikası MVP dışında onay bekler.
+
+### F-013 — P2 — Attendance kaydında eşzamanlı duplicate riski (2026-09-06 takip)
+
+- **Güncel durum:** Closed — ADR-0019 Accepted; CR-014/BL-036 onaylı ve
+  doğrulanmış. MVP review'daki açık P0/P1 ölçütünü değiştirmez.
+- **Konum:** `apps/backend/src/attendance/attendance.service.ts:16`,
+  `apps/backend/prisma/schema.prisma:216`.
+- **Requirement:** REQ-003, REQ-005 / attendance veri doğruluğu.
+- **Etki / önkoşul:** Aynı plan ve oyuncu için eşzamanlı iki ilk mark isteği ayrı
+  `findFirst` çağrılarında kayıt görmeden iki create çalıştırabilir. Şema
+  `(planId, playerId)` unique constraint taşımadığı için DB tekillik garantisi yok;
+  yoklama listesi aynı oyuncuyu birden çok kez gösterebilir.
+- **Kanıt:** Servis lookup ile create'i ayrı işlemler olarak yürütür; Prisma
+  `Attendance` modelinde yalnız primary-key `id` vardır ve birleşik unique/index
+  tanımlı değildir. Bu takip statik concurrency bulgusudur; production DB veya
+  korunan yerel DB üzerinde yarış tetiklenmemiştir.
+- **Düzeltme:** ADR-0019 Option 1 onaylandı. Migration duplicate varsa hiçbir
+  kaydı değiştirmeden `23505/P3018` ile durur; birleşik unique constraint ve tek
+  Prisma upsert son commit edilen başarılı status'u ortak son durum kabul eder.
+- **Doğrulama:** Retained envanter 0 attendance/0 duplicate gösterdi; ayrı açık
+  onayla yerel çalışma DB'sine reset yapmadan migration uygulandı, status ve unique
+  index doğrulandı. Disposable PostgreSQL clean/repeat/status/empty diff geçti.
+  Duplicate fixture'da iki satır korundu ve index oluşmadı. 24 focused unit ve
+  concurrent HTTP dahil backend E2E 26/26 geçti.
 
 ## Production riskleri — M4, MVP hükmü dışında
 
@@ -325,19 +504,19 @@ F-004 public sözleşme değiştirmeyen ortak editor blocker'ıyla kapatıldı.
 
 ## Review sonrası kabul kontrolü
 
-| Kriter | Durum |
-|---|---|
-| Açık P0/P1 yok | Pass |
-| Root quality | Pass |
-| Clean migration/schema diff | Pass |
-| Kritik backend/frontend E2E | Pass — backend 9/9, frontend 3/3 |
-| CDSK/link/diff | Pass |
-| Uygulama kodu değişmedi | N/A — bu bölüm remediation re-review'dur |
+| Kriter                      | Durum                                    |
+| --------------------------- | ---------------------------------------- |
+| Açık P0/P1 yok              | Pass                                     |
+| Root quality                | Pass                                     |
+| Clean migration/schema diff | Pass                                     |
+| Kritik backend/frontend E2E | Pass — backend 9/9, frontend 3/3         |
+| CDSK/link/diff              | Pass                                     |
+| Uygulama kodu değişmedi     | N/A — bu bölüm remediation re-review'dur |
 
 Sonuç **PASS**: F-001–F-006'nın özgün tetikleyicileri artık yeniden üretilemiyor;
 global/same-tenant, same-group, normal save ve tek reset-kazanan davranışları
-korunuyor. Production/M4 riskleri ve F-008 kapsamındaki log/DTO/lint borcu bu MVP
-hükmünün dışında kalmaya devam eder.
+korunuyor. Production/M4 riskleri, global log retention/redaction ve MVP dışı
+sağlık/analitik politikası bu MVP hükmünün dışında kalmaya devam eder.
 
 ## ADR-0018 sonrası doğrulama eki
 

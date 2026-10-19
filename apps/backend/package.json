@@ -24,7 +24,9 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
-    "prisma:migrate:deploy": "prisma migrate deploy"
+    "prisma:migrate:deploy": "prisma migrate deploy",
+    "content:drills:validate": "node scripts/import-drill-content.js",
+    "content:drills:import": "node scripts/import-drill-content.js --apply"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
@@ -40,6 +42,7 @@
     "bcrypt": "^6.0.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.2",
+    "nodemailer": "^10.0.0",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",

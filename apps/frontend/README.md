@@ -5,6 +5,12 @@ Framework Mode SPA olarak bu workspace'te uygulanır. shadcn/Radix, Tailwind CSS
 Phosphor ve React-Konva tabanı ADR-0011 ile; taktik tahta sözleşmesi ADR-0012 ile
 kabul edilmiştir. Görsel hedef “Koç Operasyon Masası”dır.
 
+Güncel BL-048 beyaz görsel sistem geçişinde Dashboard, Teams, Matches, Week,
+Trainings/detail, Library/Tactical Board/editor, Match detail, Players, Player
+360, Squad, Attendance ve Settings masaüstü/tablet/mobil QA kapılarından geçti.
+Onaylı sayfa sırası tamamlandı; sıradaki çalışma ayrı ürün eksikleri auditidir.
+API, yetki, cursor, tarih, session ve dirty-state davranışları korunur.
+
 Ana görev rotaları `/app/week`, `/app/trainings`, `/app/tactics`, `/app/squad` ve
 `/app/matches`; destek rotaları `/app/dashboard`, `/app/library`,
 `/app/attendance` ve `/app/settings` adreslerindedir. Plan, egzersiz ve maç
@@ -18,7 +24,8 @@ npm install
 npm run dev
 ```
 
-Varsayılan backend adresi `http://localhost:4000`; farklı bir ortam için
+Geliştirme sunucusu varsayılan ve strict olarak `http://localhost:3132` adresini
+kullanır. Varsayılan backend adresi `http://localhost:4000`; farklı bir ortam için
 `VITE_API_BASE_URL` kullanılır. JWT yalnız bellekte tutulur. Varsayılan memory-only
 modda reload oturumu sonlandırır. ADR-0018 opt-in modu için backend migration ve
 `PERSISTENT_SESSIONS_ENABLED=true`, exact `FRONTEND_ORIGIN`; frontend'de
