@@ -495,11 +495,23 @@ describe('independent training catalog', () => {
   it('preserves defaults and the existing title/date gate without inventing native constraints', async () => {
     await openCreate();
     expect(screen.getByLabelText('Başlık')).toHaveValue('Yeni antrenman');
+    expect(screen.getByLabelText('Başlık')).toHaveProperty('selectionStart', 0);
+    expect(screen.getByLabelText('Başlık')).toHaveProperty(
+      'selectionEnd',
+      'Yeni antrenman'.length,
+    );
     const date = screen.getByLabelText('Tarih ve saat');
     expect(date).toHaveAttribute('type', 'datetime-local');
     expect(date).not.toHaveAttribute('required');
     expect(date).not.toHaveAttribute('min');
     expect(date).not.toHaveAttribute('max');
+    expect(date).toHaveAccessibleDescription(
+      'Gerekli. Cihazınızın yerel saatine göre kaydedilir.',
+    );
+    expect(screen.getByLabelText('Amaç')).toHaveAccessibleDescription(
+      'İsteğe bağlı. Hazırlık notlarını ve çalışma odağını ekleyebilirsiniz.',
+    );
+    expect(screen.getByLabelText('Antrenman takımı')).toHaveTextContent('U17');
     expect(
       screen.getByRole('button', { name: 'Planı oluştur' }),
     ).toBeDisabled();
@@ -550,6 +562,7 @@ describe('independent training catalog', () => {
     expect(
       screen.getByRole('button', { name: 'Oluşturuluyor…' }),
     ).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Vazgeç' })).toBeDisabled();
     expect(
       screen.getByLabelText('Başlık').closest('[aria-busy]'),
     ).toHaveAttribute('aria-busy', 'true');

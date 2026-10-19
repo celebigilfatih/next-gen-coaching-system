@@ -18,6 +18,20 @@
 
 ## Visual-system follow-up — approved 2026-09-07
 
+2026-10-19 training-plan form: shared create/edit presentation matches the compact
+library dialogs, with team context, desktop paired/mobile stacked fields,48px/
+16px inputs and144px mobile purpose. Fixed actions and compact coach pagination
+preserve native date, ownership, explicit submit, draft and focus contracts.
+[Verification](../30-quality/TRAINING_PLAN_DIALOG_UX_2026-10-19.md).
+
+
+2026-10-19 add-exercise dialog: compact header/exercise context, native plan
+selection, full selected-plan summary/purpose and fixed actions. Mobile body
+scrolls independently with44px controls/16px select. Existing creation, selection,
+version/duplicate/uncertain-write guards and focus return remain.
+[Verification](../30-quality/ADD_DRILL_DIALOG_UX_2026-10-19.md).
+
+
 2026-10-19 exercise-detail extension: compact heading, semantic four-fact strip
 and one Uygulama/Saha/Kaynak guide. Full numbered steps/equipment and exact-age
 coaching stack on mobile; readonly pitch mounts on explicit Saha selection.

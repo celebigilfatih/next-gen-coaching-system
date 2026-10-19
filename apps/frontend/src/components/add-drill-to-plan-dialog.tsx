@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router';
+import { CheckCircle, Plus } from '@phosphor-icons/react';
 import {
   addTrainingPlanDrill,
   getTrainingEditorMetadata,
@@ -18,6 +19,7 @@ import {
 } from './ui/dialog';
 import { Button } from './ui/button';
 import { NativeSelect } from './ui/native-select';
+import '../styles/drill-plan-workspace.css';
 
 export function AddDrillToPlanDialog({
   groupId,
@@ -25,6 +27,7 @@ export function AddDrillToPlanDialog({
   groupName,
   seasonId,
   drillId,
+  drillTitle,
   expectedVersionId,
   phase,
   onClose,
@@ -34,6 +37,7 @@ export function AddDrillToPlanDialog({
   groupName: string;
   seasonId?: string;
   drillId: string;
+  drillTitle: string;
   expectedVersionId: string;
   phase: DrillPhase;
   onClose: () => void;
@@ -93,6 +97,12 @@ export function AddDrillToPlanDialog({
   const plan = current?.plan;
   const attached = plan?.drills.some((item) => item.drillId === drillId);
   const options = page.data?.items ?? [];
+  const phaseName = {
+    WARM_UP: 'Isınma',
+    TECHNICAL: 'Teknik',
+    TACTICAL: 'Taktik',
+    COOL_DOWN: 'Soğuma',
+  }[phase];
   async function add() {
     if (!plan || attached || uncertain || writing.current) return;
     writing.current = true;
@@ -155,26 +165,52 @@ export function AddDrillToPlanDialog({
           if (!open && !saving) onClose();
         }}
       >
-        <DialogContent className="drill-plan-dialog">
-          <DialogHeader>
+        <DialogContent
+          className="drill-plan-dialog drill-plan-workspace"
+          onOpenAutoFocus={(event) => {
+            event.preventDefault();
+            document.getElementById('drill-target-plan')?.focus();
+          }}
+        >
+          <DialogHeader className="drill-plan-header">
             <DialogTitle>Egzersizi antrenmana ekle</DialogTitle>
             <DialogDescription>
-              {groupName} için bir plan seçin veya yeni antrenman oluşturun.
+              Planı seçin, bilgilerini kontrol edin ve eklemeyi tamamlayın.
             </DialogDescription>
           </DialogHeader>
-          {added ? (
-            <div role="status">
-              <p>Egzersiz plana eklendi.</p>
-              <Button asChild>
-                <Link to={`/app/trainings/${selectedId}`}>Antrenmanı aç</Link>
-              </Button>
-            </div>
-          ) : (
-            <>
-              <label>
-                Antrenman planı
+          <div className="drill-plan-scroll">
+            <section
+              className="drill-plan-exercise"
+              aria-label="Eklenecek egzersiz"
+            >
+              <p>
+                {groupName} · {phaseName}
+              </p>
+              <h3>{drillTitle}</h3>
+            </section>
+            {added ? (
+              <div className="drill-plan-success" role="status">
+                <CheckCircle size={28} aria-hidden="true" />
+                <h3>Egzersiz plana eklendi.</h3>
+                <p>{plan?.title}</p>
+                <p>Antrenmanı açarak fazları inceleyebilirsiniz.</p>
+              </div>
+            ) : (
+              <>
+                <div className="drill-plan-choice-heading">
+                  <label htmlFor="drill-target-plan">Antrenman planı</label>
+                  <Button
+                    id="drill-create-plan"
+                    variant="ghost"
+                    disabled={saving || uncertain}
+                    onClick={() => setCreating(true)}
+                  >
+                    <Plus aria-hidden="true" /> Yeni antrenman
+                  </Button>
+                </div>
                 <NativeSelect
-                  aria-label="Antrenman planı"
+                  id="drill-target-plan"
+                  aria-describedby="drill-plan-selection-help"
                   disabled={saving || uncertain}
                   value={selectedId}
                   onChange={(e) => {
@@ -198,108 +234,150 @@ export function AddDrillToPlanDialog({
                     </option>
                   ))}
                 </NativeSelect>
-              </label>
-              {plan && (
-                <section
-                  aria-label="Seçilen antrenman özeti"
-                  className="rounded-md border border-border p-3 text-sm"
-                >
-                  <strong>{plan.title}</strong>
-                  <p>
-                    {plan.date
-                      ? new Date(plan.date).toLocaleString('tr-TR', {
-                          dateStyle: 'long',
-                          timeStyle: 'short',
-                        })
-                      : 'Tarihsiz antrenman'}
+                <p id="drill-plan-selection-help" className="drill-plan-help">
+                  Yalnızca seçili takım ve sezonun planları gösterilir.
+                </p>
+                {page.loading ? (
+                  <p className="drill-plan-notice" role="status">
+                    Planlar yükleniyor…
                   </p>
-                  <p>
-                    {plan.totalDuration} dk · {plan.drills.length} faz
-                  </p>
-                </section>
-              )}
-              {page.loading ? (
-                <p role="status">Planlar yükleniyor…</p>
-              ) : page.error ? (
-                <div role="alert">
-                  {page.error}
-                  <Button onClick={page.retry}>Planları tekrar yükle</Button>
-                </div>
-              ) : (
-                !options.length && (
-                  <p>
-                    Bu takım ve sezon için plan bulunmuyor. Yeni antrenman
-                    oluşturabilirsiniz.
-                  </p>
-                )
-              )}
-              <nav
-                aria-label="Antrenman seçenek sayfaları"
-                className="drill-picker-pagination"
-              >
-                <Button
-                  variant="outline"
-                  disabled={saving || page.loading || page.pageNumber === 1}
-                  onClick={page.previous}
+                ) : page.error ? (
+                  <div className="drill-plan-notice" role="alert">
+                    <p>{page.error}</p>
+                    <Button variant="outline" onClick={page.retry}>
+                      Planları tekrar yükle
+                    </Button>
+                  </div>
+                ) : (
+                  !options.length && (
+                    <p className="drill-plan-notice">
+                      Bu takım ve sezon için plan bulunmuyor. Yeni antrenman
+                      oluşturabilirsiniz.
+                    </p>
+                  )
+                )}
+                <nav
+                  aria-label="Antrenman seçenek sayfaları"
+                  className="drill-plan-pagination"
                 >
-                  Önceki
-                </Button>
-                <span>
-                  Sayfa {page.pageNumber} · {page.data?.summary?.total ?? 0}{' '}
-                  plan
-                </span>
-                <Button
-                  variant="outline"
-                  disabled={saving || page.loading || !page.data?.nextCursor}
-                  onClick={() => {
-                    if (page.data?.nextCursor) page.next(page.data.nextCursor);
-                  }}
-                >
-                  Sonraki
-                </Button>
-              </nav>
-              {selectedId && !current && (
-                <p role="status">Plan kontrol ediliyor…</p>
-              )}
-              {current?.error && (
-                <div role="alert">
-                  {current.error}
                   <Button
+                    variant="outline"
+                    disabled={saving || page.loading || page.pageNumber === 1}
+                    onClick={page.previous}
+                  >
+                    Önceki
+                  </Button>
+                  <span aria-live="polite">
+                    Sayfa {page.pageNumber}
+                    {page.data && <> · {page.data.summary.total} plan</>}
+                  </span>
+                  <Button
+                    variant="outline"
+                    disabled={saving || page.loading || !page.data?.nextCursor}
                     onClick={() => {
-                      setSelection(undefined);
-                      setRevision((value) => value + 1);
+                      if (page.data?.nextCursor)
+                        page.next(page.data.nextCursor);
                     }}
                   >
-                    Seçilen planı tekrar yükle
+                    Sonraki
                   </Button>
-                </div>
-              )}
-              {attached && (
-                <p role="status">Bu egzersiz seçilen planda zaten bulunuyor.</p>
-              )}
-              {error && <p role="alert">{error}</p>}
-              {uncertain && (
-                <Button disabled={saving} onClick={() => void verify()}>
-                  Planı yenile ve sonucu kontrol et
-                </Button>
-              )}
-              <div className="drill-dialog-actions">
-                <Button
-                  variant="outline"
-                  disabled={saving || uncertain}
-                  onClick={() => setCreating(true)}
-                >
-                  Yeni antrenman
-                </Button>
-                <Button
-                  disabled={saving || !plan || attached || uncertain}
-                  onClick={() => void add()}
-                >
-                  {saving ? 'Kontrol ediliyor…' : 'Plana ekle'}
-                </Button>
-              </div>
-            </>
-          )}
+                </nav>
+                {selectedId && !current && (
+                  <p className="drill-plan-notice" role="status">
+                    Plan kontrol ediliyor…
+                  </p>
+                )}
+                {current?.error && (
+                  <div className="drill-plan-notice" role="alert">
+                    <p>{current.error}</p>
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        setSelection(undefined);
+                        setRevision((value) => value + 1);
+                      }}
+                    >
+                      Seçilen planı tekrar yükle
+                    </Button>
+                  </div>
+                )}
+                {plan ? (
+                  <section
+                    aria-label="Seçilen antrenman özeti"
+                    className="drill-plan-summary"
+                  >
+                    <p className="drill-plan-eyebrow">Seçilen antrenman</p>
+                    <h3>{plan.title}</h3>
+                    <p>
+                      {plan.date
+                        ? new Date(plan.date).toLocaleString('tr-TR', {
+                            dateStyle: 'long',
+                            timeStyle: 'short',
+                          })
+                        : 'Tarihsiz antrenman'}
+                    </p>
+                    <p>
+                      {plan.totalDuration} dk · {plan.drills.length} faz
+                    </p>
+                    {plan.notes && (
+                      <details>
+                        <summary>Antrenmanın amacı</summary>
+                        <p>{plan.notes}</p>
+                      </details>
+                    )}
+                    {!attached && (
+                      <p className="drill-plan-placement">
+                        {phaseName} bölümünün sonuna eklenecek.
+                      </p>
+                    )}
+                  </section>
+                ) : (
+                  !selectedId && (
+                    <p className="drill-plan-placeholder">
+                      Seçtiğiniz antrenmanın tarihi, süresi ve faz bilgisi
+                      burada görünecek.
+                    </p>
+                  )
+                )}
+                {attached && (
+                  <p className="drill-plan-notice" role="status">
+                    Bu egzersiz seçilen planda zaten bulunuyor.
+                  </p>
+                )}
+                {error && (
+                  <p className="drill-plan-notice" role="alert">
+                    {error}
+                  </p>
+                )}
+                {uncertain && (
+                  <Button
+                    variant="outline"
+                    disabled={saving}
+                    onClick={() => void verify()}
+                  >
+                    Planı yenile ve sonucu kontrol et
+                  </Button>
+                )}
+              </>
+            )}
+          </div>
+          <div className="drill-plan-footer">
+            <Button variant="outline" disabled={saving} onClick={onClose}>
+              {added ? 'Tamam' : 'Vazgeç'}
+            </Button>
+            {added ? (
+              <Button asChild>
+                <Link to={`/app/trainings/${selectedId}`}>Antrenmanı aç</Link>
+              </Button>
+            ) : (
+              <Button
+                disabled={saving || !plan || attached || uncertain}
+                onClick={() => void add()}
+              >
+                {saving ? 'Kontrol ediliyor…' : 'Plana ekle'}
+              </Button>
+            )}
+          </div>
         </DialogContent>
       </Dialog>
       {creating && (
@@ -310,6 +388,7 @@ export function AddDrillToPlanDialog({
           clubId={clubId}
           groupName={groupName}
           onOpenChange={setCreating}
+          returnFocusId="drill-create-plan"
           onSaved={async (created) => {
             if (!alive.current) return;
             setSelectedId(created.id);

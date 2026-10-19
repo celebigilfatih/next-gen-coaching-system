@@ -1,5 +1,59 @@
 # Changelog
 
+## 2026-10-19 — Kerem training create/attach acceptance
+
+- User-selected20Oct2026 18:30 training created under Kerem Tunalı; open SENIOR
+  published exercise attached once, Soğuma/18min/1phase. Calendar duration matches.
+- Actual create→selected picker→explicit attach→detail/reload/instructions/pitch
+  succeeds. Full source snapshots and exact owner/date verified read-only.
+  Previous2060 plans/8244 phases/36 matches/3629 day records remain unchanged.
+  [Evidence](docs/30-quality/COACH_TRAINING_FLOW_2026-10-19.md).
+
+## 2026-10-19 — Training dialog publication follow-up
+
+- User requested commit/push after quality acceptance. The earlier combined
+  package is already remote at3d5d758; remaining attachment/form/coach-refresh
+  source, tests and versioned QA are prepared for the same branch.
+  Fresh root17/17 passes: backend918/frontend514/Sites4/tooling8, builds/types/
+  lint/format,186-file links and CDSK36/47. Stage58 files, including38 QA captures;
+  source hashes unchanged, staged whitespace and key/JWT scan pass.
+  [Publication verification](docs/30-quality/UI_PUBLICATION_FOLLOWUP_2026-10-19.md).
+
+## 2026-10-19 — Local coach/player and coach-list refresh
+
+- User-authorized synthetic Kerem Tunalı (COACH) and Mert Çınar (PLAYER) are
+  ACTIVE in Spor Manage/A Takım, with normal audited identity/profile/membership.
+  Player360 primary A Takım assignment is saved through its existing UI.
+  Empty coach list was caused by zero club login accounts; existing sporting
+  staff records are distinct. No external email or retained plan rewrite.
+- Coach-list refresh preserves the training draft and clears the previous coach
+  before reloading active club choices. Explicit creation and ownership remain.
+- Focused frontend46/backend128, type/lint/format/build/Sites4, actual account/player/
+  coach readiness UI, unchanged business fingerprints and links/CDSK pass.
+  [Verification](docs/30-quality/LOCAL_COACH_PLAYER_2026-10-19.md).
+
+## 2026-10-19 — Training plan form UI/UX
+
+- Shared create/edit form now matches compact library dialogs: team context,
+  desktop paired/mobile stacked fields,48px/16px inputs and larger mobile purpose.
+- Fixed header/footer and compact coach pager preserve native local date, raw
+  values, explicit submission, active-coach ownership, draft and focus behavior.
+  No retained write, API/schema change or new ADR.
+- Full frontend512/512, final affected44/44, type/lint/format/build/Sites4,
+  responsive1440/1024/390/320/landscape and links/CDSK checks pass.
+  [Verification](docs/30-quality/TRAINING_PLAN_DIALOG_UX_2026-10-19.md).
+
+## 2026-10-19 — Add exercise dialog UI/UX
+
+- Compact Matches/library styling now covers the existing plan attachment dialog:
+  exercise/team/phase context, full plan summary/purpose and fixed footer actions.
+- Mobile uses44px controls,16px select and independent body scrolling. Native
+  cursors, selected plan, expected version, duplicate/uncertain-write verification,
+  active-coach creation and focus return remain. No retained writes or new ADR.
+- Full frontend512/512, affected32/final planning11, type/lint/format/build/Sites4,
+  responsive1440/1024/390/320/landscape and links/CDSK checks pass.
+  [Verification](docs/30-quality/ADD_DRILL_DIALOG_UX_2026-10-19.md).
+
 ## 2026-10-19 — Publication verification
 
 - Final accumulated-change review passes all17 root quality stages: backend918,

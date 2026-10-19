@@ -94,6 +94,7 @@ const renderDialog = () =>
         clubId="c"
         groupName="U14"
         drillId="d"
+        drillTitle={drill.title}
         expectedVersionId="v1"
         phase="TACTICAL"
         onClose={vi.fn()}
@@ -113,7 +114,11 @@ describe('ready exercise planning', () => {
     api.page.mockResolvedValue({ items: [drill], total: 1, nextCursor: null });
     api.filtered.mockImplementation(api.page);
     api.detail.mockResolvedValue(detail);
-    api.plans.mockResolvedValue({ items: [plan], total: 1, nextCursor: null });
+    api.plans.mockResolvedValue({
+      items: [plan],
+      summary: { total: 1 },
+      nextCursor: null,
+    });
     api.metadata.mockResolvedValue(plan);
     api.add.mockResolvedValue({ id: 'phase' });
     api.create.mockResolvedValue({
@@ -185,6 +190,7 @@ describe('ready exercise planning', () => {
   it('passes the expected version and waits for explicit add confirmation', async () => {
     renderDialog();
     await screen.findByRole('option', { name: 'Salı antrenmanı' });
+    expect(screen.getByLabelText('Antrenman planı')).toHaveFocus();
     fireEvent.change(screen.getByLabelText('Antrenman planı'), {
       target: { value: 'p' },
     });
@@ -225,6 +231,77 @@ describe('ready exercise planning', () => {
     expect(summary.getByText('71 dk · 0 faz')).toBeVisible();
     expect(api.add).not.toHaveBeenCalled();
   });
+  it('keeps the chosen plan and exercise context when browsing another option page', async () => {
+    api.plans.mockResolvedValueOnce({
+      items: [plan],
+      summary: { total: 26 },
+      nextCursor: 'page-two',
+    });
+    api.plans.mockResolvedValue({
+      items: [{ ...plan, id: 'p2', title: 'Çarşamba' }],
+      summary: { total: 26 },
+      nextCursor: null,
+    });
+    renderDialog();
+    await screen.findByRole('option', { name: 'Salı antrenmanı' });
+    expect(screen.getByLabelText('Eklenecek egzersiz')).toHaveTextContent(
+      'U14 · TaktikPres oyunu',
+    );
+    fireEvent.change(screen.getByLabelText('Antrenman planı'), {
+      target: { value: 'p' },
+    });
+    await screen.findByRole('region', { name: 'Seçilen antrenman özeti' });
+    fireEvent.click(screen.getByRole('button', { name: 'Sonraki' }));
+    await screen.findByRole('option', { name: 'Çarşamba' });
+    expect(api.plans).toHaveBeenLastCalledWith('g', undefined, 'page-two');
+    expect(screen.getByLabelText('Antrenman planı')).toHaveValue('p');
+    expect(screen.getByText('Sayfa 2 · 26 plan')).toBeVisible();
+    expect(
+      screen.getByText('Taktik bölümünün sonuna eklenecek.'),
+    ).toBeVisible();
+    expect(screen.getByRole('button', { name: 'Plana ekle' })).toBeEnabled();
+    expect(api.add).not.toHaveBeenCalled();
+  });
+  it('keeps an already attached exercise blocked and exposes the full plan purpose', async () => {
+    api.metadata.mockResolvedValue({
+      ...plan,
+      notes: 'Pas bağlantılarını güçlendir.\nBaskı altında doğru karar ver.',
+      drills: [{ drillId: 'd' }],
+    });
+    renderDialog();
+    await screen.findByRole('option', { name: 'Salı antrenmanı' });
+    fireEvent.change(screen.getByLabelText('Antrenman planı'), {
+      target: { value: 'p' },
+    });
+    await screen.findByText('Bu egzersiz seçilen planda zaten bulunuyor.');
+    expect(screen.getByRole('button', { name: 'Plana ekle' })).toBeDisabled();
+    fireEvent.click(screen.getByText('Antrenmanın amacı'));
+    expect(screen.getByText(/Pas bağlantılarını güçlendir/)).toBeVisible();
+    expect(
+      screen.queryByText('Taktik bölümünün sonuna eklenecek.'),
+    ).not.toBeInTheDocument();
+    expect(api.add).not.toHaveBeenCalled();
+  });
+  it('recovers a failed plan read without enabling attachment before verification', async () => {
+    api.metadata.mockRejectedValueOnce(new Error('Plan okunamadı.'));
+    renderDialog();
+    await screen.findByRole('option', { name: 'Salı antrenmanı' });
+    fireEvent.change(screen.getByLabelText('Antrenman planı'), {
+      target: { value: 'p' },
+    });
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'Plan okunamadı.',
+    );
+    expect(screen.getByRole('button', { name: 'Plana ekle' })).toBeDisabled();
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Seçilen planı tekrar yükle' }),
+    );
+    await waitFor(() =>
+      expect(screen.getByRole('button', { name: 'Plana ekle' })).toBeEnabled(),
+    );
+    expect(api.metadata).toHaveBeenCalledTimes(2);
+    expect(api.add).not.toHaveBeenCalled();
+  });
   it('requires an active club coach for administrator-created plans and sends the existing API ownership fields', async () => {
     api.role = 'SYSTEM_ADMIN';
     renderDialog();
@@ -257,6 +334,73 @@ describe('ready exercise planning', () => {
       after: undefined,
     });
     expect(api.add).not.toHaveBeenCalled();
+  });
+  it('loads a newly activated coach without losing the training draft or submitting it', async () => {
+    api.role = 'SYSTEM_ADMIN';
+    api.accounts.mockResolvedValueOnce({
+      items: [],
+      total: 0,
+      nextCursor: null,
+    });
+    renderDialog();
+    await screen.findByRole('option', { name: 'Salı antrenmanı' });
+    fireEvent.click(screen.getByRole('button', { name: 'Yeni antrenman' }));
+    await screen.findByText(/Bu kulüpte aktif antrenör hesabı bulunmuyor/);
+    fireEvent.change(screen.getByLabelText('Başlık'), {
+      target: { value: 'Korunan taslak' },
+    });
+    fireEvent.change(screen.getByLabelText('Tarih ve saat'), {
+      target: { value: '2026-10-20T18:00' },
+    });
+    fireEvent.change(screen.getByLabelText('Amaç'), {
+      target: { value: 'Pas bağlantıları' },
+    });
+    expect(
+      screen.getByRole('button', { name: 'Planı oluştur' }),
+    ).toBeDisabled();
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Antrenörleri yenile' }),
+    );
+    await screen.findByRole('option', { name: 'Takım antrenörü' });
+    expect(screen.getByLabelText('Başlık')).toHaveValue('Korunan taslak');
+    expect(screen.getByLabelText('Tarih ve saat')).toHaveValue(
+      '2026-10-20T18:00',
+    );
+    expect(screen.getByLabelText('Amaç')).toHaveValue('Pas bağlantıları');
+    expect(api.accounts).toHaveBeenCalledTimes(2);
+    fireEvent.change(screen.getByLabelText('Sorumlu antrenör'), {
+      target: { value: 'coach' },
+    });
+    expect(screen.getByRole('button', { name: 'Planı oluştur' })).toBeEnabled();
+    expect(api.create).not.toHaveBeenCalled();
+    expect(api.add).not.toHaveBeenCalled();
+  });
+  it('clears the previous coach on refresh so an unavailable account cannot remain pinned', async () => {
+    api.role = 'SYSTEM_ADMIN';
+    renderDialog();
+    await screen.findByRole('option', { name: 'Salı antrenmanı' });
+    fireEvent.click(screen.getByRole('button', { name: 'Yeni antrenman' }));
+    await screen.findByRole('option', { name: 'Takım antrenörü' });
+    fireEvent.change(screen.getByLabelText('Tarih ve saat'), {
+      target: { value: '2026-10-20T18:00' },
+    });
+    fireEvent.change(screen.getByLabelText('Sorumlu antrenör'), {
+      target: { value: 'coach' },
+    });
+    expect(screen.getByRole('button', { name: 'Planı oluştur' })).toBeEnabled();
+    api.accounts.mockResolvedValue({ items: [], total: 0, nextCursor: null });
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Antrenörleri yenile' }),
+    );
+    await screen.findByText(/Bu kulüpte aktif antrenör hesabı bulunmuyor/);
+    expect(
+      screen.queryByRole('option', { name: 'Takım antrenörü' }),
+    ).not.toBeInTheDocument();
+    expect(screen.getByLabelText('Sorumlu antrenör')).toHaveValue('');
+    expect(
+      screen.getByRole('button', { name: 'Planı oluştur' }),
+    ).toBeDisabled();
+    expect(api.create).not.toHaveBeenCalled();
   });
   it('creates a plan without automatically attaching and keeps the selected exercise', async () => {
     renderDialog();
@@ -313,7 +457,7 @@ describe('ready exercise planning', () => {
     );
     api.plans.mockResolvedValue({
       items: [plan, { ...plan, id: 'p2', title: 'Çarşamba' }],
-      total: 2,
+      summary: { total: 2 },
       nextCursor: null,
     });
     renderDialog();

@@ -1,5 +1,27 @@
 # Test Strategy
 
+Coach-picker refresh covers empty-to-active recovery without losing title/date/
+purpose and clearing an unavailable selected/pinned coach before reloading.
+Creation stays blocked until an active account is explicitly chosen. Local
+synthetic people acceptance checks audited identities/profiles/legacy mappings,
+primary player assignment, actual form readiness and preserved business hashes.
+[Evidence](LOCAL_COACH_PLAYER_2026-10-19.md).
+
+Training-plan form checks retain defaults, native datetime-local with no new
+required/min/max, raw values/local ISO conversion, explicit button-only submit,
+pending guard and reload ordering, text-only errors/retry, close/focus/draft and
+active-club-COACH creation. Connected field hints and first-title selection are
+asserted. Actual responsive QA covers short body scrolling/fixed actions, list
+draft reopening and loaded edit values without retained writes.
+[Evidence](TRAINING_PLAN_DIALOG_UX_2026-10-19.md).
+
+Plan attachment dialog checks preserve selection across option pages and plan
+creation, full saved facts/purpose, initial/return focus, explicit expected-version
+write, active-COACH ownership, duplicate blocking, uncertain-write verification
+and stale/error recovery. Actual short/narrow/mobile QA keeps fixed actions
+visible without submitting retained writes.
+[Evidence](ADD_DRILL_DIALOG_UX_2026-10-19.md).
+
 ADR-0047 tests all21 five-match weekday combinations alongside all35 four-match
 combinations. Cover24/24/24/72-hour gaps, asymmetric94-hour gaps, early kickoff
 dates, neighboring weeks and exact positive phase sums. PostgreSQL two/three/four/

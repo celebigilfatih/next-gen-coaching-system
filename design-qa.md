@@ -1,5 +1,62 @@
 # NGCS visual QA — BL-048 reference migration (2026-09-08)
 
+## Training-plan form extension — 2026-10-19
+
+final result: passed
+
+Source: apps/frontend/qa/add-drill-dialog-ux-2026-10-19/11-desktop-final.png.
+Result: apps/frontend/qa/training-plan-dialog-ux-2026-10-19/03-desktop-final.png.
+Both1440×1000 captures were inspected together in comparison-style.png at equal
+800px widths with aspect ratio preserved. The compact Inter header, white border,
+blue action and context marker match; the form has appropriate input density.
+
+Actual1440/1024/390/320/short-landscape checks pass. Inputs/selects48px with16px
+text; mobile purpose144px. Header/footer stay outside body scrolling. Narrow body
+widths284/284px and fixed69px create footer keep actions reachable. The longer edit
+save label wraps within an89px footer. Existing native datetime-local, local time,
+raw title/notes, active-COACH and explicit submit behavior remain. No retained write.
+
+P2 refinements pair desktop required fields, use inline team context and enlarge
+mobile purpose from112px to144px, avoiding nested scrolling for the four-line
+sample. Initial title focus selects its text. Create/Escape/reopen retains list
+form draft and exact trigger focus; embedded cancel returns to New training.
+Actual edit loads saved values and closes to its row trigger without a save.
+No actionable P0/P1/P2 remains. Full frontend512/512, final affected44/44,
+typegen/type/scoped lint/format/build/Sites4 and links/CDSK/whitespace pass.
+Physical-device certification is excluded.
+[Report](docs/30-quality/TRAINING_PLAN_DIALOG_UX_2026-10-19.md).
+
+## Add exercise dialog extension — 2026-10-19
+
+final result: passed
+
+Source: apps/frontend/qa/library-detail-ux-2026-10-19/15-desktop-final.png.
+Result: apps/frontend/qa/add-drill-dialog-ux-2026-10-19/11-desktop-final.png.
+The1425×990 source and1440×1000 result were inspected together in
+comparison-style.png at equal800px widths with aspect ratio preserved.
+comparison-dialog.png also compares the original and revised dialog.
+
+The compact Inter heading, white borders, blue action and pale selected-plan
+summary continue the approved language. Full published exercise context, native
+selection, full saved facts and purpose disclosure make the target explicit.
+Fixed header/footer and independent body scrolling preserve actions on short
+screens. No new cards, photographs or unsupported status/metrics are introduced.
+
+Actual1440×1000,1024×900,390×844,320×568 and844×390 QA passes. Every action/select
+is44px; select text16px. At320×568, the body has284px client/scroll widths and
+330px visible height for689px content; the footer remains visible at481–550px.
+Full purpose and title were inspected after scrolling. New-plan Cancel keeps the
+selected plan and restores its trigger. Page2 keeps the page1 selection. Closing
+returns focus to exercise-add-to-plan; first opening focuses drill-target-plan.
+
+P2 corrections: the earlier generic dialog scrolled its actions with content;
+header/footer now stay outside the body. Initial focus is explicitly on the plan
+select, and long recovery actions can wrap on narrow screens. No actionable
+P0/P1/P2 remains. Full frontend512/512, affected32/32, final planning11/11,
+typegen/type/scoped lint/format/build/Sites4 pass. Links/CDSK/whitespace pass.
+No retained create/attach write was submitted.
+[Report](docs/30-quality/ADD_DRILL_DIALOG_UX_2026-10-19.md).
+
 ## Exercise detail extension — 2026-10-19
 
 final result: passed

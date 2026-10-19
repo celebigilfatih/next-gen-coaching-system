@@ -1,5 +1,18 @@
 # Session Handoff
 
+## Training-dialog publication follow-up — 2026-10-19
+
+Explicit user commit/push request targets the existing codex/mvp-stabilization
+branch. Earlier combined3d5d758 is already remote. Remaining attachment/training
+form/coach-picker refresh source, regressions, responsive captures and synthetic
+local-data evidence pass the fresh complete root17/17 gate: backend918/frontend514/
+Sites4/tooling8, types/lint/format/builds,186-file links, CDSK36/47 and whitespace.
+All8 changed code/test/style hashes are stable;58 staged files/38 QA PNGs have no
+key/JWT scan findings. Publishing commit includes this report; Git history and
+remote identity provide its hash. No active hook or hook-disable flag. Ignore all
+output/env/helpers; do not change retained data or recreate the synthetic people.
+[Verification](../30-quality/UI_PUBLICATION_FOLLOWUP_2026-10-19.md).
+
 ## Final publication check — 2026-10-19
 
 User requests commit/push to existing codex/mvp-stabilization; main must stay.

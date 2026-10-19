@@ -10,6 +10,23 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 ## NGCS visual target
 
+- Training-plan form extension approved on2026-10-19: the shared create/edit form
+  uses the compact Inter dialog header/team context, paired desktop title/date
+  and stacked mobile fields. Keep48px/16px inputs,144px mobile purpose,44px actions
+  and fixed header/footer around a scrolling body. Native datetime-local and
+  title/date/optional-purpose, raw values/ISO conversion, active-COACH ownership,
+  explicit submit and caller draft/focus behavior remain; no native required/min/
+  max or Enter submission. Coach pagination keeps accessible names with compact
+  visible labels. Do not apply this presentation to permanent deletion.
+
+- Add-exercise dialog extension approved on2026-10-19: compact Inter header,
+  published exercise/team/phase context, native plan select/cursors and full saved
+  plan summary/purpose disclosure. Keep header/footer outside the scrolling body,
+  44px controls/16px select and two-column mobile footer. Focus the select on open,
+  restore New training after creation cancel and the detail trigger on close.
+  Preserve selection across pages/new-plan creation and explicit version-bound
+  attachment, active-COACH, duplicate and uncertain-write verification guards.
+
 - Exercise detail extension approved on 2026-10-19: compact text heading,
   four-cell semantic summary and one Uygulama/Saha/Kaynak panel. Full numbered
   instructions and equipment precede the coaching column (stack below1100px).
@@ -175,6 +192,12 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
   do not install unused components or add empty NGCS wrappers around primitives.
 
 ## Ready drill planning — 2026-10-19
+
+- Responsible coach uses ACTIVE COACH login accounts, not setup StaffProfile
+  records. Explicit refresh preserves the training draft but clears coach pin/
+  selection and resets option pagination, requiring a fresh eligible choice.
+  Synthetic local Kerem Tunalı/Mert Çınar were explicitly requested; do not recreate
+  them or invent new real identities when a picker is empty.
 
 - Keep the existing library/card design. Share server filters with the plan picker;
   preview instructions and the board only on explicit open. Show the resolved

@@ -193,6 +193,7 @@ function ExerciseContent({
           groupName={group.name}
           seasonId={season?.id}
           drillId={detail.drill.id}
+          drillTitle={version.title}
           expectedVersionId={version.id}
           phase={version.category}
           onClose={() => {

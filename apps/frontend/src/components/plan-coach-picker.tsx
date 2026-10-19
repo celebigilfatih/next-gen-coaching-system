@@ -28,8 +28,23 @@ export function PlanCoachPicker({
       ? [pinned, ...rows]
       : rows;
   return (
-    <div className="grid gap-2">
-      <label htmlFor="training-plan-coach">Sorumlu antrenör</label>
+    <div className="plan-coach-picker grid gap-2">
+      <div className="plan-coach-picker-heading">
+        <label htmlFor="training-plan-coach">Sorumlu antrenör</label>
+        <Button
+          type="button"
+          variant="ghost"
+          aria-label="Antrenörleri yenile"
+          disabled={disabled || page.loading}
+          onClick={() => {
+            setPinned(undefined);
+            onChange('');
+            void page.reload();
+          }}
+        >
+          Yenile
+        </Button>
+      </div>
       <NativeSelect
         id="training-plan-coach"
         disabled={disabled || page.loading || Boolean(page.error)}
@@ -70,21 +85,23 @@ export function PlanCoachPicker({
         <Button
           type="button"
           variant="outline"
+          aria-label="Önceki antrenörler"
           disabled={disabled || page.loading || page.pageNumber === 1}
           onClick={page.previous}
         >
-          Önceki antrenörler
+          Önceki
         </Button>
         <span>Sayfa {page.pageNumber}</span>
         <Button
           type="button"
           variant="outline"
+          aria-label="Sonraki antrenörler"
           disabled={disabled || page.loading || !page.data?.nextCursor}
           onClick={() => {
             if (page.data?.nextCursor) page.next(page.data.nextCursor);
           }}
         >
-          Sonraki antrenörler
+          Sonraki
         </Button>
       </nav>
     </div>

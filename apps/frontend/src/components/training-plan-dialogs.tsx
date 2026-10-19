@@ -20,6 +20,7 @@ import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
 import { getSession } from '../lib/session';
 import { PlanCoachPicker } from './plan-coach-picker';
+import '../styles/training-plan-workspace.css';
 
 type EditableTrainingPlan = Pick<
   TrainingPlan,
@@ -123,66 +124,114 @@ function TrainingPlanDialog({
   return (
     <Dialog open={open} onOpenChange={changeOpen}>
       <DialogContent
-        className="max-h-[calc(100dvh-2rem)] overflow-y-auto"
+        className="training-plan-workspace"
+        onOpenAutoFocus={(event) => {
+          event.preventDefault();
+          const titleInput = document.getElementById(
+            `training-${mode}-title`,
+          ) as HTMLInputElement | null;
+          titleInput?.focus();
+          titleInput?.select();
+        }}
         onCloseAutoFocus={(event) => {
           if (!returnFocusId) return;
           event.preventDefault();
           document.getElementById(returnFocusId)?.focus();
         }}
       >
-        <DialogHeader>
+        <DialogHeader className="training-plan-header">
           <DialogTitle>
             {editing ? 'Antrenmanı düzenle' : 'Yeni antrenman planı'}
           </DialogTitle>
           <DialogDescription>
-            {groupName} için başlık, tarih ve amacı belirleyin. Süre plan
-            fazlarından hesaplanır.
+            {editing
+              ? 'Antrenmanın temel bilgilerini güncelleyin.'
+              : 'Planın temel bilgilerini belirleyin; fazları daha sonra ekleyebilirsiniz.'}
           </DialogDescription>
         </DialogHeader>
-        <FormError message={error} />
-        <div className="grid gap-5" aria-busy={saving}>
-          {needsCoach && clubId && open && (
-            <PlanCoachPicker
-              key={clubId}
-              clubId={clubId}
-              value={coachId ?? ''}
-              onChange={(id) => setCoach({ clubId, id })}
-              disabled={saving}
-            />
-          )}
-          {needsCoach && !clubId && (
-            <p role="alert">Plan oluşturmak için kulüp bağlamı seçilmelidir.</p>
-          )}
-          <FormField label="Başlık" htmlFor={`training-${mode}-title`}>
-            <Input
-              id={`training-${mode}-title`}
-              value={title}
-              disabled={saving}
-              onChange={(event) => setTitle(event.target.value)}
-            />
-          </FormField>
-          <FormField label="Tarih ve saat" htmlFor={`training-${mode}-date`}>
-            <Input
-              id={`training-${mode}-date`}
-              type="datetime-local"
-              value={date}
-              disabled={saving}
-              onChange={(event) => setDate(event.target.value)}
-            />
-          </FormField>
-          <FormField label="Amaç" htmlFor={`training-${mode}-notes`}>
-            <Textarea
-              id={`training-${mode}-notes`}
-              value={notes}
-              disabled={saving}
-              onChange={(event) => setNotes(event.target.value)}
-            />
-          </FormField>
+        <div className="training-plan-scroll">
+          <section
+            className="training-plan-context"
+            aria-label="Antrenman takımı"
+          >
+            <p>Takım</p>
+            <h3>{groupName}</h3>
+          </section>
+          <FormError message={error} />
+          <div className="training-plan-fields" aria-busy={saving}>
+            <FormField label="Başlık" htmlFor={`training-${mode}-title`}>
+              <Input
+                id={`training-${mode}-title`}
+                aria-describedby={`training-${mode}-title-help`}
+                placeholder="Örn. Pas bağlantıları ve geçiş oyunu"
+                value={title}
+                disabled={saving}
+                onChange={(event) => setTitle(event.target.value)}
+              />
+              <p
+                id={`training-${mode}-title-help`}
+                className="training-plan-help"
+              >
+                Gerekli. Antrenmanın kısa adı.
+              </p>
+            </FormField>
+            <FormField label="Tarih ve saat" htmlFor={`training-${mode}-date`}>
+              <Input
+                id={`training-${mode}-date`}
+                type="datetime-local"
+                aria-describedby={`training-${mode}-date-help`}
+                value={date}
+                disabled={saving}
+                onChange={(event) => setDate(event.target.value)}
+              />
+              <p
+                id={`training-${mode}-date-help`}
+                className="training-plan-help"
+              >
+                Gerekli. Cihazınızın yerel saatine göre kaydedilir.
+              </p>
+            </FormField>
+            {needsCoach && clubId && open && (
+              <PlanCoachPicker
+                key={clubId}
+                clubId={clubId}
+                value={coachId ?? ''}
+                onChange={(id) => setCoach({ clubId, id })}
+                disabled={saving}
+              />
+            )}
+            {needsCoach && !clubId && (
+              <p role="alert">
+                Plan oluşturmak için kulüp bağlamı seçilmelidir.
+              </p>
+            )}
+            <FormField label="Amaç" htmlFor={`training-${mode}-notes`}>
+              <Textarea
+                id={`training-${mode}-notes`}
+                aria-describedby={`training-${mode}-notes-help`}
+                placeholder="Çalışmanın hedefini ve oyunculardan beklentilerinizi yazın."
+                value={notes}
+                disabled={saving}
+                onChange={(event) => setNotes(event.target.value)}
+              />
+              <p
+                id={`training-${mode}-notes-help`}
+                className="training-plan-help"
+              >
+                İsteğe bağlı. Hazırlık notlarını ve çalışma odağını
+                ekleyebilirsiniz.
+              </p>
+            </FormField>
+          </div>
+          <p className="training-plan-duration-note">
+            Süre, plan fazlarından hesaplanır.
+          </p>
         </div>
-        <DialogFooter className="flex-wrap text-sm font-semibold">
+        <DialogFooter className="training-plan-footer">
           <Button
             type="button"
             variant="outline"
+            disabled={saving}
             onClick={() => changeOpen(false)}
           >
             Vazgeç

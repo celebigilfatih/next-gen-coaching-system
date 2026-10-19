@@ -1,6 +1,6 @@
 # Next Generation Coaching System — Project Boot
 
-- **Document version:** 2.137
+- **Document version:** 2.141
 - **CDSK version:** 0.1.0
 - **Last updated:** 2026-10-19
 
@@ -8,6 +8,14 @@
 > gerekçeyle `N/A` bırakılır.
 
 ## Project Compass
+
+- **Training-dialog publication follow-up (2026-10-19):** user explicitly requests
+  commit/push. Prior combined3d5d758 already equals remote; remaining attachment,
+  training form and draft-preserving coach-refresh source/tests/QA target the same
+  codex/mvp-stabilization branch. Fresh root17/17 passes: backend918/frontend514/
+  Sites4/tooling8, types/lint/format/builds,186-file links, CDSK36/47 and whitespace.
+  All8 code/test/style hashes stay unchanged;58 files/38 QA PNGs pass staged hygiene.
+  [Evidence](docs/30-quality/UI_PUBLICATION_FOLLOWUP_2026-10-19.md).
 
 - **Publication verification (2026-10-19):** requested final review/commit/push
   targets codex/mvp-stabilization only. Fresh root17/17 passes: backend918/frontend509/
@@ -890,6 +898,90 @@ altı migration güncel, iki kulüp IN_SYNC ve yerel browser smoke geçti. Ayrı
 - [x] MVP kabul kapısı geçiyor; F-001–F-006 kapalı ve remediation hükmü **Pass**.
 
 ## 11. AI Handoff
+
+Kerem training flow,2026-10-19: explicit user create+attach request and selected
+20Oct2026 18:30 completed through existing UI. New retained plan
+cmvfbzkvb00392yiwp5dzmxtm, Kısa Oyun ve Yansıtma — A Takım, actual coach Kerem
+Tunalı/ACTIVE, stored15:30Z. Open source ngcs-starter-v1-senior-24 attached once:
+COOL_DOWN/order0/SENIOR/v1,18min/1phase. Full content/board snapshot equals published
+version cmvf4a72v00p72yyo3ffnuvim; linked DayPlan date/duration18 match. Create returns
+to the picker with new selection despite first-page absence; no auto attachment.
+Success/detail/reload/frozen instructions and saved pitch/mobile focus passed.
+Exact baseline hash excludes only new plan/phase/day: previous2060/8244/36/3629
+unchanged, new totals2061/8245/36/3630. Ignored read-only verify-training-flow.cjs
+and training-flow-result.json capture assertions. Older people-only full baseline
+is now historical; do not recreate the people/plan or rerun apply. No runtime
+code/ADR/migration changed. Document links186/zero broken, CDSK36 required/47 ADRs/
+zero errors and whitespace pass; final read-only verification passes after UI QA.
+Next: reopen this exact plan for further user-directed changes.
+[Evidence](docs/30-quality/COACH_TRAINING_FLOW_2026-10-19.md).
+
+
+Training-dialog publication follow-up,2026-10-19: user explicitly requested commit
+and push. The earlier combined package3d5d758 is already on the remote branch.
+Remaining attachment/training-form/coach-refresh changes and original QA are being
+verified for a normal push to codex/mvp-stabilization. No backend/schema/data
+change is part of this publication. Do not rerun local account provisioning.
+Ignored log: output/ui-publication-quality-20261019.log; full17/17 pass, exit0.
+Backend918/frontend514/Sites4/tooling8, both builds/types/lint/format,186-file links,
+CDSK36/47 and staged whitespace pass. All8 runtime/test/style hashes unchanged;
+58 files including38 QA PNGs pass the staged high-confidence key/JWT scan. No
+active hook or hook-disable flag; per-command existing author identity only.
+This report ships in the publishing commit; inspect Git history/remote equality
+for its hash. Additional screenshots/report contain no runtime changes.
+[Evidence](docs/30-quality/UI_PUBLICATION_FOLLOWUP_2026-10-19.md).
+
+Local coach/player operation,2026-10-19: user chose actual records and “Kendin
+üret”. Spor Manage had0 login accounts, so COACH/ACTIVE filter was correctly empty.
+Created synthetic Kerem Tunalı (COACH) and Mert Çınar (PLAYER), both ACTIVE in Spor
+Manage/A Takım through existing invitation acceptance/member domain services.
+Person/profiles and legacy/sporting membership audited; no external email.
+Player primary A Takım assignment saved through normal Player360 UI; current-team
+header now correct and final read-only check verifies one active primary.
+Random passwords/tokens stayed in memory; use existing reset UI for later login.
+Ordered fingerprints for2060 plans/8244 phases/36 matches/3629 day plans unchanged.
+Ignored helper/result under output/local-people-2026-10-19 are local-only; never
+repeat apply on existing identities. Verify mode is read-only and passed.
+Picker now has explicit refresh preserving draft, clearing coach pin/selection
+and reloading active club options. New coach visible; filled form enables submit.
+No retained plan/attachment submitted. Focused frontend46/backend128, typegen/type/
+scoped lint/format/build/Sites4, actual coach readiness/player/profile/account UI,
+links184/CDSK36-documents47-ADRs/zero errors/whitespace pass. No new ADR/schema/API.
+Next: select the new coach and explicitly create the desired training.
+[Evidence](docs/30-quality/LOCAL_COACH_PLAYER_2026-10-19.md).
+
+
+Training-plan form UI,2026-10-19: latest user request extends the compact library/
+attachment-dialog language to new training. Shared create/edit form has Inter
+header/team context, paired desktop/stacked mobile fields,48px/16px inputs and
+144px mobile purpose; header/footer stay outside body scrolling. Coach pager has
+short visible labels with preserved accessible names. Native datetime-local,
+raw title/notes/ISO conversion, active-COACH ownership, explicit submit and caller
+draft/focus behavior remain. Cancel disables during save. Delete unchanged.
+Full frontend512/512, final affected44/44, typegen/type/scoped lint/format,
+build/Sites4 pass. Links183/0 broken, CDSK36 required/47 ADRs/0 errors and
+whitespace pass. Source/result equal800px contact sheet and mobile inspected.
+At that UI slice's verification, no active club COACH existed; the later user-
+authorized synthetic-account operation resolves the data prerequisite.
+No retained writes, account/grant, API/schema/dependency or new ADR requirement.
+Next: user review; no automatic creation/attachment/publication.
+[Evidence](docs/30-quality/TRAINING_PLAN_DIALOG_UX_2026-10-19.md).
+
+
+Add-exercise dialog UI,2026-10-19: latest user request extends compact Matches/
+library styling to the existing plan attachment window. Published exercise/team/
+phase context, native select/cursors, full plan summary/purpose and fixed footer
+improve inspection. Mobile44px controls/16px select, scrolling body and focus
+return verified at1440/1024/390/320 and short landscape. Selection survives paging
+and new-plan cancellation. ADR-0034/0039, expected version, explicit attachment,
+active-COACH, duplicate and uncertain-write verification remain. No API/schema/
+dependency or retained data change; no new ADR required. Full frontend512/512,
+affected32/32, final planning11/11, typegen/type/scoped lint/format/build/Sites4
+pass. Links182/0 broken, CDSK36 required/47 ADRs/0 errors and whitespace pass.
+Final source/result equal800px contact sheet and responsive captures inspected.
+Next: user review of this dialog; no automatic attachment or publication.
+[Evidence](docs/30-quality/ADD_DRILL_DIALOG_UX_2026-10-19.md).
+
 
 Final publication check,2026-10-19: user explicitly requests commit/push of all
 accumulated approved changes to codex/mvp-stabilization; main stays unchanged.
