@@ -1,6 +1,6 @@
 # Next Generation Coaching System — Project Boot
 
-- **Document version:** 2.157
+- **Document version:** 2.158
 - **CDSK version:** 0.1.0
 - **Last updated:** 2026-10-20
 
@@ -8,6 +8,13 @@
 > gerekçeyle `N/A` bırakılır.
 
 ## Project Compass
+
+- **Tactical icon documentation publication (2026-10-20):** user requests commit/
+  push on codex/mvp-stabilization after1d75b9f. Remaining shared docs and three
+  original JPEGs reviewed; action-stage evidence is historical, selected nine-tool
+  implementation already shipped. Completed selection replaces stale pending copy.
+  Fresh links/CDSK/whitespace/instruction-format checks cover docs only; no runtime,
+  retained-data write or new ADR. [Review](docs/30-quality/TACTICAL_ICONS_2026-10-20.md).
 
 - **Training workflow publication (2026-10-20):** explicit review/commit/push
   request targets codex/mvp-stabilization after24a4a2a. Ready-only library/team-
@@ -58,6 +65,17 @@
   data unchanged. Focused35/type/lint/format/build/Sites4 and desktop/mobile pass.
   [Evidence](docs/30-quality/TRAINING_DETAIL_ICONS_2026-10-20.md).
 
+- **Modern 2D pitch (2026-10-20):** Eleven distinct shared templates, safe
+  proportional pitch edits, modern equipment and compact route toolbar.
+  [Verification](docs/30-quality/TACTICAL_PITCH_MODERN_2D_2026-10-20.md).
+
+- **Main PR review (2026-10-20):** PR#1 targets main. Risk-focused review of
+  implementation d65f799 finds one P1: migrated boardless legacy drill attachment
+  throws400. Keep draft until fixed/retested. Fresh backend918/frontend514/Sites4/
+  tooling8 pass; isolated root15/17 hits junction TS2742, both affected checks pass
+  with review-only preserveSymlinks. No GitHub CI checks reported. Attendance UI
+  edits stay local. [Review](docs/30-quality/PR_MAIN_FINAL_REVIEW_2026-10-20.md).
+
 - **Training attendance UI/UX (2026-10-20):** compact player rows, readable saved
   status and explicit Katıldı/Katılmadı controls; mobile48px actions and keyboard
   focus restoration. Full counters, cursors, uncertain writes and PLAYER self
@@ -69,13 +87,6 @@
   reload, 1/1. Unique row and unchanged other attendance/business data verified
   read-only. Stopped canonical API/UI restored with existing persistent-session
   configuration. [Evidence](docs/30-quality/TRAINING_ATTENDANCE_2026-10-20.md).
-
-- **Main PR review (2026-10-20):** PR#1 targets main. Risk-focused review of
-  implementation d65f799 finds one P1: migrated boardless legacy drill attachment
-  throws400. Keep draft until fixed/retested. Fresh backend918/frontend514/Sites4/
-  tooling8 pass; isolated root15/17 hits junction TS2742, both affected checks pass
-  with review-only preserveSymlinks. No GitHub CI checks reported. Attendance UI
-  edits stay local. [Review](docs/30-quality/PR_MAIN_FINAL_REVIEW_2026-10-20.md).
 
 - **Training-dialog publication follow-up (2026-10-19):** user explicitly requests
   commit/push. Prior combined3d5d758 already equals remote; remaining attachment,
@@ -967,6 +978,18 @@ altı migration güncel, iki kulüp IN_SYNC ve yerel browser smoke geçti. Ayrı
 
 ## 11. AI Handoff
 
+Tactical icon documentation publication,2026-10-20: explicit review/commit/push
+request targets codex/mvp-stabilization after1d75b9f. Remaining action-icon report,
+three original JPEG captures and shared changelog/design/instruction/handoff
+history are included. Inspected images show the first football/command-icon stage;
+current nine-tool shared-art QA is in the separate equipment report. Selection
+is complete; older next-step/no-commit statements are historical. Runtime source,
+schemas, dependencies and retained records are unchanged; the previous root17/17
+(backend937/frontend556/Sites4/tooling8) belongs to the preceding publication.
+Fresh document/profile/whitespace and instruction-format checks pass for this
+publication. No new full application test run, browser save or production change.
+PR#1 remains draft. [Review](docs/30-quality/TACTICAL_ICONS_2026-10-20.md).
+
 Training workflow publication,2026-10-20: user requests final review, commit
 and push on codex/mvp-stabilization after24a4a2a. Include the fixed starter library,
 server-resolved TEAM picker, preview facts/focus, narrowly scoped boardless legacy
@@ -980,6 +1003,35 @@ Older no-commit/local-only statements below describe their implementation turns;
 this publication supersedes them for the included changes. PR#1 stays draft;
 the historical boardless-legacy P1 is covered by the shipped regression fix.
 [Review](docs/30-quality/TRAINING_WORKFLOW_PUBLICATION_2026-10-20.md).
+
+Pitch/header publication,2026-10-20: user explicitly requests final review,
+commit and push on codex/mvp-stabilization after9015b31. Publish the eleven
+shared pitch-region templates, safe single-scene proportional edits with undo/
+fit and compact title/back/metadata/viewport layout. Keep V1/V2/API, nine-tool
+family, permissions/history/save and multi-scene lock. Other local library,
+attachment, attendance and training-detail work stays unstaged. Exact-index
+frontend551/type/lint/format/build/Sites4 and document checks pass; no new
+retained browser write. Results are recorded in the publication report.
+[Review](docs/30-quality/TACTICAL_PITCH_PUBLICATION_2026-10-20.md).
+
+Tactical icon publication,2026-10-20: explicit user request targets commit/push
+on codex/mvp-stabilization. Nine shared-art equipment tools plus command/scene/
+playback icons are isolated in the index; existing fields/history/readonly/save
+and native vector exports remain. Pending pitch/header/library/attachment/
+attendance/training-detail work stays local and unstaged. The publication report
+records exact-staged validation and scope. No API/schema/dependency/migration.
+[Review](docs/30-quality/TACTICAL_ICON_PUBLICATION_2026-10-20.md).
+
+Equipment family completion,2026-10-20: explicit follow-up adds Bayrak,
+Merdiven and İşaret to the same shared-art horizontal rail (nine total), with
+navy contours/amber details and unchanged default dimensions/rungs. All nine
+miniatures serialize identical pitch/export art. Focused46/type/lint/format,
+production build/Sites4 and desktop/tablet/mobile keyboard checks pass. Nine
+images loaded;48px controls; page widths1009/1009 and375/375; Tab reaches last
+item. All8 QA undo steps restore original full-pitch empty draft; viewport reset,
+no retained save. Earlier root17/17 remains historical; not repeated for this
+small presentation extension. No API/schema/dependency/commit/push.
+[Evidence](docs/30-quality/TACTICAL_EQUIPMENT_IMPLEMENTATION_2026-10-20.md).
 
 Team-ready plan picker,2026-10-20: user explicitly requests only ready-package
 exercises appropriate to the saved plan's team. Picker always requests collection
@@ -997,6 +1049,20 @@ output/plan-picker-ready-only-quality-20261020.log; all17 gates pass, including
 backend937/frontend553/Sites4/tooling8, type/lint/format/builds,199-file links,
 CDSK36/47 and whitespace. Final targeted backend lint/format also pass.
 [Evidence](docs/30-quality/PLAN_PICKER_READY_ONLY_2026-10-20.md).
+
+Selected tactical equipment,2026-10-20: user chose the second displayed concept.
+Six48px labeled horizontal add actions now serialize miniatures from the same
+`elementArt` as Konva/SVG/PNG. Navy shirt/gloved keeper, classic football,
+striped cone, netted goal and amber mannequins; new wall84px/three figures,
+saved widths/documents unchanged. Existing commands, identities, shirt/disc,
+history and explicit save preserved. Focused55 and real1440/1024/390 QA pass,
+including drag620/340, rotation undo/redo and mobile keyboard rail scroll.
+No retained save;15 QA undo steps restore original full-pitch empty draft,
+Henüz kaydedilmedi/Geri al disabled; viewport reset. Source/implementation
+comparison and design-qa.md pass. Full root17/17 passes, exit0: backend932,
+frontend551, Sites4/tooling8, both builds/types/lint/format/docs/CDSK/whitespace.
+No commit/push/schema/dependency/API change.
+[Evidence](docs/30-quality/TACTICAL_EQUIPMENT_IMPLEMENTATION_2026-10-20.md).
 
 Ready-only library,2026-10-20: user explicitly requests only the120 authored
 ready exercises, excluding seasonal program entries. LibraryRoute always sends
@@ -1019,6 +1085,15 @@ not describe this as a new uninterrupted17/17 run. Final197-file links/CDSK36/47
 whitespace pass; UI full reload/session retains120. Open ready-only `/app/library`.
 [Evidence](docs/30-quality/LIBRARY_READY_ONLY_2026-10-20.md).
 
+Tactical equipment concepts,2026-10-20: user requested six original objects
+shown in toolbar and pitch context. Three independent built-in Image Gen
+previews were displayed and retained in frontend QA, grounded in a read-only
+capture of the actual current board. Visual choice pending; concepts are not
+implemented assets or measured small-size controls. Preserve orthographic2D,
+shirt default, shared drawing/document contracts; generated perspective/leg
+details are not approved changes. No runtime or retained business write.
+[Preview record](docs/30-quality/TACTICAL_ICON_CONCEPTS_2026-10-20.md).
+
 Ready exercise collection,2026-10-20: user clarified authored starter content,
 then explicitly approved a separate A Takım — Hazır Egzersizler plan. Created
 cmvgg1le900012ybgmtexpdi3 under existing active coach Kerem Tunalı, undated/no
@@ -1036,6 +1111,25 @@ results in output/ready-pool-20261020; do not recreate or repeat scheduled write
 No application suite rerun for data-only operation. Open this exact collection;
 all120 remain accessible in library NGCS across supported team ages.
 [Evidence](docs/30-quality/READY_EXERCISE_POOL_2026-10-20.md).
+
+Tactical icon competitor research,2026-10-20: public Coach Board picker, Táctica
+pitch, TacticalPad guides/images/release notes and SSP3D demo were compared.
+Recommended next visual preview: six original football objects (player, keeper,
+ball, cone, goal, wall) with tool miniatures matching pitch objects. Current
+ShieldCheck/GridNine/UsersThree semantics are the clearest gaps. Preserve the
+approved2D/shirt default+disc alternative, documents/geometry and shared exports.
+This is a proposal, not an implemented or selected redesign. See
+[research and sources](docs/30-quality/TACTICAL_ICON_COMPETITOR_RESEARCH_2026-10-20.md).
+
+Tactical action icons,2026-10-20: Phosphor icons now accompany history/view/
+metadata/selection/nudge/formation/animation/scene-apply/loop/fixed-scene controls.
+Mobile history is accessible icon-only44px. Ball tool is filled SoccerBall;
+shared canvas/SVG football has central and edge black pentagons/fine seams,
+without changing radius, JSON, save/history or API. Focused58/type/lint/build
+pass;1672/390 live visual QA and375/375 mobile overflow/44×44 history checks pass.
+Only an unsaved draft was used; no new retained write. See
+[evidence](docs/30-quality/TACTICAL_ICONS_2026-10-20.md). Prior root17/17 remains
+historical; this presentation follow-up uses focused frontend checks.
 
 Legacy exercise preview/attachment,2026-10-20: user reported the generic empty
 legacy preview while adding an exercise. PlanDrillPicker now retains/passes the
@@ -1070,6 +1164,31 @@ earlier attendance changes preserved. Frontend AGENTS records preference.
 Docs/whitespace pass. Viewport reset, requested plan open.
 [Evidence](docs/30-quality/TRAINING_DETAIL_ICONS_2026-10-20.md).
 
+Modern 2D tactical pitch,2026-10-20: user-approved REQ-024/BL-057 extension
+fixes eleven shared pitch drawings and proportional single-scene edits, with
+oversized-equipment rejection and exact undo. Compact editor toolbar replaces
+the heading; shared artwork modernizes equipment in canvas/SVG/PNG rendering.
+V1/V2/API/schema/permissions remain unchanged. Authenticated1672/1024/390 checks,
+synthetic club-board save/reload and mobile V2 draft preview passed. Retained
+QA drill cmvgepax300172yb8cytunc54 has five synthetic objects; preserve it.
+IAB PNG download event was unavailable, so exported-file inspection is not claimed.
+Final primary-worktree root gate17/17 passed: backend927/frontend542, Sites4,
+tooling8, both builds and docs/CDSK. Counts include concurrent work.
+See [evidence](docs/30-quality/TACTICAL_PITCH_MODERN_2D_2026-10-20.md) for gates
+and limitations. Existing attendance work and PR#1 attachment P1 remain separate.
+
+Main PR final review,2026-10-20: PR#1 (codex/mvp-stabilization → main) is draft.
+Implementation d65f799 contains a reproduced P1 in plan-drill-content.ts:44:
+professional migration gives legacy drills a PUBLISHED version with NULL board,
+then attachment unconditionally validates it and returns400. Preserve legacy
+compatibility and add backfill-shaped regression before ready/merge. Fresh918/514/
+Sites4/tooling8 pass in detached review checkout; root15/17 due junction TS2742,
+focused typecheck and Nest build pass with review-only preserveSymlinks. This is
+not a new17/17 unmodified run; prior canonical acceptance remains dated. No GitHub
+checks/statuses exist for the reviewed SHA. Review docs only; keep the primary
+attendance edits unstaged. No migration/retained writes or production activation.
+[Review](docs/30-quality/PR_MAIN_FINAL_REVIEW_2026-10-20.md).
+
 Training attendance UI/UX,2026-10-20: PlanAttendance now uses a scoped compact
 white panel and roster rows. Explicit PRESENT/ABSENT buttons replace implicit
 whole-player toggling; null remains Henüz işaretlenmedi and is not counted absent.
@@ -1097,36 +1216,6 @@ Ignored attendance-before/result and verify-attendance.cjs preserve evidence;
 do not repeat writes for QA. No runtime/schema/ADR change; application suites not
 rerun. Document checks pass. Katılım left open; further status changes are
 user-directed. [Evidence](docs/30-quality/TRAINING_ATTENDANCE_2026-10-20.md).
-
-Pitch/header publication,2026-10-20: user explicitly requests final review,
-commit and push on codex/mvp-stabilization after9015b31. Publish the eleven
-shared pitch-region templates, safe single-scene proportional edits with undo/
-fit and compact title/back/metadata/viewport layout. Keep V1/V2/API, nine-tool
-family, permissions/history/save and multi-scene lock. Other local library,
-attachment, attendance and training-detail work stays unstaged. Exact-index
-frontend551/type/lint/format/build/Sites4 and document checks pass; no new
-retained browser write. Results are recorded in the publication report.
-[Review](docs/30-quality/TACTICAL_PITCH_PUBLICATION_2026-10-20.md).
-
-Tactical icon publication,2026-10-20: explicit user request targets commit/push
-on codex/mvp-stabilization. Nine shared-art equipment tools plus command/scene/
-playback icons are isolated in the index; existing fields/history/readonly/save
-and native vector exports remain. Pending pitch/header/library/attachment/
-attendance/training-detail work stays local and unstaged. The publication report
-records exact-staged validation and scope. No API/schema/dependency/migration.
-[Review](docs/30-quality/TACTICAL_ICON_PUBLICATION_2026-10-20.md).
-
-Main PR final review,2026-10-20: PR#1 (codex/mvp-stabilization → main) is draft.
-Implementation d65f799 contains a reproduced P1 in plan-drill-content.ts:44:
-professional migration gives legacy drills a PUBLISHED version with NULL board,
-then attachment unconditionally validates it and returns400. Preserve legacy
-compatibility and add backfill-shaped regression before ready/merge. Fresh918/514/
-Sites4/tooling8 pass in detached review checkout; root15/17 due junction TS2742,
-focused typecheck and Nest build pass with review-only preserveSymlinks. This is
-not a new17/17 unmodified run; prior canonical acceptance remains dated. No GitHub
-checks/statuses exist for the reviewed SHA. Review docs only; keep the primary
-attendance edits unstaged. No migration/retained writes or production activation.
-[Review](docs/30-quality/PR_MAIN_FINAL_REVIEW_2026-10-20.md).
 
 Kerem training flow,2026-10-19: explicit user create+attach request and selected
 20Oct2026 18:30 completed through existing UI. New retained plan
@@ -2659,6 +2748,9 @@ Do not mark roster binding, animation, offline match-day or 3D complete.
   rollout kendi karar kapılarında `TBD` kalır.
 
 ## Revision History
+
+2.158 — 2026-10-20: Review/publish remaining tactical icon documentation and three
+historical JPEGs; completed-selection guidance and current document checks recorded.
 
 2.157 — 2026-10-20: Publish reviewed ready library/team-age picker, legacy
 attachment, explicit attendance and training-detail changes with current validation.

@@ -1,4 +1,14 @@
-# NGCS visual QA — BL-048 reference migration (2026-09-08)
+# Tactical equipment design QA — 2026-10-20
+
+## Tactical icon documentation publication — 2026-10-20
+
+The three original JPEGs were inspected for the first football/command-icon
+stage; their generic equipment glyphs precede the completed shared-art rail.
+Current nine-tool comparisons remain in the equipment evidence below. This
+documentation-only publication preserves original images and dated QA limits.
+[Review](docs/30-quality/TACTICAL_ICONS_2026-10-20.md) and
+[original code publication](docs/30-quality/TACTICAL_ICON_PUBLICATION_2026-10-20.md).
+Fresh document/format checks pass before publication; no new runtime QA is claimed.
 
 ## Training workflow publication — 2026-10-20
 
@@ -21,17 +31,78 @@ publication scope are recorded in the
 No new retained browser write or download certification is claimed.
 final result: passed
 
-## Tactical icon publication — 2026-10-20
+## Selected equipment family comparison — historical QA
 
-The user-selected second icon family extends to nine matching shared-art tools.
-[Desktop evidence](apps/frontend/qa/tactical-equipment-2026-10-20/07-nine-tools-desktop.png)
-and [mobile keyboard evidence](apps/frontend/qa/tactical-equipment-2026-10-20/08-nine-tools-mobile.png)
-show the combined local application. This commit preserves the baseline route
-layout and pitch templates; only the icon scope is published. The equipment
-family and48px horizontal actions pass visual inspection, keyboard scrolling and
-SVG parity. Exact staged regression and scope are recorded in the
-[publication review](docs/30-quality/TACTICAL_ICON_PUBLICATION_2026-10-20.md).
+Follow-up: all nine equipment tools now use the shared artwork family, including
+flag, ladder and marker. [Nine-tool desktop](apps/frontend/qa/tactical-equipment-2026-10-20/07-nine-tools-desktop.png)
+and [mobile keyboard focus](apps/frontend/qa/tactical-equipment-2026-10-20/08-nine-tools-mobile.png)
+show matching tool/pitch silhouettes, labels and48px targets. Nine-image loading,
+page overflow and focused46 regression checks pass; final result: passed.
+
+Source visual truth: [selected second concept](apps/frontend/qa/tactical-icon-concepts-2026-10-20/02-touchline-compact.png).
+Implementation: authenticated `/app/tactics/new`, six-object unsaved half-pitch
+draft. [Desktop capture](apps/frontend/qa/tactical-equipment-2026-10-20/01-desktop.png).
+
+## Comparison target and evidence
+
+This is the six-object family and compact equipment rail, not a replacement of
+the entire application with the concept specimen page. Existing navigation,
+drawing tools, permission/state controls and canonical pitch orientation remain.
+The selected mock's enlarged specimen footer and blue persistent tool selection
+are presentation aids: live add buttons perform immediate actions.
+
+- Source1488×1057 pixels. Browser CSS viewport1440×1024; returned capture1425×1013
+  pixels. [Full-view comparison](apps/frontend/qa/tactical-equipment-2026-10-20/05-full-comparison.png)
+  normalizes both to744px width, preserving proportions; no1:1 whole-page claim.
+- [Focused toolbar comparison](apps/frontend/qa/tactical-equipment-2026-10-20/06-toolbar-comparison.png)
+  compares source and live content strips at equal width. Live32px miniatures
+  are enlarged for inspection; resampling softness is not source blur.
+- [Tablet](apps/frontend/qa/tactical-equipment-2026-10-20/02-tablet.png),
+  [mobile](apps/frontend/qa/tactical-equipment-2026-10-20/03-mobile.png) and
+  [keyboard focus](apps/frontend/qa/tactical-equipment-2026-10-20/04-mobile-keyboard.png).
+
+## Findings and required surfaces
+
+- Typography: existing Inter retained; readable12px equipment labels accompany
+  decorative images. Object numbers remain editable text and are preserved.
+- Rhythm/layout:48px horizontal controls with6px gaps, consistent8px radii and
+  bounded overflow. Mobile retains pitch before optional properties; page has
+  no horizontal overflow. The remaining command rail is intentionally preserved.
+- Colors/tokens: white controls, pale-blue hover/focus, blue player, yellow
+  keeper/mannequins, orange cone, white/black ball and white/gray netted goal
+  match the selected direction. Existing saved custom colors remain respected.
+- Asset quality: original shared vector equipment keeps crisp outlines and
+  matches each toolbar silhouette to the on-pitch object. Existing user-approved
+  Konva/SVG source is retained rather than introducing raster canvas assets.
+- Copy/content: all six Turkish labels appear; Huni replaces Koni for the tool.
+  Decorative images have empty alt; button names come from visible labels.
+- Interactions: actual add, independent positioning, drag, rotation, undo/redo;
+  mobile Tab focus reaches the rightmost button and scrolls it into view. All
+  images loaded; measured buttons48px high/min84px wide; console errors empty.
+
+## Comparison history
+
+Initial combined comparison found no actionable P0/P1/P2 difference within the
+requested equipment scope. No visual fix followed that comparison. Layout and
+pitch-orientation differences above are explicit existing-product constraints.
+Physical-device touch tests and downloaded export inspection remain test gaps.
+After QA cleanup an unrelated workspace-context hot refresh caused a provider
+mismatch; a full page reload restored the session/empty draft and all six icons.
+The interaction QA console was clean before that development-refresh error.
+
+## Implementation checklist
+
+- [x] Six objects represented in tool rail and live pitch.
+- [x] Shared artwork and SVG parity; no document/schema rewrite.
+- [x] Responsive, keyboard, label and state behavior checked.
+- [x] Source and implementation inspected together, full and focused evidence.
+
 final result: passed
+
+
+---
+
+# NGCS visual QA — BL-048 reference migration (2026-09-08)
 
 ## Training-plan form extension — 2026-10-19
 

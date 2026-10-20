@@ -18,31 +18,6 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
   fallback. Keep pinned selection, duplicate exclusion, explicit add, expected
   version, preview/focus and independent write-error behavior.
 
-- Library content boundary approved on2026-10-20: `/app/library` shows only the
-  120 stable `ngcs-starter-v1` ready-exercise identities, across all ages by
-  default. Keep source selection fixed to that collection through search,
-  category, paging and reset; omit CLUB/MINE/all-content switches. An explicit
-  age filter narrows the package. Show each row's age and preview its resolved
-  age; plan attachment still enforces the actual team's exact age. Seasonal
-  CLUB exercises remain stored and linked in their existing plans. This
-  supersedes the earlier library source-switch direction, without changing the
-  compact register, responsive controls or tactical creation route.
-
-- Training detail refinement approved on2026-10-20: remove the Planlar back link
-  and redundant Antrenman detayı eyebrow from the shared detail heading. Use
-  restrained colored Phosphor icons for title/date, duration/phases/purpose,
-  tabs and phase types; keep text labels, mobile44px tabs and existing behavior.
-
-- Tactical pitch extension approved on2026-10-20: use modern2D on the existing
-  shared Konva/SVG drawing source. Render all eleven illustrative pitch regions;
-  keep canonical dimensions and V1/V2 documents. Single-scene pitch changes map
-  anchors/arrow/line endpoints proportionally, preserve equipment size and reject
-  oversized equipment explicitly, with one undo and view-only fit. Keep the
-  multi-scene pitch lock. Replace the tall editor heading with a compact title/
-  accessible back control inside the toolbar; retain team/duration in collapsed
-  metadata. Route viewport space belongs to the pitch; mobile properties start
-  closed and controls use44px targets. Do not restore the removed heading/kicker.
-
 - Equipment family extension approved on2026-10-20: Bayrak, Merdiven and İşaret
   join the same shared-art horizontal rail, making nine equipment actions.
   Use navy contours, amber accents and existing default height/length/rungs/size;
@@ -57,6 +32,52 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
   editable numbers/identities, shirt/disc and existing canonical geometry.
   The specimen footer is presentation only. Add actions are immediate; do not
   invent persistent selected-tool state. Mobile rail scrolls;48px targets remain.
+
+- Library content boundary approved on2026-10-20: `/app/library` shows only the
+  120 stable `ngcs-starter-v1` ready-exercise identities, across all ages by
+  default. Keep source selection fixed to that collection through search,
+  category, paging and reset; omit CLUB/MINE/all-content switches. An explicit
+  age filter narrows the package. Show each row's age and preview its resolved
+  age; plan attachment still enforces the actual team's exact age. Seasonal
+  CLUB exercises remain stored and linked in their existing plans. This
+  supersedes the earlier library source-switch direction, without changing the
+  compact register, responsive controls or tactical creation route.
+
+- Tactical equipment preview requested on2026-10-20: six original objects must
+  be compared in toolbar and pitch context. Three concept images are retained
+  in `qa/tactical-icon-concepts-2026-10-20/`; the user subsequently selected the
+  second concept, now implemented as the shared-art family described above. These raster
+  previews do not approve generated perspective or token legs, new geometry,
+  a renderer, or production asset replacement. Preserve the shirt default and
+  orthographic shared2D contract when refining the selected direction.
+
+- Tactical icon follow-up requested on2026-10-20: the user wants a professional,
+  competitor-grounded football icon family. The research note is
+  `../../docs/30-quality/TACTICAL_ICON_COMPETITOR_RESEARCH_2026-10-20.md`.
+  The subsequent six-object original preview (player, keeper, ball, cone, goal,
+  wall) and selected family are complete. Competitor marketing art remains
+  reference material; retain the accepted2D/document boundary and original assets.
+
+- Tactical icon refinement approved on2026-10-20: use consistent Phosphor icons
+  alongside action labels; on mobile only undo/redo labels become visually
+  hidden, retaining accessible names and44px targets. The ball tool uses a dark
+  filled SoccerBall icon; shared canvas/SVG artwork uses classic black pentagon
+  panels and fine seams on a white ball, preserving saved radii and documents.
+
+- Tactical pitch extension approved on2026-10-20: use modern2D on the existing
+  shared Konva/SVG drawing source. Render all eleven illustrative pitch regions;
+  keep canonical dimensions and V1/V2 documents. Single-scene pitch changes map
+  anchors/arrow/line endpoints proportionally, preserve equipment size and reject
+  oversized equipment explicitly, with one undo and view-only fit. Keep the
+  multi-scene pitch lock. Replace the tall editor heading with a compact title/
+  accessible back control inside the toolbar; retain team/duration in collapsed
+  metadata. Route viewport space belongs to the pitch; mobile properties start
+  closed and controls use44px targets. Do not restore the removed heading/kicker.
+
+- Training detail refinement approved on2026-10-20: remove the Planlar back link
+  and redundant Antrenman detayı eyebrow from the shared detail heading. Use
+  restrained colored Phosphor icons for title/date, duration/phases/purpose,
+  tabs and phase types; keep text labels, mobile44px tabs and existing behavior.
 
 - Training-plan form extension approved on2026-10-19: the shared create/edit form
   uses the compact Inter dialog header/team context, paired desktop title/date

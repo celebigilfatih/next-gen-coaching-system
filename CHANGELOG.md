@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-10-20 — Tactical icon documentation publication
+
+- Reviewed and published the remaining action-icon report, three original JPEG
+  captures and shared design/handoff history after1d75b9f. The source implementation
+  is already in9015b31; later shared-art evidence is explicitly distinguished.
+- Completed concept selection is reflected in frontend instructions. Fresh local
+  links/CDSK/whitespace and instruction-format checks cover this docs-only commit;
+  prior full root17/17 remains historical. No runtime or retained-data change.
+  [Review](docs/30-quality/TACTICAL_ICONS_2026-10-20.md).
+
 ## 2026-10-20 — Training workflow publication
 
 - User-authorized review/commit/push combines the ready-only library, exact-team-
@@ -10,6 +20,23 @@
   Fresh root17/17 passes: backend937/frontend556/Sites4/tooling8 and both builds;
   dedicated PostgreSQL HTTP11 and final exact-index document checks pass.
   No migration, retained-data write or production activation accompanies this commit.
+
+## 2026-10-20 — Pitch and compact header publication
+
+- User-authorized publication includes eleven shared pitch templates, safe
+  proportional pitch edits and the compact accessible title/metadata layout.
+  Existing document/save/history and multi-scene locks remain.
+- Fresh exact-index frontend551/type/lint/format/build/Sites4 and docs pass.
+- Other local library/attachment/attendance/training-detail work is excluded.
+  [Review](docs/30-quality/TACTICAL_PITCH_PUBLICATION_2026-10-20.md).
+
+## 2026-10-20 — Tactical icon publication
+
+- User-authorized icon commit/push targets codex/mvp-stabilization. Nine shared
+  equipment miniatures and command/scene/playback icons are isolated from pending
+  pitch/header, library, attachment, attendance and training-detail changes.
+- Exact staged verification and publication review:
+  [Evidence](docs/30-quality/TACTICAL_ICON_PUBLICATION_2026-10-20.md).
 
 ## 2026-10-20 — Team-ready plan exercise choices
 
@@ -22,6 +49,26 @@
   All17 root quality gates pass, including backend937/frontend553 tests, builds,
   Sites4/tooling8 and documentation checks.
   [Evidence](docs/30-quality/PLAN_PICKER_READY_ONLY_2026-10-20.md).
+
+## 2026-10-20 — Complete tactical equipment family
+
+- Bayrak, Merdiven and İşaret now use the same shared-art miniatures as their
+  pitch objects, joining the other six in the horizontal equipment rail.
+  Navy contours, amber details and original saved dimensions remain consistent.
+- Focused46, type/lint/format and responsive keyboard/image checks pass.
+  Production build and Sites4 also pass; original empty draft restored.
+  [Evidence](docs/30-quality/TACTICAL_EQUIPMENT_IMPLEMENTATION_2026-10-20.md).
+
+## 2026-10-20 — Selected tactical equipment family
+
+- User-selected second concept is implemented as six labeled horizontal add
+  actions and matching original pitch artwork: shirt, gloved keeper, football,
+  striped cone, netted goal and mannequin wall. Shared SVG/Konva source retains
+  existing editable documents and export behavior.
+- Mobile rail scrolls with48px controls and keyboard focus visibility. Focused55
+  tests and authenticated desktop/tablet/mobile checks pass; no retained write.
+  Full current-worktree root17/17 passes (backend932/frontend551/Sites4/tooling8).
+  [Evidence](docs/30-quality/TACTICAL_EQUIPMENT_IMPLEMENTATION_2026-10-20.md).
 
 ## 2026-10-20 — Ready-only exercise library
 
@@ -36,6 +83,14 @@
   by passing frontend type/format repeats. Final197-file links/CDSK/whitespace pass.
   [Evidence](docs/30-quality/LIBRARY_READY_ONLY_2026-10-20.md).
 
+## 2026-10-20 — Tactical equipment concept previews
+
+- Prepared three original six-object visual concepts, each showing player,
+  goalkeeper, ball, cone, netted goal and mannequin wall in toolbar/pitch context.
+- Current board capture grounds the white/blue interface and green2D pitch.
+  Preview images are retained for visual selection; runtime remains unchanged.
+  [Preview record](docs/30-quality/TACTICAL_ICON_CONCEPTS_2026-10-20.md).
+
 ## 2026-10-20 — A Takım ready exercise pool
 
 - User-approved “A Takım — Hazır Egzersizler” now contains all 48 published
@@ -46,6 +101,26 @@
 - All snapshots, 41-table prior-business fingerprints, zero-write replay and
   actual application/pitch/full-reload checks pass. No runtime/schema/new ADR.
   [Evidence](docs/30-quality/READY_EXERCISE_POOL_2026-10-20.md).
+
+## 2026-10-20 — Tactical icon competitor research
+
+- Compared official Coach Board, Táctica, TacticalPad and Sport Session Planner
+  references with the current board. Proposed football-specific tool miniatures,
+  clearer keeper/goal/wall semantics and a consistent original2D object family.
+- Research/documentation only; final visual selection and implementation remain
+  the next design step.
+  [Research](docs/30-quality/TACTICAL_ICON_COMPETITOR_RESEARCH_2026-10-20.md).
+
+## 2026-10-20 — Tactical action icons and football artwork
+
+- Added Phosphor icons to history, view, metadata, selection/nudge, formation,
+  animation creation, scene apply and playback loop/fixed-scene actions. Mobile
+  undo/redo keep accessible names and44px targets without crowding the toolbar.
+- Ball tool now uses a filled football icon. Shared canvas/SVG drawing uses
+  classic black pentagon panels and fine seams; existing radius/JSON stay intact.
+- Focused58/type/lint/build and desktop/mobile visual checks pass. No retained
+  write, schema, API or dependency change.
+  [Evidence](docs/30-quality/TACTICAL_ICONS_2026-10-20.md).
 
 ## 2026-10-20 — Legacy exercise preview and attachment fix
 
@@ -68,6 +143,28 @@
 - Focused35, types/lint/format/build/Sites4 and desktop/mobile checks pass.
   [Evidence](docs/30-quality/TRAINING_DETAIL_ICONS_2026-10-20.md).
 
+## 2026-10-20 — Modern 2D tactical pitch
+
+- Eleven pitch templates now show their football regions; single-scene pitch
+  changes preserve relative anchors/arrow/line endpoints with one undo and fit.
+  Oversized equipment keeps the original draft and asks for explicit resizing.
+- Modern shared shirt/keeper/ball/cone/net artwork, compact editor title/back
+  toolbar, collapsible metadata and viewport-sized pitch replace the tall heading.
+  V1/V2/API/schema and explicit-save/preview/permission guards remain unchanged.
+- Authenticated desktop/tablet/mobile checks and a named synthetic save/reload
+  passed. Final root17/17: backend927/frontend542/Sites4/tooling8 and both builds;
+  totals include concurrent work. IAB PNG download observation remains limited.
+  [Evidence](docs/30-quality/TACTICAL_PITCH_MODERN_2D_2026-10-20.md).
+
+## 2026-10-20 — Main pull request final review
+
+- Opened PR#1 from codex/mvp-stabilization to main. One reproduced P1 blocks
+  readiness: migrated boardless legacy exercises cannot attach (HTTP400).
+- Fresh918 backend/514 frontend/Sites4/tooling8 pass; review-root15/17 encounters
+  junction TS2742, both affected compiler/build repeats pass with preserveSymlinks.
+  GitHub has no reported CI; draft retained, pending attendance work preserved.
+  [Review](docs/30-quality/PR_MAIN_FINAL_REVIEW_2026-10-20.md).
+
 ## 2026-10-20 — Training attendance UI/UX
 
 - Katılım now matches compact training panels with player rows, readable saved
@@ -87,82 +184,6 @@
 - No runtime source, schema or permission change. Browser/persistence and
   documentation checks pass; no new automated application suite run.
   [Evidence](docs/30-quality/TRAINING_ATTENDANCE_2026-10-20.md).
-
-## 2026-10-20 — Pitch and compact header publication
-
-- User-authorized publication includes eleven shared pitch templates, safe
-  proportional pitch edits and the compact accessible title/metadata layout.
-  Existing document/save/history and multi-scene locks remain.
-- Fresh exact-index frontend551/type/lint/format/build/Sites4 and docs pass.
-- Other local library/attachment/attendance/training-detail work is excluded.
-  [Review](docs/30-quality/TACTICAL_PITCH_PUBLICATION_2026-10-20.md).
-
-## 2026-10-20 — Modern 2D tactical pitch
-
-- Eleven pitch templates now show their football regions; single-scene pitch
-  changes preserve relative anchors/arrow/line endpoints with one undo and fit.
-  Oversized equipment keeps the original draft and asks for explicit resizing.
-- Modern shared shirt/keeper/ball/cone/net artwork, compact editor title/back
-  toolbar, collapsible metadata and viewport-sized pitch replace the tall heading.
-  V1/V2/API/schema and explicit-save/preview/permission guards remain unchanged.
-- Authenticated desktop/tablet/mobile checks and a named synthetic save/reload
-  passed. Final root17/17: backend927/frontend542/Sites4/tooling8 and both builds;
-  totals include concurrent work. IAB PNG download observation remains limited.
-  [Evidence](docs/30-quality/TACTICAL_PITCH_MODERN_2D_2026-10-20.md).
-
-## 2026-10-20 — Tactical icon publication
-
-- User-authorized icon commit/push targets codex/mvp-stabilization. Nine shared
-  equipment miniatures and command/scene/playback icons are isolated from pending
-  pitch/header, library, attachment, attendance and training-detail changes.
-- Exact staged verification and publication review:
-  [Evidence](docs/30-quality/TACTICAL_ICON_PUBLICATION_2026-10-20.md).
-
-## 2026-10-20 — Complete tactical equipment family
-
-- Bayrak, Merdiven and İşaret now use the same shared-art miniatures as their
-  pitch objects, joining the other six in the horizontal equipment rail.
-  Navy contours, amber details and original saved dimensions remain consistent.
-- Focused46, type/lint/format and responsive keyboard/image checks pass.
-  Production build and Sites4 also pass; original empty draft restored.
-  [Evidence](docs/30-quality/TACTICAL_EQUIPMENT_IMPLEMENTATION_2026-10-20.md).
-
-## 2026-10-20 — Selected tactical equipment family
-
-- User-selected second concept is implemented as six labeled horizontal add
-  actions and matching original pitch artwork: shirt, gloved keeper, football,
-  striped cone, netted goal and mannequin wall. Shared SVG/Konva source retains
-  existing editable documents and export behavior.
-- Mobile rail scrolls with48px controls and keyboard focus visibility. Focused55
-  tests and authenticated desktop/tablet/mobile checks pass; no retained write.
-  Full current-worktree root17/17 passes (backend932/frontend551/Sites4/tooling8).
-  [Evidence](docs/30-quality/TACTICAL_EQUIPMENT_IMPLEMENTATION_2026-10-20.md).
-
-## 2026-10-20 — Tactical equipment concept previews
-
-- Prepared three original six-object visual concepts, each showing player,
-  goalkeeper, ball, cone, netted goal and mannequin wall in toolbar/pitch context.
-- Current board capture grounds the white/blue interface and green2D pitch.
-  Preview images are retained for visual selection; runtime remains unchanged.
-  [Preview record](docs/30-quality/TACTICAL_ICON_CONCEPTS_2026-10-20.md).
-
-## 2026-10-20 — Tactical icon competitor research
-
-- Compared official Coach Board, Táctica, TacticalPad and Sport Session Planner
-  references with the current board. Proposed football-specific tool miniatures,
-  clearer keeper/goal/wall semantics and a consistent original2D object family.
-- Research/documentation only; final visual selection and implementation remain
-  the next design step.
-  [Research](docs/30-quality/TACTICAL_ICON_COMPETITOR_RESEARCH_2026-10-20.md).
-
-## 2026-10-20 — Main pull request final review
-
-- Opened PR#1 from codex/mvp-stabilization to main. One reproduced P1 blocks
-  readiness: migrated boardless legacy exercises cannot attach (HTTP400).
-- Fresh918 backend/514 frontend/Sites4/tooling8 pass; review-root15/17 encounters
-  junction TS2742, both affected compiler/build repeats pass with preserveSymlinks.
-  GitHub has no reported CI; draft retained, pending attendance work preserved.
-  [Review](docs/30-quality/PR_MAIN_FINAL_REVIEW_2026-10-20.md).
 
 ## 2026-10-19 — Kerem training create/attach acceptance
 
