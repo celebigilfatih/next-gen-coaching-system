@@ -18,6 +18,7 @@ import {
   validateTacticalBoardDocument,
 } from '../tactics/tactical-board';
 import { parseAgeLabel } from '../sporting/age-label';
+import { starterDrillIds } from './drill-starter-pack';
 import {
   assertLegacyTacticalWrite,
   rethrowTacticalConflict,
@@ -105,7 +106,11 @@ export class DrillsService {
       select: { ageGroup: true },
     });
     if (!metadata) throw new NotFoundException('Group not found');
-    const ageGroup = query.ageGroup ?? metadata.ageGroup;
+    const ageGroup =
+      query.ageScope === 'TEAM'
+        ? metadata.ageGroup
+        : (query.ageGroup ??
+          (query.collection ? undefined : metadata.ageGroup));
     const sourceWhere: Prisma.DrillSourceWhereInput | undefined =
       query.source === 'NGCS'
         ? { kind: 'NGCS_ORIGINAL' }
@@ -146,7 +151,8 @@ export class DrillsService {
       equipment: query.equipment
         ? { contains: query.equipment, mode: 'insensitive' }
         : undefined,
-      ...(query.source && !['CLUB', 'MINE'].includes(query.source)
+      ...(query.collection ||
+      (query.source && !['CLUB', 'MINE'].includes(query.source))
         ? { id: '__none__' }
         : {}),
     };
@@ -157,6 +163,9 @@ export class DrillsService {
         query.source === 'CLUB' ? { scope: DrillScope.CLUB } : {},
         query.source === 'MINE' ? { createdById: principal.id } : {},
         { OR: [{ versions: { some: versionWhere } }, legacyFallback] },
+        ...(query.collection
+          ? [{ id: { in: starterDrillIds }, scope: DrillScope.GLOBAL }]
+          : []),
         ...(query.kind
           ? [
               {
@@ -231,7 +240,7 @@ export class DrillsService {
               },
               ageVariants: {
                 where: variantWhere,
-                take: 1,
+                take: ageGroup ? 1 : undefined,
                 select: {
                   ageGroup: true,
                   durationMin: true,
@@ -284,7 +293,10 @@ export class DrillsService {
     return {
       items: items.map((item) => {
         const version = item.versions?.[0];
-        const variant = version?.ageVariants?.[0];
+        const variant =
+          version?.ageVariants?.find(
+            (candidate) => candidate.ageGroup === (ageGroup ?? item.ageGroup),
+          ) ?? version?.ageVariants?.[0];
         return {
           id: item.id,
           title: version?.title ?? item.title,

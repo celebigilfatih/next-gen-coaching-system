@@ -103,6 +103,46 @@ const renderDialog = () =>
   );
 
 describe('ready exercise planning', () => {
+  it('previews the resolved plan age and retains focus and selection before explicit attachment', async () => {
+    const add = vi.fn().mockResolvedValue(undefined);
+    render(
+      <PlanDrillPicker
+        groupId="g"
+        ageGroup="U13"
+        attachedIds={[]}
+        onAdd={add}
+      />,
+    );
+    await screen.findByRole('option', { name: 'Pres oyunu · Taktik' });
+    expect(api.filtered).toHaveBeenLastCalledWith(
+      'g',
+      undefined,
+      expect.objectContaining({
+        collection: 'ngcs-starter-v1',
+        ageScope: 'TEAM',
+      }),
+      undefined,
+    );
+    fireEvent.change(screen.getByLabelText('Egzersiz ekle'), {
+      target: { value: 'd' },
+    });
+    const trigger = screen.getByRole('button', {
+      name: 'Uygulamayı ve sahayı incele',
+    });
+    fireEvent.click(trigger);
+    const dialog = await screen.findByRole('dialog', { name: 'Pres oyunu' });
+    await within(dialog).findByText('Üç koridor kurun.');
+    expect(dialog).toHaveTextContent('U14');
+    expect(api.detail).toHaveBeenCalledWith('d', 'U14');
+    expect(add).not.toHaveBeenCalled();
+    fireEvent.click(
+      within(dialog).getByRole('button', { name: 'Önizlemeyi kapat' }),
+    );
+    await waitFor(() => expect(trigger).toHaveFocus());
+    expect(screen.getByLabelText('Egzersiz ekle')).toHaveValue('d');
+    fireEvent.click(screen.getByRole('button', { name: 'Plana ekle' }));
+    await waitFor(() => expect(add).toHaveBeenCalledExactlyOnceWith(drill));
+  });
   beforeEach(() => {
     vi.resetAllMocks();
     api.role = 'COACH';

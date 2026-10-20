@@ -323,7 +323,9 @@ describe('training on-demand board and draft transitions', () => {
   it('renders the compact detail, verified plan summary and accessible phase selection', async () => {
     open();
     await screen.findByRole('heading', { name: 'Antrenman' });
-    expect(screen.getByRole('link', { name: 'Planlar' })).toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', { name: 'Planlar' }),
+    ).not.toBeInTheDocument();
     expect(screen.getByText('Toplam süre')).toBeInTheDocument();
     expect(screen.getByText('20 dk')).toBeInTheDocument();
     expect(screen.getByText('Plan fazı')).toBeInTheDocument();

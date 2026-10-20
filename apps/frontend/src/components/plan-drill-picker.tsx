@@ -1,6 +1,5 @@
 import { useCallback, useRef, useState } from 'react';
 import {
-  getDrillPage,
   getFilteredDrillPage,
   type DrillCatalogItem,
   type DrillPhase,
@@ -57,14 +56,8 @@ export function PlanDrillPicker({
           ))}
         </NativeSelect>
       </label>
-      {ageGroup && !supportedDrillAges.includes(ageGroup) && (
-        <p>
-          NGCS başlangıç paketinde {ageGroup} uyarlaması bulunmuyor. Yayınlanmış
-          uygun kulüp egzersizleri varsa aşağıda görünür.
-        </p>
-      )}
       <PlanDrillChoices
-        key={JSON.stringify([groupId, phase, filters])}
+        key={JSON.stringify([groupId, ageGroup, phase, filters])}
         groupId={groupId}
         attachedIds={attachedIds}
         onAdd={onAdd}
@@ -93,16 +86,19 @@ function PlanDrillChoices({
 }) {
   const load = useCallback(
     (after?: string) =>
-      Object.values(filters).some(Boolean)
-        ? getFilteredDrillPage(groupId, phase, filters, after)
-        : getDrillPage(groupId, phase, after),
+      getFilteredDrillPage(
+        groupId,
+        phase,
+        { ...filters, collection: 'ngcs-starter-v1', ageScope: 'TEAM' },
+        after,
+      ),
     [groupId, phase, filters],
   );
   const page = useAssignmentPage(load);
   const [selected, setSelected] = useState<DrillCatalogItem>();
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
-  const [preview, setPreview] = useState<string>();
+  const [preview, setPreview] = useState<DrillCatalogItem>();
   const writing = useRef(false);
   const rows = (page.data?.items ?? []).filter(
     (row) => !attachedIds.includes(row.id),
@@ -130,6 +126,12 @@ function PlanDrillChoices({
   }
   return (
     <div>
+      {page.data?.ageGroup &&
+        !supportedDrillAges.includes(page.data.ageGroup) && (
+          <p>
+            Hazır egzersiz paketinde {page.data.ageGroup} uyarlaması bulunmuyor.
+          </p>
+        )}
       <div className="plan-add-drill">
         <label htmlFor="plan-drill-select">Egzersiz ekle</label>
         <select
@@ -185,10 +187,11 @@ function PlanDrillChoices({
               : ''}
           </p>
           <Button
+            id="plan-drill-preview-trigger"
             type="button"
             variant="outline"
             disabled={saving}
-            onClick={() => setPreview(choice.id)}
+            onClick={() => setPreview(choice)}
           >
             Uygulamayı ve sahayı incele
           </Button>
@@ -196,9 +199,11 @@ function PlanDrillChoices({
       )}
       {preview && (
         <DrillPreview
-          key={preview}
-          drillId={preview}
-          ageGroup={ageGroup}
+          key={preview.id}
+          drillId={preview.id}
+          ageGroup={preview.ageGroup ?? ageGroup}
+          catalogItem={preview}
+          returnFocusId="plan-drill-preview-trigger"
           onClose={() => setPreview(undefined)}
         />
       )}
@@ -240,8 +245,8 @@ function PlanDrillChoices({
         </Button>
       </nav>
       <p className="text-sm text-muted-foreground">
-        Katalog toplamı plandaki egzersizleri de içerir. Planda olanlar seçimde
-        gösterilmez.
+        Yalnız takımın yaşına uygun hazır egzersizler listelenir. Toplam,
+        plandaki egzersizleri de içerir; planda olanlar seçimde gösterilmez.
       </p>
     </div>
   );

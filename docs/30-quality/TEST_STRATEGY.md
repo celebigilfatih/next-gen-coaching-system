@@ -1,5 +1,31 @@
 # Test Strategy
 
+Publication regressions cover boardless migrated LEGACY/LEGACY_UNVERIFIED add and
+replacement with frozen content/plan/day totals, and reject missing professional
+or malformed legacy boards. Attendance retains serialized explicit marking,
+same-status no-op, focus after reread, uncertainty/read retry and PLAYER self scope.
+[Current publication evidence](TRAINING_WORKFLOW_PUBLICATION_2026-10-20.md).
+
+Ready-only plan-picker tests pin collection and server-resolved TEAM age through
+page, phase, advanced-filter/reset/retry and stale-context behavior. Preserve
+selection, duplicate exclusion, preview/focus and explicit add/error flow. Backend
+tests reject ambiguous/malformed ageScope and use authorized group metadata;
+dedicated HTTP proves U14 ready72/warm-up12 and unsupported U13 zero with existing
+seasonal/other-NGCS fixtures excluded. Actual A Takım checks enumerate48 unique
+starter IDs and TACTICAL16 without submitting retained writes.
+[Evidence](PLAN_PICKER_READY_ONLY_2026-10-20.md).
+
+Ready-only library regressions assert the fixed starter collection predicate
+before count/paging, rejection of malformed collection input, default all-age
+versus explicit exact-age reads and base-age scalar facts. Frontend search,
+category, cursor, retry, scope changes and reset retain the collection; the UI
+has no seasonal-source switch, and all-age preview uses the row's age. Dedicated
+ready-drill PostgreSQL HTTP tests add seasonal and non-starter NGCS fixtures,
+walk all five pages to exactly120 unique manifest IDs, verify SENIOR48 and
+explicit U13 zero while default U13 browsing still spans120. Original attachment
+age/version/tenant and snapshot checks remain.
+[Evidence](LIBRARY_READY_ONLY_2026-10-20.md).
+
 Coach-picker refresh covers empty-to-active recovery without losing title/date/
 purpose and clearing an unavailable selected/pinned coach before reloading.
 Creation stays blocked until an active account is explicitly chosen. Local

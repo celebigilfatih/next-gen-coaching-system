@@ -1,5 +1,15 @@
 # NGCS visual QA — BL-048 reference migration (2026-09-08)
 
+## Training workflow publication — 2026-10-20
+
+Reviewed retained library/picker and mobile attendance/training-detail captures
+alongside the requested source diff. Existing reports distinguish earlier actual
+responsive checks from this publication's fresh automated verification. No new
+retained add or attendance toggle is performed for commit QA.
+[Review](docs/30-quality/TRAINING_WORKFLOW_PUBLICATION_2026-10-20.md).
+The inherited320px shell/Windows scrollbar constraint remains documented.
+final result: passed for the included component presentation.
+
 ## Pitch and compact header publication — 2026-10-20
 
 Eleven pitch templates, one-step proportional pitch/history edits and compact

@@ -83,10 +83,9 @@ describe('independent drill library', () => {
       loading: false,
       error: '',
     };
-    mocks.page.mockImplementation(async (_g, category, after) =>
+    mocks.filtered.mockImplementation(async (_g, category, _filters, after) =>
       page(category ?? (after ? 'Second' : 'First'), after ? null : 'cursor'),
     );
-    mocks.filtered.mockImplementation(async () => page('Filtered'));
   });
   it('renders the compact register with verified totals and categories', async () => {
     render(<Harness />);
@@ -96,7 +95,7 @@ describe('independent drill library', () => {
     ).toBeInTheDocument();
     expect(document.querySelector('.page-hero-image')).not.toBeInTheDocument();
     expect(
-      screen.getByRole('heading', { name: 'Antrenman İçerikleri' }),
+      screen.getByRole('heading', { name: 'Hazır Egzersizler' }),
     ).toBeInTheDocument();
     expect(screen.getByLabelText('Egzersiz kapsamı özeti')).toHaveTextContent(
       '31 egzersiz',
@@ -126,7 +125,12 @@ describe('independent drill library', () => {
         name: 'Egzersiz sayfaları',
       }),
     ).toHaveTextContent('Sayfa 2 · 1 / 31 egzersiz');
-    expect(mocks.page).toHaveBeenLastCalledWith('g', undefined, 'cursor');
+    expect(mocks.filtered).toHaveBeenLastCalledWith(
+      'g',
+      undefined,
+      expect.objectContaining({ collection: 'ngcs-starter-v1' }),
+      'cursor',
+    );
     fireEvent.click(screen.getByRole('button', { name: 'Önceki sayfa' }));
     await screen.findByText('First');
   });
@@ -140,39 +144,54 @@ describe('independent drill library', () => {
       ctrlKey: false,
     });
     await screen.findByText('TECHNICAL');
-    expect(mocks.page).toHaveBeenLastCalledWith('g', 'TECHNICAL', undefined);
+    expect(mocks.filtered).toHaveBeenLastCalledWith(
+      'g',
+      'TECHNICAL',
+      expect.objectContaining({ collection: 'ngcs-starter-v1' }),
+      undefined,
+    );
     expect(screen.getByRole('button', { name: 'Önceki sayfa' })).toBeDisabled();
   });
-  it('applies source filters on the server and exposes mobile filter controls', async () => {
+  it('always requests the ready collection and exposes no seasonal source switch', async () => {
     render(<Harness />);
     await screen.findByText('First');
-    fireEvent.click(screen.getByRole('button', { name: 'NGCS' }));
-    await screen.findByText('Filtered');
     expect(mocks.filtered).toHaveBeenLastCalledWith(
       'g',
       undefined,
-      expect.objectContaining({ source: 'NGCS' }),
+      expect.objectContaining({ collection: 'ngcs-starter-v1' }),
       undefined,
     );
+    expect(
+      screen.queryByRole('button', { name: 'Kulüp' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: 'Tüm içerikler' }),
+    ).not.toBeInTheDocument();
+    expect(mocks.page).not.toHaveBeenCalled();
     expect(
       screen.getByRole('button', { name: 'Filtreler' }),
     ).toBeInTheDocument();
   });
   it('rejects stale results after scope changes and resets category', async () => {
     let resolve!: (value: ReturnType<typeof page>) => void;
-    mocks.page.mockImplementationOnce(
+    mocks.filtered.mockImplementationOnce(
       () =>
         new Promise((done) => {
           resolve = done;
         }),
     );
     const view = render(<Harness />);
-    await waitFor(() => expect(mocks.page).toHaveBeenCalledTimes(1));
+    await waitFor(() => expect(mocks.filtered).toHaveBeenCalledTimes(1));
     mocks.workspace.group = { id: 'new', name: 'New' };
     mocks.workspace.scope.teamId = 'new';
     view.rerender(<Harness />);
     await screen.findByText('First');
-    expect(mocks.page).toHaveBeenLastCalledWith('new', undefined, undefined);
+    expect(mocks.filtered).toHaveBeenLastCalledWith(
+      'new',
+      undefined,
+      expect.objectContaining({ collection: 'ngcs-starter-v1' }),
+      undefined,
+    );
     await act(async () => resolve(page('Stale')));
     expect(screen.queryByText('Stale')).not.toBeInTheDocument();
   });
@@ -180,7 +199,7 @@ describe('independent drill library', () => {
     render(<Harness />);
     expect(screen.getByLabelText('Egzersizler yükleniyor')).toBeInTheDocument();
     await screen.findByText('First');
-    mocks.page.mockRejectedValueOnce(new Error('Failed'));
+    mocks.filtered.mockRejectedValueOnce(new Error('Failed'));
     fireEvent.click(screen.getByRole('button', { name: 'Sonraki sayfa' }));
     expect(await screen.findByRole('alert')).toHaveTextContent('Failed');
     expect(
@@ -202,7 +221,7 @@ describe('independent drill library', () => {
     view.rerender(<Harness />);
     expect(mocks.page).not.toHaveBeenCalled();
     mocks.workspace.group = { id: 'g', name: 'U17' };
-    mocks.page.mockResolvedValue({
+    mocks.filtered.mockResolvedValue({
       ...page('Plain'),
       items: [{ ...page('Plain').items[0], isBoard: false }],
     });
@@ -224,7 +243,7 @@ describe('independent drill library', () => {
     fireEvent.click(trigger);
     expect(
       await screen.findByText(
-        'Bu eski kaydın profesyonel içerik ayrıntıları bulunmuyor.',
+        'Bu egzersizin ayrıntılı uygulama ve yaş uyarlaması henüz eklenmemiş. Kayıtlı bilgilerle plana ekleyebilirsiniz.',
       ),
     ).toBeInTheDocument();
     expect(mocks.content).toHaveBeenCalledWith('First', 'U18');
@@ -240,8 +259,6 @@ describe('independent drill library', () => {
   it('keeps one search outside the filter panel and combines advanced filters with source', async () => {
     render(<Harness />);
     await screen.findByText('First');
-    fireEvent.click(screen.getByRole('button', { name: 'NGCS' }));
-    await screen.findByText('Filtered');
     fireEvent.click(screen.getByRole('button', { name: 'Filtreler' }));
     fireEvent.change(screen.getByRole('combobox', { name: 'Yaş grubu' }), {
       target: { value: 'U14' },
@@ -250,7 +267,10 @@ describe('independent drill library', () => {
       expect(mocks.filtered).toHaveBeenLastCalledWith(
         'g',
         undefined,
-        expect.objectContaining({ source: 'NGCS', ageGroup: 'U14' }),
+        expect.objectContaining({
+          collection: 'ngcs-starter-v1',
+          ageGroup: 'U14',
+        }),
         undefined,
       ),
     );
@@ -265,7 +285,11 @@ describe('independent drill library', () => {
       expect(mocks.filtered).toHaveBeenLastCalledWith(
         'g',
         undefined,
-        expect.objectContaining({ source: 'NGCS', ageGroup: 'U14', q: 'pas' }),
+        expect.objectContaining({
+          collection: 'ngcs-starter-v1',
+          ageGroup: 'U14',
+          q: 'pas',
+        }),
         undefined,
       ),
     );
@@ -274,6 +298,32 @@ describe('independent drill library', () => {
       expect(screen.getByRole('textbox', { name: 'Egzersiz ara' })).toHaveValue(
         '',
       ),
+    );
+    await waitFor(() =>
+      expect(mocks.filtered).toHaveBeenLastCalledWith(
+        'g',
+        undefined,
+        expect.objectContaining({
+          collection: 'ngcs-starter-v1',
+          ageGroup: undefined,
+        }),
+        undefined,
+      ),
+    );
+  });
+  it('shows all ages and previews the row age when the collection is not age-filtered', async () => {
+    mocks.filtered.mockResolvedValue({
+      ...page('First'),
+      total: 120,
+      ageGroup: undefined,
+    });
+    mocks.content.mockResolvedValue({ version: null, variant: null });
+    render(<Harness />);
+    await screen.findByText('120 egzersiz');
+    expect(screen.getByText('Tüm yaş grupları')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'First önizle' }));
+    await waitFor(() =>
+      expect(mocks.content).toHaveBeenCalledWith('First', 'U16'),
     );
   });
 });

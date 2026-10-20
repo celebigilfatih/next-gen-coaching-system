@@ -4,7 +4,6 @@ import {
   CaretRight,
   Clock,
   Eye,
-  Plus,
   Ruler,
   SlidersHorizontal,
   Users,
@@ -37,7 +36,6 @@ import {
   TabsTrigger,
 } from '../components/ui/tabs';
 import {
-  getDrillPage,
   getFilteredDrillPage,
   type DrillCatalogItem,
   type DrillCatalogFilters,
@@ -54,15 +52,6 @@ const phases: { value: 'ALL' | DrillPhase; label: string }[] = [
   { value: 'TECHNICAL', label: 'Teknik' },
   { value: 'TACTICAL', label: 'Taktik' },
   { value: 'COOL_DOWN', label: 'Soğuma' },
-];
-const sources: Array<{
-  value: 'ALL' | NonNullable<DrillCatalogFilters['source']>;
-  label: string;
-}> = [
-  { value: 'ALL', label: 'Tüm içerikler' },
-  { value: 'NGCS', label: 'NGCS' },
-  { value: 'CLUB', label: 'Kulüp' },
-  { value: 'MINE', label: 'Benim içeriklerim' },
 ];
 export function meta() {
   return [{ title: 'Egzersiz Kütüphanesi | NGCS' }];
@@ -81,8 +70,8 @@ export default function LibraryRoute() {
         <div>
           <h1>Egzersiz Kütüphanesi</h1>
           <p>
-            {group?.name ?? 'Takım TBD'} · Çalışmaları bulun, uygulamasını
-            inceleyin ve antrenmanınızı hazırlayın.
+            Hazır egzersiz paketini inceleyin; yaşa ve çalışma amacına göre
+            planınıza ekleyin.
           </p>
         </div>
         <div className="library-heading-actions">
@@ -91,11 +80,6 @@ export default function LibraryRoute() {
               <Link to="/app/library/manage">İçerik yönetimi</Link>
             </Button>
           )}
-          <Button asChild>
-            <Link to="/app/tactics/new">
-              <Plus /> Tahta egzersizi oluştur
-            </Link>
-          </Button>
         </div>
       </header>
       {loading ? (
@@ -116,7 +100,6 @@ export default function LibraryRoute() {
 function LibraryCatalog({ groupId }: { groupId: string }) {
   const [category, setCategory] = useState('ALL');
   const { draft, setDraft, filters } = useDrillCatalogFilters();
-  const source = draft.source ?? 'ALL';
   const advancedCount = Object.entries(draft).filter(
     ([key, value]) =>
       key !== 'q' && key !== 'source' && value !== undefined && value !== '',
@@ -129,28 +112,10 @@ function LibraryCatalog({ groupId }: { groupId: string }) {
     >
       <header className="library-panel-heading">
         <div>
-          <h2>Antrenman İçerikleri</h2>
+          <h2>Hazır Egzersizler</h2>
           <p>
             Önizlemeyle çalışmayı tanıyın; detayından mevcut bir plana ekleyin.
           </p>
-        </div>
-        <div className="library-sources" aria-label="İçerik kaynağı">
-          {sources.map((item) => (
-            <Button
-              key={item.value}
-              type="button"
-              variant={source === item.value ? 'default' : 'outline'}
-              aria-pressed={source === item.value}
-              onClick={() =>
-                setDraft({
-                  ...draft,
-                  source: item.value === 'ALL' ? undefined : item.value,
-                })
-              }
-            >
-              {item.label}
-            </Button>
-          ))}
         </div>
       </header>
       <div className="library-toolbar">
@@ -184,6 +149,7 @@ function LibraryCatalog({ groupId }: { groupId: string }) {
                 value={draft}
                 onChange={setDraft}
                 showSearch={false}
+                defaultAgeLabel="Tüm yaş grupları"
               />
             </div>
             <footer>
@@ -238,9 +204,12 @@ function LibraryPage({
 }) {
   const load = useCallback(
     (after?: string) =>
-      Object.values(filters).some(Boolean)
-        ? getFilteredDrillPage(groupId, category, filters, after)
-        : getDrillPage(groupId, category, after),
+      getFilteredDrillPage(
+        groupId,
+        category,
+        { ...filters, collection: 'ngcs-starter-v1' },
+        after,
+      ),
     [category, filters, groupId],
   );
   const state = useAssignmentPage(load);
@@ -292,11 +261,13 @@ function LibraryPage({
           aria-label="Egzersiz kapsamı özeti"
         >
           <strong>{page.total} egzersiz</strong>
-          {page.ageGroup && (
+          {page.ageGroup ? (
             <span>
               {page.ageGroup === 'SENIOR' ? 'A Takım' : page.ageGroup} için
               sonuçlar
             </span>
+          ) : (
+            <span>Tüm yaş grupları</span>
           )}
         </div>
       )}
@@ -360,6 +331,9 @@ function LibraryPage({
                   {phaseLabel(drill.category)} ·{' '}
                   {difficultyLabel(drill.difficulty)}
                 </span>
+                <span>
+                  {drill.ageGroup === 'SENIOR' ? 'A Takım' : drill.ageGroup}
+                </span>
                 {drill.playerMin && drill.playerMax ? (
                   <span>
                     <Users /> {drill.playerMin}–{drill.playerMax} oyuncu
@@ -376,7 +350,12 @@ function LibraryPage({
                   id={'preview-' + drill.id}
                   variant="outline"
                   aria-label={drill.title + ' önizle'}
-                  onClick={() => setPreview({ drill, ageGroup: page.ageGroup })}
+                  onClick={() =>
+                    setPreview({
+                      drill,
+                      ageGroup: page.ageGroup ?? drill.ageGroup,
+                    })
+                  }
                 >
                   <Eye /> Önizle
                 </Button>

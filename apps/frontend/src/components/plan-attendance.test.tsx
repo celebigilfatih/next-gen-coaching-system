@@ -68,7 +68,9 @@ describe('independent paged plan attendance', () => {
     render(<PlanAttendance planId="plan" />);
     await screen.findByText('Player a');
     fireEvent.click(screen.getByRole('button', { name: 'Sonraki sayfa' }));
-    const player = await screen.findByRole('button', { name: 'Player z' });
+    const player = await screen.findByRole('button', {
+      name: 'Player z: Katıldı',
+    });
     fireEvent.click(player);
     fireEvent.click(player);
     expect(api.mark).toHaveBeenCalledTimes(1);
@@ -78,25 +80,37 @@ describe('independent paged plan attendance', () => {
       status: 'PRESENT',
     });
     expect(player).toHaveAttribute('aria-pressed', 'false');
+    expect(screen.getByText('Kaydediliyor…')).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Player z: Katılmadı' }),
+    ).toBeDisabled();
     expect(screen.getByRole('button', { name: 'Önceki sayfa' })).toBeDisabled();
     await act(async () => done());
     await screen.findByText('Katılım · 13/30');
     expect(api.page).toHaveBeenLastCalledWith('plan', 'a');
-    expect(screen.getByRole('button', { name: 'Player z' })).toHaveAttribute(
-      'aria-pressed',
-      'true',
-    );
+    expect(
+      screen.getByRole('button', { name: 'Player z: Katıldı' }),
+    ).toHaveAttribute('aria-pressed', 'true');
+    expect(
+      screen.getByRole('button', { name: 'Player z: Katıldı' }),
+    ).toHaveFocus();
   });
   it('handles write failure without optimistic success or automatic repeat', async () => {
     api.mark.mockRejectedValue(new Error('network'));
     render(<PlanAttendance planId="plan" />);
-    fireEvent.click(await screen.findByRole('button', { name: 'Player a' }));
-    await screen.findByText(/Katılım kaydı doğrulanamadı/);
-    expect(screen.getByRole('button', { name: 'Player a' })).toHaveAttribute(
-      'aria-pressed',
-      'false',
+    fireEvent.click(
+      await screen.findByRole('button', { name: 'Player a: Katıldı' }),
     );
-    expect(screen.getByRole('button', { name: 'Player a' })).toBeDisabled();
+    await screen.findByText(/Katılım kaydı doğrulanamadı/);
+    expect(
+      screen.getByRole('button', { name: 'Player a: Katıldı' }),
+    ).toHaveAttribute('aria-pressed', 'false');
+    expect(
+      screen.getByRole('button', { name: 'Player a: Katıldı' }),
+    ).toBeDisabled();
+    expect(
+      screen.getByRole('button', { name: 'Player a: Katılmadı' }),
+    ).toBeDisabled();
     fireEvent.click(
       screen.getByRole('button', { name: 'Güncel katılımı yükle' }),
     );
@@ -109,7 +123,9 @@ describe('independent paged plan attendance', () => {
       .mockRejectedValueOnce(new Error('Refresh failed'))
       .mockResolvedValueOnce(page([item('a', 'ABSENT')], null, 11));
     render(<PlanAttendance planId="plan" />);
-    fireEvent.click(await screen.findByRole('button', { name: 'Player a' }));
+    fireEvent.click(
+      await screen.findByRole('button', { name: 'Player a: Katılmadı' }),
+    );
     await screen.findByText('Refresh failed');
     expect(api.mark).toHaveBeenCalledWith({
       planId: 'plan',
@@ -151,9 +167,50 @@ describe('independent paged plan attendance', () => {
     const view = render(<PlanAttendance key="empty" planId="empty" />);
     await screen.findByText('Katılım · 0/0');
     view.rerender(<PlanAttendance key="self" planId="self" />);
-    const self = await screen.findByRole('button', { name: 'Player self' });
-    expect(self).toBeDisabled();
-    expect(self).toHaveAttribute('aria-pressed', 'true');
+    await screen.findByText('Player self');
+    expect(screen.getByText('Katıldı')).toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: /Player self/ }),
+    ).not.toBeInTheDocument();
     expect(api.mark).not.toHaveBeenCalled();
+  });
+  it('distinguishes unmarked from absent and explicitly saves absent without changing other players', async () => {
+    api.page
+      .mockResolvedValueOnce(
+        page([item('a'), item('b', 'ABSENT'), item('c', 'PRESENT')], null),
+      )
+      .mockResolvedValueOnce(
+        page(
+          [item('a', 'ABSENT'), item('b', 'ABSENT'), item('c', 'PRESENT')],
+          null,
+        ),
+      );
+    render(<PlanAttendance planId="plan" />);
+    await screen.findByText('Henüz işaretlenmedi');
+    expect(
+      screen.getByRole('button', { name: 'Player a: Katılmadı' }),
+    ).toHaveAttribute('aria-pressed', 'false');
+    expect(
+      screen.getByRole('button', { name: 'Player b: Katılmadı' }),
+    ).toHaveAttribute('aria-pressed', 'true');
+    fireEvent.click(screen.getByRole('button', { name: 'Player c: Katıldı' }));
+    expect(api.mark).not.toHaveBeenCalled();
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Player a: Katılmadı' }),
+    );
+    await waitFor(() =>
+      expect(
+        screen.getByRole('button', { name: 'Player a: Katılmadı' }),
+      ).toHaveAttribute('aria-pressed', 'true'),
+    );
+    expect(api.mark).toHaveBeenCalledExactlyOnceWith({
+      planId: 'plan',
+      playerId: 'p-a',
+      status: 'ABSENT',
+    });
+    expect(screen.queryByText('Henüz işaretlenmedi')).not.toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Player c: Katıldı' }),
+    ).toHaveAttribute('aria-pressed', 'true');
   });
 });

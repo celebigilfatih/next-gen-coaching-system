@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import { createMemoryRouter, Outlet, RouterProvider } from 'react-router';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { WorkspaceProvider } from '../lib/workspace-context';
@@ -19,7 +19,7 @@ const api = vi.hoisted(() => ({
   getTrainingPlanPage: vi.fn(),
   listMatches: vi.fn(),
   listDrills: vi.fn(),
-  getDrillPage: vi.fn(),
+  getFilteredDrillPage: vi.fn(),
   listGroupMembers: vi.fn(),
   getTrainingPlan: vi.fn(),
   getTrainingEditorMetadata: vi.fn(),
@@ -116,7 +116,7 @@ describe('training plan workspace synchronization', () => {
       api.listSeasons.mockResolvedValue([]);
       api.listMatches.mockResolvedValue([]);
       api.listDrills.mockRejectedValue(new Error('Full drill list forbidden'));
-      api.getDrillPage.mockResolvedValue({
+      api.getFilteredDrillPage.mockResolvedValue({
         items: [drill],
         total: 1,
         limit: 25,
@@ -199,7 +199,9 @@ describe('training plan workspace synchronization', () => {
         fireEvent.click(screen.getByRole('button', { name: 'Planı yenile' }));
       }
       await screen.findByText('Faz notu yok');
-      fireEvent.click(screen.getByRole('link', { name: 'Planlar' }));
+      await act(async () => {
+        await router.navigate('/app/trainings');
+      });
       expect(await screen.findByText('1 faz')).toBeInTheDocument();
       expect(
         screen.getByLabelText('Antrenman kapsamı özeti'),
@@ -209,9 +211,13 @@ describe('training plan workspace synchronization', () => {
       expect(api.getTrainingPlan).not.toHaveBeenCalled();
       expect(api.getTrainingPhaseDocument).not.toHaveBeenCalled();
       expect(api.addTrainingPlanDrill).toHaveBeenCalledTimes(1);
-      expect(api.getDrillPage).toHaveBeenCalledWith(
+      expect(api.getFilteredDrillPage).toHaveBeenCalledWith(
         'group',
         undefined,
+        expect.objectContaining({
+          collection: 'ngcs-starter-v1',
+          ageScope: 'TEAM',
+        }),
         undefined,
       );
       expect(api.addTrainingPlanDrill).toHaveBeenCalledWith('plan', {

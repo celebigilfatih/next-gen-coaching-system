@@ -38,6 +38,8 @@ export function parseDrillPageQuery(input: unknown) {
           'equipment',
           'source',
           'scope',
+          'collection',
+          'ageScope',
         ].includes(key),
     )
   )
@@ -72,6 +74,9 @@ export function parseDrillPageQuery(input: unknown) {
     'MINE',
   ]);
   const scope = optionalEnum(q.scope, ['GLOBAL', 'CLUB']);
+  const collection = optionalEnum(q.collection, ['ngcs-starter-v1']);
+  const ageScope = optionalEnum(q.ageScope, ['TEAM']);
+  if (ageScope && (!collection || ageGroup !== undefined)) throw invalid();
   const minDuration = optionalInteger(q.minDuration, 1, 300);
   const maxDuration = optionalInteger(q.maxDuration, 1, 300);
   const minPlayers = optionalInteger(q.minPlayers, 1, 60);
@@ -136,6 +141,8 @@ export function parseDrillPageQuery(input: unknown) {
     equipment,
     source,
     scope,
+    collection,
+    ageScope,
   };
 }
 

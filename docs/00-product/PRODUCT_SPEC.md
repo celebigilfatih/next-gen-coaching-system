@@ -1,5 +1,20 @@
 # Product Specification
 
+## Hazır egzersiz kütüphanesi — 2026-10-20
+
+Kullanıcının açık isteğiyle `/app/library` yalnız `ngcs-starter-v1` paketinin
+120 özgün hazır egzersizini gösterir. Varsayılan tüm yaşlardır; arama, faz ve
+açık yaş filtresi bu sabit paketi daraltır. Sezon programındaki kulüp egzersizleri
+kütüphaneye karışmaz; mevcut plan ve tahtaları korunur. Plana eklemede takımın
+kesin yaş uyarlaması ve yayın/sürüm/yetki kontrolleri devam eder.
+[Kanıt](../30-quality/LIBRARY_READY_ONLY_2026-10-20.md).
+
+Sonraki açık kullanıcı isteğiyle plan içindeki egzersiz seçicisi de yalnız aynı
+hazır paketi kullanır. Yaş, planın bağlı olduğu yetkili takım kaydından sunucuda
+çözümlenir; faz/arama/filtre/sayfalama/temizleme bu sınırı korur. Desteklenmeyen
+yaşlarda boş sonuç gösterilir, sezon kayıtlarıyla veya yakın yaşla doldurulmaz.
+[Kanıt](../30-quality/PLAN_PICKER_READY_ONLY_2026-10-20.md).
+
 ## Haftalık kulüp programı — 2026-10-19
 
 Hafta ekranı antrenman, maç, toplantı, toparlanma ve izin kayıtlarını saat sırasıyla

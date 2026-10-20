@@ -152,6 +152,28 @@ calendar days, interpreted at +03:00; max 80-week season, 20 academy teams,
 
 ## Professional drill content
 
+- Migrated published versions with SQL-NULL boardDocument may attach without a
+  synthetic board only when source kind is LEGACY and license LEGACY_UNVERIFIED.
+  Exact-age content/version/duration are still frozen. Actual legacy diagrams and
+  every professional source retain strict board validation; add/replace permission,
+  publication, expected-version and transaction checks remain unchanged.
+
+- Ready collection read: `GET /drills/catalog/page` accepts optional
+  `collection=ngcs-starter-v1`. Unknown/array values return400. This intersects
+  the repository's exact120 stable IDs, GLOBAL visibility and PUBLISHED versions
+  before count/cursor/limit. Versionless/seasonal and other NGCS originals are
+  excluded. Without explicit ageGroup, this collection spans all ages and omits
+  response ageGroup; each scalar row uses its original matching variant when
+  available. Explicit ageGroup keeps exact-variant filtering. Requests without
+  collection retain existing team-age semantics. Attachment authorization and
+  exact-team-age validation remain independent of browsing.
+- Plan picker adds `ageScope=TEAM` with this collection. The server resolves age
+  from the authorized groupId metadata, independently of active workspace/client
+  age. Explicit ageGroup together with TEAM, TEAM without collection, unknown
+  values and arrays return400. This retains publication/identity/visibility
+  filtering before count/pagination; unsupported exact ages return an empty
+  collection. Library reads without ageScope continue to span all ages.
+
 - `GET /drills/catalog/page` mevcut `groupId/category/kind/after/limit`
   sözleşmesini korur; `q`, yaş, amaç, zorluk, süre, oyuncu sayısı, ekipman,
   kaynak ve scope filtreleri additive'dir. Predicate'ler cursor öncesinde

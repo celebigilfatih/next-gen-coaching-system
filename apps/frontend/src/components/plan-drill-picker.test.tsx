@@ -8,7 +8,7 @@ import {
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { PlanDrillPicker } from './plan-drill-picker';
 const api = vi.hoisted(() => ({ page: vi.fn() }));
-vi.mock('../lib/api', () => ({ getDrillPage: api.page }));
+vi.mock('../lib/api', () => ({ getFilteredDrillPage: api.page }));
 const item = (id: string) => ({
   id,
   title: id,
@@ -29,9 +29,89 @@ describe('plan drill picker', () => {
   const add = vi.fn();
   beforeEach(() => {
     vi.resetAllMocks();
-    api.page.mockImplementation(async (_g, _c, after) =>
+    api.page.mockImplementation(async (_g, _c, _filters, after) =>
       page(after ? 'Second' : 'First', after ? null : 'cursor'),
     );
+  });
+  it('keeps the ready collection and server team-age scope through filters and reset', async () => {
+    render(<PlanDrillPicker groupId="g" attachedIds={[]} onAdd={add} />);
+    await screen.findByRole('option', { name: /First/ });
+    expect(api.page).toHaveBeenLastCalledWith(
+      'g',
+      undefined,
+      expect.objectContaining({
+        collection: 'ngcs-starter-v1',
+        ageScope: 'TEAM',
+      }),
+      undefined,
+    );
+    fireEvent.change(screen.getByLabelText('Egzersiz fazı'), {
+      target: { value: 'TECHNICAL' },
+    });
+    await waitFor(() =>
+      expect(api.page).toHaveBeenLastCalledWith(
+        'g',
+        'TECHNICAL',
+        expect.objectContaining({
+          collection: 'ngcs-starter-v1',
+          ageScope: 'TEAM',
+        }),
+        undefined,
+      ),
+    );
+    fireEvent.change(screen.getByLabelText('Ekipman'), {
+      target: { value: 'koni' },
+    });
+    await waitFor(() =>
+      expect(api.page).toHaveBeenLastCalledWith(
+        'g',
+        'TECHNICAL',
+        expect.objectContaining({
+          collection: 'ngcs-starter-v1',
+          ageScope: 'TEAM',
+          equipment: 'koni',
+        }),
+        undefined,
+      ),
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Filtreleri temizle' }));
+    await waitFor(() =>
+      expect(api.page).toHaveBeenLastCalledWith(
+        'g',
+        'TECHNICAL',
+        expect.objectContaining({
+          collection: 'ngcs-starter-v1',
+          ageScope: 'TEAM',
+          equipment: undefined,
+        }),
+        undefined,
+      ),
+    );
+  });
+  it('shows an empty ready catalog for an unsupported age without suggesting seasonal content', async () => {
+    api.page.mockResolvedValue({
+      items: [],
+      total: 0,
+      nextCursor: null,
+      ageGroup: 'U13',
+    });
+    render(
+      <PlanDrillPicker
+        groupId="g"
+        ageGroup="U13"
+        attachedIds={[]}
+        onAdd={add}
+      />,
+    );
+    expect(
+      await screen.findByText(
+        'Hazır egzersiz paketinde U13 uyarlaması bulunmuyor.',
+      ),
+    ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Plana ekle' })).toBeDisabled();
+    expect(
+      screen.queryByText(/kulüp egzersizleri varsa/i),
+    ).not.toBeInTheDocument();
   });
   it('pins off-page selection and submits scalar metadata without board documents', async () => {
     render(
@@ -52,6 +132,10 @@ describe('plan drill picker', () => {
     expect(api.page).toHaveBeenLastCalledWith(
       'plan-group',
       undefined,
+      expect.objectContaining({
+        collection: 'ngcs-starter-v1',
+        ageScope: 'TEAM',
+      }),
       'cursor',
     );
     fireEvent.click(screen.getByRole('button', { name: 'Plana ekle' }));
@@ -138,7 +222,15 @@ describe('plan drill picker', () => {
     expect(
       screen.queryByRole('option', { name: /Stale/ }),
     ).not.toBeInTheDocument();
-    expect(api.page).toHaveBeenLastCalledWith('new', undefined, undefined);
+    expect(api.page).toHaveBeenLastCalledWith(
+      'new',
+      undefined,
+      expect.objectContaining({
+        collection: 'ngcs-starter-v1',
+        ageScope: 'TEAM',
+      }),
+      undefined,
+    );
     expect(screen.getByLabelText('Egzersiz ekle')).toHaveValue('');
   });
 });

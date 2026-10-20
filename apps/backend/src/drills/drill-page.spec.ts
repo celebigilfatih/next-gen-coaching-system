@@ -2,6 +2,7 @@ import { BadRequestException, ForbiddenException } from '@nestjs/common';
 import { DrillsService } from './drills.service';
 import { parseDrillPageQuery } from './drill-page.dto';
 import type { AuthPrincipal } from '../auth/auth-principal';
+import { starterDrillIds } from './drill-starter-pack';
 const cursor = (value: unknown) =>
   Buffer.from(JSON.stringify(value)).toString('base64url');
 describe('bounded drill library', () => {
@@ -150,6 +151,84 @@ describe('bounded drill library', () => {
     expect(prisma.playerGroup.findFirst).not.toHaveBeenCalled();
     expect(prisma.drill.findMany).not.toHaveBeenCalled();
   });
+  it('restricts the ready collection before counting and paging without defaulting to team age', async () => {
+    const result = await service.page(principal, {
+      groupId: 'g',
+      collection: 'ngcs-starter-v1',
+    });
+    expect(result.ageGroup).toBeUndefined();
+    const read = prisma.drill.findMany.mock.calls[0][0];
+    const where = read.where.AND[0];
+    expect(where.AND[5]).toEqual({
+      id: { in: starterDrillIds },
+      scope: 'GLOBAL',
+    });
+    expect(where.AND[4].OR[0].versions.some).toMatchObject({
+      status: 'PUBLISHED',
+      ageVariants: { some: { ageGroup: undefined } },
+    });
+    expect(where.AND[4].OR[1].id).toBe('__none__');
+    expect(prisma.drill.count).toHaveBeenCalledWith({ where });
+    expect(prisma.drill.findMany.mock.calls[1][0].where.AND[0]).toEqual(where);
+  });
+  it('retains explicit age filters in the collection and normal team age outside it', async () => {
+    const result = await service.page(principal, {
+      groupId: 'g',
+      collection: 'ngcs-starter-v1',
+      ageGroup: 'U12',
+    });
+    expect(result.ageGroup).toBe('U12');
+    const read = prisma.drill.findMany.mock.calls[0][0];
+    expect(read.select.versions.select.ageVariants.where.ageGroup).toBe('U12');
+    expect(read.select.versions.select.ageVariants.take).toBe(1);
+  });
+  it('resolves ready-picker age from the authorized plan group on the server', async () => {
+    const result = await service.page(principal, {
+      groupId: 'g',
+      collection: 'ngcs-starter-v1',
+      ageScope: 'TEAM',
+    });
+    expect(result.ageGroup).toBe('U18');
+    const where = prisma.drill.count.mock.calls[0][0].where;
+    expect(where.AND[5]).toEqual({
+      id: { in: starterDrillIds },
+      scope: 'GLOBAL',
+    });
+    expect(where.AND[4].OR[0].versions.some.ageVariants.some.ageGroup).toBe(
+      'U18',
+    );
+    expect(where.AND[4].OR[1].id).toBe('__none__');
+  });
+  it('uses the original age variant for all-age scalar facts instead of the first variant', async () => {
+    prisma.drill.findMany
+      .mockReset()
+      .mockResolvedValueOnce([
+        {
+          id: starterDrillIds[0],
+          title: 'U12 drill',
+          ageGroup: 'U12',
+          scope: 'GLOBAL',
+          createdAt: new Date('2026-09-01'),
+          versions: [
+            {
+              title: 'U12 drill',
+              durationMin: 10,
+              equipmentItems: [],
+              ageVariants: [
+                { ageGroup: 'U14', durationMin: 20 },
+                { ageGroup: 'U12', durationMin: 10 },
+              ],
+            },
+          ],
+        },
+      ])
+      .mockResolvedValue([]);
+    const result = await service.page(principal, {
+      groupId: 'g',
+      collection: 'ngcs-starter-v1',
+    });
+    expect(result.items[0]).toMatchObject({ ageGroup: 'U12', durationMin: 10 });
+  });
   it('keeps totals on empty continuation and does not classify absent page rows', async () => {
     prisma.drill.findMany.mockReset().mockResolvedValue([]);
     const result = await service.page(principal, { groupId: 'g' });
@@ -178,6 +257,17 @@ describe('bounded drill library', () => {
     { groupId: 'g', limit: '0' },
     { groupId: 'g', limit: '101' },
     { groupId: 'g', limit: 25 },
+    { groupId: 'g', collection: 'other' },
+    { groupId: 'g', collection: ['ngcs-starter-v1'] },
+    { groupId: 'g', ageScope: 'TEAM' },
+    { groupId: 'g', collection: 'ngcs-starter-v1', ageScope: 'ALL' },
+    { groupId: 'g', collection: 'ngcs-starter-v1', ageScope: ['TEAM'] },
+    {
+      groupId: 'g',
+      collection: 'ngcs-starter-v1',
+      ageScope: 'TEAM',
+      ageGroup: 'U12',
+    },
     { groupId: 'g', clubId: 'other' },
     { groupId: 'g', ageGroup: 'A'.repeat(33) },
     { groupId: 'g', after: '!' },

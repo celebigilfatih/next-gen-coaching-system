@@ -135,8 +135,19 @@ export function DrillPreview({
             <p role="alert">{result.error}</p>
           ) : !version ? (
             <>
+              {catalogItem && (
+                <p>
+                  {catalogItem.ageGroup === 'SENIOR'
+                    ? 'A Takım'
+                    : catalogItem.ageGroup}{' '}
+                  · {catalogItem.durationMin} dk
+                </p>
+              )}
               <p>{catalogItem?.summary || catalogItem?.equipment}</p>
-              <p>Bu eski kaydın profesyonel içerik ayrıntıları bulunmuyor.</p>
+              <p>
+                Bu egzersizin ayrıntılı uygulama ve yaş uyarlaması henüz
+                eklenmemiş. Kayıtlı bilgilerle plana ekleyebilirsiniz.
+              </p>
             </>
           ) : (
             <>

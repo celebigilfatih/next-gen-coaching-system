@@ -1,5 +1,13 @@
 # Next Generation Coaching System
 
+Egzersiz Kütüphanesi yalnız hazırlanan **120 hazır egzersizi** listeler.
+Varsayılan görünüm tüm yaşları kapsar; yaş ve faz filtreleri bu paketi daraltır.
+Sezon programının kulüp egzersizleri mevcut planlarda korunur.
+[Doğrulama](docs/30-quality/LIBRARY_READY_ONLY_2026-10-20.md).
+
+Plana egzersiz ekleme seçicisi de yalnız bu hazır paketten, planın takım yaşına
+uygun çalışmaları gösterir. [Doğrulama](docs/30-quality/PLAN_PICKER_READY_ONLY_2026-10-20.md).
+
 Egzersiz detayında numaralı uygulama adımları, yaş uyarlaması ve ekipman bilgisi
 tek rehberde; saha ve kaynak ayrı sekmelerde açılır. Mobil görünüm ve mevcut
 plana ekleme akışı doğrulandı.

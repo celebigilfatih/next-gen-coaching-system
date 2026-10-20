@@ -41,7 +41,15 @@ export function resolvePlanContent(
     throw new BadRequestException(
       'Bu takım yaşı için yayınlanmış uyarlama bulunmuyor.',
     );
-  const board = validateTacticalBoardDocument(version.boardDocument);
+  // The professional-library backfill deliberately preserves missing legacy
+  // diagrams. Keep their content frozen without inventing a board; all actual
+  // diagrams and professional sources still require the strict validator.
+  const board =
+    version.boardDocument === null &&
+    version.source.kind === 'LEGACY' &&
+    version.source.license === 'LEGACY_UNVERIFIED'
+      ? undefined
+      : validateTacticalBoardDocument(version.boardDocument);
   const contentSnapshot = {
     schemaVersion: 1,
     sourceVersionId: version.id,
@@ -76,7 +84,9 @@ export function resolvePlanContent(
   };
   return {
     contentSnapshot: contentSnapshot as Prisma.InputJsonValue,
-    boardSnapshot: board as unknown as Prisma.InputJsonValue,
+    boardSnapshot: board
+      ? (board as unknown as Prisma.InputJsonValue)
+      : undefined,
   };
 }
 

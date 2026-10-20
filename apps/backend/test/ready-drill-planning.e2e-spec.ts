@@ -2,6 +2,7 @@ import { Test } from '@nestjs/testing';
 import { JwtService } from '@nestjs/jwt';
 import type { INestApplication } from '@nestjs/common';
 import { randomUUID } from 'node:crypto';
+import { Prisma } from '@prisma/client';
 import request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { PrismaService } from '../src/prisma/prisma.service';
@@ -176,8 +177,11 @@ describe('ready drill planning (dedicated PostgreSQL)', () => {
 
   it('does not expose or attach drafts by direct ID, including through replace', async () => {
     expect(
-      (await get(`/drills/catalog/page?groupId=${groupId}&source=NGCS`)).body
-        .total,
+      (
+        await get(
+          `/drills/catalog/page?groupId=${groupId}&collection=ngcs-starter-v1`,
+        )
+      ).body.total,
     ).toBe(0);
     await get(`/drills/${drillId}/content?ageGroup=U14`).expect(404);
     await post(`/training-plans/${planId}/drills`, {
@@ -202,7 +206,9 @@ describe('ready drill planning (dedicated PostgreSQL)', () => {
       403,
     );
     expect(
-      await db.drillVersion.count({ where: { status: 'PUBLISHED' } }),
+      await db.drillVersion.count({
+        where: { status: 'PUBLISHED', drillId: { in: starterDrillIds } },
+      }),
     ).toBe(0);
   });
   it('publishes all 120 together only with simulated independent approval (test fixture)', async () => {
@@ -234,7 +240,9 @@ describe('ready drill planning (dedicated PostgreSQL)', () => {
       failure.mockRestore();
     }
     expect(
-      await db.drillVersion.count({ where: { status: 'PUBLISHED' } }),
+      await db.drillVersion.count({
+        where: { status: 'PUBLISHED', drillId: { in: starterDrillIds } },
+      }),
     ).toBe(0);
     expect(
       await db.securityAuditEvent.count({
@@ -246,8 +254,135 @@ describe('ready drill planning (dedicated PostgreSQL)', () => {
     );
     expect(result.body.published).toBe(120);
     expect(
-      await db.drillVersion.count({ where: { status: 'PUBLISHED' } }),
+      await db.drillVersion.count({
+        where: { status: 'PUBLISHED', drillId: { in: starterDrillIds } },
+      }),
     ).toBe(120);
+  });
+  it('pages only the 120 ready identities across all ages, excluding seasonal and other NGCS content', async () => {
+    const original = await db.drill.findUniqueOrThrow({
+      where: { id: drillId },
+    });
+    await db.drill.create({
+      data: {
+        ...original,
+        jsonData: original.jsonData ?? Prisma.JsonNull,
+        id: randomUUID(),
+        title: 'TEST seasonal exercise',
+        createdById: reviewerId,
+        scope: 'CLUB',
+        clubId: (
+          await db.playerGroup.findUniqueOrThrow({ where: { id: groupId } })
+        ).clubId,
+        groupId,
+      },
+    });
+    const extra = await db.drill.create({
+      data: {
+        ...original,
+        jsonData: original.jsonData ?? Prisma.JsonNull,
+        id: randomUUID(),
+        title: 'TEST other NGCS exercise',
+      },
+    });
+    const originalVersion = await db.drillVersion.findUniqueOrThrow({
+      where: { id: versionId },
+    });
+    await db.drillVersion.create({
+      data: {
+        ...originalVersion,
+        steps: originalVersion.steps as Prisma.InputJsonValue,
+        coachingPoints: originalVersion.coachingPoints as Prisma.InputJsonValue,
+        progressions: originalVersion.progressions as Prisma.InputJsonValue,
+        regressions: originalVersion.regressions as Prisma.InputJsonValue,
+        constraints: originalVersion.constraints as Prisma.InputJsonValue,
+        boardDocument: originalVersion.boardDocument ?? Prisma.DbNull,
+        id: randomUUID(),
+        drillId: extra.id,
+        ageVariants: {
+          create: {
+            ageGroup: 'U14',
+            durationMin: 10,
+            rules: [],
+            coachingPoints: [],
+          },
+        },
+      },
+    });
+    const ids: string[] = [];
+    let after: string | undefined;
+    do {
+      const query = new URLSearchParams({
+        groupId,
+        collection: 'ngcs-starter-v1',
+      });
+      if (after) query.set('after', after);
+      const page = (await get(`/drills/catalog/page?${query}`).expect(200))
+        .body;
+      expect(page.total).toBe(120);
+      expect(page.items.length).toBeLessThanOrEqual(25);
+      expect(JSON.stringify(page)).not.toContain('boardDocument');
+      ids.push(...page.items.map((item: { id: string }) => item.id));
+      after = page.nextCursor ?? undefined;
+    } while (after);
+    expect(ids).toHaveLength(120);
+    expect(new Set(ids).size).toBe(120);
+    expect([...ids].sort()).toEqual([...starterDrillIds].sort());
+    const age = (
+      await get(
+        `/drills/catalog/page?groupId=${groupId}&collection=ngcs-starter-v1&ageGroup=SENIOR`,
+      ).expect(200)
+    ).body;
+    expect(age.total).toBe(48);
+    expect(age.ageGroup).toBe('SENIOR');
+    expect(
+      age.items.every(
+        (item: { ageGroup: string }) => item.ageGroup === 'SENIOR',
+      ),
+    ).toBe(true);
+    const unsupported = (
+      await get(
+        `/drills/catalog/page?groupId=${otherGroupId}&collection=ngcs-starter-v1`,
+      ).expect(200)
+    ).body;
+    expect(unsupported.total).toBe(120);
+    const exact = (
+      await get(
+        `/drills/catalog/page?groupId=${otherGroupId}&collection=ngcs-starter-v1&ageGroup=U13`,
+      ).expect(200)
+    ).body;
+    expect(exact.total).toBe(0);
+    const team = (
+      await get(
+        `/drills/catalog/page?groupId=${groupId}&collection=ngcs-starter-v1&ageScope=TEAM`,
+      ).expect(200)
+    ).body;
+    expect(team.total).toBe(72);
+    expect(team.ageGroup).toBe('U14');
+    expect(
+      team.items.every(
+        (item: { id: string; ageGroup: string }) =>
+          starterDrillIds.includes(item.id) && item.ageGroup === 'U14',
+      ),
+    ).toBe(true);
+    const teamPhase = (
+      await get(
+        `/drills/catalog/page?groupId=${groupId}&collection=ngcs-starter-v1&ageScope=TEAM&category=WARM_UP`,
+      ).expect(200)
+    ).body;
+    expect(teamPhase.total).toBe(12);
+    expect(
+      teamPhase.items.every(
+        (item: { category: string }) => item.category === 'WARM_UP',
+      ),
+    ).toBe(true);
+    const unsupportedTeam = (
+      await get(
+        `/drills/catalog/page?groupId=${otherGroupId}&collection=ngcs-starter-v1&ageScope=TEAM`,
+      ).expect(200)
+    ).body;
+    expect(unsupportedTeam.total).toBe(0);
+    expect(unsupportedTeam.ageGroup).toBe('U13');
   });
   it('filters scalar catalog and never maps an unsupported age', async () => {
     const page = await get(
@@ -398,6 +533,99 @@ describe('ready drill planning (dedicated PostgreSQL)', () => {
       }).expect(201)
     ).body;
     expect(attached.contentSnapshot).toBeNull();
+  });
+  it('attaches a migrated boardless legacy version through add and replace with frozen content', async () => {
+    const legacy = await db.drill.create({
+      data: {
+        title: 'TEST Migrated boardless legacy',
+        jsonData: Prisma.JsonNull,
+        category: 'WARM_UP',
+        ageGroup: 'U14',
+        durationMin: 5,
+        difficulty: 'EASY',
+        scope: 'GLOBAL',
+      },
+    });
+    // Same nullable-board/source/exact-age shape as the professional-library backfill.
+    const version = await db.drillVersion.create({
+      data: {
+        drillId: legacy.id,
+        version: 1,
+        status: 'PUBLISHED',
+        title: legacy.title,
+        summary: 'Mevcut kayıt; içerik kaynağı ve uzman onayı doğrulanmadı.',
+        category: 'WARM_UP',
+        difficulty: 'EASY',
+        objectiveKey: 'legacy-unverified',
+        objectiveLabel: 'Kaynağı doğrulanmamış egzersiz',
+        themes: [],
+        durationMin: 5,
+        equipmentItems: [],
+        organization: '',
+        steps: [],
+        coachingPoints: [],
+        progressions: [],
+        regressions: [],
+        constraints: [],
+        searchText: legacy.title,
+        sourceId: 'ngcs-legacy-unverified',
+        ageVariants: {
+          create: {
+            ageGroup: 'U14',
+            durationMin: 5,
+            rules: [],
+            coachingPoints: [],
+          },
+        },
+      },
+    });
+    expect(version.boardDocument).toBeNull();
+    const body = {
+      drillId: legacy.id,
+      phase: 'WARM_UP',
+      order: 0,
+      expectedVersionId: version.id,
+    };
+    const before = await db.trainingPlan.findUniqueOrThrow({
+      where: { id: planId },
+      include: { drills: true },
+    });
+    const attached = (
+      await post(`/training-plans/${planId}/drills`, body).expect(201)
+    ).body;
+    expect(attached.boardSnapshot).toBeNull();
+    expect(attached.contentSnapshot).toMatchObject({
+      sourceVersionId: version.id,
+      ageGroup: 'U14',
+      durationMin: 5,
+      steps: [],
+    });
+    const stored = await db.trainingPlan.findUniqueOrThrow({
+      where: { id: planId },
+      include: { drills: true, dayPlans: true },
+    });
+    expect(stored.totalDuration).toBe(before.totalDuration + 5);
+    expect(stored.dayPlans[0].duration).toBe(stored.totalDuration);
+    for (const row of before.drills) expect(stored.drills).toContainEqual(row);
+    await post(`/training-plans/${otherPlanId}/drills`, body).expect(400);
+    const replacement = await db.trainingPlan.create({
+      data: {
+        title: 'TEST Migrated legacy replacement',
+        clubId: before.clubId,
+        groupId,
+        coachId: before.coachId,
+      },
+    });
+    const replaced = await request(app.getHttpServer())
+      .put(`/training-plans/${replacement.id}/drills`)
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({ drills: [body] })
+      .expect(200);
+    expect(replaced.body.totalDuration).toBe(5);
+    expect(replaced.body.drills[0].boardSnapshot).toBeNull();
+    expect(replaced.body.drills[0].contentSnapshot.sourceVersionId).toBe(
+      version.id,
+    );
   });
   it('keeps saved plan content readable after the source is archived while rejecting new attachments', async () => {
     await post(`/drills/content/${versionId}/archive`).expect(201);

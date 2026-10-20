@@ -10,6 +10,29 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 ## NGCS visual target
 
+- Plan exercise selector approved on2026-10-20: always restrict the picker to
+  `ngcs-starter-v1` with server-resolved `ageScope=TEAM` for the saved plan's
+  groupId. Phase/search/advanced filters, cursors and reset retain both bounds.
+  Seasonal CLUB entries stay in saved plans but cannot enter the ready picker.
+  Unsupported exact ages show an empty ready list, with no nearest-age or club
+  fallback. Keep pinned selection, duplicate exclusion, explicit add, expected
+  version, preview/focus and independent write-error behavior.
+
+- Library content boundary approved on2026-10-20: `/app/library` shows only the
+  120 stable `ngcs-starter-v1` ready-exercise identities, across all ages by
+  default. Keep source selection fixed to that collection through search,
+  category, paging and reset; omit CLUB/MINE/all-content switches. An explicit
+  age filter narrows the package. Show each row's age and preview its resolved
+  age; plan attachment still enforces the actual team's exact age. Seasonal
+  CLUB exercises remain stored and linked in their existing plans. This
+  supersedes the earlier library source-switch direction, without changing the
+  compact register, responsive controls or tactical creation route.
+
+- Training detail refinement approved on2026-10-20: remove the Planlar back link
+  and redundant Antrenman detayı eyebrow from the shared detail heading. Use
+  restrained colored Phosphor icons for title/date, duration/phases/purpose,
+  tabs and phase types; keep text labels, mobile44px tabs and existing behavior.
+
 - Tactical pitch extension approved on2026-10-20: use modern2D on the existing
   shared Konva/SVG drawing source. Render all eleven illustrative pitch regions;
   keep canonical dimensions and V1/V2 documents. Single-scene pitch changes map

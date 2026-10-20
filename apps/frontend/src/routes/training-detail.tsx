@@ -2,14 +2,20 @@ import {
   ArrowLeft,
   ArrowRight,
   CalendarBlank,
+  CalendarCheck,
   Clock,
+  Fire,
+  ListNumbers,
   PencilSimple,
+  SquaresFour,
   Strategy,
+  Target,
   Trash,
+  UsersThree,
+  Wind,
 } from '@phosphor-icons/react';
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import {
-  Link,
   useLocation,
   useNavigate,
   useParams,
@@ -457,14 +463,16 @@ function TrainingDetail({
   return (
     <div className="page-shell training-detail-reference training-detail-workspace">
       <header className="training-detail-heading">
-        <Link className="training-detail-back" to="/app/trainings">
-          <ArrowLeft /> Planlar
-        </Link>
         <div className="training-detail-heading-row">
           <div>
-            <p className="training-detail-kicker">Antrenman detayı</p>
-            <h1>{plan.title}</h1>
+            <div className="training-detail-title">
+              <span className="training-detail-title-icon" aria-hidden="true">
+                <CalendarCheck weight="duotone" />
+              </span>
+              <h1>{plan.title}</h1>
+            </div>
             <p className="training-detail-date">
+              <CalendarBlank aria-hidden="true" />
               {plan.date
                 ? new Intl.DateTimeFormat('tr-TR', {
                     dateStyle: 'full',
@@ -482,7 +490,10 @@ function TrainingDetail({
                   disabled={busy}
                   onClick={() => transition(() => setEditOpen(true))}
                 >
-                  <PencilSimple />
+                  <PencilSimple
+                    aria-hidden="true"
+                    className="training-detail-edit-icon"
+                  />
                   Düzenle
                 </Button>
                 <Button
@@ -526,19 +537,37 @@ function TrainingDetail({
         <dl>
           <div>
             <dt>
-              <Clock /> Toplam süre
+              <Clock
+                aria-hidden="true"
+                weight="duotone"
+                className="training-detail-summary-icon"
+                data-tone="amber"
+              />{' '}
+              Toplam süre
             </dt>
             <dd>{plan.totalDuration} dk</dd>
           </div>
           <div>
             <dt>
-              <Strategy /> Plan fazı
+              <ListNumbers
+                aria-hidden="true"
+                weight="duotone"
+                className="training-detail-summary-icon"
+                data-tone="violet"
+              />{' '}
+              Plan fazı
             </dt>
             <dd>{plan.drills.length} faz</dd>
           </div>
           <div>
             <dt>
-              <CalendarBlank /> Plan amacı
+              <Target
+                aria-hidden="true"
+                weight="duotone"
+                className="training-detail-summary-icon"
+                data-tone="green"
+              />{' '}
+              Plan amacı
             </dt>
             <dd>{plan.notes || 'Belirtilmedi'}</dd>
           </div>
@@ -550,15 +579,37 @@ function TrainingDetail({
         onValueChange={changeTab}
       >
         <div className="training-detail-tabs-head">
-          <h2>Antrenman çalışma alanı</h2>
+          <h2>
+            <SquaresFour
+              aria-hidden="true"
+              weight="duotone"
+              className="training-detail-section-icon"
+            />{' '}
+            Antrenman çalışma alanı
+          </h2>
           <TabsList>
             <TabsTrigger value="flow" disabled={busy}>
+              <ListNumbers
+                aria-hidden="true"
+                className="training-detail-tab-icon"
+                data-tone="blue"
+              />
               Akış
             </TabsTrigger>
             <TabsTrigger value="board" disabled={busy}>
+              <Strategy
+                aria-hidden="true"
+                className="training-detail-tab-icon"
+                data-tone="violet"
+              />
               Taktik tahtası
             </TabsTrigger>
             <TabsTrigger value="attendance" disabled={busy}>
+              <UsersThree
+                aria-hidden="true"
+                className="training-detail-tab-icon"
+                data-tone="green"
+              />
               Katılım
             </TabsTrigger>
           </TabsList>
@@ -567,7 +618,13 @@ function TrainingDetail({
           <div className="training-flow-layout">
             <section aria-labelledby="training-phases-title">
               <div className="training-section-heading">
-                <h3 id="training-phases-title">Antrenman akışı</h3>
+                <h3 id="training-phases-title">
+                  <ListNumbers
+                    aria-hidden="true"
+                    className="training-detail-flow-icon"
+                  />{' '}
+                  Antrenman akışı
+                </h3>
                 <span>
                   {plan.drills.length} faz · {plan.totalDuration} dk
                 </span>
@@ -585,7 +642,10 @@ function TrainingDetail({
                           {index + 1}
                         </span>
                         <span className="training-phase-copy">
-                          <span>{phaseLabel(item.phase)}</span>
+                          <span className="training-phase-label">
+                            <PhaseIcon phase={item.phase} />
+                            {phaseLabel(item.phase)}
+                          </span>
                           <strong>{item.drill.title}</strong>
                         </span>
                         <span className="training-phase-duration">
@@ -613,7 +673,10 @@ function TrainingDetail({
                 </p>
                 <h3 id="selected-phase-title">{selected.drill.title}</h3>
                 <div className="training-selected-meta">
-                  <Badge>{phaseLabel(selected.phase)}</Badge>
+                  <Badge>
+                    <PhaseIcon phase={selected.phase} />
+                    {phaseLabel(selected.phase)}
+                  </Badge>
                   <span>
                     <Clock /> {selected.drill.durationMin} dk
                   </span>
@@ -827,6 +890,26 @@ function TrainingDetail({
         </TabsContent>
       </Tabs>
     </div>
+  );
+}
+function PhaseIcon({
+  phase,
+}: {
+  phase: TrainingEditorMetadata['drills'][number]['phase'];
+}) {
+  const Icon = {
+    WARM_UP: Fire,
+    TECHNICAL: Target,
+    TACTICAL: Strategy,
+    COOL_DOWN: Wind,
+  }[phase];
+  return (
+    <Icon
+      aria-hidden="true"
+      weight="duotone"
+      className="training-phase-icon"
+      data-phase={phase}
+    />
   );
 }
 function phaseLabel(value: TrainingEditorMetadata['drills'][number]['phase']) {

@@ -40,6 +40,7 @@ function source() {
         safetyNotes: null,
         boardDocument: board,
         source: {
+          kind: 'ORIGINAL',
           title: 'Özgün',
           license: 'NGCS_PROPRIETARY',
           sourceUrl: null,
@@ -61,8 +62,34 @@ function source() {
     ],
   };
 }
-function setup() {
+function legacySource() {
   const drill = source();
+  const version = drill.versions[0];
+  return {
+    ...drill,
+    jsonData: null,
+    versions: [
+      {
+        ...version,
+        summary: 'Mevcut kayıt; içerik kaynağı ve uzman onayı doğrulanmadı.',
+        organization: '',
+        steps: [],
+        coachingPoints: [],
+        progressions: [],
+        regressions: [],
+        boardDocument: null,
+        source: {
+          ...version.source,
+          kind: 'LEGACY',
+          license: 'LEGACY_UNVERIFIED',
+        },
+      },
+    ],
+  };
+}
+function setup(
+  drill: ReturnType<typeof source> | ReturnType<typeof legacySource> = source(),
+) {
   const rows = [
     {
       id: 'old',
@@ -106,6 +133,102 @@ function setup() {
 }
 
 describe('ready drill plan content', () => {
+  it('attaches a boardless migrated legacy version and freezes its exact-age duration', async () => {
+    const s = setup(legacySource());
+    const old = structuredClone(s.rows[0]);
+    const added = await s.service.addDrill(
+      'p',
+      'd',
+      'TACTICAL',
+      0,
+      undefined,
+      'v1',
+    );
+    expect(added.boardSnapshot).toBeUndefined();
+    expect(added.contentSnapshot).toMatchObject({
+      sourceVersionId: 'v1',
+      ageGroup: 'U14',
+      durationMin: 18,
+      steps: [],
+      source: { license: 'LEGACY_UNVERIFIED' },
+    });
+    expect(s.tx.trainingPlan.update).toHaveBeenCalledWith({
+      where: { id: 'p' },
+      data: { totalDuration: 25 },
+    });
+    expect(s.tx.dayPlan.updateMany).toHaveBeenCalledWith({
+      where: { trainingPlanId: 'p' },
+      data: { duration: 25 },
+    });
+    expect(s.rows[0]).toEqual(old);
+  });
+  it('also permits a new boardless legacy phase through replaceDrills', async () => {
+    const s = setup(legacySource());
+    const createMany = jest.fn();
+    Object.assign(s.tx.drill, {
+      findMany: jest.fn().mockResolvedValue([s.drill]),
+    });
+    Object.assign(s.tx.planDrill, { deleteMany: jest.fn(), createMany });
+    s.tx.planDrill.findMany.mockResolvedValue([]);
+    s.tx.trainingPlan.update.mockResolvedValue({ drills: [] });
+    await s.service.replaceDrills('p', [
+      { drillId: 'd', phase: 'TACTICAL', order: 0, expectedVersionId: 'v1' },
+    ]);
+    expect(createMany).toHaveBeenCalledWith({
+      data: [
+        expect.objectContaining({
+          drillId: 'd',
+          boardSnapshot: undefined,
+          contentSnapshot: expect.objectContaining({
+            sourceVersionId: 'v1',
+            durationMin: 18,
+          }),
+        }),
+      ],
+    });
+    expect(s.tx.dayPlan.updateMany).toHaveBeenCalledWith({
+      where: { trainingPlanId: 'p' },
+      data: { duration: 18 },
+    });
+  });
+  it.each([
+    ['v2', 'U14', ConflictException],
+    ['v1', 'U13', BadRequestException],
+  ])(
+    'keeps version and exact-age guards for boardless legacy content',
+    (expected, age, error) => {
+      expect(() =>
+        resolvePlanContent(
+          legacySource() as never,
+          age as string,
+          expected as string,
+        ),
+      ).toThrow(error);
+    },
+  );
+  it.each([
+    ['ORIGINAL', 'NGCS_PROPRIETARY', null],
+    ['LEGACY', 'NGCS_PROPRIETARY', null],
+    ['ORIGINAL', 'LEGACY_UNVERIFIED', null],
+    ['LEGACY', 'LEGACY_UNVERIFIED', {}],
+  ])(
+    'still rejects missing professional or malformed legacy boards (%s/%s)',
+    (kind, license, boardDocument) => {
+      const drill = legacySource();
+      Object.assign(drill.versions[0], { boardDocument });
+      Object.assign(drill.versions[0].source, { kind, license });
+      expect(() => resolvePlanContent(drill as never, 'U14', 'v1')).toThrow(
+        BadRequestException,
+      );
+    },
+  );
+  it('validates and preserves a migrated legacy diagram when one exists', () => {
+    const drill = legacySource();
+    Object.assign(drill.versions[0], { boardDocument: board });
+    expect(
+      resolvePlanContent(drill as never, 'U14', 'v1').boardSnapshot,
+    ).toEqual(board);
+  });
   it('rechecks a revoked actor inside the attachment transaction', async () => {
     const s = setup();
     Object.assign(s.tx, {

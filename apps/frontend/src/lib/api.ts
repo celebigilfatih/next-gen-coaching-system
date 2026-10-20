@@ -1545,7 +1545,7 @@ export type DrillCatalogItem = Pick<
 };
 export type DrillCatalogPage = CatalogPage<DrillCatalogItem> & {
   total: number;
-  ageGroup: string;
+  ageGroup?: string;
 };
 export function getDrillPage(
   groupId: string,
@@ -1559,6 +1559,8 @@ export function getDrillPage(
 }
 
 export type DrillCatalogFilters = {
+  collection?: 'ngcs-starter-v1';
+  ageScope?: 'TEAM';
   q?: string;
   ageGroup?: string;
   objective?: string;

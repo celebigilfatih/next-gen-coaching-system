@@ -1,6 +1,6 @@
 # Next Generation Coaching System — Project Boot
 
-- **Document version:** 2.156
+- **Document version:** 2.157
 - **CDSK version:** 0.1.0
 - **Last updated:** 2026-10-20
 
@@ -8,6 +8,67 @@
 > gerekçeyle `N/A` bırakılır.
 
 ## Project Compass
+
+- **Training workflow publication (2026-10-20):** explicit review/commit/push
+  request targets codex/mvp-stabilization after24a4a2a. Ready-only library/team-
+  age picker, legacy attachment, attendance and training-detail source/tests/docs
+  are included. Fresh root17/17 (backend937/frontend556/Sites4/tooling8) and
+  dedicated PostgreSQL HTTP11 pass; exact-index links/CDSK/whitespace pass.
+  Verification is recorded in the publication report;
+  previous UI/data acceptance remains historical. No retained write/migration.
+  [Review](docs/30-quality/TRAINING_WORKFLOW_PUBLICATION_2026-10-20.md).
+
+- **Team-ready plan picker (2026-10-20):** explicit request fixes choices to the
+  starter collection plus server-resolved saved-group TEAM age, through filters/
+  cursors/reset. Backend40/frontend34/PG HTTP11 and actual SENIOR48/tactical16/
+  preview/focus pass. Existing seasonal plans,48 snapshots and41-table prior
+  business preserved; no retained add/migration/new ADR.
+  Root17/17 passes, including backend937/frontend553/Sites4/tooling8 and builds.
+  [Evidence](docs/30-quality/PLAN_PICKER_READY_ONLY_2026-10-20.md).
+
+- **Ready-only library (2026-10-20):** explicit request fixes `/app/library` to
+  the120 stable starter IDs/PUBLISHED/GLOBAL, all ages by default. Search/phase/
+  age/cursor/reset retain collection; no seasonal switches. Backend35/frontend41/
+  PostgreSQL HTTP11 and actual five-page120/SENIOR48/reset120 pass. Existing
+  seasonal records,48-snapshot pool and41-table prior business unchanged.
+  Full suites932/543/Sites4/tooling8/builds pass; root15/17 plus final type/format
+  repeats cover all stages. Final197-file links/CDSK36/47/whitespace pass.
+  [Evidence](docs/30-quality/LIBRARY_READY_ONLY_2026-10-20.md).
+
+- **Ready exercise pool (2026-10-20):** explicit user approval creates undated
+  A Takım — Hazır Egzersizler,48 exact-SENIOR published starter snapshots/1184min,
+  coach Kerem. Existing20min/4-phase training and all previous business rows across
+  41 tables preserved; replay writes zero and actual instructions/pitch/reload pass.
+  Starter120 already published;1826 catalog =1778 CLUB +48 age-supported originals.
+  [Evidence](docs/30-quality/READY_EXERCISE_POOL_2026-10-20.md).
+
+- **Legacy exercise fix (2026-10-20):** plan preview now receives saved catalog
+  facts and restores focus/selection. Migrated LEGACY/LEGACY_UNVERIFIED NULL-board
+  versions attach with frozen content/duration through add/replace; professional
+  validation and age/version/access guards remain. Affected backend45/frontend29,
+  dedicated PostgreSQL HTTP10 and actual preview pass. No retained write/migration.
+  Full root17/17 passes (927/542/Sites4/tooling8); local API rebuilt/restarted with
+  existing settings, UI reload/session and saved20min/4 phases pass.
+  Local follow-up to historical PR P1; no commit/push/readiness change.
+  [Evidence](docs/30-quality/DRILL_LEGACY_PREVIEW_FIX_2026-10-20.md).
+
+- **Training detail icons (2026-10-20):** user screenshot's Planlar link and
+  Antrenman detayı eyebrow removed from shared heading; restrained colored
+  Phosphor icons distinguish title/date, summary, tabs and phase types. Saved
+  data unchanged. Focused35/type/lint/format/build/Sites4 and desktop/mobile pass.
+  [Evidence](docs/30-quality/TRAINING_DETAIL_ICONS_2026-10-20.md).
+
+- **Training attendance UI/UX (2026-10-20):** compact player rows, readable saved
+  status and explicit Katıldı/Katılmadı controls; mobile48px actions and keyboard
+  focus restoration. Full counters, cursors, uncertain writes and PLAYER self
+  scope preserved. Frontend14/type/lint/format/build/Sites4 and responsive/read-only
+  persistence checks pass. [Evidence](docs/30-quality/TRAINING_ATTENDANCE_UX_2026-10-20.md).
+
+- **Training attendance acceptance (2026-10-20):** existing synthetic Mert Çınar
+  appears in Kerem's retained plan roster. One UI PRESENT save persists after full
+  reload, 1/1. Unique row and unchanged other attendance/business data verified
+  read-only. Stopped canonical API/UI restored with existing persistent-session
+  configuration. [Evidence](docs/30-quality/TRAINING_ATTENDANCE_2026-10-20.md).
 
 - **Main PR review (2026-10-20):** PR#1 targets main. Risk-focused review of
   implementation d65f799 finds one P1: migrated boardless legacy drill attachment
@@ -905,6 +966,137 @@ altı migration güncel, iki kulüp IN_SYNC ve yerel browser smoke geçti. Ayrı
 - [x] MVP kabul kapısı geçiyor; F-001–F-006 kapalı ve remediation hükmü **Pass**.
 
 ## 11. AI Handoff
+
+Training workflow publication,2026-10-20: user requests final review, commit
+and push on codex/mvp-stabilization after24a4a2a. Include the fixed starter library,
+server-resolved TEAM picker, preview facts/focus, narrowly scoped boardless legacy
+compatibility, explicit attendance UI and compact training heading. Existing
+publication/version/exact-age/tenant guards and saved snapshots remain. Fresh
+root17/17 passes (backend937/frontend556/Sites4/tooling8 and both builds);
+dedicated loopback PostgreSQL HTTP11 and final exact-index docs checks pass.
+Results are recorded in the publication report; dated screenshots/data-acceptance operations are historical, not rerun
+retained writes. No new ADR/schema/migration/dependency/production rollout.
+Older no-commit/local-only statements below describe their implementation turns;
+this publication supersedes them for the included changes. PR#1 stays draft;
+the historical boardless-legacy P1 is covered by the shipped regression fix.
+[Review](docs/30-quality/TRAINING_WORKFLOW_PUBLICATION_2026-10-20.md).
+
+Team-ready plan picker,2026-10-20: user explicitly requests only ready-package
+exercises appropriate to the saved plan's team. Picker always requests collection
+ngcs-starter-v1 + ageScope TEAM; service resolves exact age from authorized group
+metadata, independent of active workspace age. TEAM requires collection/no
+explicit ageGroup. All filters/paging/reset retain bounds; unsupported ages have
+no club/nearest-age fallback. Existing selection/version/add/error/preview/focus
+guards remain. Backend40/frontend34 and dedicated PG HTTP11 pass; TEAM U14=72,
+warm-up12/U13=0; library still120. Actual original A Takım plan shows25+23 unique
+starter IDs=48, tactical16/reset48, correct preview and retained selection. No add
+submitted; original20min/4 phases and previous41 business-table fingerprints /
+all48 pool snapshots unchanged. Normal build/API4000 restart uses same DB/flags.
+No migration/new ADR/dependency/commit/push. Root quality log is
+output/plan-picker-ready-only-quality-20261020.log; all17 gates pass, including
+backend937/frontend553/Sites4/tooling8, type/lint/format/builds,199-file links,
+CDSK36/47 and whitespace. Final targeted backend lint/format also pass.
+[Evidence](docs/30-quality/PLAN_PICKER_READY_ONLY_2026-10-20.md).
+
+Ready-only library,2026-10-20: user explicitly requests only the120 authored
+ready exercises, excluding seasonal program entries. LibraryRoute always sends
+collection=ngcs-starter-v1; server restricts exact starter IDs/GLOBAL/PUBLISHED
+before count/paging, excludes legacy fallback and defaults only collection reads
+to all ages. Explicit age and non-collection implicit team-age reads remain.
+Rows show age and preview row age when all-age; no source switches/club creation
+shortcut. Exact-team-age detail attachment remains. Backend35/frontend41 and
+dedicated PG HTTP11 pass; HTTP includes seasonal/unrelated NGCS exclusion and
+all120 IDs. ActualUI five pages25/25/25/25/20 =120 unique stable IDs, SENIOR48 and
+reset120 pass. Normal build/API restart uses existing DB/flags; no retained data
+write/migration/dependency/new ADR/commit/push. Existing pool verifier preserves
+all48 snapshots and41-table previous business. Prior tactical work is concurrent.
+Logs output/library-ready-only-{quality,http}-20261020.log; current aggregate
+quality encountered unrelated tactical artwork formatting during active edits.
+Final outcome: backend932/frontend543/Sites4/tooling8 and builds pass. Initial
+root15/17 also encountered two test-only exact-option type errors; final current
+frontend type/whole-format repeats through quality runner both pass, exit0. Do
+not describe this as a new uninterrupted17/17 run. Final197-file links/CDSK36/47/
+whitespace pass; UI full reload/session retains120. Open ready-only `/app/library`.
+[Evidence](docs/30-quality/LIBRARY_READY_ONLY_2026-10-20.md).
+
+Ready exercise collection,2026-10-20: user clarified authored starter content,
+then explicitly approved a separate A Takım — Hazır Egzersizler plan. Created
+cmvgg1le900012ybgmtexpdi3 under existing active coach Kerem Tunalı, undated/no
+DayPlan. Existing controller create/replace and real active SystemAdmin access
+checks save48 unique exact-SENIOR instructions/durations/boards;8/16/16/8 phases,
+1184min sum. Purpose describes a collection, not one scheduled session. All48
+snapshots compare equal;41 business-table fingerprints excluding only new plan/
+phases preserve every prior row. Original20min/4 phases and fixtures unchanged.
+Repeat apply and read-only verify pass with0 created/0 attached. Actual UI shows
+instructions/A Takım rules/pitch and full reload/session/48 persisted. Starter120
+already PUBLISHED;1826 A Takım catalog =1778 CLUB +48 supported ready exercises,
+including24 U18 originals with explicit SENIOR variants. No source reimport,
+runtime/schema/flag/dependency/new ADR/commit/push. Ignored operator/baseline/
+results in output/ready-pool-20261020; do not recreate or repeat scheduled writes.
+No application suite rerun for data-only operation. Open this exact collection;
+all120 remain accessible in library NGCS across supported team ages.
+[Evidence](docs/30-quality/READY_EXERCISE_POOL_2026-10-20.md).
+
+Legacy exercise preview/attachment,2026-10-20: user reported the generic empty
+legacy preview while adding an exercise. PlanDrillPicker now retains/passes the
+catalog item and resolved age to DrillPreview, shows saved title/age/duration/
+summary or equipment, explains absent detailed content and restores focus.
+The separate main-review P1 is fixed locally: only LEGACY/LEGACY_UNVERIFIED
+published versions may omit a NULL board, while content/version/age/duration
+remain frozen and strict professional/malformed-board checks remain. Affected
+backend45/frontend29 and dedicated loopback ready-drill PostgreSQL HTTP10 pass.
+Actual existing training picker preview and close/focus/selection pass,20min/4
+phases unchanged; no retained add submitted. No schema/new ADR/dependency/commit/
+push or GitHub readiness change. Other attendance/pitch/heading work preserved.
+Full root17/17 passes: backend927/frontend542/Sites4/tooling8, types/lint/format/
+builds,192-file links,CDSK36/47 and whitespace. Final normal backend build and
+affected backend lint/format pass. API4000 restarted with existing loopback DB
+and ignored flags; successful startup and full UI reload retain login/20min/4
+phases. UI3132 remains running. No Prisma regeneration/retained migration.
+Historical review below still describes its own SHA. Missing professional
+instructions require content authoring/review; never fabricate them.
+[Evidence](docs/30-quality/DRILL_LEGACY_PREVIEW_FIX_2026-10-20.md).
+
+Training detail heading/icons,2026-10-20: user requested removing Planlar and
+Antrenman detayı from screenshot and adding color with icons. Shared route now
+starts with saved title/date; decorative Phosphor icons mark summary/tabs/phase
+types with restrained colors. Text/aria names, mobile44px minimum and existing
+interaction guards remain. Requested cmvf4synt006n2yx4fx3ixemr opens Maç günü hafif
+aktivasyon,20min/4phases;1440/390 inspected and320 tab dimensions checked. Focused
+35/type/lint/format/build/Sites4 pass. Two old integration link interactions were
+updated to router navigation; catalogue assertions remain. No stored data/board
+open/API/model/ADR change or commit/push. Concurrent tactical/legacy-drill and
+earlier attendance changes preserved. Frontend AGENTS records preference.
+Docs/whitespace pass. Viewport reset, requested plan open.
+[Evidence](docs/30-quality/TRAINING_DETAIL_ICONS_2026-10-20.md).
+
+Training attendance UI/UX,2026-10-20: PlanAttendance now uses a scoped compact
+white panel and roster rows. Explicit PRESENT/ABSENT buttons replace implicit
+whole-player toggling; null remains Henüz işaretlenmedi and is not counted absent.
+Mobile buttons48px, desktop44px, names wrap; paging follows the roster and hides
+unnecessary single-page controls. Same-status selection is a no-op, writes remain
+serialized/nonoptimistic and uncertain writes require reload. Successful reread
+restores keyboard focus. PLAYER has static self status only. No API/model/ADR
+change. Final frontend14/type/lint/format/build/Sites4 and1440/1024/390/320 checks
+pass; inherited global320px body min-width/desktop scrollbar constraint documented.
+Mert's exact existing PRESENT row/1-of-1 and plan snapshots/owner/calendar remain
+unchanged by read-only assertions. Prior acceptance files preserved. Viewport
+reset and Katılım open. No commit/push. Docs/whitespace checks pass.
+[Evidence](docs/30-quality/TRAINING_ATTENDANCE_UX_2026-10-20.md).
+
+Training attendance,2026-10-20: user requested verifying Mert in the existing
+cmvfbzkvb00392yiwp5dzmxtm plan. Canonical3132/4000 services were stopped; existing
+PostgreSQL was running. Restored services with existing ignored persistence and
+tactical flags; ordinary session recovered on reload. Mert appeared, initially0/1
+with no attendance row. Announced synthetic PRESENT check and clicked once;
+success then full reload retained selected Mert/1/1. Read-only verifier confirms
+exactly one PRESENT row for player cmvfblwu8000q2yvgaqnypikf and all unrelated
+attendance unchanged. Existing training-flow verifier still passes exact owner,
+date,18min/1phase/frozen source/calendar and historical business fingerprints.
+Ignored attendance-before/result and verify-attendance.cjs preserve evidence;
+do not repeat writes for QA. No runtime/schema/ADR change; application suites not
+rerun. Document checks pass. Katılım left open; further status changes are
+user-directed. [Evidence](docs/30-quality/TRAINING_ATTENDANCE_2026-10-20.md).
 
 Pitch/header publication,2026-10-20: user explicitly requests final review,
 commit and push on codex/mvp-stabilization after9015b31. Publish the eleven
@@ -2467,6 +2659,9 @@ Do not mark roster binding, animation, offline match-day or 3D complete.
   rollout kendi karar kapılarında `TBD` kalır.
 
 ## Revision History
+
+2.157 — 2026-10-20: Publish reviewed ready library/team-age picker, legacy
+attachment, explicit attendance and training-detail changes with current validation.
 
 2.126 — 2026-10-19: Approved fixture-aware SENIOR updates and manual-edit/deletion
 protection delivered; retained checkpoint enrollment, rollback/replay, backend/HTTP/

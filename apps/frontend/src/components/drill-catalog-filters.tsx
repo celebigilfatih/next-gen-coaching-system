@@ -72,12 +72,14 @@ export function DrillCatalogFilterFields({
   disabled = false,
   allowAge = true,
   showSearch = true,
+  defaultAgeLabel = 'Takım yaşı',
 }: {
   value: DrillCatalogFilters;
   onChange: (value: DrillCatalogFilters) => void;
   disabled?: boolean;
   allowAge?: boolean;
   showSearch?: boolean;
+  defaultAgeLabel?: string;
 }) {
   const change = (key: keyof DrillCatalogFilters, input: string) =>
     onChange({
@@ -110,7 +112,7 @@ export function DrillCatalogFilterFields({
             value={value.ageGroup ?? ''}
             onChange={(e) => change('ageGroup', e.target.value)}
           >
-            <option value="">Takım yaşı</option>
+            <option value="">{defaultAgeLabel}</option>
             {supportedDrillAges.map((age) => (
               <option key={age} value={age}>
                 {age === 'SENIOR' ? 'A Takım' : age}
