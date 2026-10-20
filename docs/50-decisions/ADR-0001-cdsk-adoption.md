@@ -38,4 +38,7 @@ migration'ı gerektirmez.
 
 ## Open Questions
 
-Taşınabilir/repository-pinned validator modeli `TBD`.
+Taşınabilir/repository-pinned validator modeli 2026-10-19 açık kullanıcı isteğiyle
+[ADR-0046](ADR-0046-repository-owned-cdsk-validator.md) kapsamında çözüldü:
+CDSK 0.1.0 yerel proje sözleşmesini denetleyen bağımsız, repository içi uygulama.
+Eksik dış aracın açıklanmamış kurallarıyla eşdeğerlik doğrulanmış değildir.

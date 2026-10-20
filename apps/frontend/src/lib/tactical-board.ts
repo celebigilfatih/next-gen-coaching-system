@@ -63,6 +63,9 @@ export type TacticalBoardDocumentV1 = {
   elements: BoardElement[];
 };
 
+const tacticalColorPattern =
+  /^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/;
+
 export function emptyBoard(type: PitchType = 'full'): TacticalBoardDocumentV1 {
   const pitch = pitchConfigs[type];
   return {
@@ -70,6 +73,53 @@ export function emptyBoard(type: PitchType = 'full'): TacticalBoardDocumentV1 {
     kind: 'tactical-board',
     pitch: { type, width: pitch.width, height: pitch.height },
     elements: [],
+  };
+}
+
+/** Explicit pitch edit: preserve relative placement, never collapse objects at an edge. */
+export function changeBoardPitch(
+  board: TacticalBoardDocumentV1,
+  type: PitchType,
+): TacticalBoardDocumentV1 {
+  if (board.pitch.type === type) return board;
+  const { width, height } = pitchConfigs[type];
+  const sx = width / board.pitch.width;
+  const sy = height / board.pitch.height;
+  if (
+    board.elements.some(
+      (element) =>
+        ((element.type === 'wall' || element.type === 'zone') &&
+          (element.width ?? 0) > width) ||
+        (element.type === 'ladder' && (element.length ?? 0) > width) ||
+        (element.type === 'zone' && (element.height ?? 0) > height),
+    )
+  )
+    throw new Error(
+      'Bazı ekipman veya bölgeler seçilen sahadan büyük. Önce boyutlarını küçültün; saha ve taslağınız korundu.',
+    );
+  const project = (value: number, ratio: number, max: number) =>
+    Math.max(0, Math.min(max, value * ratio));
+  return {
+    ...board,
+    pitch: { type, width, height },
+    elements: board.elements.map((element) => ({
+      ...element,
+      x: project(element.x, sx, width),
+      y: project(element.y, sy, height),
+      ...(element.endX !== undefined
+        ? { endX: project(element.endX, sx, width) }
+        : {}),
+      ...(element.endY !== undefined
+        ? { endY: project(element.endY, sy, height) }
+        : {}),
+      ...(element.points
+        ? {
+            points: element.points.map(
+              (value, index) => value * (index % 2 ? sy : sx),
+            ),
+          }
+        : {}),
+    })),
   };
 }
 
@@ -139,6 +189,28 @@ export function validateBoard(value: unknown): TacticalBoardDocumentV1 {
       element.y > config.height
     ) {
       throw new Error('Eleman saha sınırları dışında.');
+    }
+    if (
+      element.rotation !== undefined &&
+      (!Number.isFinite(element.rotation) ||
+        element.rotation < -360 ||
+        element.rotation > 360)
+    ) {
+      throw new Error('Eleman dönüş değeri geçersiz.');
+    }
+    if (
+      element.radius !== undefined &&
+      (!Number.isFinite(element.radius) ||
+        element.radius < 4 ||
+        element.radius > 80)
+    ) {
+      throw new Error('Eleman yarıçapı geçersiz.');
+    }
+    if (
+      element.color !== undefined &&
+      !tacticalColorPattern.test(element.color)
+    ) {
+      throw new Error('Eleman rengi hexadecimal formatta olmalı.');
     }
     ids.add(element.id);
   }

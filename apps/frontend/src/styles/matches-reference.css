@@ -1,0 +1,534 @@
+.matches-reference {
+  --matches-border: var(--border);
+  --matches-muted: var(--legacy-muted-foreground);
+  color: var(--ink);
+  background: #f5f8fc;
+}
+
+.matches-reference__heading {
+  margin-bottom: 28px;
+}
+
+.matches-reference__heading h1 {
+  margin: 0;
+  font: 750 40px/1.15 var(--font-body);
+  letter-spacing: -1.4px;
+}
+
+.matches-reference__heading p {
+  margin: 8px 0 0;
+  color: var(--matches-muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.matches-reference__catalog {
+  position: relative;
+  min-width: 0;
+  border: 1px solid var(--matches-border);
+  border-radius: 8px;
+  background: var(--card);
+}
+
+.matches-reference__catalog-head {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 22px 90px 22px 22px;
+}
+
+.matches-reference__catalog-head h2 {
+  margin: 0;
+  font: 700 20px/1.3 var(--font-body);
+  letter-spacing: -0.5px;
+}
+
+.matches-reference__total {
+  position: absolute;
+  top: 34px;
+  right: 22px;
+  flex: none;
+  color: var(--matches-muted);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.matches-reference__filter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+}
+
+.matches-reference__filter input {
+  width: 180px;
+  min-width: 0;
+  height: 40px;
+  background: var(--card);
+  font-size: 13px;
+}
+
+.matches-reference__filter button {
+  height: 40px;
+  border-color: #c7d9f5;
+  color: var(--blue-dark);
+  font-size: 13px;
+}
+
+.matches-reference__table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.matches-reference__date-col {
+  width: 150px;
+}
+.matches-reference__time-col {
+  width: 64px;
+}
+.matches-reference__venue-col {
+  width: 175px;
+}
+.matches-reference__preparation-col {
+  width: 260px;
+}
+.matches-reference__action-col {
+  width: 106px;
+}
+
+.matches-reference__table thead {
+  background: #f5f8fc;
+}
+
+.matches-reference__table thead th {
+  padding: 12px 10px;
+  border-block: 1px solid var(--matches-border);
+  color: #52698d;
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.matches-reference__table th:first-child,
+.matches-reference__table td:first-child {
+  padding-left: 22px;
+}
+
+.match-reference-row > th,
+.match-reference-row > td {
+  height: 90px;
+  padding: 12px 10px;
+  border-bottom: 1px solid var(--matches-border);
+  vertical-align: middle;
+}
+
+.match-reference-row:hover,
+.match-reference-row:focus-within {
+  background: #f6faff;
+}
+
+.match-reference-row__date {
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1.5;
+}
+
+.match-reference-row__date span {
+  display: block;
+  margin-top: 2px;
+  color: var(--matches-muted);
+  font-size: 12px;
+  font-weight: 450;
+}
+
+.match-reference-row__time {
+  color: var(--matches-muted);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.match-reference-row__fixture {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.match-reference-row__fixture > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+}
+
+.match-reference-row__fixture strong {
+  font-size: 14px;
+  font-weight: 650;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.match-reference-row__fixture svg {
+  width: 24px;
+  height: 24px;
+  flex: none;
+  color: #18314f;
+}
+
+.match-reference-row__fixture b {
+  flex: none;
+  color: var(--matches-muted);
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.match-reference-row__competition,
+.match-reference-row__no-note {
+  margin: 4px 0 0;
+  color: var(--matches-muted);
+  font-size: 12px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.match-reference-row__notes {
+  min-width: 0;
+  margin-top: 3px;
+  color: var(--matches-muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.match-reference-row__notes summary {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 20px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.match-reference-row__notes summary::-webkit-details-marker {
+  display: none;
+}
+
+.match-reference-row__notes summary:focus-visible {
+  outline: 3px solid var(--ring);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+.match-reference-row__notes summary > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.match-reference-row__notes summary > svg {
+  width: 14px;
+  height: 14px;
+  flex: none;
+}
+
+.match-reference-row__notes[open] summary > svg {
+  transform: rotate(180deg);
+}
+
+.match-reference-row__notes > p {
+  margin: 8px 0 0;
+  padding: 10px;
+  border-left: 2px solid var(--blue);
+  background: var(--secondary);
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.match-reference-row__venue,
+.match-reference-row__preparation {
+  color: var(--matches-muted);
+  font-size: 12px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.match-reference-row__venue > span,
+.match-reference-row__preparation > div > span {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.match-reference-row__venue svg,
+.match-reference-row__preparation svg {
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+
+.match-reference-row__preparation > div {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+}
+
+.match-reference-row__preparation [data-slot='badge'] {
+  padding: 4px 9px;
+  border-radius: 20px;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.match-reference-row__action > a {
+  min-height: 36px;
+  border-color: #c7d9f5;
+  color: var(--blue-dark);
+  font-size: 12px;
+}
+
+.matches-reference__catalog > nav {
+  padding: 16px 22px;
+}
+
+.matches-reference__catalog > nav button {
+  min-height: 40px;
+  font-size: 12px;
+}
+
+.matches-reference__continuation-empty {
+  padding: 32px 18px;
+  color: var(--matches-muted);
+  text-align: center;
+}
+
+.matches-reference__loading {
+  display: grid;
+  gap: 12px;
+  padding: 20px;
+}
+
+@media (max-width: 1350px) {
+  .matches-reference__date-col {
+    width: 138px;
+  }
+  .matches-reference__time-col {
+    width: 58px;
+  }
+  .matches-reference__venue-col {
+    width: 140px;
+  }
+  .matches-reference__preparation-col {
+    width: 150px;
+  }
+  .matches-reference__action-col {
+    width: 96px;
+  }
+
+  .match-reference-row__preparation > div {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 1100px) {
+  .matches-reference__catalog-head {
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+
+  .matches-reference__total {
+    top: 26px;
+  }
+
+  .matches-reference__filter {
+    order: 1;
+    width: calc(100% + 68px);
+    margin-left: 0;
+    margin-right: -68px;
+  }
+
+  .matches-reference__table,
+  .match-day-group {
+    display: block;
+  }
+
+  .matches-reference__table colgroup,
+  .matches-reference__table thead {
+    display: none;
+  }
+
+  .match-reference-row {
+    display: grid;
+    grid-template-columns: 160px minmax(0, 1fr) 96px;
+    gap: 10px 16px;
+    padding: 20px 22px;
+    border-top: 1px solid var(--matches-border);
+  }
+
+  .match-reference-row > th,
+  .match-reference-row > td,
+  .matches-reference__table th:first-child {
+    height: auto;
+    min-width: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .match-reference-row__date {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .match-reference-row__time {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .match-reference-row__fixture-copy {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+  .match-reference-row__venue {
+    grid-column: 2;
+    grid-row: 3;
+  }
+  .match-reference-row__preparation {
+    grid-column: 2;
+    grid-row: 4;
+  }
+  .match-reference-row__action {
+    grid-column: 3;
+    grid-row: 1 / span 4;
+    align-self: center;
+  }
+
+  .match-reference-row__preparation > div {
+    align-items: center;
+    flex-direction: row;
+  }
+
+  .matches-reference__catalog > nav {
+    border-top: 1px solid var(--matches-border);
+  }
+}
+
+@media (max-width: 640px) {
+  .matches-reference__heading {
+    margin-bottom: 22px;
+  }
+
+  .matches-reference__heading h1 {
+    font-size: 30px;
+    letter-spacing: -1px;
+  }
+
+  .matches-reference__heading p {
+    font-size: 13px;
+  }
+
+  .matches-reference__catalog-head {
+    gap: 16px;
+    padding: 18px 80px 18px 16px;
+  }
+
+  .matches-reference__catalog-head h2 {
+    font-size: 17px;
+  }
+
+  .matches-reference__total {
+    top: 20px;
+    right: 16px;
+  }
+
+  .matches-reference__filter {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .matches-reference__filter input,
+  .matches-reference__filter button {
+    width: 100%;
+    min-height: 44px;
+    font-size: 14px;
+  }
+
+  .match-reference-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px;
+    padding: 18px 16px;
+  }
+
+  .match-reference-row__date {
+    grid-column: 1;
+    grid-row: 1;
+    font-size: 14px;
+  }
+  .match-reference-row__date span {
+    display: inline;
+    margin-left: 6px;
+  }
+  .match-reference-row__time {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: start;
+    font-size: 14px;
+  }
+  .match-reference-row__fixture-copy {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+  .match-reference-row__venue {
+    grid-column: 1 / -1;
+    grid-row: 3;
+  }
+  .match-reference-row__preparation {
+    grid-column: 1 / -1;
+    grid-row: 4;
+  }
+  .match-reference-row__action {
+    grid-column: 1 / -1;
+    grid-row: 5;
+  }
+
+  .match-reference-row__fixture {
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .match-reference-row__fixture strong {
+    font-size: 15px;
+  }
+
+  .match-reference-row__competition {
+    margin-top: 8px;
+  }
+
+  .match-reference-row__notes summary {
+    min-height: 44px;
+    font-size: 13px;
+  }
+
+  .match-reference-row__venue,
+  .match-reference-row__preparation {
+    font-size: 13px;
+  }
+
+  .match-reference-row__action > a {
+    width: 100%;
+    min-height: 44px;
+    justify-content: space-between;
+    font-size: 14px;
+  }
+
+  .matches-reference__catalog > nav {
+    padding: 16px;
+  }
+
+  .matches-reference__catalog > nav button {
+    min-height: 44px;
+  }
+}

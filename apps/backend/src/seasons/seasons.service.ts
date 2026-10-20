@@ -1,12 +1,48 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  HttpException,
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { PlanningService } from '../planning/planning.service';
+import { AuthorizationService } from '../auth/authorization.service';
+import { dayKey } from '../planning/planning-input';
+import {
+  assertLegacyTacticalWrite,
+  rethrowTacticalConflict,
+} from '../tactics/tactical-persistence';
+import {
+  legacyWrite,
+  syncLegacySeason,
+} from '../sporting/legacy-compatibility';
 import type { AuthPrincipal } from '../auth/auth-principal';
+import type { Prisma } from '@prisma/client';
+import {
+  CreateSeasonDto,
+  CreateWeekDto,
+  UpdateWeekDto,
+  CreateDayDto,
+  CreateMatchDto,
+  parseCreateSeasonBody,
+  parseCreateWeekBody,
+  parseUpdateWeekBody,
+  parseCreateDayBody,
+  parseCreateMatchBody,
+  parseUpdateMatchBody,
+} from './dto/season.dto';
 
 @Injectable()
 export class SeasonsService {
   private static readonly MAX_SEASON_WEEKS = 80;
+  private readonly logger = new Logger(SeasonsService.name);
 
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private planning: PlanningService = new PlanningService(prisma),
+  ) {}
 
   private assertSafeSeasonRange(startDate: Date, endDate: Date) {
     const startTime = startDate.getTime();
@@ -33,33 +69,33 @@ export class SeasonsService {
   }
 
   // Season CRUD
-  async createSeason(
-    userId: string,
-    data: {
-      name: string;
-      startDate: Date;
-      endDate: Date;
-      clubId: string;
-      groupId: string;
-    },
-  ) {
+  async createSeason(userId: string, input: CreateSeasonDto) {
+    const data = parseCreateSeasonBody(input);
     this.assertSafeSeasonRange(data.startDate, data.endDate);
 
-    return this.prisma.season.create({
-      data: {
-        ...data,
-        userId,
-      },
-      include: {
-        club: true,
-        _count: {
-          select: {
-            weeks: true,
-            matches: true,
+    try {
+      return await legacyWrite(this.prisma, async (tx) => {
+        const season = await tx.season.create({
+          data: {
+            ...data,
+            userId,
           },
-        },
-      },
-    });
+          include: {
+            club: true,
+            _count: {
+              select: {
+                weeks: true,
+                matches: true,
+              },
+            },
+          },
+        });
+        const teamSeasonId = await syncLegacySeason(tx, season);
+        return { ...season, teamSeasonId };
+      });
+    } catch {
+      this.persistenceFailure('SEASON_CREATE_FAILED');
+    }
   }
 
   async listForPrincipal(principal: AuthPrincipal) {
@@ -123,28 +159,29 @@ export class SeasonsService {
   }
 
   async deleteSeason(id: string) {
-    return this.prisma.season.delete({ where: { id } });
+    try {
+      return await this.prisma.season.delete({ where: { id } });
+    } catch {
+      this.persistenceFailure('SEASON_DELETE_FAILED');
+    }
   }
 
   // Week Plans
-  async createWeek(
-    seasonId: string,
-    data: {
-      weekNumber: number;
-      startDate: Date;
-      endDate: Date;
-      notes?: string;
-    },
-  ) {
-    return this.prisma.weekPlan.create({
-      data: {
-        ...data,
-        seasonId,
-      },
-      include: {
-        days: true,
-      },
-    });
+  async createWeek(seasonId: string, input: CreateWeekDto) {
+    const data = parseCreateWeekBody(input);
+    try {
+      return await this.prisma.weekPlan.create({
+        data: {
+          ...data,
+          seasonId,
+        },
+        include: {
+          days: true,
+        },
+      });
+    } catch {
+      this.persistenceFailure('SEASON_WEEK_CREATE_FAILED');
+    }
   }
 
   async getWeek(seasonId: string, weekNumber: number) {
@@ -163,94 +200,127 @@ export class SeasonsService {
     });
   }
 
-  async updateWeek(
-    weekId: string,
-    data: {
-      notes?: string;
-      totalLoad?: number;
-    },
-  ) {
-    return this.prisma.weekPlan.update({
-      where: { id: weekId },
-      data,
-      include: {
-        days: true,
-      },
-    });
+  async updateWeek(weekId: string, input: UpdateWeekDto) {
+    const data = parseUpdateWeekBody(input);
+    try {
+      return await this.prisma.weekPlan.update({
+        where: { id: weekId },
+        data,
+        include: {
+          days: true,
+        },
+      });
+    } catch {
+      this.persistenceFailure('SEASON_WEEK_UPDATE_FAILED');
+    }
   }
 
   // Day Plans
-  async createOrUpdateDay(
-    weekId: string,
-    data: {
-      dayOfWeek: number;
-      date: Date;
-      type: 'TRAINING' | 'MATCH' | 'REST' | 'RECOVERY' | 'TACTICAL';
-      title?: string;
-      trainingPlanId?: string;
-      drillIds?: string[];
-      duration?: number;
-      intensity?: number;
-      notes?: string;
-    },
-  ) {
-    // Allow multiple plans per day, so just create
-    return this.prisma.dayPlan.create({
-      data: {
-        weekId,
-        dayOfWeek: data.dayOfWeek,
-        date: data.date,
-        type: data.type,
-        title: data.title,
-        trainingPlanId: data.trainingPlanId,
-        drillIds: data.drillIds || [],
-        duration: data.duration,
-        intensity: data.intensity,
-        notes: data.notes,
-      },
-    });
+  async createOrUpdateDay(weekId: string, input: CreateDayDto) {
+    const data = parseCreateDayBody(input);
+    try {
+      return await this.prisma.$transaction(
+        async (transaction) => {
+          if (data.trainingPlanId) {
+            const [week, plan] = await Promise.all([
+              transaction.weekPlan.findUnique({
+                where: { id: weekId },
+                select: {
+                  season: { select: { clubId: true, groupId: true } },
+                },
+              }),
+              transaction.trainingPlan.findUnique({
+                where: { id: data.trainingPlanId },
+                select: { clubId: true, groupId: true },
+              }),
+            ]);
+            if (!week || !plan) {
+              throw new BadRequestException(
+                'Week and training plan must both exist',
+              );
+            }
+            if (
+              plan.clubId !== week.season.clubId ||
+              plan.groupId !== week.season.groupId
+            ) {
+              throw new BadRequestException(
+                'Training plan must belong to the season group',
+              );
+            }
+          }
+
+          // Multiple plans per day remain supported.
+          return transaction.dayPlan.create({
+            data: {
+              weekId,
+              dayOfWeek: data.dayOfWeek,
+              date: data.date,
+              type: data.type,
+              title: data.title,
+              trainingPlanId: data.trainingPlanId,
+              drillIds: data.drillIds || [],
+              duration: data.duration,
+              intensity: data.intensity,
+              notes: data.notes,
+            },
+          });
+        },
+        { isolationLevel: 'Serializable' },
+      );
+    } catch (error) {
+      if (error instanceof HttpException) throw error;
+      this.persistenceFailure('SEASON_DAY_WRITE_FAILED');
+    }
   }
 
   async toggleDayCompleted(dayId: string) {
-    const day = await this.prisma.dayPlan.findUnique({
-      where: { id: dayId },
-    });
-
-    if (!day) {
-      throw new Error('Day plan not found');
+    let day;
+    try {
+      day = await this.prisma.dayPlan.findUnique({
+        where: { id: dayId },
+      });
+    } catch {
+      this.persistenceFailure('SEASON_DAY_TOGGLE_FAILED');
     }
 
-    return this.prisma.dayPlan.update({
-      where: { id: dayId },
-      data: { completed: !day.completed },
-    });
+    if (!day) {
+      this.persistenceFailure('SEASON_DAY_TOGGLE_FAILED');
+    }
+
+    try {
+      return await this.prisma.dayPlan.update({
+        where: { id: dayId },
+        data: { completed: !day.completed },
+      });
+    } catch {
+      this.persistenceFailure('SEASON_DAY_TOGGLE_FAILED');
+    }
   }
 
   async deleteDay(dayId: string) {
-    return this.prisma.dayPlan.delete({
-      where: { id: dayId },
-    });
+    try {
+      return await this.prisma.dayPlan.delete({
+        where: { id: dayId },
+      });
+    } catch {
+      this.persistenceFailure('SEASON_DAY_DELETE_FAILED');
+    }
   }
 
   // Matches
-  async createMatch(
-    seasonId: string,
-    data: {
-      date: Date;
-      opponent: string;
-      location: string;
-      competition?: string;
-      notes?: string;
-      groupId?: string;
-    },
-  ) {
-    return this.prisma.match.create({
-      data: {
-        ...data,
-        seasonId,
-        groupId: data.groupId || null,
-      },
-    });
+  async createMatch(seasonId: string, input: CreateMatchDto) {
+    const data = parseCreateMatchBody(input);
+    try {
+      return await this.prisma.match.create({
+        data: {
+          ...data,
+          seasonId,
+          groupId: data.groupId || null,
+        },
+      });
+    } catch {
+      this.persistenceFailure('SEASON_MATCH_CREATE_FAILED');
+    }
   }
 
   async listMatches(seasonId: string) {
@@ -260,44 +330,119 @@ export class SeasonsService {
     });
   }
 
-  async updateMatch(matchId: string, data: any) {
-    return this.prisma.match.update({
-      where: { id: matchId },
-      data: {
-        date: data.date ? new Date(data.date) : undefined,
-        opponent: data.opponent,
-        location: data.location,
-        competition: data.competition,
-        result: data.result,
-        opponentAnalysis: data.opponentAnalysis,
-        ourFormation: data.ourFormation,
-        notes: data.notes,
-        videoLinks: data.videoLinks,
-      },
-    });
+  async updateMatch(matchId: string, input: unknown, actor?: AuthPrincipal) {
+    const data = parseUpdateMatchBody(input);
+    try {
+      if (data.date) {
+        if (!actor) throw new ForbiddenException();
+        return await legacyWrite(this.prisma, async (tx) => {
+          await tx.$executeRaw`SELECT id FROM "User" WHERE id=${actor.id} FOR SHARE`;
+          const current = await tx.user.findUnique({
+            where: { id: actor.id },
+            select: { status: true, role: true, clubId: true },
+          });
+          if (
+            !current ||
+            current.status !== 'ACTIVE' ||
+            current.role !== actor.role ||
+            current.clubId !== actor.clubId
+          )
+            throw new ForbiddenException();
+          const auth = new AuthorizationService(tx as PrismaService);
+          const scope = await auth.assertMatchManage(actor, matchId);
+          // Same lock as manual/program planning, before reading either schedule.
+          await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtextextended(${`planning_events:${scope.id}`},0))`;
+          const old = await tx.match.findUniqueOrThrow({
+            where: { id: matchId },
+          });
+          const season = await tx.season.findUniqueOrThrow({
+            where: { id: old.seasonId },
+          });
+          if (
+            dayKey(data.date!) < dayKey(season.startDate) ||
+            dayKey(data.date!) > dayKey(season.endDate)
+          )
+            throw new BadRequestException('Maç tarihi sezon dışında.');
+          const match = await tx.match.update({
+            where: { id: matchId },
+            data: data as Prisma.MatchUncheckedUpdateInput,
+          });
+          if (old.date.getTime() === data.date!.getTime()) return match;
+          const planningSync = await this.planning.reconcileMatch(
+            tx,
+            actor,
+            old,
+            data.date!,
+          );
+          return { ...match, planningSync };
+        });
+      }
+      return await this.prisma.match.update({
+        where: { id: matchId },
+        data: {
+          date: data.date,
+          opponent: data.opponent,
+          location: data.location,
+          competition: data.competition,
+          result: data.result,
+          opponentAnalysis: data.opponentAnalysis,
+          ourFormation: data.ourFormation,
+          notes: data.notes,
+          videoLinks: data.videoLinks,
+        } as Prisma.MatchUncheckedUpdateInput,
+      });
+    } catch (error) {
+      if (error instanceof HttpException) throw error;
+      this.persistenceFailure('SEASON_MATCH_UPDATE_FAILED');
+    }
   }
 
   async updateMatchTacticalBoard(
     matchId: string,
     tacticalBoard: Record<string, unknown>,
   ) {
-    return this.prisma.match.update({
-      where: { id: matchId },
-      data: { tacticalBoard } as never,
-    });
+    try {
+      return await this.prisma.$transaction(
+        async (tx) => {
+          const match = await tx.match.findUnique({
+            where: { id: matchId },
+            select: { tacticalBoard: true },
+          });
+          assertLegacyTacticalWrite(match?.tacticalBoard);
+          return await tx.match.update({
+            where: { id: matchId },
+            data: { tacticalBoard } as never,
+          });
+        },
+        { isolationLevel: 'Serializable' },
+      );
+    } catch (error) {
+      if (error instanceof HttpException) throw error;
+      rethrowTacticalConflict(error);
+      this.persistenceFailure('SEASON_MATCH_BOARD_UPDATE_FAILED');
+    }
   }
 
   async deleteMatch(matchId: string) {
-    return this.prisma.match.delete({ where: { id: matchId } });
+    try {
+      return await this.prisma.match.delete({ where: { id: matchId } });
+    } catch {
+      this.persistenceFailure('SEASON_MATCH_DELETE_FAILED');
+    }
   }
 
   // Generate weeks for season
   async generateWeeks(seasonId: string) {
-    const season = await this.prisma.season.findUnique({
-      where: { id: seasonId },
-    });
+    let season;
+    try {
+      season = await this.prisma.season.findUnique({
+        where: { id: seasonId },
+      });
+    } catch {
+      this.persistenceFailure('SEASON_WEEKS_GENERATE_FAILED');
+    }
 
-    if (!season) throw new Error('Season not found');
+    if (!season) this.persistenceFailure('SEASON_WEEKS_GENERATE_FAILED');
 
     this.assertSafeSeasonRange(season.startDate, season.endDate);
 
@@ -329,9 +474,21 @@ export class SeasonsService {
       weekNumber++;
     }
 
-    return this.prisma.weekPlan.createMany({
-      data: weeks,
-      skipDuplicates: true,
+    try {
+      return await this.prisma.weekPlan.createMany({
+        data: weeks,
+        skipDuplicates: true,
+      });
+    } catch {
+      this.persistenceFailure('SEASON_WEEKS_GENERATE_FAILED');
+    }
+  }
+
+  private persistenceFailure(event: string): never {
+    this.logger.error(event);
+    throw new InternalServerErrorException({
+      statusCode: 500,
+      message: 'Internal server error',
     });
   }
 }

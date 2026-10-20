@@ -18,6 +18,9 @@ import { StatsModule } from './stats/stats.module';
 import { AnalyticsModule } from './analytics/analytics.module';
 import { AuthorizationModule } from './auth/authorization.module';
 import { AccountsModule } from './accounts/accounts.module';
+import { SportingModule } from './sporting/sporting.module';
+import { TacticalDocumentModule } from './tactics/tactical-document.module';
+import { PlanningModule } from './planning/planning.module';
 
 @Module({
   imports: [
@@ -42,6 +45,9 @@ import { AccountsModule } from './accounts/accounts.module';
     SeasonsModule,
     StatsModule,
     AnalyticsModule,
+    SportingModule,
+    TacticalDocumentModule,
+    PlanningModule,
   ],
   controllers: [AppController],
   providers: [

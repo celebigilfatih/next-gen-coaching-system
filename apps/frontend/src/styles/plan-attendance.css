@@ -1,0 +1,217 @@
+.plan-attendance {
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card);
+  color: var(--foreground);
+}
+.plan-attendance__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px;
+  border-bottom: 1px solid var(--border);
+}
+.plan-attendance__header > div {
+  min-width: 0;
+}
+.plan-attendance__eyebrow {
+  margin: 0 0 6px;
+  color: var(--legacy-muted-foreground);
+  font-size: 12px;
+}
+.plan-attendance__header h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font: 650 18px/1.4 var(--font-body);
+  letter-spacing: -0.3px;
+}
+.plan-attendance__header h3 svg {
+  width: 20px;
+  height: 20px;
+  color: var(--blue-dark);
+}
+.plan-attendance__header h3 + p {
+  margin: 8px 0 0;
+  max-width: 56ch;
+  color: var(--legacy-muted-foreground);
+  font-size: 13px;
+  line-height: 1.6;
+}
+.plan-attendance__count {
+  flex-shrink: 0;
+  padding: 5px 9px;
+  border-radius: 5px;
+  background: var(--secondary);
+  color: var(--legacy-muted-foreground);
+  font-size: 12px;
+  font-weight: 600;
+}
+.plan-attendance__body {
+  padding: 0 20px 16px;
+}
+.plan-attendance__pager {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 0;
+  border-top: 1px solid var(--border);
+}
+.plan-attendance__pager[data-paged='false'] {
+  grid-template-columns: minmax(0, 1fr);
+}
+.plan-attendance__pager[data-paged='false'] > span {
+  text-align: left;
+}
+.plan-attendance__pager > span {
+  text-align: center;
+  color: var(--legacy-muted-foreground);
+  font-size: 12px;
+}
+.plan-attendance button {
+  min-height: 44px;
+  height: auto;
+}
+.plan-attendance__pager button {
+  padding: 8px 12px;
+  font-size: 12px;
+}
+.plan-attendance__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.plan-attendance__row {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: 12px;
+  row-gap: 12px;
+  padding: 18px 0;
+  border-top: 1px solid var(--border);
+}
+.plan-attendance__row:first-child {
+  border-top: 0;
+}
+.plan-attendance__avatar {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--secondary);
+  color: var(--blue-dark);
+  font-size: 12px;
+  font-weight: 650;
+}
+.plan-attendance__player {
+  min-width: 0;
+}
+.plan-attendance__player strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.plan-attendance__status {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 4px;
+  color: var(--legacy-muted-foreground);
+  font-size: 12px;
+}
+.plan-attendance__status svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+}
+.plan-attendance__status[data-status='PRESENT'] {
+  color: #167047;
+}
+.plan-attendance__status[data-status='ABSENT'] {
+  color: #9d3e32;
+}
+.plan-attendance__actions {
+  display: flex;
+  gap: 8px;
+}
+.plan-attendance__actions button {
+  min-width: 112px;
+  padding: 10px 12px;
+  font-size: 13px;
+}
+.plan-attendance__actions [aria-pressed='true'][data-attendance='PRESENT'] {
+  border-color: var(--blue-dark);
+  background: var(--blue-dark);
+  color: white;
+}
+.plan-attendance__actions [aria-pressed='true'][data-attendance='ABSENT'] {
+  border-color: #bc8b84;
+  background: #fcf0ee;
+  color: #9d3e32;
+}
+.plan-attendance__saving {
+  grid-column: 2 / -1;
+  color: var(--legacy-muted-foreground);
+  font-size: 12px;
+}
+.plan-attendance__note {
+  margin: 12px 0 0;
+  color: var(--legacy-muted-foreground);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.plan-attendance__alert {
+  margin-bottom: 16px;
+}
+.plan-attendance__alert button {
+  margin-top: 12px;
+  white-space: normal;
+}
+.plan-attendance__empty,
+.plan-attendance__loading {
+  padding: 24px 0;
+}
+@media (max-width: 700px) {
+  .plan-attendance__header {
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+  }
+  .plan-attendance__body {
+    padding: 0 16px 16px;
+  }
+  .plan-attendance__pager {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 10px;
+  }
+  .plan-attendance__pager > span {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    text-align: left;
+  }
+  .plan-attendance__row {
+    grid-template-columns: 40px minmax(0, 1fr);
+  }
+  .plan-attendance__actions {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+  .plan-attendance__actions button {
+    min-width: 0;
+    min-height: 48px;
+    padding: 10px 8px;
+    font-size: 14px;
+  }
+  .plan-attendance__saving {
+    grid-column: 1 / -1;
+  }
+}

@@ -3,6 +3,8 @@ import { index, route, type RouteConfig } from '@react-router/dev/routes';
 export default [
   index('routes/home.tsx'),
   route('login', 'routes/login.tsx'),
+  route('accept-invitation', 'routes/accept-invitation.tsx'),
+  route('reset-password', 'routes/reset-password.tsx'),
   route('app', 'routes/app-layout.tsx', [
     index('routes/app-index.tsx'),
     route('dashboard', 'routes/dashboard.tsx'),
@@ -10,6 +12,8 @@ export default [
     route('trainings', 'routes/trainings.tsx'),
     route('trainings/:planId', 'routes/training-detail.tsx'),
     route('library', 'routes/library.tsx'),
+    route('library/manage', 'routes/library-manage.tsx'),
+    route('library/:drillId', 'routes/library-detail.tsx'),
     route('tactics', 'routes/tactics.tsx'),
     route('tactics/new', 'routes/tactics-new.tsx'),
     route('tactics/:drillId', 'routes/tactics-detail.tsx'),
@@ -17,6 +21,14 @@ export default [
     route('attendance', 'routes/attendance.tsx'),
     route('matches', 'routes/matches.tsx'),
     route('matches/:matchId', 'routes/match-detail.tsx'),
+    route('teams', 'routes/teams.tsx'),
+    route('teams/first-team', 'routes/first-team.tsx'),
+    route('teams/academy', 'routes/academy-teams.tsx'),
+    route('teams/:teamId', 'routes/team-detail.tsx'),
+    route('players', 'routes/players.tsx'),
+    route('players/:personId', 'routes/player-detail.tsx'),
     route('settings', 'routes/settings.tsx'),
+    route('setup', 'routes/club-setup.tsx'),
+    route('settings/users', 'routes/account-access.tsx'),
   ]),
 ] satisfies RouteConfig;

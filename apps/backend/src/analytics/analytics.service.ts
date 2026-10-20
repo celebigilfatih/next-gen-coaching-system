@@ -9,9 +9,23 @@ export class AnalyticsService {
    */
   constructor(private prisma: PrismaService) {}
 
+  // Preserve the legacy adapter's omission rules; this is not input validation.
+  // Keep the existing dynamic payload contract until analytics DTOs are defined.
+  private mutationData(data: any, omitPlayer = false) {
+    if (data === null || data === undefined) {
+      throw new TypeError('Analytics payload is required');
+    }
+    const result = { ...data };
+    delete result.id;
+    delete result.createdAt;
+    delete result.updatedAt;
+    if (omitPlayer) delete result.player;
+    return result;
+  }
+
   // Player Performance CRUD
   async createPlayerPerformance(data: any) {
-    const { id, player, createdAt, updatedAt, ...createData } = data;
+    const createData = this.mutationData(data, true);
     if (createData.date) createData.date = new Date(createData.date);
     // Ensure numeric fields are correctly typed
     if (createData.rating !== undefined)
@@ -76,7 +90,7 @@ export class AnalyticsService {
 
   async updatePlayerPerformance(id: string, data: any) {
     // Sanitize data to remove non-Prisma fields and ID
-    const { id: _id, player, createdAt, updatedAt, ...sanitizedData } = data;
+    const sanitizedData = this.mutationData(data, true);
     if (sanitizedData.date) sanitizedData.date = new Date(sanitizedData.date);
     if (sanitizedData.rating !== undefined)
       sanitizedData.rating = parseFloat(sanitizedData.rating);
@@ -102,7 +116,7 @@ export class AnalyticsService {
 
   // Video Analysis CRUD
   async createVideoAnalysis(data: any) {
-    const { id, createdAt, updatedAt, ...createData } = data;
+    const createData = this.mutationData(data);
     if (createData.date) createData.date = new Date(createData.date);
     if (createData.clipsCount !== undefined)
       createData.clipsCount = parseInt(createData.clipsCount);
@@ -116,7 +130,7 @@ export class AnalyticsService {
   }
 
   async updateVideoAnalysis(id: string, data: any) {
-    const { id: _id, createdAt, updatedAt, ...sanitizedData } = data;
+    const sanitizedData = this.mutationData(data);
     if (sanitizedData.date) sanitizedData.date = new Date(sanitizedData.date);
     if (sanitizedData.clipsCount !== undefined)
       sanitizedData.clipsCount = parseInt(sanitizedData.clipsCount);
@@ -132,7 +146,7 @@ export class AnalyticsService {
 
   // Reports CRUD
   async createReport(data: any) {
-    const { id, createdAt, updatedAt, ...createData } = data;
+    const createData = this.mutationData(data);
     if (createData.date) createData.date = new Date(createData.date);
     return this.prisma.analysisReport.create({ data: createData });
   }
@@ -144,7 +158,7 @@ export class AnalyticsService {
   }
 
   async updateReport(id: string, data: any) {
-    const { id: _id, createdAt, updatedAt, ...sanitizedData } = data;
+    const sanitizedData = this.mutationData(data);
     if (sanitizedData.date) sanitizedData.date = new Date(sanitizedData.date);
     return this.prisma.analysisReport.update({
       where: { id },
@@ -158,7 +172,7 @@ export class AnalyticsService {
 
   // Team Performance CRUD
   async createTeamPerformance(data: any) {
-    const { id, createdAt, updatedAt, ...createData } = data;
+    const createData = this.mutationData(data);
     if (createData.date) createData.date = new Date(createData.date);
     if (createData.rating !== undefined)
       createData.rating = parseFloat(createData.rating);
@@ -182,7 +196,7 @@ export class AnalyticsService {
   }
 
   async updateTeamPerformance(id: string, data: any) {
-    const { id: _id, createdAt, updatedAt, ...sanitizedData } = data;
+    const sanitizedData = this.mutationData(data);
     if (sanitizedData.date) sanitizedData.date = new Date(sanitizedData.date);
     if (sanitizedData.rating !== undefined)
       sanitizedData.rating = parseFloat(sanitizedData.rating);
@@ -208,7 +222,7 @@ export class AnalyticsService {
 
   // Scouting Report CRUD (Rakip Analizi)
   async createScoutingReport(data: any) {
-    const { id, createdAt, updatedAt, ...createData } = data;
+    const createData = this.mutationData(data);
     if (createData.date) createData.date = new Date(createData.date);
     return this.prisma.scoutingReport.create({ data: createData });
   }
@@ -220,7 +234,7 @@ export class AnalyticsService {
   }
 
   async updateScoutingReport(id: string, data: any) {
-    const { id: _id, createdAt, updatedAt, ...sanitizedData } = data;
+    const sanitizedData = this.mutationData(data);
     if (sanitizedData.date) sanitizedData.date = new Date(sanitizedData.date);
     return this.prisma.scoutingReport.update({
       where: { id },
@@ -234,7 +248,7 @@ export class AnalyticsService {
 
   // Match Analysis CRUD (Standalone)
   async createMatchAnalysis(data: any) {
-    const { id, createdAt, updatedAt, ...createData } = data;
+    const createData = this.mutationData(data);
     if (createData.date) createData.date = new Date(createData.date);
     if (createData.rating !== undefined)
       createData.rating = parseFloat(createData.rating);
@@ -258,7 +272,7 @@ export class AnalyticsService {
   }
 
   async updateMatchAnalysisStandalone(id: string, data: any) {
-    const { id: _id, createdAt, updatedAt, ...sanitizedData } = data;
+    const sanitizedData = this.mutationData(data);
     if (sanitizedData.date) sanitizedData.date = new Date(sanitizedData.date);
     if (sanitizedData.rating !== undefined)
       sanitizedData.rating = parseFloat(sanitizedData.rating);
@@ -284,7 +298,7 @@ export class AnalyticsService {
 
   // Match & Opponent Analysis (Updating Match model)
   async updateMatchAnalysis(matchId: string, data: any) {
-    const { id, createdAt, updatedAt, ...sanitizedData } = data;
+    const sanitizedData = this.mutationData(data);
 
     // Only allow fields that exist in the Match model
     const allowedFields = [

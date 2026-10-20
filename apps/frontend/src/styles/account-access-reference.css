@@ -1,0 +1,331 @@
+.account-access-reference {
+  --access-border: #e1e9f3;
+  --access-muted: #667895;
+  padding-top: 0;
+  color: #0b1830;
+  background: #f5f8fc;
+}
+
+.account-access-reference__hero {
+  min-height: 188px;
+  margin: 0 calc(var(--page-gutter) * -1) 22px;
+  overflow: hidden;
+  border: 0;
+  border-bottom: 1px solid var(--access-border);
+  border-radius: 0;
+  background: #f8fbff;
+}
+
+.account-access-reference__hero::after {
+  position: absolute;
+  inset: 0;
+  content: '';
+  background: linear-gradient(
+    90deg,
+    #f8fbff 0%,
+    rgb(248 251 255 / 96%) 43%,
+    rgb(248 251 255 / 20%) 100%
+  );
+}
+
+.account-access-reference__hero .page-hero-image {
+  object-position: center 42%;
+  filter: saturate(0.7) contrast(0.92);
+}
+
+.account-access-reference__hero .page-hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 780px;
+  padding: 28px var(--page-gutter);
+  background: transparent;
+  backdrop-filter: none;
+}
+
+.account-access-reference__hero h1 {
+  margin: 0;
+  font: 750 42px/1.06 var(--font-body);
+  letter-spacing: -1.5px;
+}
+
+.account-access-reference__metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.account-access-reference__metrics .metric-card,
+.account-access-reference__directory,
+.account-access-reference__matrices > [data-slot='card'] {
+  border: 1px solid var(--access-border);
+  border-radius: 9px;
+  background: #fff;
+  box-shadow: 0 2px 9px rgb(24 54 92 / 4%);
+}
+
+.account-access-reference__directory {
+  overflow: hidden;
+  margin-bottom: 18px;
+}
+
+.account-access-reference__directory-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 16px;
+  border-bottom: 1px solid var(--access-border);
+}
+
+.account-access-reference__directory-head .page-kicker {
+  margin: 0 0 7px;
+  color: #52698d;
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.account-access-reference__directory-head h2 {
+  margin: 0;
+  font-size: 19px;
+}
+
+.account-access-reference__directory-head span {
+  display: block;
+  margin-top: 4px;
+  color: var(--access-muted);
+  font-size: 11px;
+}
+
+.account-access-reference__filters {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) 170px 150px;
+  gap: 8px;
+  width: min(100%, 650px);
+}
+
+.account-access-reference__search {
+  position: relative;
+}
+
+.account-access-reference__search > svg {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 11px;
+  color: var(--access-muted);
+  transform: translateY(-50%);
+}
+
+.account-access-reference__search input {
+  padding-left: 34px;
+}
+
+.account-access-reference__table-wrap {
+  overflow-x: auto;
+}
+
+.account-access-reference table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.account-access-reference th,
+.account-access-reference td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #edf2f7;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.account-access-reference th {
+  color: #647695;
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.account-access-reference td strong,
+.account-access-reference td small {
+  display: block;
+}
+
+.account-access-reference td small,
+.account-access-reference__protected {
+  margin-top: 3px;
+  color: var(--access-muted);
+  font-size: 11px;
+}
+
+.account-access-reference__actions {
+  width: 58px;
+  text-align: right !important;
+}
+
+.account-access-reference__matrices {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: 18px;
+  padding-bottom: 24px;
+}
+
+.account-access-reference__role-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.account-access-reference__role-grid article,
+.account-access-reference__capability-list article {
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--access-border);
+  border-radius: 8px;
+  background: #fbfdff;
+}
+
+.account-access-reference__role-grid h3 {
+  margin: 9px 0 3px;
+  font-size: 14px;
+}
+
+.account-access-reference__role-grid strong,
+.account-access-reference__capability-list strong {
+  font-size: 12px;
+}
+
+.account-access-reference__role-grid p,
+.account-access-reference__capability-list p,
+.account-access-reference__capability-list small {
+  margin: 4px 0 0;
+  overflow-wrap: anywhere;
+  color: var(--access-muted);
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.account-access-reference__capability-list {
+  display: grid;
+  gap: 8px;
+  max-height: 420px;
+  overflow: auto;
+}
+
+.account-access-reference__capability-list article {
+  display: grid;
+  grid-template-columns: minmax(130px, 0.38fr) minmax(0, 1fr);
+  gap: 12px;
+}
+
+.account-access-reference__capability-list small {
+  display: block;
+}
+
+.account-access-reference__dialog-form,
+.account-access-reference__token-result {
+  display: grid;
+  gap: 16px;
+}
+
+.account-access-reference__token-result code {
+  max-height: 150px;
+  overflow: auto;
+  padding: 12px;
+  border: 1px solid var(--access-border);
+  border-radius: 8px;
+  background: #f5f8fc;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+@media (max-width: 1024px) {
+  .account-access-reference__metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .account-access-reference__directory-head {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .account-access-reference__filters {
+    width: 100%;
+  }
+
+  .account-access-reference__matrices {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .account-access-reference__hero {
+    min-height: 220px;
+    margin-inline: -16px;
+  }
+
+  .account-access-reference__hero .page-hero-content {
+    padding-top: 24px;
+  }
+
+  .account-access-reference__hero h1 {
+    font-size: 34px;
+  }
+
+  .account-access-reference__filters,
+  .account-access-reference__role-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .account-access-reference thead {
+    display: none;
+  }
+
+  .account-access-reference tbody,
+  .account-access-reference tr,
+  .account-access-reference td {
+    display: block;
+    width: 100%;
+  }
+
+  .account-access-reference tr {
+    position: relative;
+    padding: 12px 58px 12px 12px;
+    border-bottom: 1px solid var(--access-border);
+  }
+
+  .account-access-reference td {
+    display: grid;
+    grid-template-columns: 92px minmax(0, 1fr);
+    gap: 8px;
+    padding: 5px 0;
+    border: 0;
+  }
+
+  .account-access-reference td::before {
+    content: attr(data-label);
+    color: var(--access-muted);
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .account-access-reference__actions {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: block !important;
+    width: auto !important;
+  }
+
+  .account-access-reference__actions::before {
+    content: none !important;
+  }
+
+  .account-access-reference__capability-list article {
+    grid-template-columns: 1fr;
+  }
+}

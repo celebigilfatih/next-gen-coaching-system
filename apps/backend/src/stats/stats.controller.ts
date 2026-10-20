@@ -17,7 +17,9 @@ export class StatsController {
     @Query('clubId') clubId?: string,
   ) {
     const authorizedClubId =
-      req.user.role === 'SYSTEM_ADMIN' ? clubId : req.user.clubId;
-    return this.statsService.getDashboardStats(authorizedClubId ?? undefined);
+      req.user.role === 'SYSTEM_ADMIN'
+        ? clubId
+        : (req.user.clubId ?? '__unassigned__');
+    return this.statsService.getDashboardStats(authorizedClubId);
   }
 }

@@ -45,3 +45,15 @@ describe('SeasonsService generation bounds', () => {
     expect(createMany.mock.calls[0][0].data).toHaveLength(2);
   });
 });
+// Legacy API contract tests isolate the sporting projection. Real atomic parity
+// and failures are exercised against PostgreSQL in the E2E suite.
+jest.mock('../sporting/legacy-compatibility', () => ({
+  legacyWrite: (prisma: unknown, work: (tx: unknown) => unknown) =>
+    work(prisma),
+  syncLegacyGroup: jest.fn(),
+  syncLegacyMember: jest.fn(),
+  syncLegacySeason: jest.fn(),
+  syncLegacyPerson: jest.fn(),
+  endLegacyMembers: jest.fn(),
+  assertSportingAccountChange: jest.fn(),
+}));

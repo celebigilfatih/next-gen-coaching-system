@@ -32,6 +32,12 @@ const input = {
 
 describe('DrillsService scope and ownership', () => {
   const prisma = {
+    $transaction: async (
+      work: (tx: unknown) => Promise<unknown>,
+    ): Promise<unknown> => work(prisma),
+    groupMember: {
+      findFirst: jest.fn().mockResolvedValue({ id: 'membership' }),
+    },
     drill: {
       findMany: jest.fn(),
       findUnique: jest.fn(),

@@ -54,4 +54,8 @@ maç tahtası → çapraz tenant `403` zincirini doğrular.
 
 ## Open Questions
 
+2026-09-19: Accepted ADR-0036, ayrı Phase 2 V2 sahne/animasyon sözleşmesiyle
+tek-sahne sınırını kısmen genişletir. V1 validator ve mevcut API uçları BL-058b
+güvenlik kapısı tamamlanana kadar V1-only kalır; otomatik dönüşüm yapılmaz.
+
 - Taktik belge v2 ihtiyaçları, arşivleme/retention ve formal audit kapsamı `TBD`.

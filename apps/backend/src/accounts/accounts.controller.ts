@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Header,
   Param,
   Patch,
   Post,
@@ -24,6 +25,7 @@ import {
   CompletePasswordResetDto,
   CreateInvitationDto,
 } from './dto/account-lifecycle.dto';
+import { parseAccountPageQuery } from './dto/account-page.dto';
 
 @Controller('accounts')
 @UsePipes(
@@ -35,6 +37,13 @@ import {
 )
 export class AccountsController {
   constructor(private readonly accounts: AccountLifecycleService) {}
+
+  @Get()
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles('SYSTEM_ADMIN', 'CLUB_ADMIN')
+  listAccounts(@Req() req: { user: AuthPrincipal }, @Query() query: unknown) {
+    return this.accounts.listAccounts(req.user, parseAccountPageQuery(query));
+  }
 
   @Post('invitations/accept')
   @Throttle({ default: { limit: 5, ttl: 60_000 } })
@@ -49,6 +58,7 @@ export class AccountsController {
   }
 
   @Post('invitations')
+  @Header('Cache-Control', 'no-store')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles('SYSTEM_ADMIN', 'CLUB_ADMIN')
   createInvitation(
@@ -113,6 +123,7 @@ export class AccountsController {
   }
 
   @Post(':id/password-reset')
+  @Header('Cache-Control', 'no-store')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles('SYSTEM_ADMIN', 'CLUB_ADMIN')
   issuePasswordReset(
