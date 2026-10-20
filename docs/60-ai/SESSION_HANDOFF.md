@@ -1,5 +1,16 @@
 # Session Handoff
 
+## Main PR final review — 2026-10-20
+
+PR#1 (codex/mvp-stabilization → main) stays draft: reproduced P1 in migrated
+boardless legacy drill attachment at plan-drill-content.ts:44 returns400.
+Fix provenance/null-board handling and add a migration-shaped regression before
+ready/merge. Source d65f799; fresh918/514/Sites4/tooling8 pass. Isolated root15/17
+hits junction TS2742; affected type/build pass with review-only preserveSymlinks.
+No GitHub CI checks/statuses. Only review documentation is published; primary
+attendance edits remain local. Review checkout is retained for diagnosis.
+[Evidence](../30-quality/PR_MAIN_FINAL_REVIEW_2026-10-20.md).
+
 ## Training-dialog publication follow-up — 2026-10-19
 
 Explicit user commit/push request targets the existing codex/mvp-stabilization

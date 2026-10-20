@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-10-20 — Main pull request final review
+
+- Opened PR#1 from codex/mvp-stabilization to main. One reproduced P1 blocks
+  readiness: migrated boardless legacy exercises cannot attach (HTTP400).
+- Fresh918 backend/514 frontend/Sites4/tooling8 pass; review-root15/17 encounters
+  junction TS2742, both affected compiler/build repeats pass with preserveSymlinks.
+  GitHub has no reported CI; draft retained, pending attendance work preserved.
+  [Review](docs/30-quality/PR_MAIN_FINAL_REVIEW_2026-10-20.md).
+
 ## 2026-10-19 — Kerem training create/attach acceptance
 
 - User-selected20Oct2026 18:30 training created under Kerem Tunalı; open SENIOR

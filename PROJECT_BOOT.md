@@ -1,13 +1,20 @@
 # Next Generation Coaching System — Project Boot
 
-- **Document version:** 2.141
+- **Document version:** 2.144
 - **CDSK version:** 0.1.0
-- **Last updated:** 2026-10-19
+- **Last updated:** 2026-10-20
 
 > Bu belge güncel çalışma özetidir. Bilinmeyen alan `TBD`, geçersiz alan kısa
 > gerekçeyle `N/A` bırakılır.
 
 ## Project Compass
+
+- **Main PR review (2026-10-20):** PR#1 targets main. Risk-focused review of
+  implementation d65f799 finds one P1: migrated boardless legacy drill attachment
+  throws400. Keep draft until fixed/retested. Fresh backend918/frontend514/Sites4/
+  tooling8 pass; isolated root15/17 hits junction TS2742, both affected checks pass
+  with review-only preserveSymlinks. No GitHub CI checks reported. Attendance UI
+  edits stay local. [Review](docs/30-quality/PR_MAIN_FINAL_REVIEW_2026-10-20.md).
 
 - **Training-dialog publication follow-up (2026-10-19):** user explicitly requests
   commit/push. Prior combined3d5d758 already equals remote; remaining attachment,
@@ -898,6 +905,18 @@ altı migration güncel, iki kulüp IN_SYNC ve yerel browser smoke geçti. Ayrı
 - [x] MVP kabul kapısı geçiyor; F-001–F-006 kapalı ve remediation hükmü **Pass**.
 
 ## 11. AI Handoff
+
+Main PR final review,2026-10-20: PR#1 (codex/mvp-stabilization → main) is draft.
+Implementation d65f799 contains a reproduced P1 in plan-drill-content.ts:44:
+professional migration gives legacy drills a PUBLISHED version with NULL board,
+then attachment unconditionally validates it and returns400. Preserve legacy
+compatibility and add backfill-shaped regression before ready/merge. Fresh918/514/
+Sites4/tooling8 pass in detached review checkout; root15/17 due junction TS2742,
+focused typecheck and Nest build pass with review-only preserveSymlinks. This is
+not a new17/17 unmodified run; prior canonical acceptance remains dated. No GitHub
+checks/statuses exist for the reviewed SHA. Review docs only; keep the primary
+attendance edits unstaged. No migration/retained writes or production activation.
+[Review](docs/30-quality/PR_MAIN_FINAL_REVIEW_2026-10-20.md).
 
 Kerem training flow,2026-10-19: explicit user create+attach request and selected
 20Oct2026 18:30 completed through existing UI. New retained plan
