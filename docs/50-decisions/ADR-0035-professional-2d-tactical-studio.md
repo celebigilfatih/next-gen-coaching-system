@@ -72,3 +72,18 @@ editor shortcuts. [Evidence](../30-quality/TACTICAL_SLOT_ASSIGNMENT_2026-09-19.m
 [Dilim doğrulaması](../30-quality/TACTICAL_STUDIO_2026-09-19.md).
 Formal WCAG ve gerçek saha kenarı cihaz/kullanıcı pilotu TBD. V1 özel saha
 türlerinin mevcut yön/ölçü semantiği bu sunum diliminde yeniden tanımlanmaz.
+
+## Implementation note — selected equipment family (2026-10-20)
+
+User selected the second six-object concept and requested toolbar/pitch use.
+Original domain artwork remains in the existing shared Konva/SVG source; toolbar
+miniatures are serialized from it. Six labeled horizontal add actions preserve
+the existing commands/history; compact controls scroll at narrow widths. New
+wall default is84px/three mannequins; saved sizes are not rewritten. No renderer,
+schema, API, dependency or bulk conversion is added. This implements the accepted
+presentation decision, not a new architecture choice.
+[Evidence](../30-quality/TACTICAL_EQUIPMENT_IMPLEMENTATION_2026-10-20.md).
+
+The user's follow-up extends the same family to flag, ladder and marker,
+completing nine shared-art equipment tools. Existing height/length/rung/size
+defaults and saved documents remain; this is presentation within the same ADR.

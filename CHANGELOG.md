@@ -1,5 +1,50 @@
 # Changelog
 
+## 2026-10-20 — Tactical icon publication
+
+- User-authorized icon commit/push targets codex/mvp-stabilization. Nine shared
+  equipment miniatures and command/scene/playback icons are isolated from pending
+  pitch/header, library, attachment, attendance and training-detail changes.
+- Exact staged verification and publication review:
+  [Evidence](docs/30-quality/TACTICAL_ICON_PUBLICATION_2026-10-20.md).
+
+## 2026-10-20 — Complete tactical equipment family
+
+- Bayrak, Merdiven and İşaret now use the same shared-art miniatures as their
+  pitch objects, joining the other six in the horizontal equipment rail.
+  Navy contours, amber details and original saved dimensions remain consistent.
+- Focused46, type/lint/format and responsive keyboard/image checks pass.
+  Production build and Sites4 also pass; original empty draft restored.
+  [Evidence](docs/30-quality/TACTICAL_EQUIPMENT_IMPLEMENTATION_2026-10-20.md).
+
+## 2026-10-20 — Selected tactical equipment family
+
+- User-selected second concept is implemented as six labeled horizontal add
+  actions and matching original pitch artwork: shirt, gloved keeper, football,
+  striped cone, netted goal and mannequin wall. Shared SVG/Konva source retains
+  existing editable documents and export behavior.
+- Mobile rail scrolls with48px controls and keyboard focus visibility. Focused55
+  tests and authenticated desktop/tablet/mobile checks pass; no retained write.
+  Full current-worktree root17/17 passes (backend932/frontend551/Sites4/tooling8).
+  [Evidence](docs/30-quality/TACTICAL_EQUIPMENT_IMPLEMENTATION_2026-10-20.md).
+
+## 2026-10-20 — Tactical equipment concept previews
+
+- Prepared three original six-object visual concepts, each showing player,
+  goalkeeper, ball, cone, netted goal and mannequin wall in toolbar/pitch context.
+- Current board capture grounds the white/blue interface and green2D pitch.
+  Preview images are retained for visual selection; runtime remains unchanged.
+  [Preview record](docs/30-quality/TACTICAL_ICON_CONCEPTS_2026-10-20.md).
+
+## 2026-10-20 — Tactical icon competitor research
+
+- Compared official Coach Board, Táctica, TacticalPad and Sport Session Planner
+  references with the current board. Proposed football-specific tool miniatures,
+  clearer keeper/goal/wall semantics and a consistent original2D object family.
+- Research/documentation only; final visual selection and implementation remain
+  the next design step.
+  [Research](docs/30-quality/TACTICAL_ICON_COMPETITOR_RESEARCH_2026-10-20.md).
+
 ## 2026-10-20 — Main pull request final review
 
 - Opened PR#1 from codex/mvp-stabilization to main. One reproduced P1 blocks

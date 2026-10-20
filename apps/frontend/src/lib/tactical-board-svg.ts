@@ -55,6 +55,11 @@ function artSvg(shape: BoardArt): string {
   return `<text x="${escapeXml(textX)}" y="${escapeXml(y + fontSize * 0.8)}" transform="rotate(${escapeXml(shape.rotation ?? 0)})" text-anchor="${shape.align === 'center' ? 'middle' : 'start'}" font-family="Inter, sans-serif" font-weight="700" font-size="${escapeXml(fontSize)}" ${style}>${escapeXml(shape.text ?? '')}</text>`;
 }
 
+/** A toolbar miniature uses the very same artwork as canvas and board exports. */
+export function elementArtworkSvg(element: BoardElement, viewBox: string) {
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${escapeXml(viewBox)}">${elementArt(element).map(artSvg).join('')}</svg>`;
+}
+
 export function boardSvg(
   document: TacticalBoardDocumentV1,
   appearance: PlayerAppearance = 'shirt',

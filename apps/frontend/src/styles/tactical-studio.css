@@ -868,3 +868,101 @@
   grid-column: 1 / -1;
   border-top: 1px solid var(--studio-border);
 }
+
+.tactical-studio .board-commandbar button,
+.tactical-studio .board-commandbar [role='combobox'],
+.tactical-studio .board-view-controls button,
+.tactical-studio .board-playback button,
+.tactical-studio .scene-strip button,
+.tactical-studio .board-inspector button,
+.tactical-studio .board-inspector [role='tab'],
+.tactical-studio .property-grid input,
+.tactical-studio .scene-settings input,
+.tactical-studio .scene-settings select,
+.tactical-studio .board-playback select,
+.tactical-studio .board-playback-actions label,
+.tactical-studio .board-playback-time input,
+.tactical-studio .board-view-options > summary,
+.tactical-studio .board-footerbar button {
+  min-height: 44px;
+}
+.tactical-studio .board-commandbar button[aria-label],
+.tactical-studio .board-view-controls button[aria-label] {
+  min-width: 44px;
+}
+
+.board-view-options > summary > svg,
+.studio-details > summary > svg {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-right: 4px;
+  vertical-align: -3px;
+  color: var(--blue-dark);
+}
+.tactical-studio fieldset.board-equipmentbar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  padding: 8px 12px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  border-top: 1px solid var(--studio-border);
+  background: #fff;
+}
+.tactical-studio .board-equipmentbar button {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 96px;
+  min-height: 48px;
+  padding: 6px 12px;
+  border: 1px solid var(--studio-border);
+  border-radius: 8px;
+  background: #fff;
+  color: #102439;
+  font-size: 12px;
+  font-weight: 600;
+}
+.tactical-studio .board-equipmentbar img {
+  width: 36px;
+  height: 32px;
+  object-fit: contain;
+  pointer-events: none;
+}
+.tactical-studio .board-equipmentbar button:hover:not(:disabled) {
+  background: #edf4ff;
+  border-color: #93c5fd;
+}
+.tactical-studio .board-equipmentbar button:focus-visible {
+  outline: 2px solid #1768d5;
+  outline-offset: 2px;
+  background: #edf4ff;
+}
+.tactical-studio .board-equipmentbar button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+@media (max-width: 700px) {
+  .tactical-studio fieldset.board-equipmentbar {
+    padding: 8px;
+  }
+  .tactical-studio .board-equipmentbar button {
+    min-width: 84px;
+    gap: 6px;
+    padding-inline: 8px;
+  }
+}
+@media (max-width: 700px) {
+  .board-history-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}

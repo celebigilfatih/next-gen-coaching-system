@@ -10,6 +10,21 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 ## NGCS visual target
 
+- Equipment family extension approved on2026-10-20: Bayrak, Merdiven and İşaret
+  join the same shared-art horizontal rail, making nine equipment actions.
+  Use navy contours, amber accents and existing default height/length/rungs/size;
+  retain48px targets, mobile keyboard scrolling and exact tool/pitch SVG parity.
+  Generic Flag/Ladder/Circle glyphs no longer represent these equipment actions.
+
+- Selected equipment family on2026-10-20: user chose the second displayed concept,
+  `qa/tactical-icon-concepts-2026-10-20/02-touchline-compact.png`. Six labeled
+  horizontal actions use miniature images serialized from the same `elementArt`
+  as the pitch: navy-contoured shirt, gloved keeper, classic ball, striped orange
+  cone, white netted goal and amber mannequin wall. Keep native vector exports,
+  editable numbers/identities, shirt/disc and existing canonical geometry.
+  The specimen footer is presentation only. Add actions are immediate; do not
+  invent persistent selected-tool state. Mobile rail scrolls;48px targets remain.
+
 - Training-plan form extension approved on2026-10-19: the shared create/edit form
   uses the compact Inter dialog header/team context, paired desktop title/date
   and stacked mobile fields. Keep48px/16px inputs,144px mobile purpose,44px actions

@@ -132,6 +132,16 @@ uyumluluğu, snapshot bağımsızlığı ve eski istemci veri kaybı koruması.
 
 ## REQ-024 — Profesyonel 2D taktik çalışma alanı
 
+2026-10-20 follow-up completes all nine shared-art equipment actions with flag,
+ladder and marker. Existing dimensions/history/export behavior are retained.
+[Evidence](../30-quality/TACTICAL_EQUIPMENT_IMPLEMENTATION_2026-10-20.md).
+
+2026-10-20 selected second equipment concept implemented: six labeled horizontal
+actions and pitch objects share the same vector artwork; native document,
+identity, size, undo/save and shirt/disc behavior remain. Responsive keyboard
+scrolling and shared export parity verified.
+[Evidence](../30-quality/TACTICAL_EQUIPMENT_IMPLEMENTATION_2026-10-20.md).
+
 Increment 3 assigns roster-name snapshots to existing formation positions with
 confirmation, preserved geometry, cleared numbers and one-step undo. No live
 identity linkage. [Evidence](../30-quality/TACTICAL_SLOT_ASSIGNMENT_2026-09-19.md).

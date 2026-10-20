@@ -98,6 +98,43 @@ function openScenes(
 }
 
 describe('document-wide scene editor', () => {
+  it('adds all nine labeled equipment tools through the existing history and save flow', async () => {
+    const save = openEditor(false);
+    for (const name of [
+      'Oyuncu',
+      'Kaleci',
+      'Top',
+      'Huni',
+      'Kale',
+      'Baraj',
+      'Bayrak',
+      'Merdiven',
+      'İşaret',
+    ]) {
+      const button = screen.getByRole('button', { name });
+      expect(button.querySelector('img')).toHaveAttribute('alt', '');
+      fireEvent.click(button);
+    }
+    fireEvent.click(screen.getByRole('button', { name: 'Geri al' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Yinele' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Kaydet' }));
+    await waitFor(() => expect(save).toHaveBeenCalledTimes(1));
+    expect(
+      save.mock.calls[0][0].elements.map((element) => element.type),
+    ).toEqual([
+      'player',
+      'goalkeeper',
+      'ball',
+      'cone',
+      'goal',
+      'wall',
+      'flag',
+      'ladder',
+      'marker',
+    ]);
+    expect(save.mock.calls[0][0].elements[5].width).toBe(84);
+  });
+
   it('keeps mobile properties optional while scene selection and view controls preserve the complete saved sequence', async () => {
     vi.stubGlobal(
       'matchMedia',

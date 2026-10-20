@@ -1,4 +1,14 @@
 import {
+  ArrowCounterClockwise,
+  ArrowClockwise,
+  ArrowLeft,
+  ArrowUp,
+  ArrowDown,
+  Eye,
+  SelectionAll,
+  SelectionSlash,
+  House,
+  Play,
   ArrowsOut,
   ArrowsIn,
   MagnifyingGlassPlus,
@@ -6,9 +16,6 @@ import {
   CornersOut,
   SidebarSimple,
   TShirt,
-  TrafficCone,
-  LadderSimple,
-  Rectangle,
   UsersThree,
   Minus,
   Square,
@@ -20,10 +27,8 @@ import {
   Circle,
   Copy,
   DownloadSimple,
-  Flag,
   FloppyDisk,
   GridFour,
-  SoccerBall,
   TextT,
   Trash,
   UploadSimple,
@@ -84,6 +89,7 @@ import {
   type Team,
 } from '../../lib/tactical-board';
 import { boardSvg } from '../../lib/tactical-board-svg';
+import { equipmentTools, equipmentImages } from '../../lib/board-equipment';
 import {
   elementArt,
   pitchArt,
@@ -142,44 +148,7 @@ const tools: Array<{
   icon?: typeof Circle;
   patch?: Partial<BoardElement>;
 }> = [
-  {
-    type: 'player',
-    label: 'Oyuncu',
-    icon: TShirt,
-    patch: { team: 'home', number: '8', radius: 24 },
-  },
-  {
-    type: 'goalkeeper',
-    label: 'Kaleci',
-    icon: TShirt,
-    patch: { team: 'home', number: '1', size: 34 },
-  },
-  { type: 'ball', label: 'Top', icon: SoccerBall, patch: { radius: 12 } },
-  {
-    type: 'cone',
-    label: 'Koni',
-    icon: TrafficCone,
-    patch: { color: '#f59e0b', size: 24 },
-  },
-  { type: 'goal', label: 'Kale', icon: Rectangle, patch: { size: 'large' } },
-  {
-    type: 'flag',
-    label: 'Bayrak',
-    icon: Flag,
-    patch: { color: '#f59e0b', height: 60 },
-  },
-  { type: 'wall', label: 'Baraj', icon: UsersThree, patch: { width: 130 } },
-  {
-    type: 'ladder',
-    label: 'Merdiven',
-    icon: LadderSimple,
-    patch: { length: 140, rungs: 6 },
-  },
-  {
-    type: 'marker',
-    label: 'İşaret',
-    patch: { shape: 'circle', color: '#facc15', size: 24 },
-  },
+  ...equipmentTools,
   {
     type: 'arrow',
     label: 'Düz ok',
@@ -947,18 +916,24 @@ export function TacticalBoardEditor({
           <Button
             variant="outline"
             size="sm"
+            aria-label="Geri al"
+            title="Geri al"
             onClick={undo}
             disabled={editingLocked || historyIndex === 0}
           >
-            Geri al
+            <ArrowCounterClockwise aria-hidden="true" />
+            <span className="board-history-label">Geri al</span>
           </Button>
           <Button
             variant="outline"
             size="sm"
+            aria-label="Yinele"
+            title="Yinele"
             onClick={redo}
             disabled={editingLocked || historyIndex >= history.length - 1}
           >
-            Yinele
+            <ArrowClockwise aria-hidden="true" />
+            <span className="board-history-label">Yinele</span>
           </Button>
           <Button
             size="icon"
@@ -985,7 +960,9 @@ export function TacticalBoardEditor({
           </Button>
         </div>
         <details className="board-view-options">
-          <summary>Görünüm</summary>
+          <summary>
+            <Eye aria-hidden="true" /> Görünüm
+          </summary>
           <div className="board-view-settings">
             <Button
               variant={gridSnap ? 'secondary' : 'outline'}
@@ -1054,6 +1031,36 @@ export function TacticalBoardEditor({
           olarak ezmeyiz.
         </p>
       )}
+      {!readOnly ? (
+        <fieldset
+          disabled={editingLocked}
+          className="board-equipmentbar"
+          aria-label="Futbol ekipmanları"
+        >
+          {equipmentTools.map((tool) => (
+            <button
+              key={tool.type}
+              type="button"
+              title={tool.label}
+              disabled={saving || document.elements.length >= 250}
+              onClick={() => {
+                setPanning(false);
+                addElement(tool);
+              }}
+            >
+              <img
+                src={equipmentImages.get(tool.type)}
+                alt=""
+                aria-hidden="true"
+                width={36}
+                height={32}
+                draggable={false}
+              />
+              <span>{tool.label}</span>
+            </button>
+          ))}
+        </fieldset>
+      ) : null}
       <div className="board-workspace">
         <div className="board-layout">
           {!readOnly ? (
@@ -1076,23 +1083,25 @@ export function TacticalBoardEditor({
                   <Hand />
                   <span>Kaydır</span>
                 </button>
-                {tools.map((tool, index) => {
-                  const Icon = tool.icon ?? Circle;
-                  return (
-                    <button
-                      key={`${tool.type}-${index}`}
-                      title={tool.label}
-                      disabled={saving || document.elements.length >= 250}
-                      onClick={() => {
-                        setPanning(false);
-                        addElement(tool);
-                      }}
-                    >
-                      <Icon />
-                      <span>{tool.label}</span>
-                    </button>
-                  );
-                })}
+                {tools
+                  .filter((tool) => !equipmentImages.has(tool.type))
+                  .map((tool, index) => {
+                    const Icon = tool.icon ?? Circle;
+                    return (
+                      <button
+                        key={`${tool.type}-${index}`}
+                        title={tool.label}
+                        disabled={saving || document.elements.length >= 250}
+                        onClick={() => {
+                          setPanning(false);
+                          addElement(tool);
+                        }}
+                      >
+                        <Icon aria-hidden="true" />
+                        <span>{tool.label}</span>
+                      </button>
+                    );
+                  })}
               </fieldset>
             </aside>
           ) : null}
@@ -1290,6 +1299,7 @@ export function TacticalBoardEditor({
                 selectScene(next.scenes[0].id);
               }}
             >
+              <Play aria-hidden="true" />
               Animasyon oluştur
             </Button>
           </div>
@@ -1308,6 +1318,7 @@ export function TacticalBoardEditor({
                   aria-pressed={multiSelect}
                   onClick={() => setMultiSelect((value) => !value)}
                 >
+                  <SelectionAll aria-hidden="true" />
                   Çoklu seçim
                 </Button>
                 <p className="board-help">
@@ -1334,6 +1345,7 @@ export function TacticalBoardEditor({
                         setInspectorTab('properties');
                       }}
                     >
+                      <UsersThree aria-hidden="true" />
                       {team === 'home' ? 'Ev takımını seç' : 'Rakibi seç'}
                     </Button>
                   ))}
@@ -1342,6 +1354,7 @@ export function TacticalBoardEditor({
                     variant="ghost"
                     onClick={() => setSelectedIds([])}
                   >
+                    <SelectionSlash aria-hidden="true" />
                     Seçimi bırak
                   </Button>
                 </div>
@@ -1363,12 +1376,12 @@ export function TacticalBoardEditor({
                     </span>
                     {(
                       [
-                        ['Sola taşı', -20, 0, '←'],
-                        ['Yukarı taşı', 0, -20, '↑'],
-                        ['Aşağı taşı', 0, 20, '↓'],
-                        ['Sağa taşı', 20, 0, '→'],
+                        ['Sola taşı', -20, 0, ArrowLeft],
+                        ['Yukarı taşı', 0, -20, ArrowUp],
+                        ['Aşağı taşı', 0, 20, ArrowDown],
+                        ['Sağa taşı', 20, 0, ArrowRight],
                       ] as const
-                    ).map(([label, dx, dy, arrow]) => (
+                    ).map(([label, dx, dy, DirectionIcon]) => (
                       <Button
                         key={label}
                         size="icon"
@@ -1377,7 +1390,7 @@ export function TacticalBoardEditor({
                         disabled={saving}
                         onClick={() => nudgeSelection(dx, dy)}
                       >
-                        {arrow}
+                        <DirectionIcon aria-hidden="true" />
                       </Button>
                     ))}
                   </div>
@@ -1550,9 +1563,11 @@ export function TacticalBoardEditor({
               </SelectContent>
             </Select>
             <Button variant="outline" onClick={() => applyFormation('home')}>
+              <House aria-hidden="true" />
               Ev formasyonu
             </Button>
             <Button variant="outline" onClick={() => applyFormation('away')}>
+              <UsersThree aria-hidden="true" />
               Deplasman formasyonu
             </Button>
             <div className="board-export">

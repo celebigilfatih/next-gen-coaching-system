@@ -1,6 +1,6 @@
 # Next Generation Coaching System — Project Boot
 
-- **Document version:** 2.144
+- **Document version:** 2.155
 - **CDSK version:** 0.1.0
 - **Last updated:** 2026-10-20
 
@@ -905,6 +905,14 @@ altı migration güncel, iki kulüp IN_SYNC ve yerel browser smoke geçti. Ayrı
 - [x] MVP kabul kapısı geçiyor; F-001–F-006 kapalı ve remediation hükmü **Pass**.
 
 ## 11. AI Handoff
+
+Tactical icon publication,2026-10-20: explicit user request targets commit/push
+on codex/mvp-stabilization. Nine shared-art equipment tools plus command/scene/
+playback icons are isolated in the index; existing fields/history/readonly/save
+and native vector exports remain. Pending pitch/header/library/attachment/
+attendance/training-detail work stays local and unstaged. The publication report
+records exact-staged validation and scope. No API/schema/dependency/migration.
+[Review](docs/30-quality/TACTICAL_ICON_PUBLICATION_2026-10-20.md).
 
 Main PR final review,2026-10-20: PR#1 (codex/mvp-stabilization → main) is draft.
 Implementation d65f799 contains a reproduced P1 in plan-drill-content.ts:44:

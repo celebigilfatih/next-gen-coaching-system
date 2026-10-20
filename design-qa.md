@@ -1,5 +1,17 @@
 # NGCS visual QA — BL-048 reference migration (2026-09-08)
 
+## Tactical icon publication — 2026-10-20
+
+The user-selected second icon family extends to nine matching shared-art tools.
+[Desktop evidence](apps/frontend/qa/tactical-equipment-2026-10-20/07-nine-tools-desktop.png)
+and [mobile keyboard evidence](apps/frontend/qa/tactical-equipment-2026-10-20/08-nine-tools-mobile.png)
+show the combined local application. This commit preserves the baseline route
+layout and pitch templates; only the icon scope is published. The equipment
+family and48px horizontal actions pass visual inspection, keyboard scrolling and
+SVG parity. Exact staged regression and scope are recorded in the
+[publication review](docs/30-quality/TACTICAL_ICON_PUBLICATION_2026-10-20.md).
+final result: passed
+
 ## Training-plan form extension — 2026-10-19
 
 final result: passed

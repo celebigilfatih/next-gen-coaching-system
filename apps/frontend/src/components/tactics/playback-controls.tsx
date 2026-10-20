@@ -1,4 +1,4 @@
-import { Pause, Play, SkipBack } from '@phosphor-icons/react';
+import { Pause, Play, SkipBack, Repeat, Stop } from '@phosphor-icons/react';
 import { Button } from '../ui/button';
 import type {
   PlaybackSpeed,
@@ -77,6 +77,7 @@ export function PlaybackControls({
           disabled={disabled}
           onClick={() => onLoop(!state.loop)}
         >
+          <Repeat aria-hidden="true" />
           Döngü
         </Button>
         {state.preview && (
@@ -86,6 +87,7 @@ export function PlaybackControls({
             onClick={onEdit}
             disabled={disabled}
           >
+            <Stop aria-hidden="true" />
             Sabit sahneye dön
           </Button>
         )}

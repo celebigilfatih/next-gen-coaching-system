@@ -5,6 +5,8 @@ import {
   Copy,
   Plus,
   Trash,
+  Check,
+  X,
 } from '@phosphor-icons/react';
 import type {
   TacticalBoardDocumentV2,
@@ -207,6 +209,7 @@ export function SceneStrip({
               disabled={busy}
               onClick={() => setRemoveId(null)}
             >
+              <X aria-hidden="true" />
               İptal
             </Button>
             <Button
@@ -217,6 +220,7 @@ export function SceneStrip({
                 setRemoveId(null);
               }}
             >
+              <Trash aria-hidden="true" />
               Sahneyi silmeyi onayla
             </Button>
           </DialogFooter>
@@ -316,6 +320,7 @@ function SceneSettings({
         size="sm"
         disabled={busy || !title.trim()}
       >
+        <Check aria-hidden="true" />
         Sahne ayarlarını uygula
       </Button>
     </form>

@@ -179,6 +179,16 @@ and selected-plan identification corrected; focused19/19 and persistence pass.
 
 ## BL-057 — Profesyonel taktik stüdyosu (2026-09-19)
 
+2026-10-20 follow-up completes all nine shared-art equipment actions with flag,
+ladder and marker. Existing dimensions/history/export behavior are retained.
+[Evidence](../30-quality/TACTICAL_EQUIPMENT_IMPLEMENTATION_2026-10-20.md).
+
+2026-10-20 equipment family implemented from user-selected second concept:
+six labeled horizontal actions, matching shared pitch art, mobile48px targets/
+keyboard scrolling and vector export parity. Existing document/history contract
+and other drawing tools remain.
+[Evidence](../30-quality/TACTICAL_EQUIPMENT_IMPLEMENTATION_2026-10-20.md).
+
 Increment 3 implemented: explicit existing-slot name assignment, confirmation,
 number clearing, geometry preservation and one-step undo; unchanged V1.
 [Evidence](../30-quality/TACTICAL_SLOT_ASSIGNMENT_2026-09-19.md).
