@@ -1,6 +1,6 @@
 # Next Generation Coaching System — Project Boot
 
-- **Document version:** 2.158
+- **Document version:** 2.159
 - **CDSK version:** 0.1.0
 - **Last updated:** 2026-10-20
 
@@ -8,6 +8,13 @@
 > gerekçeyle `N/A` bırakılır.
 
 ## Project Compass
+
+- **PR#1 readiness re-review (2026-10-20):**069f459/main has no merge conflict,
+  external reviews or CI statuses. Original legacy-attachment P1 is fixed; one
+  verified P2 blocks readiness: frozen boardless v1 phases inherit a later
+  published source board. Actual dedicated PostgreSQL/service reproduction
+  preserves the unchanged phase row while exposing the new diagram. Keep draft;
+  fix/retest both readers before ready/merge. [Review](docs/30-quality/PR_MAIN_READINESS_2026-10-20.md).
 
 - **Tactical icon documentation publication (2026-10-20):** user requests commit/
   push on codex/mvp-stabilization after1d75b9f. Remaining shared docs and three
@@ -977,6 +984,21 @@ altı migration güncel, iki kulüp IN_SYNC ve yerel browser smoke geçti. Ayrı
 - [x] MVP kabul kapısı geçiyor; F-001–F-006 kapalı ve remediation hükmü **Pass**.
 
 ## 11. AI Handoff
+
+PR#1 readiness re-review,2026-10-20: user conditionally requests draft removal
+only if blockers are gone. Reviewed069f459/base1b831e0, incremental d65f799..HEAD
+plus relevant contracts/services with an independent read-only reviewer. Original
+P1 fix is narrow and passes HTTP11; new P2 means keep draft. Fresh actual compiled
+TrainingEditorService + DrillContentService.publish in dedicated loopback test DB
+reproduces absent v1 -> later GLOBAL v2 diagram on an unchanged PlanDrill with
+v1 contentSnapshot/null boardSnapshot. Both training SQL and tactical document
+readers still fall back to mutable source. Preserve frozen absence for new
+versioned content, while retaining old nullable-row compatibility; add both-read/
+add/replace/source-update regressions before readiness. Current validation is in
+the report. No runtime edit/retained write/migration/ready transition/merge. Update
+PR body to this finding; GitHub has no checks/statuses/reviews and main is
+unprotected/no rulesets, mergeable locally/remotely. These do not clear P2.
+[Review](docs/30-quality/PR_MAIN_READINESS_2026-10-20.md).
 
 Tactical icon documentation publication,2026-10-20: explicit review/commit/push
 request targets codex/mvp-stabilization after1d75b9f. Remaining action-icon report,
@@ -2748,6 +2770,9 @@ Do not mark roster binding, animation, offline match-day or 3D complete.
   rollout kendi karar kapılarında `TBD` kalır.
 
 ## Revision History
+
+2.159 — 2026-10-20: PR#1 re-review closes old P1, reproduces frozen-absence P2;
+keep draft with current validation and a concrete correction/regression handoff.
 
 2.158 — 2026-10-20: Review/publish remaining tactical icon documentation and three
 historical JPEGs; completed-selection guidance and current document checks recorded.

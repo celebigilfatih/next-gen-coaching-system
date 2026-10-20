@@ -1,5 +1,10 @@
 # Main-targeted pull request final review — 2026-10-20
 
+Historical review of d65f799. The [latest readiness re-review](PR_MAIN_READINESS_2026-10-20.md)
+at069f459 confirms the original attachment P1 is fixed and records a separate
+verified P2 concerning frozen absence of a legacy board. Current readiness is
+described there; this report retains its original revision-specific evidence.
+
 PR: [#1](https://github.com/celebigilfatih/next-gen-coaching-system/pull/1),
 `codex/mvp-stabilization` → `main`.
 Verdict: **keep draft / changes required**, one reproduced P1 compatibility defect.

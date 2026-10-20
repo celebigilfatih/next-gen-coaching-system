@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-10-20 — PR #1 readiness re-review
+
+- Re-reviewed069f459 against main and the previous d65f799 review. The original
+  legacy-attachment P1 is closed; a verified P2 keeps PR#1 draft: a new frozen
+  boardless phase inherits a later source board without any plan write.
+- Actual dedicated PostgreSQL/service reproduction and fresh validation are
+  recorded in the [readiness report](docs/30-quality/PR_MAIN_READINESS_2026-10-20.md).
+  GitHub mergeability alone does not clear the defect. Documentation-only follow-up;
+  no runtime fix, ready transition, merge, migration or retained-data operation.
+
 ## 2026-10-20 — Tactical icon documentation publication
 
 - Reviewed and published the remaining action-icon report, three original JPEG
