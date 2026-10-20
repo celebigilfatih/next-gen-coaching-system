@@ -407,26 +407,7 @@
   height: auto;
   min-height: 0;
 }
-.tactical-studio-page .studio-heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 18px 0 12px;
-}
-.tactical-studio-page .studio-heading h1 {
-  margin: 0 0 5px;
-  font: 700 23px/1.25 var(--font-body);
-  overflow-wrap: anywhere;
-}
-.tactical-studio-page .studio-heading p {
-  margin: 0;
-  color: #64778f;
-  font-size: 12px;
-}
-.tactical-studio-page .studio-heading .page-actions {
-  flex-shrink: 0;
-}
+
 .tactical-studio-page .studio-details {
   margin-bottom: 12px;
   border: 1px solid #dde5ee;
@@ -514,14 +495,9 @@
   .tactical-studio--expanded .board-layout {
     flex: none;
   }
-  .tactical-studio-page .studio-heading {
-    align-items: flex-start;
-  }
+
   .tactics-editor-reference.tactical-studio-page .board-editor {
     margin-inline: 0;
-  }
-  .tactical-studio-page .studio-heading h1 {
-    font-size: 19px;
   }
 }
 
@@ -889,6 +865,13 @@
 .tactical-studio .board-commandbar button[aria-label],
 .tactical-studio .board-view-controls button[aria-label] {
   min-width: 44px;
+}
+.board-pitch-lock {
+  margin: 0;
+  padding: 8px 12px;
+  color: var(--legacy-muted-foreground);
+  font-size: 12px;
+  border-top: 1px solid var(--border);
 }
 
 .board-view-options > summary > svg,

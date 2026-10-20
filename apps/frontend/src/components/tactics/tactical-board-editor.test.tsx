@@ -38,6 +38,10 @@ vi.mock('sonner', () => ({ toast: { success: vi.fn(), error: vi.fn() } }));
 vi.mock('../../lib/api', () => ({ getSportingPlayerPage: vi.fn() }));
 
 beforeEach(() => {
+  Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', {
+    configurable: true,
+    value: vi.fn(),
+  });
   vi.stubGlobal(
     'ResizeObserver',
     class {
@@ -46,7 +50,10 @@ beforeEach(() => {
     },
   );
 });
-afterEach(() => vi.unstubAllGlobals());
+afterEach(() => {
+  delete (HTMLElement.prototype as { scrollIntoView?: unknown }).scrollIntoView;
+  vi.unstubAllGlobals();
+});
 
 function openEditor(
   initiallySaved: boolean,
@@ -135,6 +142,111 @@ describe('document-wide scene editor', () => {
     expect(save.mock.calls[0][0].elements[5].width).toBe(84);
   });
 
+  it('keeps the saved pitch and history when fixed-size equipment cannot fit a smaller pitch', async () => {
+    const seed: TacticalBoardDocumentV1 = {
+      ...emptyBoard(),
+      elements: [
+        {
+          id: 'zone',
+          type: 'zone',
+          x: 600,
+          y: 400,
+          width: 1000,
+          height: 700,
+          opacity: 0.25,
+        },
+      ],
+    };
+    const save = openScenes(seed);
+    fireEvent.keyDown(screen.getByRole('combobox', { name: 'Saha türü' }), {
+      key: 'Enter',
+    });
+    fireEvent.click(
+      await screen.findByRole('option', { name: 'Korner alanı' }),
+    );
+    expect(toast.error).toHaveBeenCalledWith(
+      expect.stringContaining('Önce boyutlarını küçültün'),
+    );
+    expect(
+      screen.getByRole('combobox', { name: 'Saha türü' }),
+    ).toHaveTextContent('Tam saha');
+    expect(screen.getByRole('button', { name: 'Geri al' })).toBeDisabled();
+    expect(screen.getByRole('status')).toHaveTextContent(/^Kaydedildi$/);
+    expect(save).not.toHaveBeenCalled();
+  });
+  it('changes a populated pitch with one undo, fits it, saves and reopens the exact draft', async () => {
+    const seed: TacticalBoardDocumentV1 = {
+      ...emptyBoard(),
+      elements: [
+        {
+          id: 'p',
+          type: 'player',
+          x: 1080,
+          y: 720,
+          team: 'home',
+          number: '8',
+          name: 'QA Oyuncu',
+          radius: 24,
+        },
+        {
+          id: 'a',
+          type: 'arrow',
+          x: 600,
+          y: 400,
+          endX: 1200,
+          endY: 800,
+          thickness: 5,
+          style: 'straight',
+        },
+      ],
+    };
+    const save = openScenes(seed);
+    fireEvent.click(screen.getByRole('button', { name: 'Yakınlaştır' }));
+    fireEvent.keyDown(screen.getByRole('combobox', { name: 'Saha türü' }), {
+      key: 'Enter',
+    });
+    fireEvent.click(await screen.findByRole('option', { name: 'Yarım saha' }));
+    expect(
+      screen.getByRole('combobox', { name: 'Saha türü' }),
+    ).toHaveTextContent('Yarım saha');
+    expect(screen.getByLabelText('Saha görünümü')).toHaveTextContent('100%');
+    expect(save).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole('button', { name: 'Geri al' }));
+    expect(screen.getByRole('status')).toHaveTextContent(/^Kaydedildi$/);
+    expect(
+      screen.getByRole('combobox', { name: 'Saha türü' }),
+    ).toHaveTextContent('Tam saha');
+    fireEvent.click(screen.getByRole('button', { name: 'Yinele' }));
+    await act(async () =>
+      fireEvent.click(screen.getByRole('button', { name: 'Kaydet' })),
+    );
+    const saved = save.mock.calls[0][0] as TacticalBoardDocumentV1;
+    expect(saved.pitch.type).toBe('half');
+    expect(saved.elements[0]).toMatchObject({
+      x: 720,
+      y: 540,
+      name: 'QA Oyuncu',
+      radius: 24,
+    });
+    expect(saved.elements[1]).toMatchObject({
+      x: 400,
+      y: 300,
+      endX: 800,
+      endY: 600,
+    });
+    // Remount through an actual serialized read, not the pre-edit seed.
+    const { cleanup } = await import('@testing-library/react');
+    cleanup();
+    const reopened = openScenes(JSON.parse(JSON.stringify(saved)));
+    expect(
+      screen.getByRole('combobox', { name: 'Saha türü' }),
+    ).toHaveTextContent('Yarım saha');
+    expect(screen.getByRole('status')).toHaveTextContent(/^Kaydedildi$/);
+    await act(async () =>
+      fireEvent.click(screen.getByRole('button', { name: 'Kaydet' })),
+    );
+    expect(reopened).toHaveBeenCalledExactlyOnceWith(saved);
+  });
   it('keeps mobile properties optional while scene selection and view controls preserve the complete saved sequence', async () => {
     vi.stubGlobal(
       'matchMedia',
@@ -395,6 +507,9 @@ describe('document-wide scene editor', () => {
     expect(screen.getByText('Kaydedildi')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Geri al' })).toBeDisabled();
     expect(screen.getByRole('combobox', { name: 'Saha türü' })).toBeDisabled();
+    expect(
+      screen.getByRole('combobox', { name: 'Saha türü' }),
+    ).toHaveAccessibleDescription(/Çok sahneli belgelerde/);
     fireEvent.click(screen.getByRole('button', { name: 'Oyuncu' }));
     await act(async () =>
       fireEvent.click(screen.getByRole('button', { name: 'Kaydet' })),

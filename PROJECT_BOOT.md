@@ -1,6 +1,6 @@
 # Next Generation Coaching System — Project Boot
 
-- **Document version:** 2.155
+- **Document version:** 2.156
 - **CDSK version:** 0.1.0
 - **Last updated:** 2026-10-20
 
@@ -905,6 +905,16 @@ altı migration güncel, iki kulüp IN_SYNC ve yerel browser smoke geçti. Ayrı
 - [x] MVP kabul kapısı geçiyor; F-001–F-006 kapalı ve remediation hükmü **Pass**.
 
 ## 11. AI Handoff
+
+Pitch/header publication,2026-10-20: user explicitly requests final review,
+commit and push on codex/mvp-stabilization after9015b31. Publish the eleven
+shared pitch-region templates, safe single-scene proportional edits with undo/
+fit and compact title/back/metadata/viewport layout. Keep V1/V2/API, nine-tool
+family, permissions/history/save and multi-scene lock. Other local library,
+attachment, attendance and training-detail work stays unstaged. Exact-index
+frontend551/type/lint/format/build/Sites4 and document checks pass; no new
+retained browser write. Results are recorded in the publication report.
+[Review](docs/30-quality/TACTICAL_PITCH_PUBLICATION_2026-10-20.md).
 
 Tactical icon publication,2026-10-20: explicit user request targets commit/push
 on codex/mvp-stabilization. Nine shared-art equipment tools plus command/scene/

@@ -20,7 +20,18 @@ vi.mock('../lib/session', () => {
   };
 });
 vi.mock('../components/tactics/tactical-board-editor', () => ({
-  TacticalBoardEditor: () => <div aria-label="Taktik tahta editörü" />,
+  TacticalBoardEditor: ({
+    heading,
+    metadata,
+  }: {
+    heading: React.ReactNode;
+    metadata: React.ReactNode;
+  }) => (
+    <div aria-label="Taktik tahta editörü">
+      <div className="board-commandbar">{heading}</div>
+      {metadata}
+    </div>
+  ),
 }));
 vi.mock('sonner', () => ({ toast: { success: vi.fn() } }));
 
@@ -35,6 +46,10 @@ describe('tactics editor reference surface', () => {
       screen.getByRole('heading', { name: 'Yeni taktik egzersizi' }),
     ).toBeInTheDocument();
     expect(document.querySelector('.page-hero-image')).not.toBeInTheDocument();
+    expect(document.querySelector('.studio-heading')).not.toBeInTheDocument();
+    expect(
+      screen.getByRole('heading').closest('.board-commandbar'),
+    ).not.toBeNull();
     const details = screen.getByText(
       'Egzersiz bilgileri · Başlık, süre, kategori ve ekipman',
     );

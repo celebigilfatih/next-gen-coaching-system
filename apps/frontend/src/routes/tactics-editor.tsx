@@ -1,4 +1,4 @@
-import { ArrowLeft, Copy, FloppyDisk } from '@phosphor-icons/react';
+import { ArrowLeft, Copy, FloppyDisk, Info } from '@phosphor-icons/react';
 import { useCallback, useRef, useState, useSyncExternalStore } from 'react';
 import { Link } from 'react-router';
 import { toast } from 'sonner';
@@ -181,109 +181,116 @@ function LoadedDrill({
   }
   return (
     <div className="page-shell tactics-editor-page tactics-editor-reference tactical-studio-page">
-      <header className="studio-heading">
-        <Link to="/app/tactics" className="tactics-workspace-back">
-          <ArrowLeft /> Taktik tahtalarına dön
-        </Link>
-        <div>
-          <p className="tactics-workspace-kicker">Taktik çalışma alanı</p>
-          <h1>{title}</h1>
-          <p>
-            {group?.name ?? 'Takım seçilmedi'} · Taktik stüdyosu · {duration} dk
-          </p>
-        </div>
-        <div className="page-actions">
-          {drill?.scope === 'GLOBAL' ? (
-            <Badge variant="amber">
-              <Copy />
-              Kopyala ve düzenle
-            </Badge>
-          ) : null}
-        </div>
-      </header>
-      <details className="studio-details">
-        <summary>
-          Egzersiz bilgileri · Başlık, süre, kategori ve ekipman
-        </summary>
-        <section className="drill-fields">
-          <label>
-            Başlık
-            <Input
-              disabled={readOnly || saving}
-              value={title}
-              maxLength={120}
-              onChange={(event) => setTitle(event.target.value)}
-            />
-          </label>
-          <label>
-            Kategori
-            <Select
-              disabled={readOnly || saving}
-              value={category}
-              onValueChange={(value) => setCategory(value as DrillPhase)}
-            >
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="WARM_UP">Isınma</SelectItem>
-                <SelectItem value="TECHNICAL">Teknik</SelectItem>
-                <SelectItem value="TACTICAL">Taktik</SelectItem>
-                <SelectItem value="COOL_DOWN">Soğuma</SelectItem>
-              </SelectContent>
-            </Select>
-          </label>
-          <label>
-            Süre
-            <Input
-              disabled={readOnly || saving}
-              type="number"
-              min={1}
-              max={300}
-              value={duration}
-              onChange={(event) => setDuration(Number(event.target.value))}
-            />
-          </label>
-          <label>
-            Zorluk
-            <Select
-              disabled={readOnly || saving}
-              value={difficulty}
-              onValueChange={(value) =>
-                setDifficulty(value as typeof difficulty)
-              }
-            >
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="EASY">Kolay</SelectItem>
-                <SelectItem value="MEDIUM">Orta</SelectItem>
-                <SelectItem value="HARD">Zor</SelectItem>
-              </SelectContent>
-            </Select>
-          </label>
-          {principal?.role === 'SYSTEM_ADMIN' ? (
-            <Alert>
-              <AlertDescription>
-                Bu tahta kulüp kopyası olarak kaydedilir. Global yayınlar{' '}
-                <Link to="/app/library/manage">uzman inceleme kuyruğundan</Link>{' '}
-                yönetilir.
-              </AlertDescription>
-            </Alert>
-          ) : null}
-          <label>
-            Ekipman
-            <Input
-              disabled={readOnly || saving}
-              value={equipment}
-              maxLength={500}
-              onChange={(event) => setEquipment(event.target.value)}
-            />
-          </label>
-        </section>
-      </details>
       <TacticalBoardEditor
+        heading={
+          <>
+            <Link
+              to="/app/tactics"
+              className="board-route-back"
+              aria-label="Taktik tahtalarına dön"
+              title="Taktik tahtalarına dön"
+            >
+              <ArrowLeft aria-hidden="true" />
+            </Link>
+            <h1 title={title}>{title}</h1>
+            {drill?.scope === 'GLOBAL' ? (
+              <Badge variant="amber">
+                <Copy />
+                Kopyala ve düzenle
+              </Badge>
+            ) : null}
+          </>
+        }
+        metadata={
+          <details className="studio-details">
+            <summary>
+              <Info aria-hidden="true" />
+              Egzersiz bilgileri · Başlık, süre, kategori ve ekipman
+            </summary>
+            <p className="studio-team-summary">
+              {group?.name ?? 'Takım seçilmedi'} · {duration} dk
+            </p>
+            <section className="drill-fields">
+              <label>
+                Başlık
+                <Input
+                  disabled={readOnly || saving}
+                  value={title}
+                  maxLength={120}
+                  onChange={(event) => setTitle(event.target.value)}
+                />
+              </label>
+              <label>
+                Kategori
+                <Select
+                  disabled={readOnly || saving}
+                  value={category}
+                  onValueChange={(value) => setCategory(value as DrillPhase)}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="WARM_UP">Isınma</SelectItem>
+                    <SelectItem value="TECHNICAL">Teknik</SelectItem>
+                    <SelectItem value="TACTICAL">Taktik</SelectItem>
+                    <SelectItem value="COOL_DOWN">Soğuma</SelectItem>
+                  </SelectContent>
+                </Select>
+              </label>
+              <label>
+                Süre
+                <Input
+                  disabled={readOnly || saving}
+                  type="number"
+                  min={1}
+                  max={300}
+                  value={duration}
+                  onChange={(event) => setDuration(Number(event.target.value))}
+                />
+              </label>
+              <label>
+                Zorluk
+                <Select
+                  disabled={readOnly || saving}
+                  value={difficulty}
+                  onValueChange={(value) =>
+                    setDifficulty(value as typeof difficulty)
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="EASY">Kolay</SelectItem>
+                    <SelectItem value="MEDIUM">Orta</SelectItem>
+                    <SelectItem value="HARD">Zor</SelectItem>
+                  </SelectContent>
+                </Select>
+              </label>
+              {principal?.role === 'SYSTEM_ADMIN' ? (
+                <Alert>
+                  <AlertDescription>
+                    Bu tahta kulüp kopyası olarak kaydedilir. Global yayınlar{' '}
+                    <Link to="/app/library/manage">
+                      uzman inceleme kuyruğundan
+                    </Link>{' '}
+                    yönetilir.
+                  </AlertDescription>
+                </Alert>
+              ) : null}
+              <label>
+                Ekipman
+                <Input
+                  disabled={readOnly || saving}
+                  value={equipment}
+                  maxLength={500}
+                  onChange={(event) => setEquipment(event.target.value)}
+                />
+              </label>
+            </section>
+          </details>
+        }
         readOnly={readOnly}
         rosterSource={
           team && club && (!drill?.groupId || drill.groupId === group?.id)

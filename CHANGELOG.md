@@ -1,5 +1,27 @@
 # Changelog
 
+## 2026-10-20 — Pitch and compact header publication
+
+- User-authorized publication includes eleven shared pitch templates, safe
+  proportional pitch edits and the compact accessible title/metadata layout.
+  Existing document/save/history and multi-scene locks remain.
+- Fresh exact-index frontend551/type/lint/format/build/Sites4 and docs pass.
+- Other local library/attachment/attendance/training-detail work is excluded.
+  [Review](docs/30-quality/TACTICAL_PITCH_PUBLICATION_2026-10-20.md).
+
+## 2026-10-20 — Modern 2D tactical pitch
+
+- Eleven pitch templates now show their football regions; single-scene pitch
+  changes preserve relative anchors/arrow/line endpoints with one undo and fit.
+  Oversized equipment keeps the original draft and asks for explicit resizing.
+- Modern shared shirt/keeper/ball/cone/net artwork, compact editor title/back
+  toolbar, collapsible metadata and viewport-sized pitch replace the tall heading.
+  V1/V2/API/schema and explicit-save/preview/permission guards remain unchanged.
+- Authenticated desktop/tablet/mobile checks and a named synthetic save/reload
+  passed. Final root17/17: backend927/frontend542/Sites4/tooling8 and both builds;
+  totals include concurrent work. IAB PNG download observation remains limited.
+  [Evidence](docs/30-quality/TACTICAL_PITCH_MODERN_2D_2026-10-20.md).
+
 ## 2026-10-20 — Tactical icon publication
 
 - User-authorized icon commit/push targets codex/mvp-stabilization. Nine shared

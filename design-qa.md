@@ -1,5 +1,16 @@
 # NGCS visual QA — BL-048 reference migration (2026-09-08)
 
+## Pitch and compact header publication — 2026-10-20
+
+Eleven pitch templates, one-step proportional pitch/history edits and compact
+header/metadata/viewport behavior were reviewed against the accepted ADR-0035
+scope. Historical authenticated desktop/tablet/mobile evidence is retained in
+apps/frontend/qa/tactical-pitch-2026-10-20/. Exact-index regression and final
+publication scope are recorded in the
+[review](docs/30-quality/TACTICAL_PITCH_PUBLICATION_2026-10-20.md).
+No new retained browser write or download certification is claimed.
+final result: passed
+
 ## Tactical icon publication — 2026-10-20
 
 The user-selected second icon family extends to nine matching shared-art tools.

@@ -38,11 +38,14 @@ import {
   useCallback,
   useEffect,
   useImperativeHandle,
+  useId,
   useMemo,
   useRef,
   useState,
   useSyncExternalStore,
   type Ref,
+  type ReactNode,
+  type CSSProperties,
 } from 'react';
 import { useBlocker, useNavigate, useLocation } from 'react-router';
 import {
@@ -77,6 +80,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import {
   emptyBoard,
+  changeBoardPitch,
   formationElements,
   formations,
   id,
@@ -101,6 +105,7 @@ import { translateSelection } from '../../lib/board-selection';
 import { BoardRoster, type BoardRosterSource } from './board-roster';
 import {
   validateTacticalDocument,
+  validateStaticBoard,
   type TacticalDocument,
 } from '../../lib/tactical-document-core';
 import {
@@ -123,6 +128,8 @@ const readNarrowViewport = () =>
 
 export type BoardEditorHandle = { transition: (action: () => void) => void };
 type Props = {
+  heading?: ReactNode;
+  metadata?: ReactNode;
   rosterSource?: BoardRosterSource;
   controllerRef?: Ref<BoardEditorHandle>;
   onSavingChange?: (saving: boolean) => void;
@@ -211,6 +218,8 @@ const tools: Array<{
 ];
 
 export function TacticalBoardEditor({
+  heading,
+  metadata,
   initialDocument,
   initiallySaved = initialDocument != null,
   onSave,
@@ -279,6 +288,9 @@ export function TacticalBoardEditor({
     useState<(typeof formations)[number]>('4-3-3');
   const [clearOpen, setClearOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const editorRef = useRef<HTMLDivElement>(null);
+  const [availableHeight, setAvailableHeight] = useState(520);
+  const pitchLockId = useId();
   const stageRef = useRef<Konva.Stage>(null);
   const transformerRef = useRef<Konva.Transformer>(null);
   const importRef = useRef<HTMLInputElement>(null);
@@ -470,6 +482,34 @@ export function TacticalBoardEditor({
     if (containerRef.current) observer.observe(containerRef.current);
     return () => observer.disconnect();
   }, []);
+
+  useEffect(() => {
+    if (!heading || !editorRef.current) return;
+    const editor = editorRef.current;
+    const measure = () => {
+      if (editor.classList.contains('tactical-studio--expanded')) return;
+      const layout = editor.querySelector('.board-layout');
+      if (layout)
+        setAvailableHeight(
+          Math.max(
+            280,
+            Math.floor(
+              window.innerHeight -
+                (layout.getBoundingClientRect().top + window.scrollY) -
+                24,
+            ),
+          ),
+        );
+    };
+    const observer = new ResizeObserver(measure);
+    observer.observe(editor);
+    window.addEventListener('resize', measure);
+    measure();
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', measure);
+    };
+  }, [heading]);
 
   useEffect(() => {
     const transformer = transformerRef.current;
@@ -671,17 +711,19 @@ export function TacticalBoardEditor({
 
   function changePitch(type: PitchType) {
     if (multipleScenes || savingRef.current) return;
-    const config = pitchConfigs[type];
-    const next = {
-      ...document,
-      pitch: { type, width: config.width, height: config.height },
-      elements: document.elements.map((element) => ({
-        ...element,
-        x: Math.min(element.x, config.width),
-        y: Math.min(element.y, config.height),
-      })),
-    };
-    commit(next);
+    try {
+      const next = changeBoardPitch(document, type);
+      if (next === document) return;
+      validateStaticBoard(next);
+      commit(next);
+      fitPitch();
+    } catch (cause) {
+      toast.error(
+        cause instanceof Error
+          ? cause.message
+          : 'Saha değiştirilemedi; taslağınız korundu.',
+      );
+    }
   }
 
   function applyFormation(team: Team) {
@@ -852,6 +894,14 @@ export function TacticalBoardEditor({
 
   return (
     <div
+      ref={editorRef}
+      style={
+        heading
+          ? ({
+              '--studio-available-height': `${availableHeight}px`,
+            } as CSSProperties)
+          : undefined
+      }
       className={`board-editor tactical-studio${expanded ? ' tactical-studio--expanded' : ''}${inspectorOpen ? '' : ' tactical-studio--no-inspector'}${readOnly ? ' tactical-studio--readonly' : ''}`}
       aria-label="Taktik çalışma alanı"
     >
@@ -896,13 +946,18 @@ export function TacticalBoardEditor({
         </DialogContent>
       </Dialog>
       <div className="board-commandbar">
+        {heading ? <div className="board-route-heading">{heading}</div> : null}
         <div className="board-commandbar-tools">
           <Select
             value={document.pitch.type}
             onValueChange={(value) => changePitch(value as PitchType)}
             disabled={editingLocked || multipleScenes}
           >
-            <SelectTrigger className="w-48" aria-label="Saha türü">
+            <SelectTrigger
+              className="w-48"
+              aria-label="Saha türü"
+              aria-describedby={multipleScenes ? pitchLockId : undefined}
+            >
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -1031,6 +1086,13 @@ export function TacticalBoardEditor({
           olarak ezmeyiz.
         </p>
       )}
+      {multipleScenes ? (
+        <p id={pitchLockId} className="board-pitch-lock">
+          Çok sahneli belgelerde tüm sahneler aynı sahayı kullanır; saha türü
+          değiştirilemez.
+        </p>
+      ) : null}
+      {metadata}
       {!readOnly ? (
         <fieldset
           disabled={editingLocked}

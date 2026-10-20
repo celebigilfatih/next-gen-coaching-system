@@ -73,6 +73,24 @@ editor shortcuts. [Evidence](../30-quality/TACTICAL_SLOT_ASSIGNMENT_2026-09-19.m
 Formal WCAG ve gerçek saha kenarı cihaz/kullanıcı pilotu TBD. V1 özel saha
 türlerinin mevcut yön/ölçü semantiği bu sunum diliminde yeniden tanımlanmaz.
 
+
+## Approved extension — modern pitch templates (2026-10-20)
+
+User explicitly selected modern2D over a new3D renderer and requested the
+implementation plan. This supersedes the initial slice's unchanged specialty
+background rendering only: eleven existing canonical pitch types now have
+illustrative football-region drawings. Canonical dimensions, coordinates,
+V1/V2/schema/API and saved documents are not migrated. Loading old documents
+shows the corrected shared artwork without changing their JSON or dirty state.
+
+An explicit single-scene pitch edit proportionally maps anchors/arrow endpoints/
+local line points, preserving identity/rotation/equipment size. Oversized
+zones/walls/ladders reject before commit; the draft stays intact. One undo restores
+the exact original; fit is presentation-only. The ADR-0036 multi-scene pitch lock
+remains. Header/back navigation becomes a compact toolbar and metadata disclosure;
+modern equipment uses the shared Konva/SVG geometry. No dependency or service is
+added. [Acceptance and export limitation](../30-quality/TACTICAL_PITCH_MODERN_2D_2026-10-20.md).
+
 ## Implementation note — selected equipment family (2026-10-20)
 
 User selected the second six-object concept and requested toolbar/pitch use.

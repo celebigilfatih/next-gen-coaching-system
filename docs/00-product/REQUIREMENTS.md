@@ -142,6 +142,14 @@ identity, size, undo/save and shirt/disc behavior remain. Responsive keyboard
 scrolling and shared export parity verified.
 [Evidence](../30-quality/TACTICAL_EQUIPMENT_IMPLEMENTATION_2026-10-20.md).
 
+2026-10-20 approved extension implemented: eleven illustrative pitch templates,
+proportional single-scene anchor/arrow/line edits and one-step undo/fit; oversized
+equipment rejects safely. Modern shared artwork and compact title/back toolbar
+reclaim pitch space. V1/V2/schema/API and multi-scene pitch lock are preserved.
+Authenticated desktop/tablet/mobile and named synthetic save/reload verified;
+IAB downloaded-file inspection remains limited.
+[Evidence](../30-quality/TACTICAL_PITCH_MODERN_2D_2026-10-20.md).
+
 Increment 3 assigns roster-name snapshots to existing formation positions with
 confirmation, preserved geometry, cleared numbers and one-step undo. No live
 identity linkage. [Evidence](../30-quality/TACTICAL_SLOT_ASSIGNMENT_2026-09-19.md).

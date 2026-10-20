@@ -12,17 +12,13 @@
   gap: 20px;
   margin-bottom: 24px;
 }
-
-.tactics-workspace-heading h1,
-.tactics-editor-reference.tactical-studio-page .studio-heading h1 {
+.tactics-workspace-heading h1 {
   margin: 0;
   font: 750 40px/1.15 var(--font-body);
   letter-spacing: -1.4px;
   overflow-wrap: anywhere;
 }
-
-.tactics-workspace-heading p,
-.tactics-editor-reference.tactical-studio-page .studio-heading p {
+.tactics-workspace-heading p {
   margin: 8px 0 0;
   color: var(--legacy-muted-foreground);
   font-size: 14px;
@@ -134,42 +130,6 @@
   line-height: 1.6;
 }
 
-.tactics-editor-reference.tactical-studio-page .studio-heading {
-  display: block;
-  padding: 0;
-  margin-bottom: 24px;
-}
-.tactics-workspace-back {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  min-height: 36px;
-  margin-bottom: 12px;
-  color: var(--blue-dark);
-  font-size: 13px;
-  font-weight: 550;
-}
-.tactics-workspace-back svg {
-  width: 16px;
-  height: 16px;
-}
-.tactics-workspace-back:hover {
-  text-decoration: underline;
-}
-.tactics-editor-reference.tactical-studio-page
-  .studio-heading
-  .tactics-workspace-kicker {
-  margin: 0 0 6px;
-  font-size: 13px;
-}
-.tactics-editor-reference.tactical-studio-page
-  .studio-heading
-  .page-actions:empty {
-  display: none;
-}
-.tactics-editor-reference.tactical-studio-page .studio-heading .page-actions {
-  margin-top: 12px;
-}
 .tactics-editor-reference.tactical-studio-page .studio-details {
   border-color: var(--border);
   border-radius: 8px;
@@ -198,6 +158,80 @@
   line-height: 1.6;
 }
 
+/* Compact editor chrome: the pitch owns the space formerly used by the hero. */
+.board-route-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1 1 100%;
+  min-width: 0;
+}
+.board-route-heading h1 {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font: 650 17px/1.3 var(--font-body);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.board-route-back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 44px;
+  min-height: 44px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--blue-dark);
+}
+.board-route-back svg {
+  width: 20px;
+  height: 20px;
+}
+.board-route-back:hover {
+  background: var(--secondary);
+}
+.board-route-back:focus-visible {
+  outline: 2px solid var(--blue-dark);
+  outline-offset: 2px;
+}
+.tactics-editor-reference.tactical-studio-page .studio-details {
+  margin: 0;
+  border: 0;
+  border-top: 1px solid var(--border);
+  border-radius: 0;
+}
+.tactics-editor-reference.tactical-studio-page .studio-details summary {
+  padding: 12px;
+  min-height: 44px;
+}
+.studio-team-summary {
+  margin: 0;
+  padding: 4px 16px;
+  font-size: 13px;
+  color: var(--legacy-muted-foreground);
+}
+.tactics-editor-reference .board-layout {
+  height: clamp(360px, var(--studio-available-height, 520px), 820px);
+}
+.tactics-editor-reference .tactical-studio--expanded .board-route-heading,
+.tactics-editor-reference .tactical-studio--expanded .studio-details {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  .tactics-editor-reference .board-layout {
+    height: auto;
+  }
+  .tactics-editor-reference .board-stage-shell {
+    height: clamp(280px, var(--studio-available-height, 360px), 560px);
+  }
+  .board-route-heading h1 {
+    font-size: 16px;
+  }
+}
+
 @media (max-width: 1000px) {
   .tactics-workspace-table td,
   .tactics-workspace-table th {
@@ -215,13 +249,11 @@
     gap: 16px;
     margin-bottom: 20px;
   }
-  .tactics-workspace-heading h1,
-  .tactics-editor-reference.tactical-studio-page .studio-heading h1 {
+  .tactics-workspace-heading h1 {
     font-size: 30px;
     letter-spacing: -1px;
   }
-  .tactics-workspace-heading p,
-  .tactics-editor-reference.tactical-studio-page .studio-heading p {
+  .tactics-workspace-heading p {
     font-size: 13px;
   }
   .tactics-workspace-heading > a {
@@ -282,14 +314,7 @@
   .tactics-workspace-table a {
     min-height: 44px;
   }
-  .tactics-workspace-back {
-    min-height: 44px;
-    font-size: 14px;
-    margin-bottom: 8px;
-  }
-  .tactics-editor-reference.tactical-studio-page .studio-heading {
-    margin-bottom: 20px;
-  }
+
   .tactics-editor-reference.tactical-studio-page .studio-details summary {
     padding: 16px;
     min-height: 44px;

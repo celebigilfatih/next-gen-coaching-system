@@ -10,6 +10,16 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 ## NGCS visual target
 
+- Tactical pitch extension approved on2026-10-20: use modern2D on the existing
+  shared Konva/SVG drawing source. Render all eleven illustrative pitch regions;
+  keep canonical dimensions and V1/V2 documents. Single-scene pitch changes map
+  anchors/arrow/line endpoints proportionally, preserve equipment size and reject
+  oversized equipment explicitly, with one undo and view-only fit. Keep the
+  multi-scene pitch lock. Replace the tall editor heading with a compact title/
+  accessible back control inside the toolbar; retain team/duration in collapsed
+  metadata. Route viewport space belongs to the pitch; mobile properties start
+  closed and controls use44px targets. Do not restore the removed heading/kicker.
+
 - Equipment family extension approved on2026-10-20: Bayrak, Merdiven and İşaret
   join the same shared-art horizontal rail, making nine equipment actions.
   Use navy contours, amber accents and existing default height/length/rungs/size;

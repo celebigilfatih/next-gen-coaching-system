@@ -76,6 +76,53 @@ export function emptyBoard(type: PitchType = 'full'): TacticalBoardDocumentV1 {
   };
 }
 
+/** Explicit pitch edit: preserve relative placement, never collapse objects at an edge. */
+export function changeBoardPitch(
+  board: TacticalBoardDocumentV1,
+  type: PitchType,
+): TacticalBoardDocumentV1 {
+  if (board.pitch.type === type) return board;
+  const { width, height } = pitchConfigs[type];
+  const sx = width / board.pitch.width;
+  const sy = height / board.pitch.height;
+  if (
+    board.elements.some(
+      (element) =>
+        ((element.type === 'wall' || element.type === 'zone') &&
+          (element.width ?? 0) > width) ||
+        (element.type === 'ladder' && (element.length ?? 0) > width) ||
+        (element.type === 'zone' && (element.height ?? 0) > height),
+    )
+  )
+    throw new Error(
+      'Bazı ekipman veya bölgeler seçilen sahadan büyük. Önce boyutlarını küçültün; saha ve taslağınız korundu.',
+    );
+  const project = (value: number, ratio: number, max: number) =>
+    Math.max(0, Math.min(max, value * ratio));
+  return {
+    ...board,
+    pitch: { type, width, height },
+    elements: board.elements.map((element) => ({
+      ...element,
+      x: project(element.x, sx, width),
+      y: project(element.y, sy, height),
+      ...(element.endX !== undefined
+        ? { endX: project(element.endX, sx, width) }
+        : {}),
+      ...(element.endY !== undefined
+        ? { endY: project(element.endY, sy, height) }
+        : {}),
+      ...(element.points
+        ? {
+            points: element.points.map(
+              (value, index) => value * (index % 2 ? sy : sx),
+            ),
+          }
+        : {}),
+    })),
+  };
+}
+
 export function validateBoard(value: unknown): TacticalBoardDocumentV1 {
   if (!value || typeof value !== 'object' || Array.isArray(value)) {
     throw new Error('Belge bir nesne olmalı.');

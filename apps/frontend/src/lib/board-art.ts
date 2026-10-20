@@ -27,38 +27,20 @@ const line = (
   points: number[],
   stroke = '#eef8f1',
   strokeWidth = 3,
-): BoardArt => ({
-  type: 'line',
-  points,
-  stroke,
-  strokeWidth,
-});
+): BoardArt => ({ type: 'line', points, stroke, strokeWidth });
 const rect = (
   x: number,
   y: number,
   width: number,
   height: number,
   fill: string,
-): BoardArt => ({
-  type: 'rect',
-  x,
-  y,
-  width,
-  height,
-  fill,
-});
+): BoardArt => ({ type: 'rect', x, y, width, height, fill });
 const circle = (
   x: number,
   y: number,
   radius: number,
   fill: string,
-): BoardArt => ({
-  type: 'circle',
-  x,
-  y,
-  radius,
-  fill,
-});
+): BoardArt => ({ type: 'circle', x, y, radius, fill });
 
 export function elementArt(
   element: BoardElement,
@@ -519,10 +501,10 @@ export function elementArt(
 
 export function pitchArt(pitch: TacticalBoardDocumentV1['pitch']): BoardArt[] {
   const { width: w, height: h, type } = pitch;
-  const white = '#e4eee5';
-  const shapes: BoardArt[] = [rect(0, 0, w, h, '#285f49')];
+  const white = '#eef7ef';
+  const shapes: BoardArt[] = [rect(0, 0, w, h, '#246347')];
   for (let i = 0; i < 10; i += 2)
-    shapes.push(rect((i * w) / 10, 0, w / 10, h, '#2c664e'));
+    shapes.push(rect((i * w) / 10, 0, w / 10, h, '#296e50'));
   shapes.push({
     ...rect(18, 18, w - 36, h - 36, 'transparent'),
     stroke: white,
@@ -543,42 +525,146 @@ export function pitchArt(pitch: TacticalBoardDocumentV1['pitch']): BoardArt[] {
       );
     return shapes;
   }
-  // Preserve the existing V1 field orientation; specialty pitch semantics evolve separately.
-  shapes.push(
-    line([w / 2, 18, w / 2, h - 18], white, 2.5),
-    {
-      ...circle(w / 2, h / 2, Math.min(w, h) * 0.13, 'transparent'),
-      stroke: white,
-      strokeWidth: 2.5,
-    },
-    circle(w / 2, h / 2, 3.5, white),
-  );
-  for (const right of [false, true]) {
-    shapes.push(
-      {
-        ...rect(
-          right ? w - 18 - w * 0.16 : 18,
-          h * 0.24,
-          w * 0.16,
-          h * 0.52,
-          'transparent',
-        ),
-        stroke: white,
-        strokeWidth: 2.5,
-      },
-      {
-        ...rect(
-          right ? w - 18 - w * 0.055 : 18,
-          h * 0.37,
-          w * 0.055,
-          h * 0.26,
-          'transparent',
-        ),
-        stroke: white,
-        strokeWidth: 2.5,
-      },
-      circle(right ? w - 18 - w * 0.11 : 18 + w * 0.11, h / 2, 3, white),
+  // Crop one canonical football layout, rather than drawing two goals on every template.
+  // These are rendering coordinates, not new document fields or regulation-size claims.
+  const length = type === 'mini7' ? 70 : type === 'mini5' ? 40 : 105;
+  const breadth = type === 'mini7' ? 50 : type === 'mini5' ? 30 : 68;
+  const crop: [number, number, number, number] =
+    type === 'half'
+      ? [0, 0, 52.5, 68]
+      : type === 'third'
+        ? [0, 0, 35, 68]
+        : type === 'quarter'
+          ? [0, 0, 52.5, 34]
+          : type === 'penalty'
+            ? [0, 10, 25, 58]
+            : type === 'corner'
+              ? [0, 0, 26.25, 34]
+              : type === 'freekick'
+                ? [0, 0, 42, 68]
+                : [0, 0, length, breadth];
+  const [left, top, right, bottom] = crop;
+  const px = (x: number) => 18 + ((x - left) / (right - left)) * (w - 36);
+  const py = (y: number) => 18 + ((y - top) / (bottom - top)) * (h - 36);
+  const draw = (points: number[], thickness = 2.5) => {
+    let path: number[] = [];
+    const flush = () => {
+      if (path.length > 2) shapes.push(line(path, white, thickness));
+      path = [];
+    };
+    for (let i = 0; i < points.length - 2; i += 2) {
+      const clipped = clipPitchSegment(points.slice(i, i + 4), crop);
+      if (!clipped) {
+        flush();
+        continue;
+      }
+      const [x1, y1, x2, y2] = clipped;
+      const start = [px(x1), py(y1)];
+      if (
+        path.length &&
+        (Math.abs(path[path.length - 2] - start[0]) > 0.01 ||
+          Math.abs(path[path.length - 1] - start[1]) > 0.01)
+      )
+        flush();
+      if (!path.length) path.push(...start);
+      path.push(px(x2), py(y2));
+    }
+    flush();
+  };
+  const arc = (
+    cx: number,
+    cy: number,
+    radius: number,
+    from: number,
+    to: number,
+  ) => {
+    const points = Array.from({ length: 65 }, (_, i) => {
+      const angle = from + ((to - from) * i) / 64;
+      return [cx + Math.cos(angle) * radius, cy + Math.sin(angle) * radius];
+    }).flat();
+    draw(points);
+  };
+  const spot = (x: number, y: number) => {
+    if (x >= left && x <= right && y >= top && y <= bottom)
+      shapes.push(circle(px(x), py(y), 3, white));
+  };
+  draw([length / 2, 0, length / 2, breadth]);
+  const centreRadius = type === 'mini5' ? 3 : type === 'mini7' ? 6 : 9.15;
+  arc(length / 2, breadth / 2, centreRadius, 0, Math.PI * 2);
+  spot(length / 2, breadth / 2);
+  const depth = type === 'mini5' ? 6 : type === 'mini7' ? 12 : 16.5;
+  const boxHalf = type === 'mini5' ? 8 : type === 'mini7' ? 14 : 20.16;
+  const smallDepth = type === 'mini5' ? 2 : type === 'mini7' ? 4 : 5.5;
+  const smallHalf = type === 'mini5' ? 4 : type === 'mini7' ? 7 : 9.16;
+  const penaltySpot = type === 'mini5' ? 4 : type === 'mini7' ? 8 : 11;
+  for (const far of [false, true]) {
+    const x = (value: number) => (far ? length - value : value);
+    draw([
+      x(0),
+      breadth / 2 - boxHalf,
+      x(depth),
+      breadth / 2 - boxHalf,
+      x(depth),
+      breadth / 2 + boxHalf,
+      x(0),
+      breadth / 2 + boxHalf,
+    ]);
+    draw([
+      x(0),
+      breadth / 2 - smallHalf,
+      x(smallDepth),
+      breadth / 2 - smallHalf,
+      x(smallDepth),
+      breadth / 2 + smallHalf,
+      x(0),
+      breadth / 2 + smallHalf,
+    ]);
+    draw(
+      [
+        x(0),
+        breadth / 2 - (type === 'mini5' ? 1.5 : 3.66),
+        x(0),
+        breadth / 2 + (type === 'mini5' ? 1.5 : 3.66),
+      ],
+      5,
+    );
+    spot(x(penaltySpot), breadth / 2);
+    const angle = Math.acos((depth - penaltySpot) / centreRadius);
+    arc(
+      x(penaltySpot),
+      breadth / 2,
+      centreRadius,
+      far ? Math.PI - angle : -angle,
+      far ? Math.PI + angle : angle,
     );
   }
+  arc(0, 0, 1, 0, Math.PI / 2);
+  arc(length, 0, 1, Math.PI / 2, Math.PI);
+  arc(0, breadth, 1, -Math.PI / 2, 0);
+  arc(length, breadth, 1, Math.PI, Math.PI * 1.5);
   return shapes;
+}
+
+/** Liang–Barsky segment clipping keeps cropped circles/boxes inside every export. */
+function clipPitchSegment(
+  [x, y, endX, endY]: number[],
+  [left, top, right, bottom]: [number, number, number, number],
+): number[] | null {
+  const dx = endX - x;
+  const dy = endY - y;
+  let start = 0;
+  let end = 1;
+  const p = [-dx, dx, -dy, dy];
+  const q = [x - left, right - x, y - top, bottom - y];
+  for (let i = 0; i < 4; i++) {
+    if (p[i] === 0) {
+      if (q[i] < 0) return null;
+      continue;
+    }
+    const ratio = q[i] / p[i];
+    if (p[i] < 0) start = Math.max(start, ratio);
+    else end = Math.min(end, ratio);
+    if (start > end) return null;
+  }
+  return [x + start * dx, y + start * dy, x + end * dx, y + end * dy];
 }
