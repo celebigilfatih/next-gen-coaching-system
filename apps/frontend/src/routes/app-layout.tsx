@@ -1,5 +1,4 @@
 import {
-  Bell,
   Books,
   CalendarBlank,
   CaretDown,
@@ -8,13 +7,22 @@ import {
   Gear,
   List,
   MagnifyingGlass,
+  ShieldChevron,
   SignOut,
   SoccerBall,
-  SquaresFour,
+  House,
   Strategy,
+  UserList,
+  UserGear,
   UsersThree,
 } from '@phosphor-icons/react';
-import { type ComponentType, type FormEvent } from 'react';
+import {
+  type ComponentType,
+  type FormEvent,
+  useEffect,
+  useRef,
+  useSyncExternalStore,
+} from 'react';
 import { NavLink, Navigate, Outlet, useNavigate } from 'react-router';
 import { toast } from 'sonner';
 import { Avatar, AvatarFallback } from '../components/ui/avatar';
@@ -27,7 +35,6 @@ import {
   DropdownMenuTrigger,
 } from '../components/ui/dropdown-menu';
 import { Input } from '../components/ui/input';
-import { Separator } from '../components/ui/separator';
 import {
   Sheet,
   SheetClose,
@@ -43,21 +50,37 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '../components/ui/tooltip';
-import { clearSession, getSession, type SessionUser } from '../lib/session';
+import { getSession, subscribeSession, type SessionUser } from '../lib/session';
+import { logout as endSession } from '../lib/api';
 import { WorkspaceProvider, useWorkspace } from '../lib/workspace-context';
+import { useClubTheme } from '../lib/use-club-theme';
+import '../styles/club-branding.css';
+import { WorkspaceScopeSelector } from '../components/workspace-scope-selector';
+import { MatchNotifications } from '../components/match-notifications';
 import '../workspace.css';
+import '../styles/dashboard-reference.css';
+import '../styles/teams-reference.css';
+import '../styles/matches-reference.css';
+import '../styles/week-reference.css';
+import '../styles/training-reference.css';
+import '../styles/library-tactics-reference.css';
+import '../styles/match-detail-reference.css';
+import '../styles/player-operations-reference.css';
+import '../styles/settings-reference.css';
+import '../styles/account-access-reference.css';
 
 type NavigationItem = {
   to: string;
   label: string;
   icon: ComponentType<{ weight?: 'duotone' }>;
+  adminOnly?: boolean;
 };
 
 const navigationSections: { label: string; items: NavigationItem[] }[] = [
   {
     label: 'Genel',
     items: [
-      { to: '/app/dashboard', label: 'Genel Bakış', icon: SquaresFour },
+      { to: '/app/dashboard', label: 'Ana Sayfa', icon: House },
       { to: '/app/week', label: 'Hafta', icon: CalendarBlank },
     ],
   },
@@ -71,11 +94,20 @@ const navigationSections: { label: string; items: NavigationItem[] }[] = [
     ],
   },
   {
-    label: 'Takım',
+    label: 'Sportif organizasyon',
     items: [
+      { to: '/app/teams/first-team', label: 'A Takım', icon: ShieldChevron },
+      { to: '/app/teams/academy', label: 'Altyapı', icon: UsersThree },
+      { to: '/app/players', label: 'Oyuncular', icon: UserList },
       { to: '/app/squad', label: 'Kadro', icon: UsersThree },
       { to: '/app/attendance', label: 'Yoklama', icon: CheckSquare },
       { to: '/app/settings', label: 'Ayarlar', icon: Gear },
+      {
+        to: '/app/settings/users',
+        label: 'Kullanıcılar ve Yetkiler',
+        icon: UserGear,
+        adminOnly: true,
+      },
     ],
   },
 ];
@@ -90,7 +122,11 @@ const mobileNavigation = [
 ].map((path) => navigation.find(({ to }) => to === path)!);
 
 export default function AppLayout() {
-  const session = getSession();
+  const session = useSyncExternalStore(
+    subscribeSession,
+    getSession,
+    () => null,
+  );
   if (!session) return <Navigate to="/login" replace />;
   return (
     <WorkspaceProvider>
@@ -103,8 +139,28 @@ export default function AppLayout() {
 }
 
 function Shell({ user }: { user: SessionUser }) {
+  const { club } = useWorkspace();
+  useClubTheme(club);
   const navigate = useNavigate();
-  const { groups, group, season, matches, selectGroup } = useWorkspace();
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  const visibleNavigation = navigation.filter(
+    ({ adminOnly }) =>
+      !adminOnly || user.role === 'SYSTEM_ADMIN' || user.role === 'CLUB_ADMIN',
+  );
+
+  useEffect(() => {
+    function focusNavigationSearch(event: KeyboardEvent) {
+      if (
+        (event.metaKey || event.ctrlKey) &&
+        event.key.toLocaleLowerCase() === 'k'
+      ) {
+        event.preventDefault();
+        searchInputRef.current?.focus();
+      }
+    }
+    window.addEventListener('keydown', focusNavigationSearch);
+    return () => window.removeEventListener('keydown', focusNavigationSearch);
+  }, []);
 
   function submitSearch(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -113,7 +169,7 @@ function Shell({ user }: { user: SessionUser }) {
       .trim()
       .toLocaleLowerCase('tr-TR');
     if (!query) return;
-    const match = navigation.find((item) =>
+    const match = visibleNavigation.find((item) =>
       item.label.toLocaleLowerCase('tr-TR').includes(query),
     );
     if (match) {
@@ -124,23 +180,23 @@ function Shell({ user }: { user: SessionUser }) {
     }
   }
 
-  function logout() {
-    clearSession();
-    navigate('/login');
+  async function logout() {
+    try {
+      await endSession();
+      navigate('/login');
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : 'Çıkış tamamlanamadı.',
+      );
+    }
   }
 
   return (
     <main className="ngcs-shell">
       <aside className="ngcs-sidebar">
         <Brand />
-        <Navigation />
-        <SidebarFooter
-          groups={groups}
-          groupId={group?.id ?? ''}
-          user={user}
-          seasonName={season?.name}
-          onGroupChange={selectGroup}
-        />
+        <Navigation user={user} />
+        <SidebarFooter />
       </aside>
 
       <section className="ngcs-content">
@@ -154,9 +210,9 @@ function Shell({ user }: { user: SessionUser }) {
               </SheetTrigger>
               <SheetContent side="left" className="ngcs-mobile-sheet">
                 <SheetHeader>
-                  <SheetTitle>Koç Operasyon Masası</SheetTitle>
+                  <SheetTitle>NGCS</SheetTitle>
                 </SheetHeader>
-                <Navigation mobile />
+                <Navigation mobile user={user} />
               </SheetContent>
             </Sheet>
           </div>
@@ -173,41 +229,23 @@ function Shell({ user }: { user: SessionUser }) {
               aria-label="Menülerde ara"
               name="navigation-query"
               placeholder="Menülerde ara…"
+              ref={searchInputRef}
             />
+            <kbd aria-hidden="true">⌘ K</kbd>
           </form>
-          <div className="ngcs-topbar-context">
-            <span>{group?.name ?? 'Takım seçilmedi'}</span>
-            <Separator orientation="vertical" />
-            <span>{season?.name ?? 'Sezon TBD'}</span>
-          </div>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="ngcs-notifications"
-                aria-label="Bildirimler"
-                onClick={() =>
-                  toast.info(
-                    matches.length
-                      ? `${matches.length} maç çalışma alanında hazır.`
-                      : 'Yeni bildiriminiz yok.',
-                  )
-                }
-              >
-                <Bell />
-                {matches.length ? <span>{matches.length}</span> : null}
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>Bildirimler</TooltipContent>
-          </Tooltip>
+          <WorkspaceScopeSelector variant="topbar" />
+          <MatchNotifications />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="ngcs-user-menu">
-                <Avatar>
+              <Button
+                variant="ghost"
+                className="ngcs-user-menu"
+                aria-label="Kullanıcı menüsü"
+              >
+                <Avatar aria-hidden="true">
                   <AvatarFallback>{initials(user.name)}</AvatarFallback>
                 </Avatar>
-                <span>
+                <span className="ngcs-user-details">
                   <strong>{user.name}</strong>
                   <small>{roleLabel(user.role)}</small>
                 </span>
@@ -247,18 +285,34 @@ function Shell({ user }: { user: SessionUser }) {
 }
 
 function Brand() {
+  const { club } = useWorkspace();
+  const logo = club?.logo;
   return (
     <NavLink to="/app/dashboard" className="ngcs-brand">
-      <span className="ngcs-brand-mark">NG</span>
+      {logo && /^data:image\/(png|jpeg|webp);base64,/.test(logo) ? (
+        <img
+          src={logo}
+          alt={`${club.name} logosu`}
+          className="ngcs-club-logo"
+        />
+      ) : (
+        <ShieldChevron className="ngcs-brand-mark" weight="duotone" />
+      )}
       <span>
-        <strong>Koç Operasyon Masası</strong>
-        <small>Next Generation Coaching</small>
+        <strong>NGCS</strong>
+        <small>Next Generation Coaching System</small>
       </span>
     </NavLink>
   );
 }
 
-function Navigation({ mobile = false }: { mobile?: boolean }) {
+function Navigation({
+  mobile = false,
+  user = getSession()?.user,
+}: {
+  mobile?: boolean;
+  user?: SessionUser;
+}) {
   return (
     <nav
       className={mobile ? 'ngcs-nav ngcs-nav-sheet' : 'ngcs-nav'}
@@ -267,78 +321,58 @@ function Navigation({ mobile = false }: { mobile?: boolean }) {
       {navigationSections.map((section) => (
         <div className="ngcs-nav-section" key={section.label}>
           <span className="ngcs-nav-label">{section.label}</span>
-          {section.items.map(({ to, label, icon: Icon }) => {
-            const link = (
-              <NavLink
-                aria-label={label}
-                to={to}
-                className={({ isActive }) => (isActive ? 'active' : '')}
-              >
-                <Icon weight="duotone" />
-                <span>{label}</span>
-              </NavLink>
-            );
-            if (mobile)
-              return (
-                <SheetClose asChild key={to}>
-                  {link}
-                </SheetClose>
+          {section.items
+            .filter(
+              ({ adminOnly }) =>
+                !adminOnly ||
+                user?.role === 'SYSTEM_ADMIN' ||
+                user?.role === 'CLUB_ADMIN',
+            )
+            .map(({ to, label, icon: Icon }) => {
+              const link = (
+                <NavLink
+                  aria-label={label}
+                  to={to}
+                  className={({ isActive }) => (isActive ? 'active' : '')}
+                >
+                  <Icon weight="duotone" />
+                  <span>{label}</span>
+                </NavLink>
               );
-            return (
-              <Tooltip key={to}>
-                <TooltipTrigger asChild>{link}</TooltipTrigger>
-                <TooltipContent side="right" className="ngcs-nav-tooltip">
-                  {label}
-                </TooltipContent>
-              </Tooltip>
-            );
-          })}
+              if (mobile)
+                return (
+                  <SheetClose asChild key={to}>
+                    {link}
+                  </SheetClose>
+                );
+              return (
+                <Tooltip key={to}>
+                  <TooltipTrigger asChild>{link}</TooltipTrigger>
+                  <TooltipContent side="right" className="ngcs-nav-tooltip">
+                    {label}
+                  </TooltipContent>
+                </Tooltip>
+              );
+            })}
         </div>
       ))}
     </nav>
   );
 }
 
-function SidebarFooter({
-  groups,
-  groupId,
-  user,
-  seasonName,
-  onGroupChange,
-}: {
-  groups: { id: string; name: string }[];
-  groupId: string;
-  user: SessionUser;
-  seasonName?: string;
-  onGroupChange: (id: string) => void;
-}) {
+function SidebarFooter() {
+  const { club } = useWorkspace();
   return (
     <div className="ngcs-sidebar-footer">
-      <label className="ngcs-team-select">
-        <span>Aktif takım</span>
-        <select
-          value={groupId}
-          onChange={(event) => onGroupChange(event.target.value)}
-        >
-          {groups.length ? (
-            groups.map((item) => (
-              <option key={item.id} value={item.id}>
-                {item.name}
-              </option>
-            ))
-          ) : (
-            <option value="">Atanmış takım yok</option>
-          )}
-        </select>
-        <CaretDown aria-hidden="true" />
-      </label>
       <div className="ngcs-profile">
-        <Avatar>
-          <AvatarFallback>{initials(user.name)}</AvatarFallback>
-        </Avatar>
+        <ShieldChevron size={36} weight="duotone" aria-hidden="true" />
         <span>
-          <strong>{user.name}</strong>
-          <small>{seasonName ?? 'Sezon TBD'}</small>
+          <strong>{club?.name ?? 'Kulüp seçilmedi'}</strong>
+          <small>
+            Daha iyi oyuncular.
+            <br />
+            Daha güçlü yarınlar.
+          </small>
         </span>
       </div>
     </div>

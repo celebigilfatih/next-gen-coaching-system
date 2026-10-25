@@ -11,5 +11,6 @@ export default defineConfig({
     css: true,
     pool: 'forks',
     maxWorkers: 1,
+    testTimeout: 15000,
   },
 });

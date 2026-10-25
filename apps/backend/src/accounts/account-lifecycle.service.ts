@@ -1,9 +1,16 @@
 import {
+  assertSportingAccountChange,
+  syncLegacyPerson,
+} from '../sporting/legacy-compatibility';
+import {
   BadRequestException,
   ConflictException,
   ForbiddenException,
   Injectable,
+  Logger,
   NotFoundException,
+  Optional,
+  ServiceUnavailableException,
   UnauthorizedException,
 } from '@nestjs/common';
 import type { AccountStatus, UserRole } from '@prisma/client';
@@ -15,6 +22,8 @@ import {
   authenticationUserSelect,
   publicUserSelect,
 } from '../users/user.select';
+import { AccountDeliveryService } from './account-delivery.service';
+import type { parseAccountPageQuery } from './dto/account-page.dto';
 
 const INVITATION_TTL_MS = 24 * 60 * 60 * 1000;
 const PASSWORD_RESET_TTL_MS = 60 * 60 * 1000;
@@ -32,7 +41,76 @@ type ChangeAccessInput = {
 
 @Injectable()
 export class AccountLifecycleService {
-  constructor(private readonly prisma: PrismaService) {}
+  private readonly logger = new Logger(AccountLifecycleService.name);
+
+  constructor(
+    private readonly prisma: PrismaService,
+    @Optional() private readonly delivery?: AccountDeliveryService,
+  ) {}
+
+  async listAccounts(
+    principal: AuthPrincipal,
+    query: ReturnType<typeof parseAccountPageQuery>,
+  ) {
+    if (principal.role !== 'SYSTEM_ADMIN' && principal.role !== 'CLUB_ADMIN')
+      this.deny();
+    const clubId =
+      principal.role === 'SYSTEM_ADMIN'
+        ? query.clubId
+        : (principal.clubId ?? '__unassigned__');
+    const baseWhere = {
+      ...(clubId ? { clubId } : {}),
+      ...(query.role ? { role: query.role } : {}),
+      ...(query.status ? { status: query.status } : {}),
+      ...(query.q
+        ? {
+            OR: [
+              { name: { contains: query.q, mode: 'insensitive' as const } },
+              { email: { contains: query.q, mode: 'insensitive' as const } },
+            ],
+          }
+        : {}),
+    };
+    const where = {
+      ...baseWhere,
+      ...(query.after ? { id: { gt: query.after } } : {}),
+    };
+    const [rows, total, active, suspended] = await this.prisma.$transaction(
+      [
+        this.prisma.user.findMany({
+          where,
+          orderBy: { id: 'asc' },
+          take: query.limit + 1,
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            role: true,
+            status: true,
+            clubId: true,
+            createdAt: true,
+            club: { select: { name: true } },
+          },
+        }),
+        this.prisma.user.count({ where: baseWhere }),
+        this.prisma.user.count({
+          where: { ...baseWhere, status: 'ACTIVE' },
+        }),
+        this.prisma.user.count({
+          where: { ...baseWhere, status: 'SUSPENDED' },
+        }),
+      ],
+      { isolationLevel: 'RepeatableRead' },
+    );
+    const items = rows.slice(0, query.limit);
+    return {
+      items,
+      nextCursor: rows.length > query.limit ? items[items.length - 1].id : null,
+      limit: query.limit,
+      total,
+      summary: { active, suspended },
+    };
+  }
 
   async createInvitation(
     principal: AuthPrincipal,
@@ -100,6 +178,29 @@ export class AccountLifecycleService {
       });
       return created;
     });
+
+    if (this.delivery?.mode === 'smtp') {
+      try {
+        await this.delivery.deliverInvitation(invitation.email, rawToken);
+      } catch {
+        try {
+          const revoked = await this.prisma.accountInvitation.updateMany({
+            where: { id: invitation.id, consumedAt: null, revokedAt: null },
+            data: { revokedAt: new Date() },
+          });
+          if (revoked.count !== 1) {
+            this.logger.error('Account invitation delivery revoke failed');
+          }
+        } catch {
+          this.logger.error('Account invitation delivery revoke failed');
+        }
+        this.logger.error('Account invitation delivery failed');
+        throw new ServiceUnavailableException(
+          'Account delivery is temporarily unavailable',
+        );
+      }
+      return { invitation, delivery: { status: 'accepted' as const } };
+    }
 
     return { invitation, token: rawToken };
   }
@@ -181,6 +282,7 @@ export class AccountLifecycleService {
         },
         select: publicUserSelect,
       });
+      await syncLegacyPerson(transaction, user.id);
       await transaction.accountInvitation.update({
         where: { id: invitation.id },
         data: { consumedAt: new Date(), acceptedUserId: user.id },
@@ -215,6 +317,10 @@ export class AccountLifecycleService {
       this.prisma.user.update({
         where: { id: principal.id },
         data: { passwordHash, authVersion: { increment: 1 } },
+      }),
+      this.prisma.refreshSession.updateMany({
+        where: { userId: principal.id, revokedAt: null },
+        data: { revokedAt: new Date(), revocationReason: 'PASSWORD_CHANGED' },
       }),
       this.prisma.passwordResetToken.updateMany({
         where: { userId: principal.id, consumedAt: null, revokedAt: null },
@@ -264,6 +370,32 @@ export class AccountLifecycleService {
       return created;
     });
 
+    if (this.delivery?.mode === 'smtp') {
+      try {
+        await this.delivery.deliverPasswordReset(target.email, rawToken);
+      } catch {
+        try {
+          const revoked = await this.prisma.passwordResetToken.updateMany({
+            where: { id: reset.id, consumedAt: null, revokedAt: null },
+            data: { revokedAt: new Date() },
+          });
+          if (revoked.count !== 1) {
+            this.logger.error('Password reset delivery revoke failed');
+          }
+        } catch {
+          this.logger.error('Password reset delivery revoke failed');
+        }
+        this.logger.error('Password reset delivery failed');
+        throw new ServiceUnavailableException(
+          'Account delivery is temporarily unavailable',
+        );
+      }
+      return {
+        passwordReset: reset,
+        delivery: { status: 'accepted' as const },
+      };
+    }
+
     return { passwordReset: reset, token: rawToken };
   }
 
@@ -284,18 +416,28 @@ export class AccountLifecycleService {
     const passwordHash = await bcrypt.hash(newPassword, 10);
 
     await this.prisma.$transaction(async (transaction) => {
-      const current = await transaction.passwordResetToken.findUnique({
-        where: { id: reset.id },
-        select: { consumedAt: true, revokedAt: true, expiresAt: true },
+      const consumedAt = new Date();
+      const claim = await transaction.passwordResetToken.updateMany({
+        where: {
+          id: reset.id,
+          consumedAt: null,
+          revokedAt: null,
+          expiresAt: { gt: consumedAt },
+        },
+        data: { consumedAt },
       });
-      this.assertUsableToken(current, 'password reset');
+      if (claim.count !== 1) {
+        throw new BadRequestException(
+          'Password reset token is invalid, expired, revoked or consumed',
+        );
+      }
       await transaction.user.update({
         where: { id: reset.userId },
         data: { passwordHash, authVersion: { increment: 1 } },
       });
-      await transaction.passwordResetToken.update({
-        where: { id: reset.id },
-        data: { consumedAt: new Date() },
+      await transaction.refreshSession.updateMany({
+        where: { userId: reset.userId, revokedAt: null },
+        data: { revokedAt: new Date(), revocationReason: 'PASSWORD_RESET' },
       });
       await transaction.securityAuditEvent.create({
         data: {
@@ -372,32 +514,46 @@ export class AccountLifecycleService {
       );
     }
 
-    const user = await this.prisma.$transaction(async (transaction) => {
-      const updated = await transaction.user.update({
-        where: { id: userId },
-        data: {
-          role: nextRole,
-          clubId: nextClubId,
-          authVersion: { increment: 1 },
-        },
-        select: publicUserSelect,
-      });
-      await transaction.securityAuditEvent.create({
-        data: {
-          action: 'ACCESS_CHANGED',
-          actorId: principal.id,
-          targetUserId: userId,
-          clubId: nextClubId,
-          metadata: {
-            previousRole: target.role,
-            nextRole,
-            previousClubId: target.clubId,
-            nextClubId,
+    const user = await this.prisma.$transaction(
+      async (transaction) => {
+        await assertSportingAccountChange(
+          transaction,
+          userId,
+          nextRole,
+          nextClubId,
+        );
+        const updated = await transaction.user.update({
+          where: { id: userId },
+          data: {
+            role: nextRole,
+            clubId: nextClubId,
+            authVersion: { increment: 1 },
           },
-        },
-      });
-      return updated;
-    });
+          select: publicUserSelect,
+        });
+        await syncLegacyPerson(transaction, userId);
+        await transaction.securityAuditEvent.create({
+          data: {
+            action: 'ACCESS_CHANGED',
+            actorId: principal.id,
+            targetUserId: userId,
+            clubId: nextClubId,
+            metadata: {
+              previousRole: target.role,
+              nextRole,
+              previousClubId: target.clubId,
+              nextClubId,
+            },
+          },
+        });
+        await transaction.refreshSession.updateMany({
+          where: { userId, revokedAt: null },
+          data: { revokedAt: new Date(), revocationReason: 'ACCESS_CHANGED' },
+        });
+        return updated;
+      },
+      { isolationLevel: 'Serializable' },
+    );
     return user;
   }
 
@@ -423,6 +579,10 @@ export class AccountLifecycleService {
         data: { status, authVersion: { increment: 1 } },
         select: publicUserSelect,
       });
+      await transaction.refreshSession.updateMany({
+        where: { userId, revokedAt: null },
+        data: { revokedAt: new Date(), revocationReason: 'STATUS_CHANGED' },
+      });
       await transaction.securityAuditEvent.create({
         data: {
           action,
@@ -444,6 +604,10 @@ export class AccountLifecycleService {
       this.prisma.user.update({
         where: { id: userId },
         data: { authVersion: { increment: 1 } },
+      }),
+      this.prisma.refreshSession.updateMany({
+        where: { userId, revokedAt: null },
+        data: { revokedAt: new Date(), revocationReason: 'GLOBAL_REVOCATION' },
       }),
       this.prisma.securityAuditEvent.create({
         data: {
@@ -500,7 +664,7 @@ export class AccountLifecycleService {
   private async requireUser(userId: string) {
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
-      select: { id: true, role: true, clubId: true, status: true },
+      select: { id: true, email: true, role: true, clubId: true, status: true },
     });
     if (!user) throw new NotFoundException('User not found');
     return user;

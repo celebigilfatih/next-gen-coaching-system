@@ -3,7 +3,8 @@
 - **Status:** Accepted
 - **Date:** 2026-08-31
 - **Owners / approvers:** Product owner
-- **Supersedes / superseded by:** N/A
+- **Supersedes / superseded by:** Long-term product boundary superseded by ADR-0021;
+  completed coaching MVP remains the Phase 2 baseline
 - **Related:** `docs/00-product/SCOPE.md`, `docs/00-product/PRODUCT_SPEC.md`
 
 ## Context

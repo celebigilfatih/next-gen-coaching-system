@@ -1,9 +1,25 @@
 # NGCS frontend
 
+Egzersiz detayı aynı kompakt dilde Uygulama/Saha/Kaynak sekmelerini, numaralı
+adımları ve gerçek yaş uyarlamasını sunar. Mobil44px kontroller ve dört hücreli
+özet; açık saha seçimi, mevcut plan seçimi ve klavye odağı korunur.
+[Doğrulama](../../docs/30-quality/LIBRARY_DETAIL_UX_2026-10-19.md).
+
+Egzersiz kütüphanesinde kompakt liste, sürekli görünür arama, kaydırılabilir
+filtre paneli ve açık seçimle yüklenen uygulama/saha önizlemesi kullanılır.
+Mobil44px kontroller/16px alanlar, tam açıklama ve ayrı detay bağlantısı korunur.
+[Doğrulama](../../docs/30-quality/LIBRARY_UX_2026-10-19.md).
+
 ADR-0009 ile onaylanan koç öncelikli frontend, React/TypeScript ve React Router
 Framework Mode SPA olarak bu workspace'te uygulanır. shadcn/Radix, Tailwind CSS,
 Phosphor ve React-Konva tabanı ADR-0011 ile; taktik tahta sözleşmesi ADR-0012 ile
 kabul edilmiştir. Görsel hedef “Koç Operasyon Masası”dır.
+
+Güncel BL-048 beyaz görsel sistem geçişinde Dashboard, Teams, Matches, Week,
+Trainings/detail, Library/Tactical Board/editor, Match detail, Players, Player
+360, Squad, Attendance ve Settings masaüstü/tablet/mobil QA kapılarından geçti.
+Onaylı sayfa sırası tamamlandı; sıradaki çalışma ayrı ürün eksikleri auditidir.
+API, yetki, cursor, tarih, session ve dirty-state davranışları korunur.
 
 Ana görev rotaları `/app/week`, `/app/trainings`, `/app/tactics`, `/app/squad` ve
 `/app/matches`; destek rotaları `/app/dashboard`, `/app/library`,
@@ -13,14 +29,24 @@ mobil alt navigasyon beş ana görevi korur ve destek rotaları menü Sheet'i i�
 
 ## Yerel çalışma
 
+2026-10-19 yerel düzeltmesi: ignored `.env.local` içinde kalıcı oturum açıktır;
+backend'in eşleşen flag'i ve exact localhost3132 origin'i de açık tutulmalıdır.
+Tam yenileme ve yeni sekmede tekrar giriş istemediği doğrulandı. Varsayılan env
+örneği kapalı kalır; farklı ortamlarda iki taraf birlikte yapılandırılır.
+[Kanıt](../../docs/30-quality/SESSION_PERSISTENCE_LOCAL_2026-10-19.md).
+
 ```bash
 npm install
 npm run dev
 ```
 
-Varsayılan backend adresi `http://localhost:4000`; farklı bir ortam için
-`VITE_API_BASE_URL` kullanılır. JWT yalnız process belleğinde tutulur ve sayfa
-yenilendiğinde oturum sona erer.
+Geliştirme sunucusu varsayılan ve strict olarak `http://localhost:3132` adresini
+kullanır. Varsayılan backend adresi `http://localhost:4000`; farklı bir ortam için
+`VITE_API_BASE_URL` kullanılır. JWT yalnız bellekte tutulur. Varsayılan memory-only
+modda reload oturumu sonlandırır. ADR-0018 opt-in modu için backend migration ve
+`PERSISTENT_SESSIONS_ENABLED=true`, exact `FRONTEND_ORIGIN`; frontend'de
+`VITE_PERSISTENT_SESSIONS_ENABLED=true` gerekir. Reload bootstrap HttpOnly cookie
+ile yeniler; çıkış sunucuda family'yi iptal eder. Ayrıntı kök runbook'tadır.
 
 ## Kalite kapıları
 
@@ -51,4 +77,9 @@ doğrular. Ana rotalar ayrıca 1440, 1024 ve 390 piksel genişlikte kontrol edil
 genişletilmiş shell ve destek rotaları browser/design QA ile doğrulanır.
 Credential repository'ye yazılmaz.
 
-Production hosting, kalıcı oturum ve ölçülebilir erişilebilirlik hedefi `TBD`.
+Kalıcı oturum browser testi aynı disposable komuta `E2E_PERSISTENT_SESSIONS=true`
+eklenerek çalıştırılır. Kapalı modda üç koç testi geçer ve opt-in testi atlanır;
+açık modda reload/new-tab/logout dahil dört test çalışır. React Router kaydırma
+konumlarını sessionStorage'da tutabilir; authentication credential'ları saklanmaz.
+
+Production hosting/rollout ve ölçülebilir erişilebilirlik hedefi `TBD`.

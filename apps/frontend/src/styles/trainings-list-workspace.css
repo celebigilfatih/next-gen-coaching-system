@@ -1,0 +1,471 @@
+.trainings-list-workspace {
+  min-width: 0;
+  color: var(--ink);
+  background: #f5f8fc;
+}
+html:has(.trainings-list-workspace),
+body:has(.trainings-list-workspace) {
+  min-width: 0;
+}
+.training-list-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+.training-list-heading > div {
+  min-width: 0;
+}
+.training-list-heading h1 {
+  margin: 0;
+  font: 750 40px/1.15 var(--font-body);
+  letter-spacing: -1.4px;
+  overflow-wrap: anywhere;
+}
+.training-list-heading p {
+  margin: 8px 0 0;
+  color: var(--legacy-muted-foreground);
+  font-size: 14px;
+  line-height: 1.6;
+}
+.training-list-heading > button {
+  min-height: 40px;
+  flex: none;
+}
+.training-list-panel {
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card);
+}
+.training-list-panel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px 22px;
+  border-bottom: 1px solid var(--border);
+}
+.training-list-panel-heading h2 {
+  margin: 0;
+  font: 700 20px/1.3 var(--font-body);
+  letter-spacing: -0.5px;
+}
+.training-list-panel-heading p {
+  margin: 6px 0 0;
+  color: var(--legacy-muted-foreground);
+  font-size: 13px;
+  line-height: 1.6;
+}
+.training-list-filter {
+  display: grid;
+  grid-template-columns: 160px auto auto;
+  gap: 8px;
+  align-items: end;
+}
+.training-list-filter label {
+  grid-column: 1 / -1;
+  color: var(--legacy-muted-foreground);
+  font-size: 12px;
+}
+.training-list-filter input {
+  min-height: 40px;
+  min-width: 0;
+  width: 100%;
+  background: var(--card);
+  font-size: 14px;
+}
+.training-list-filter button {
+  min-height: 40px;
+  font-size: 13px;
+}
+.training-list-summary {
+  border-bottom: 1px solid var(--border);
+}
+.training-list-summary dl {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  margin: 0;
+}
+.training-list-summary dl > div {
+  min-width: 0;
+  padding: 16px 22px;
+  border-right: 1px solid var(--border);
+}
+.training-list-summary dl > div:last-child {
+  border-right: 0;
+}
+.training-list-summary dt {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--legacy-muted-foreground);
+  font-size: 12px;
+  line-height: 1.5;
+}
+.training-list-summary dt svg {
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+.training-list-summary dd {
+  margin: 7px 0 0;
+  font-size: 21px;
+  line-height: 1.3;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+.training-list-summary dd small {
+  font-size: 12px;
+  font-weight: 450;
+  color: var(--legacy-muted-foreground);
+}
+.training-list-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 14px 22px;
+}
+.training-list-pagination p {
+  margin: 0;
+  color: var(--legacy-muted-foreground);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.training-list-pagination button {
+  min-height: 40px;
+  font-size: 12px;
+}
+.training-list-pagination:last-child {
+  border-top: 1px solid var(--border);
+}
+.training-list-body {
+  min-width: 0;
+}
+.training-list-body > .loading-grid,
+.training-list-body > [role='alert'],
+.training-list-body > .empty-state {
+  padding: 24px;
+}
+.training-list-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+.training-list-table thead th {
+  padding: 12px 22px;
+  color: var(--legacy-muted-foreground);
+  background: #f8fafc;
+  font-size: 12px;
+  font-weight: 550;
+  border-block: 1px solid var(--border);
+}
+.training-list-table tbody td,
+.training-list-table tbody th {
+  padding: 18px 22px;
+  border-top: 1px solid var(--border);
+  vertical-align: top;
+  font-size: 14px;
+  font-weight: 450;
+}
+.training-list-table tbody tr:first-child > * {
+  border-top: 0;
+}
+.training-list-table tbody tr:focus-within {
+  background: #f8fbff;
+}
+.training-list-date {
+  width: 18%;
+  min-width: 135px;
+}
+.training-list-date time {
+  display: grid;
+  gap: 7px;
+}
+.training-list-date time > span {
+  font-weight: 550;
+  line-height: 1.5;
+}
+.training-list-date small {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--legacy-muted-foreground);
+}
+.training-list-date small svg {
+  width: 14px;
+  height: 14px;
+}
+.training-list-undated {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 20px;
+  color: var(--legacy-muted-foreground);
+  background: #f1f5f9;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.training-list-plan {
+  width: 42%;
+  overflow-wrap: anywhere;
+}
+.training-list-plan > strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 650;
+  line-height: 1.6;
+}
+.training-list-plan > p {
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: var(--legacy-muted-foreground);
+}
+.training-list-plan details {
+  margin-top: 4px;
+}
+.training-list-plan summary {
+  width: fit-content;
+  padding-block: 7px;
+  color: var(--blue-dark);
+  font-size: 12px;
+  line-height: 1.5;
+  font-weight: 450;
+  cursor: pointer;
+}
+.training-list-plan details p {
+  margin: 4px 0 0;
+  color: var(--legacy-muted-foreground);
+  font-size: 13px;
+  line-height: 1.7;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+.training-list-workload {
+  white-space: nowrap;
+}
+.training-list-workload > span,
+.training-list-workload small {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  line-height: 1.6;
+}
+.training-list-workload > span {
+  font-weight: 550;
+}
+.training-list-workload small {
+  margin-top: 7px;
+  color: var(--legacy-muted-foreground);
+  font-size: 12px;
+}
+.training-list-workload svg {
+  width: 15px;
+  height: 15px;
+  flex: none;
+}
+.training-list-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+.training-list-actions > a,
+.training-list-actions > button {
+  min-height: 40px;
+  height: auto;
+  flex: none;
+}
+.training-list-actions > a {
+  border-color: #bfd7fa;
+  background: #f0f6ff;
+  color: var(--blue-dark);
+}
+.training-list-actions > a:hover {
+  background: #e4efff;
+}
+.training-list-actions > button:last-child {
+  width: 40px;
+}
+
+@media (max-width: 1200px) {
+  .training-list-panel-heading {
+    align-items: start;
+    flex-direction: column;
+  }
+  .training-list-summary dl {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .training-list-summary dl > div:nth-child(3) {
+    border-right: 0;
+  }
+  .training-list-summary dl > div:nth-child(n + 4) {
+    border-top: 1px solid var(--border);
+  }
+  .training-list-table tbody td,
+  .training-list-table tbody th,
+  .training-list-table thead th {
+    padding-inline: 16px;
+  }
+}
+@media (max-width: 900px) {
+  .training-list-table,
+  .training-list-table tbody {
+    display: block;
+  }
+  .training-list-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .training-list-table tbody tr {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 16px;
+    padding: 20px;
+    border-top: 1px solid var(--border);
+  }
+  .training-list-table tbody td,
+  .training-list-table tbody th {
+    min-width: 0;
+    width: auto;
+    padding: 0;
+    border: 0;
+  }
+  .training-list-date {
+    grid-row: 1;
+    grid-column: 1;
+  }
+  .training-list-workload {
+    grid-row: 1;
+    grid-column: 2;
+  }
+  .training-list-plan {
+    grid-row: 2;
+    grid-column: 1 / -1;
+  }
+  .training-list-row-actions {
+    grid-row: 3;
+    grid-column: 1 / -1;
+  }
+  .training-list-workload > span,
+  .training-list-workload small {
+    justify-content: flex-end;
+  }
+  .training-list-actions {
+    justify-content: flex-start;
+  }
+  .training-list-plan > strong {
+    font-size: 16px;
+  }
+}
+@media (max-width: 700px) {
+  .trainings-list-workspace {
+    --page-gutter: 16px;
+  }
+  .training-list-heading {
+    align-items: start;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .training-list-heading h1 {
+    font-size: 30px;
+    letter-spacing: -1px;
+  }
+  .training-list-heading > button {
+    min-height: 44px;
+  }
+  .training-list-panel-heading {
+    padding: 18px 16px;
+  }
+  .training-list-panel-heading h2 {
+    font-size: 18px;
+  }
+  .training-list-filter {
+    width: 100%;
+    grid-template-columns: 1fr 1fr;
+  }
+  .training-list-filter input {
+    grid-column: 1 / -1;
+    min-height: 44px;
+    font-size: 16px;
+  }
+  .training-list-filter button {
+    min-height: 44px;
+  }
+  .training-list-summary dl {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+  }
+  .training-list-summary dl > div {
+    flex: 0 0 132px;
+    padding: 12px 16px;
+    border-top: 0;
+    border-right: 1px solid var(--border);
+    scroll-snap-align: start;
+  }
+  .training-list-summary dl > div:last-child {
+    border-right: 0;
+  }
+  .training-list-summary dt {
+    font-size: 11px;
+  }
+  .training-list-summary dd {
+    margin-top: 4px;
+    font-size: 18px;
+  }
+  .training-list-pagination {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 16px;
+  }
+  .training-list-pagination p {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    text-align: center;
+  }
+  .training-list-pagination button {
+    min-height: 44px;
+  }
+  .training-list-table tbody tr {
+    padding: 18px 16px;
+  }
+  .training-list-date time > span {
+    font-size: 13px;
+  }
+  .training-list-workload > span {
+    font-size: 13px;
+  }
+  .training-list-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr 44px;
+    gap: 8px;
+  }
+  .training-list-actions > a,
+  .training-list-actions > button {
+    width: 100%;
+    min-width: 0;
+    min-height: 44px;
+    padding-inline: 8px;
+    gap: 6px;
+    font-size: 13px;
+  }
+  .training-list-actions > button:last-child {
+    width: 44px;
+  }
+  .training-list-actions > a:only-child {
+    grid-column: 1 / -1;
+  }
+  .training-list-plan summary {
+    min-height: 44px;
+    padding-block: 12px;
+    font-size: 13px;
+  }
+}

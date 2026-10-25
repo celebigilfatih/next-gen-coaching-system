@@ -12,5 +12,8 @@ tasarımı veya onaylı servis ayrışması değildir.
 | Seasons | Sezon, hafta, gün ve maç planlaması | Season, WeekPlan, DayPlan, Match | Bağımsız analiz kayıtları |
 | Analytics / Stats | Performans ve analiz kayıtları ile özet sorgular | Birden çok analiz modeli | Ürün metrik politikası |
 | Events | Gerçek zamanlı istemci bildirimleri | Kalıcı veri doğrulanmadı | Kimlik/yetki politikası |
+| Sporting Organisation | kişi/profil, takım/sezon, işlevsel rol/capability ve etkili tarihli atama | Person, PlayerProfile, StaffProfile, Team, ClubSeason, TeamSeason, FunctionalRole, RoleCapability, SportingAssignment | Uygulama hesabı credential'ı, klinik kayıt, antrenman içeriği |
+| Player 360 Composition | yetkiye göre kimlik, atama, uygunluk ve mevcut kanıt projeksiyonu | Ayrı source-of-truth sahiplenmez | Readiness skoru, klinik yorum, AI önerisi |
 
-Bağlam sahipliği, çapraz modül invariants ve hedef mimari `TBD`.
+Sporting Organisation P0.1 sınırı ADR-0022/0023 ile onaylıdır. Diğer mevcut
+prototiplerin hedef sahipliği ve gelecekteki servis ayrışması `TBD`.

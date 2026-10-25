@@ -23,11 +23,23 @@ services:
     build:
       context: ./apps/backend
       dockerfile: Dockerfile
+      target: runtime
     container_name: ngcs-backend
     environment:
       DATABASE_URL: postgresql://ngcs:ngcs@db:5432/ngcs
       JWT_SECRET: ${JWT_SECRET:?JWT_SECRET must be set}
       NODE_ENV: production
+      PERSISTENT_SESSIONS_ENABLED: ${PERSISTENT_SESSIONS_ENABLED:-false}
+      FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-}
+      ACCOUNT_DELIVERY_MODE: ${ACCOUNT_DELIVERY_MODE:?ACCOUNT_DELIVERY_MODE must be set}
+      ACCOUNT_PUBLIC_BASE_URL: ${ACCOUNT_PUBLIC_BASE_URL:?ACCOUNT_PUBLIC_BASE_URL must be set}
+      SMTP_HOST: ${SMTP_HOST:?SMTP_HOST must be set}
+      SMTP_PORT: ${SMTP_PORT:?SMTP_PORT must be set}
+      SMTP_SECURE: ${SMTP_SECURE:?SMTP_SECURE must be set}
+      SMTP_TIMEOUT_MS: ${SMTP_TIMEOUT_MS:-10000}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      MAIL_FROM: ${MAIL_FROM:?MAIL_FROM must be set}
     ports:
       - "9001:4000"
     depends_on:
@@ -36,6 +48,22 @@ services:
     networks:
       - ngcs-network
     restart: unless-stopped
+
+  migrator:
+    build:
+      context: ./apps/backend
+      dockerfile: Dockerfile
+      target: migrator
+    environment:
+      DATABASE_URL: postgresql://ngcs:ngcs@db:5432/ngcs
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - ngcs-network
+    profiles:
+      - operations
+    restart: "no"
 
 volumes:
   pgdata:

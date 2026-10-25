@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  ForbiddenException,
   Get,
   Param,
   Post,
@@ -16,6 +17,12 @@ import { AuthorizationService } from '../auth/authorization.service';
 import { Roles } from '../auth/roles.decorator';
 import { RolesGuard } from '../auth/roles.guard';
 import { GroupsService } from './groups.service';
+import {
+  parseCreateGroupBody,
+  parseCreateGroupClubId,
+  parseGroupMemberBody,
+  parseUpdateGroupBody,
+} from './dto/group.dto';
 
 @Controller('groups')
 @UseGuards(AuthGuard('jwt'))
@@ -45,15 +52,15 @@ export class GroupsController {
   @Roles('SYSTEM_ADMIN', 'CLUB_ADMIN')
   async create(
     @Request() req: { user: AuthPrincipal },
-    @Body()
-    body: {
-      clubId: string;
-      name: string;
-      ageGroup: any;
-      category?: string;
-    },
+    @Body() input: unknown,
   ) {
-    this.authorization.assertClubManage(req.user, body.clubId);
+    const clubId = parseCreateGroupClubId(input);
+    this.authorization.assertClubManage(req.user, clubId);
+    const body = parseCreateGroupBody(input);
+    if (body.category === 'A_TAKIM')
+      throw new ForbiddenException(
+        'Create the protected first team through the sporting team lifecycle',
+      );
     return this.groups.create(body);
   }
 
@@ -72,10 +79,10 @@ export class GroupsController {
   async update(
     @Request() req: { user: AuthPrincipal },
     @Param('id') id: string,
-    @Body() body: { name?: string; ageGroup?: any; category?: string },
+    @Body() input: unknown,
   ) {
     await this.authorization.assertGroupManage(req.user, id);
-    return this.groups.update(id, body);
+    return this.groups.update(id, parseUpdateGroupBody(input));
   }
 
   @Delete(':id')
@@ -86,7 +93,7 @@ export class GroupsController {
     @Param('id') id: string,
   ) {
     await this.authorization.assertGroupManage(req.user, id);
-    return this.groups.delete(id);
+    return this.groups.delete(id, req.user.id);
   }
 
   @Post(':id/members')
@@ -95,11 +102,12 @@ export class GroupsController {
   async addMember(
     @Request() req: { user: AuthPrincipal },
     @Param('id') id: string,
-    @Body() body: { userId: string },
+    @Body() input: unknown,
   ) {
     const group = await this.authorization.assertGroupManage(req.user, id);
+    const body = parseGroupMemberBody(input);
     await this.authorization.assertUserInClub(body.userId, group.clubId);
-    return this.groups.addMember(id, body.userId);
+    return this.groups.addMember(id, body.userId, req.user.id);
   }
 
   @Post(':id/members/delete')
@@ -108,10 +116,11 @@ export class GroupsController {
   async removeMember(
     @Request() req: { user: AuthPrincipal },
     @Param('id') id: string,
-    @Body() body: { userId: string },
+    @Body() input: unknown,
   ) {
     await this.authorization.assertGroupManage(req.user, id);
-    return this.groups.removeMember(id, body.userId);
+    const body = parseGroupMemberBody(input);
+    return this.groups.removeMember(id, body.userId, req.user.id);
   }
 
   @Get(':id/members')
@@ -123,5 +132,16 @@ export class GroupsController {
   ) {
     await this.authorization.assertGroupView(req.user, id);
     return this.groups.getMembers(id);
+  }
+  @Get(':id/members/players/page')
+  @UseGuards(RolesGuard)
+  @Roles('SYSTEM_ADMIN', 'CLUB_ADMIN', 'COACH')
+  async playerMemberPage(
+    @Request() req: { user: AuthPrincipal },
+    @Param('id') id: string,
+    @Query() query: unknown,
+  ) {
+    await this.authorization.assertGroupView(req.user, id);
+    return this.groups.getPlayerMemberPage(id, query);
   }
 }

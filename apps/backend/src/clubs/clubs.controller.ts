@@ -14,6 +14,11 @@ import { AuthorizationService } from '../auth/authorization.service';
 import { Roles } from '../auth/roles.decorator';
 import { RolesGuard } from '../auth/roles.guard';
 import { ClubsService } from './clubs.service';
+import {
+  parseCreateClubBody,
+  parseCreateClubGroupBody,
+  parseUpdateClubBody,
+} from './dto/club.dto';
 
 @Controller('clubs')
 @UseGuards(AuthGuard('jwt'))
@@ -26,10 +31,8 @@ export class ClubsController {
   @Post()
   @UseGuards(RolesGuard)
   @Roles('SYSTEM_ADMIN')
-  async create(
-    @Body() body: { name: string; logo?: string; description?: string },
-  ) {
-    return this.clubs.createClub(body);
+  async create(@Body() input: unknown) {
+    return this.clubs.createClub(parseCreateClubBody(input));
   }
 
   @Get()
@@ -46,10 +49,10 @@ export class ClubsController {
   async createGroup(
     @Request() req: { user: AuthPrincipal },
     @Param('id') id: string,
-    @Body() body: { name: string; ageGroup: any },
+    @Body() input: unknown,
   ) {
     this.authorization.assertClubManage(req.user, id);
-    return this.clubs.createGroup(id, body.name, body.ageGroup);
+    return this.clubs.createGroup(id, parseCreateClubGroupBody(input));
   }
 
   @Get(':id/groups')
@@ -70,9 +73,9 @@ export class ClubsController {
   async update(
     @Request() req: { user: AuthPrincipal },
     @Param('id') id: string,
-    @Body() body: { name?: string; logo?: string; description?: string },
+    @Body() input: unknown,
   ) {
     this.authorization.assertClubManage(req.user, id);
-    return this.clubs.updateClub(id, body);
+    return this.clubs.updateClub(id, parseUpdateClubBody(input));
   }
 }

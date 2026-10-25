@@ -1,0 +1,276 @@
+.week-planning-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 0 0 20px;
+}
+.week-planning-actions > p {
+  font-size: 13px;
+  color: var(--muted-foreground);
+}
+.week-day-events {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+.week-daily-summary {
+  font-size: 11px;
+  color: var(--muted-foreground);
+  line-height: 1.6;
+}
+.week-event-block {
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--card);
+}
+.week-event-block .week-event {
+  border: 0;
+  border-radius: 0;
+  margin: 0;
+  min-width: 0;
+  align-items: flex-start;
+}
+.week-event-block .week-event > span {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+.week-event-block .week-event strong,
+.week-event-block .week-event small {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.week-event-block .week-event small {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.week-event-block .week-event [data-slot='badge'] {
+  width: max-content;
+  max-width: 100%;
+  font-size: 10px;
+}
+.week-event-tools {
+  display: flex;
+  gap: 4px;
+  padding: 0 6px 6px;
+  flex-wrap: wrap;
+}
+.week-event-tools button {
+  min-height: 36px;
+  font-size: 11px;
+}
+.week-event-notes {
+  font-size: 12px;
+  padding: 0 12px 12px;
+  overflow-wrap: anywhere;
+}
+.week-event-notes summary {
+  cursor: pointer;
+}
+.week-event-notes p {
+  white-space: pre-wrap;
+  margin-top: 6px;
+}
+.week-event-paging {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+}
+.week-add-event {
+  width: 100%;
+}
+.kind-toplanti {
+  border-left: 3px solid var(--club-secondary-text, var(--blue-dark));
+}
+.kind-rest {
+  opacity: 0.85;
+}
+.kind-recovery {
+  border-left: 3px solid var(--club-link, var(--blue));
+}
+.week-program-dialog {
+  width: calc(100vw - 32px);
+  max-width: 1000px !important;
+  max-height: 90dvh;
+  overflow-y: auto;
+}
+.week-event-dialog {
+  max-height: 90dvh;
+  overflow-y: auto;
+}
+.week-team-selection {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+  min-width: 0;
+}
+.week-team-selection legend {
+  font-weight: 600;
+  font-size: 14px;
+  padding: 0 6px;
+}
+.week-team-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 12px;
+}
+.week-team-options label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+}
+.week-team-options small {
+  color: var(--muted-foreground);
+}
+.week-team-options input,
+.week-preview-row input[type='checkbox'] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary);
+}
+.week-program-preview {
+  display: grid;
+  gap: 20px;
+}
+.week-program-preview h3 {
+  font-size: 17px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.week-program-preview section > p {
+  font-size: 12px;
+  color: var(--muted-foreground);
+  margin: 6px 0;
+}
+.week-preview-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 220px;
+  align-items: center;
+  gap: 14px;
+  border-top: 1px solid var(--border);
+  padding: 12px 0;
+}
+.week-preview-row label {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  min-width: 0;
+}
+.week-preview-row span {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+.week-preview-row strong {
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+.week-preview-row small {
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+.week-event-fields {
+  display: grid;
+  gap: 14px;
+  min-width: 0;
+}
+@media (max-width: 767px) {
+  .week-planning-actions > button {
+    flex: 1 1 100%;
+    min-height: 44px;
+  }
+  .week-event-tools button,
+  .week-add-event {
+    min-height: 44px;
+  }
+  .week-program-dialog {
+    width: calc(100vw - 24px);
+    max-height: 88dvh;
+  }
+  .week-preview-row {
+    grid-template-columns: 1fr;
+  }
+  .week-preview-row input[type='datetime-local'] {
+    width: 100%;
+    min-width: 0;
+    font-size: 16px;
+  }
+  .week-event-fields input,
+  .week-event-fields textarea,
+  .week-event-fields select {
+    font-size: 16px;
+  }
+  .week-team-options label {
+    min-height: 44px;
+  }
+}
+
+.week-phase-preview {
+  grid-column: 1/-1;
+  font-size: 12px;
+  padding-left: 28px;
+  min-width: 0;
+}
+.week-phase-preview summary {
+  cursor: pointer;
+  color: var(--blue);
+  padding: 6px 0;
+}
+.week-phase-preview section {
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-top: 8px;
+}
+.week-phase-preview p {
+  white-space: pre-wrap;
+  margin-top: 6px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.week-program-dialog {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.week-program-body {
+  overflow-y: auto;
+  min-height: 0;
+  display: grid;
+  gap: 16px;
+  padding-right: 8px;
+}
+.week-program-dialog > div[data-slot='dialog-footer'] {
+  flex-shrink: 0;
+}
+.week-team-preview > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  cursor: pointer;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+.week-team-preview > summary > span {
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+.week-team-preview > summary h3::before {
+  content: '▸';
+  font-size: 14px;
+}
+.week-team-preview[open] > summary h3::before {
+  content: '▾';
+}

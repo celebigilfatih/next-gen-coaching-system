@@ -3,10 +3,16 @@
 - **Status:** Accepted
 - **Date:** 2026-09-05
 - **Owners / approvers:** User approved Option 1 on 2026-09-05; production/security owner TBD
-- **Supersedes / superseded by:** Extends the temporary session decision in ADR-0009
+- **Supersedes / superseded by:** Extends ADR-0009; implementation gate and session policy partially superseded by ADR-0018
 - **Related:** ADR-0004, ADR-0006, ADR-0007, ADR-0008, ADR-0009, BL-013
 
 ## Context
+
+**Current amendment:** [ADR-0018](ADR-0018-provider-neutral-persistent-sessions.md)
+authorizes provider-neutral implementation behind default-disabled flags and fixes
+the access/refresh lifetimes, cookie, CSRF and refresh-record retention policy.
+Infrastructure TBDs below remain production rollout gates. The original planning
+constraints are retained as decision history and are overridden only to that extent.
 
 The frontend is a static React Router SPA. The NestJS backend exposes REST and
 Socket.IO endpoints and uses PostgreSQL through Prisma. The current client keeps
@@ -19,9 +25,9 @@ CORS. This is development evidence, not a production origin contract. The exact
 frontend/API domains, hosting providers, TLS edge, secret store, proxy trust model,
 backup owner and observability platform are not known and remain `TBD`.
 
-This ADR accepts the target boundary only. It authorizes implementation planning,
-but does not authorize a Prisma migration, API/client change or production
-deployment until the explicit pre-implementation inputs below are resolved.
+This ADR originally authorized implementation planning only. ADR-0018 now
+authorizes the additive migration and API/client implementation; production
+deployment still requires the unresolved infrastructure inputs below.
 
 ## Decision Drivers
 
@@ -192,8 +198,9 @@ no destructive schema rollback is implied.
 ## Approval Record
 
 The user explicitly approved Option 1 and its session boundary on 2026-09-05.
-Providers, exact domains, lifetimes and retention remain `TBD` and are mandatory
-gates before migration, API/client implementation or production rollout.
+ADR-0018 subsequently authorizes provider-neutral migration/API/client work and
+defines lifetimes and refresh-record retention. Providers and exact domains remain
+`TBD` and are mandatory gates before production rollout.
 
 ## Open Questions
 

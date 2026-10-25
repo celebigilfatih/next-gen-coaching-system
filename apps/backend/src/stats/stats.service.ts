@@ -56,8 +56,25 @@ export class StatsService {
 
     // Recently Added Drills
     const recentDrills = await this.prisma.drill.findMany({
+      where: clubId
+        ? {
+            OR: [{ scope: 'GLOBAL' }, { scope: 'CLUB', clubId }],
+          }
+        : undefined,
       take: 5,
       orderBy: { createdAt: 'desc' },
+      select: {
+        id: true,
+        title: true,
+        category: true,
+        ageGroup: true,
+        durationMin: true,
+        difficulty: true,
+        scope: true,
+        clubId: true,
+        groupId: true,
+        createdAt: true,
+      },
     });
 
     // Upcoming Matches (next 30 days)

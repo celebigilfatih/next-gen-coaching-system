@@ -1,0 +1,216 @@
+.drill-plan-workspace.drill-plan-dialog {
+  display: flex;
+  flex-direction: column;
+  width: min(94vw, 640px);
+  max-width: 640px;
+  max-height: 90dvh;
+  padding: 0;
+  gap: 0;
+  overflow: hidden;
+  color: var(--foreground);
+}
+.drill-plan-header {
+  flex: none;
+  padding: 22px 64px 18px 24px;
+  border-bottom: 1px solid var(--border);
+}
+.drill-plan-workspace.drill-plan-dialog h2 {
+  padding-right: 0;
+  font: 700 23px/1.3 var(--font-body);
+  letter-spacing: -0.5px;
+}
+.drill-plan-header > p {
+  line-height: 1.6;
+}
+.drill-plan-scroll {
+  min-height: 0;
+  padding: 20px 24px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.drill-plan-scroll > * {
+  min-width: 0;
+}
+.drill-plan-exercise {
+  border-left: 3px solid var(--primary);
+  padding-left: 13px;
+  margin-bottom: 20px;
+}
+.drill-plan-exercise > p,
+.drill-plan-help,
+.drill-plan-eyebrow {
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+.drill-plan-exercise h3,
+.drill-plan-summary h3 {
+  font-size: 15px;
+  font-weight: 650;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.drill-plan-exercise h3 {
+  margin-top: 3px;
+}
+.drill-plan-choice-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.drill-plan-choice-heading label {
+  font-weight: 600;
+}
+.drill-plan-choice-heading button {
+  padding-inline: 8px;
+  font-size: 12px;
+  color: var(--primary);
+}
+.drill-plan-workspace select {
+  min-height: 44px;
+  font-size: 16px;
+}
+.drill-plan-help {
+  margin-top: 8px;
+}
+.drill-plan-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 14px;
+}
+.drill-plan-pagination span {
+  text-align: center;
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+.drill-plan-pagination button {
+  font-size: 12px;
+  padding-inline: 12px;
+}
+.drill-plan-summary {
+  margin-top: 18px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--secondary);
+}
+.drill-plan-summary h3 {
+  margin-block: 4px 8px;
+}
+.drill-plan-summary > p:not(.drill-plan-eyebrow) {
+  font-size: 13px;
+}
+.drill-plan-summary details {
+  margin-top: 8px;
+}
+.drill-plan-summary summary {
+  cursor: pointer;
+  min-height: 44px;
+  padding-block: 11px;
+  font-size: 13px;
+  color: var(--primary);
+}
+.drill-plan-summary details p {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 13px;
+}
+.drill-plan-placement {
+  border-top: 1px solid var(--border);
+  margin-top: 12px;
+  padding-top: 12px;
+  color: var(--muted-foreground);
+}
+.drill-plan-placeholder {
+  margin-top: 18px;
+  padding-block: 16px;
+  border-top: 1px solid var(--border);
+  color: var(--muted-foreground);
+  font-size: 13px;
+}
+.drill-plan-notice {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 13px;
+}
+.drill-plan-notice[role='alert'] {
+  color: var(--destructive);
+}
+.drill-plan-notice button {
+  justify-self: start;
+}
+.drill-plan-notice button,
+.drill-plan-scroll > button {
+  max-width: 100%;
+  height: auto;
+  white-space: normal;
+}
+.drill-plan-footer {
+  flex: none;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 16px 24px;
+  border-top: 1px solid var(--border);
+}
+.drill-plan-workspace button,
+.drill-plan-footer a {
+  min-height: 44px;
+}
+.drill-plan-workspace > button {
+  min-width: 44px;
+  top: 10px;
+  right: 10px;
+}
+.drill-plan-success {
+  display: grid;
+  justify-items: start;
+  gap: 8px;
+  padding-block: 12px;
+}
+.drill-plan-success svg {
+  color: var(--primary);
+}
+.drill-plan-success h3 {
+  font-size: 18px;
+  font-weight: 650;
+}
+.drill-plan-success p {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 700px) {
+  .drill-plan-workspace.drill-plan-dialog {
+    max-height: 94dvh;
+  }
+  .drill-plan-header {
+    padding: 18px 58px 14px 16px;
+  }
+  .drill-plan-workspace.drill-plan-dialog h2 {
+    font-size: 20px;
+  }
+  .drill-plan-header > p {
+    font-size: 13px;
+  }
+  .drill-plan-scroll {
+    padding: 16px;
+    scrollbar-gutter: auto;
+  }
+  .drill-plan-footer {
+    padding: 12px 16px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .drill-plan-pagination button {
+    padding-inline: 10px;
+  }
+}

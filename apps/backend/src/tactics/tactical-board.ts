@@ -79,6 +79,16 @@ function optionalString(value: unknown, label: string, maxLength: number) {
   }
 }
 
+function optionalColor(value: unknown, label: string) {
+  if (
+    value !== undefined &&
+    (typeof value !== 'string' ||
+      !/^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/.test(value))
+  ) {
+    invalid(`${label} must be a hexadecimal color`);
+  }
+}
+
 function enumeration(value: unknown, label: string, values: readonly string[]) {
   if (typeof value !== 'string' || !values.includes(value)) {
     invalid(`${label} is not supported`);
@@ -129,7 +139,7 @@ function validateElement(
   if (
     ['cone', 'flag', 'marker', 'arrow', 'line', 'zone', 'text'].includes(type)
   ) {
-    optionalString(element.color, `elements[${index}].color`, 32);
+    optionalColor(element.color, `elements[${index}].color`);
   }
   if (type === 'cone' || type === 'marker')
     optionalNumber(element.size, `elements[${index}].size`, 4, 100);

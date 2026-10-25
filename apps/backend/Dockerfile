@@ -1,38 +1,53 @@
-# Production Dockerfile for NestJS Backend
-FROM node:20-alpine AS builder
+# Build dependencies are isolated from the serving image.
+FROM node:20-alpine AS dependencies
 
 WORKDIR /app
 
-# Copy package files
 COPY package*.json ./
 COPY prisma ./prisma/
-
-# Install all dependencies (including devDependencies for build)
 RUN npm ci && npm cache clean --force
 
-# Copy source
+FROM dependencies AS builder
+
 COPY . .
-
-# Generate Prisma client
-RUN npx prisma generate
-
-# Build application
+RUN npm run prisma:generate
 RUN npm run build
 
-# Production stage
-FROM node:20-alpine
+# Install only serving dependencies. Prisma CLI is an optional peer of
+# @prisma/client, so optional packages are omitted as well as dev dependencies.
+FROM node:20-alpine AS runtime-dependencies
 
 WORKDIR /app
 
-# Copy node_modules and built app from builder
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/prisma ./prisma
-COPY --from=builder /app/package*.json ./
-COPY scripts ./scripts
+COPY package*.json ./
+RUN npm ci --omit=dev --omit=optional \
+    && npm cache clean --force
+COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
+RUN test -d node_modules/@prisma/client \
+    && test ! -d node_modules/prisma \
+    && test ! -d node_modules/@prisma/config \
+    && test ! -d node_modules/deepmerge-ts \
+    && test ! -d node_modules/@nestjs/cli \
+    && test ! -d node_modules/jest
 
-# Expose port
+# Explicit migration artifact. It has no application source or HTTP entrypoint.
+FROM dependencies AS migrator
+
+USER node
+
+ENTRYPOINT ["./node_modules/.bin/prisma", "migrate", "deploy"]
+
+FROM node:20-alpine AS runtime
+
+WORKDIR /app
+ENV NODE_ENV=production
+
+COPY --from=runtime-dependencies /app/node_modules ./node_modules
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/package*.json ./
+
 EXPOSE 4000
 
-# Database migrations are an explicit, separately observable deployment step.
+USER node
+
 CMD ["node", "dist/main"]

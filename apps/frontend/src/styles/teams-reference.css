@@ -1,0 +1,535 @@
+.teams-reference {
+  --teams-border: #e3eaf3;
+  --teams-muted: #667895;
+  padding-top: 0;
+  color: #0b1830;
+  background: #f5f8fc;
+}
+
+.teams-reference__hero {
+  min-height: 188px;
+  margin: 0 calc(var(--page-gutter) * -1) 24px;
+  overflow: hidden;
+  border: 0;
+  border-bottom: 1px solid var(--teams-border);
+  border-radius: 0;
+  background: #f8fbff;
+}
+
+.teams-reference__hero::after {
+  position: absolute;
+  inset: 0;
+  content: '';
+  background: linear-gradient(
+    90deg,
+    #f8fbff 0%,
+    rgb(248 251 255 / 96%) 35%,
+    rgb(248 251 255 / 36%) 68%,
+    rgb(248 251 255 / 5%) 100%
+  );
+}
+
+.teams-reference__hero .page-hero-image {
+  object-position: center 54%;
+  filter: saturate(0.72) contrast(0.92);
+}
+
+.teams-reference__hero .page-hero-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: none;
+  padding: 30px var(--page-gutter) 28px;
+  background: transparent;
+  backdrop-filter: none;
+}
+
+.teams-reference__hero .page-hero-eyebrow {
+  margin-bottom: 9px;
+  color: #52698d;
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.teams-reference__hero h1 {
+  margin: 0;
+  color: #071327;
+  font: 750 42px/1.06 var(--font-body);
+  letter-spacing: -1.5px;
+}
+
+.teams-reference__hero .page-hero-description {
+  max-width: 620px;
+  margin-top: 8px;
+  color: #607394;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.teams-reference__hero .page-hero-actions {
+  align-self: flex-end;
+  margin-left: auto;
+}
+
+@media (min-width: 1051px) {
+  .teams-reference__hero .page-hero-actions {
+    position: absolute;
+    right: var(--page-gutter);
+    bottom: 28px;
+    margin-top: 0;
+  }
+}
+
+.teams-reference__hero-actions,
+.teams-reference__toolbar,
+.team-reference-card__secondary-actions,
+.teams-reference__archive-item > div:last-child {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.teams-reference__hero-actions {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.teams-reference__workspace {
+  overflow: hidden;
+  border: 1px solid var(--teams-border);
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgb(27 61 102 / 3%);
+}
+
+.teams-reference__toolbar {
+  justify-content: flex-end;
+  gap: 16px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--teams-border);
+  background: #fbfdff;
+}
+
+.teams-reference__toolbar .sporting-search {
+  width: min(320px, 42vw);
+  height: 36px;
+  border-color: #dfe7f1;
+  background: #fff;
+}
+
+.teams-reference__workspace > .teams-reference__section-heading,
+.teams-reference__workspace > .teams-reference__card-grid,
+.teams-reference__workspace > [data-slot='empty-state'],
+.teams-reference__workspace > [data-slot='error-state'],
+.teams-reference__workspace > [data-slot='loading-state'] {
+  margin-right: 16px;
+  margin-left: 16px;
+}
+
+.teams-reference__workspace > .teams-reference__section-heading {
+  margin-top: 18px;
+}
+
+.teams-reference__workspace > .teams-reference__card-grid {
+  margin-bottom: 18px;
+}
+
+.teams-reference__workspace > nav[aria-label='Altyapı takım sayfaları'] {
+  margin: 0;
+  padding: 14px 16px;
+  border-top: 1px solid var(--teams-border);
+}
+
+.teams-reference__cards {
+  margin-bottom: 20px;
+}
+
+.teams-reference__section-heading,
+.teams-reference__directory-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.teams-reference__section-heading {
+  margin-bottom: 12px;
+}
+
+.teams-reference__section-heading h2,
+.teams-reference__directory-head h2 {
+  margin: 0;
+  font: 700 18px/1.2 var(--font-body);
+  letter-spacing: -0.02em;
+}
+
+.teams-reference__section-heading > span,
+.teams-reference__directory-head p {
+  margin: 4px 0 0;
+  color: var(--teams-muted);
+  font-size: 12px;
+}
+
+.teams-reference__card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(205px, 1fr));
+  gap: 14px;
+}
+
+.teams-reference__card-grid--first-team {
+  grid-template-columns: minmax(260px, 520px);
+}
+
+.team-reference-card {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--teams-border);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgb(27 61 102 / 4%);
+}
+
+.team-reference-card__media {
+  position: relative;
+  height: 132px;
+  overflow: hidden;
+  background: #dce5ef;
+}
+
+.team-reference-card__media::after {
+  position: absolute;
+  inset: auto 0 0;
+  height: 54%;
+  content: '';
+  background: linear-gradient(transparent, rgb(7 19 39 / 62%));
+}
+
+.team-reference-card__media img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center 42%;
+}
+
+.team-reference-card__mark {
+  position: absolute;
+  z-index: 1;
+  left: 14px;
+  bottom: 10px;
+  display: grid;
+  width: 34px;
+  height: 38px;
+  place-items: center;
+  color: white;
+  border: 1px solid rgb(255 255 255 / 58%);
+  border-radius: 8px;
+  background: rgb(8 25 49 / 82%);
+  backdrop-filter: blur(4px);
+}
+
+.team-reference-card__mark svg {
+  width: 23px;
+  height: 23px;
+}
+
+.team-reference-card__content {
+  display: grid;
+  gap: 12px;
+  padding: 13px 14px 14px;
+}
+
+.team-reference-card__title {
+  color: #0c1930;
+  font-size: 15px;
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.team-reference-card__title:hover,
+.team-reference-card__title:focus-visible {
+  color: #0561ff;
+}
+
+.team-reference-card__content p {
+  margin: 4px 0 0;
+  color: var(--teams-muted);
+  font-size: 11px;
+}
+
+.team-reference-card__season {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #405372;
+  font-size: 11px;
+}
+
+.team-reference-card__season svg {
+  width: 15px;
+  height: 15px;
+  flex: none;
+  color: #356ccb;
+}
+
+.team-reference-card__actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.team-reference-card__secondary-actions {
+  flex: none;
+}
+
+.team-reference-card__actions > button {
+  min-width: 0;
+  height: 32px;
+  padding-inline: 10px;
+  font-size: 10px;
+}
+
+.team-reference-card__actions > button svg {
+  width: 14px;
+  height: 14px;
+}
+
+.teams-reference__directory {
+  overflow: hidden;
+  border: 1px solid var(--teams-border);
+  border-radius: 9px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgb(27 61 102 / 3%);
+}
+
+.teams-reference__directory-head {
+  align-items: center;
+  padding: 14px 16px 12px;
+  border-bottom: 1px solid var(--teams-border);
+}
+
+.teams-reference__directory-head .sporting-search,
+.teams-reference__empty .sporting-search {
+  height: 36px;
+  border-color: #dfe7f1;
+  background: #f9fbfd;
+}
+
+.teams-reference__archive-sheet {
+  width: min(100%, 520px);
+  padding: 24px;
+}
+
+.teams-reference__archive-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.teams-reference__archive-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 14px;
+  border: 1px solid var(--teams-border);
+  border-radius: 9px;
+  background: #fff;
+}
+
+.teams-reference__archive-item strong,
+.teams-reference__archive-item span {
+  display: block;
+}
+
+.teams-reference__archive-item strong {
+  color: #0c1930;
+  font-size: 14px;
+}
+
+.teams-reference__archive-item span {
+  margin-top: 4px;
+  color: var(--teams-muted);
+  font-size: 11px;
+}
+
+.teams-reference__table-wrap {
+  overflow-x: auto;
+}
+
+.teams-reference table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.teams-reference th,
+.teams-reference td {
+  padding: 11px 14px;
+  border-bottom: 1px solid #edf1f6;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.teams-reference thead th {
+  color: #6d7e99;
+  background: #f8fafc;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.teams-reference tbody th {
+  color: #13213a;
+  font-weight: 700;
+}
+
+.teams-reference tbody tr:last-child th,
+.teams-reference tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.teams-reference__table-team {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.teams-reference__table-team svg {
+  width: 22px;
+  height: 22px;
+  color: #19314f;
+}
+
+.teams-reference__table-team a,
+.teams-reference__table-action {
+  color: inherit;
+  text-decoration: none;
+}
+
+.teams-reference__table-team a:hover,
+.teams-reference__table-team a:focus-visible,
+.teams-reference__table-action:hover,
+.teams-reference__table-action:focus-visible {
+  color: #0561ff;
+}
+
+.teams-reference__table-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #0561ff;
+  font-weight: 700;
+}
+
+.teams-reference__table-action svg {
+  width: 14px;
+  height: 14px;
+}
+
+.teams-reference > nav[aria-label='Takım sayfaları'] {
+  margin-top: 14px;
+}
+
+.teams-reference__empty {
+  display: grid;
+  gap: 14px;
+}
+
+.teams-reference__empty .sporting-search {
+  justify-self: end;
+}
+
+@media (max-width: 1050px) {
+  .teams-reference__hero {
+    min-height: 176px;
+  }
+
+  .teams-reference__hero h1 {
+    font-size: 36px;
+  }
+
+  .teams-reference__card-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .teams-reference__card-grid--first-team {
+    grid-template-columns: minmax(260px, 520px);
+  }
+}
+
+@media (max-width: 640px) {
+  .teams-reference__hero {
+    min-height: 210px;
+    margin-bottom: 18px;
+  }
+
+  .teams-reference__hero::after {
+    background: linear-gradient(
+      90deg,
+      rgb(248 251 255 / 96%),
+      rgb(248 251 255 / 66%) 75%,
+      rgb(248 251 255 / 26%)
+    );
+  }
+
+  .teams-reference__hero .page-hero-content {
+    max-width: 94%;
+    padding-top: 28px;
+  }
+
+  .teams-reference__hero h1 {
+    font-size: 34px;
+  }
+
+  .teams-reference__section-heading,
+  .teams-reference__directory-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .teams-reference__hero .page-hero-actions {
+    align-self: flex-start;
+    margin-left: 0;
+  }
+
+  .teams-reference__hero-actions {
+    justify-content: flex-start;
+  }
+
+  .teams-reference__toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .teams-reference__toolbar .sporting-search {
+    width: 100%;
+  }
+
+  .teams-reference__section-heading > span {
+    margin-top: -8px;
+  }
+
+  .teams-reference__card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .teams-reference__archive-item {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .team-reference-card__media {
+    height: 180px;
+  }
+
+  .teams-reference__directory-head .sporting-search,
+  .teams-reference__empty .sporting-search {
+    width: 100%;
+  }
+}
