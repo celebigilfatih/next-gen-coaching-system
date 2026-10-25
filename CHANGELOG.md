@@ -1,5 +1,30 @@
 # Changelog
 
+## 2026-10-25 — Reviewed pending QA evidence publication
+
+- Reviewed main smoke/export reports and12 evidence files. Independent artifact
+  checks and fresh35 published-baseline tests pass. Ready evidence is authorized
+  for main publication; concurrent PNG code/tests remain outside this scope.
+  [Review](docs/30-quality/POST_MERGE_QA_PUBLICATION_2026-10-25.md).
+
+## 2026-10-25 — Tactical exported-file verification
+
+- Actual PNG/SVG downloads match the nine-object half-pitch QA board. Selection
+  and125% zoom repeats yield identical hashes;35 export/editor tests pass.
+  In-app PNG has no download in this session; Chrome succeeds. Offline SVG
+  render preserves geometry with minor font substitution. No runtime/data change.
+  [Evidence and files](docs/30-quality/TACTICAL_EXPORT_ACCEPTANCE_2026-10-25.md).
+
+## 2026-10-25 — Main restart and browser smoke
+
+- Rebuilt/restarted canonical main API/UI and verified session restoration,
+  ready-library filtering/preview and both exercise attachment paths in IAB.
+- Named retained QA training saves two phases/50 minutes with frozen content and
+  boards; a separate nine-object half-pitch QA tactic survives save/reload.
+  Read-only database checks confirm both records and linked day duration.
+  Desktop evidence only; the subsequent export acceptance verifies actual files. No runtime
+  patch or migration. [Report](docs/30-quality/MAIN_BROWSER_SMOKE_2026-10-25.md).
+
 ## 2026-10-25 — Main ready-plan browser acceptance
 
 - Started merged main and verified its120-item library. In a separate synthetic

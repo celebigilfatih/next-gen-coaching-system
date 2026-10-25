@@ -1,0 +1,93 @@
+{
+  "record": "cmvo8mkpo000l2ytchrorpagy",
+  "pitch": {
+    "type": "half",
+    "width": 800,
+    "height": 600
+  },
+  "png": {
+    "width": 1600,
+    "height": 1200,
+    "bytes": 102568,
+    "sha256": "4f08684a919825439ca48239f87ca5ab30356c5483162a6a048c0c22c24c22bc"
+  },
+  "svg": {
+    "width": 800,
+    "height": 600,
+    "bytes": 31378,
+    "sha256": "8d4f057630bed251633b152f44766dbd8417ca6100e4270bbbc85fbdbcea458a",
+    "externalResources": false
+  },
+  "positions": [
+    {
+      "type": "player",
+      "x": 400,
+      "y": 150,
+      "rotation": 0
+    },
+    {
+      "type": "goalkeeper",
+      "x": 600,
+      "y": 150,
+      "rotation": 0
+    },
+    {
+      "type": "ball",
+      "x": 200,
+      "y": 150,
+      "rotation": 30
+    },
+    {
+      "type": "cone",
+      "x": 200,
+      "y": 300,
+      "rotation": 0
+    },
+    {
+      "type": "goal",
+      "x": 400,
+      "y": 300,
+      "rotation": 0
+    },
+    {
+      "type": "wall",
+      "x": 600,
+      "y": 300,
+      "rotation": 0
+    },
+    {
+      "type": "flag",
+      "x": 200,
+      "y": 450,
+      "rotation": 0
+    },
+    {
+      "type": "ladder",
+      "x": 400,
+      "y": 450,
+      "rotation": 0
+    },
+    {
+      "type": "marker",
+      "x": 600,
+      "y": 450,
+      "rotation": 0
+    }
+  ],
+  "repeatAt125PercentWithSelectedBall": "PNG and SVG independently byte-identical to baseline",
+  "comparison": {
+    "dimensions": {
+      "width": 512,
+      "height": 384
+    },
+    "screenVsPng": {
+      "meanAbsoluteChannelDifference": 6.2334,
+      "pixelsWithChannelDifferenceAbove32Pct": 7.1131
+    },
+    "pngVsLocallyRenderedSvg": {
+      "meanAbsoluteChannelDifference": 0.0885,
+      "pixelsWithChannelDifferenceAbove32Pct": 0.0275
+    }
+  },
+  "note": "Raster antialiasing and locally substituted SVG fonts may differ; this is not a cross-renderer exact pixel assertion."
+}

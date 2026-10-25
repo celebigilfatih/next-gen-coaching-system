@@ -1,0 +1,80 @@
+{
+  "kind": "tactical-board",
+  "pitch": { "type": "half", "width": 800, "height": 600 },
+  "elements": [
+    {
+      "x": 400,
+      "y": 150,
+      "id": "el_mvo8kwr9_4lflhr",
+      "team": "home",
+      "type": "player",
+      "number": "8",
+      "radius": 24
+    },
+    {
+      "x": 600,
+      "y": 150,
+      "id": "el_mvo8kwz3_owvqt8",
+      "size": 34,
+      "team": "home",
+      "type": "goalkeeper",
+      "number": "1"
+    },
+    {
+      "x": 200,
+      "y": 150,
+      "id": "el_mvo8kx6x_2wfc4l",
+      "type": "ball",
+      "radius": 12,
+      "rotation": 30
+    },
+    {
+      "x": 200,
+      "y": 300,
+      "id": "el_mvo8kxer_qllp2s",
+      "size": 24,
+      "type": "cone",
+      "color": "#f97316"
+    },
+    {
+      "x": 400,
+      "y": 300,
+      "id": "el_mvo8kxno_dlkqco",
+      "size": "large",
+      "type": "goal"
+    },
+    {
+      "x": 600,
+      "y": 300,
+      "id": "el_mvo8kxua_1krl0r",
+      "type": "wall",
+      "width": 84
+    },
+    {
+      "x": 200,
+      "y": 450,
+      "id": "el_mvo8ky2e_g5dq6j",
+      "type": "flag",
+      "color": "#f59e0b",
+      "height": 60
+    },
+    {
+      "x": 400,
+      "y": 450,
+      "id": "el_mvo8ky9t_76r1ac",
+      "type": "ladder",
+      "rungs": 6,
+      "length": 140
+    },
+    {
+      "x": 600,
+      "y": 450,
+      "id": "el_mvo8kyhu_c0f3vs",
+      "size": 24,
+      "type": "marker",
+      "color": "#facc15",
+      "shape": "circle"
+    }
+  ],
+  "schemaVersion": 1
+}

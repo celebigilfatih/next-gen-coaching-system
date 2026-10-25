@@ -1,6 +1,6 @@
 # Next Generation Coaching System — Project Boot
 
-- **Document version:** 2.164
+- **Document version:** 2.167
 - **CDSK version:** 0.1.0
 - **Last updated:** 2026-10-25
 
@@ -8,6 +8,27 @@
 > gerekçeyle `N/A` bırakılır.
 
 ## Project Compass
+
+- **Pending QA evidence publication (2026-10-25):** user authorizes reviewing
+  and publishing ready work to main. Smoke/export reports and12 proof files pass
+  artifact checks; immutable aff1cb7 baseline passes35 SVG/editor tests. Ongoing
+  PNG code/tests stay separate. Temporary-index publication preserves the active
+  checkout. [Review](docs/30-quality/POST_MERGE_QA_PUBLICATION_2026-10-25.md).
+
+- **Tactical export acceptance (2026-10-25):** actual downloaded PNG1600×1200
+  and SVG800×600 match the saved nine-object half pitch. Selection/125% zoom
+  repeats produce byte-identical files;35 export/editor tests pass. In-app PNG
+  does not download in this run; Chrome does. Offline SVG rendering confirms
+  geometry with minor font-substitution variance. No runtime/data change.
+  [Record](docs/30-quality/TACTICAL_EXPORT_ACCEPTANCE_2026-10-25.md).
+
+- **Main browser smoke (2026-10-25):** rebuilt/restarted canonical main API/UI;
+  persistent session restores after reload. Library120, SENIOR/tactical16,
+  preview and both attachment paths pass. Explicitly named retained QA plan
+  saves two frozen phases/50min with linked day50; separate QA tactic saves and
+  reloads half-pitch/nine equipment. Desktop smoke only; initial export probe
+  is superseded by the subsequent PNG/SVG file acceptance. No runtime/migration/new ADR.
+  [Evidence](docs/30-quality/MAIN_BROWSER_SMOKE_2026-10-25.md).
 
 - **Main ready-plan browser acceptance (2026-10-25):** normal build/main API/UI
   run; retained library shows120. Isolated real UI add yields1 phase/20min;
@@ -1024,6 +1045,48 @@ altı migration güncel, iki kulüp IN_SYNC ve yerel browser smoke geçti. Ayrı
 - [x] MVP kabul kapısı geçiyor; F-001–F-006 kapalı ve remediation hükmü **Pass**.
 
 ## 11. AI Handoff
+
+Reviewed QA publication,2026-10-25: explicit user request publishes completed
+main smoke/export reports and12 evidence files plus review/changelog/Boot,17
+files. Independent read-only decoding/hash/SVG checks and archived aff1cb7
+SVG/editor35 pass. A concurrent initial editor run failed31 with ReactForStage
+undefined; its log remains, not a current-tree success claim. New PNG source/
+tests, compatibility report/ADR note and png-download-fix evidence are excluded.
+A temporary Git index and archived proposed tree permit publication to main
+without switching or changing the active feature branch/normal index/worktree.
+No runtime/data/migration/dependency change. Receipts in
+output/pending-evidence-publication-20261025.
+[Review](docs/30-quality/POST_MERGE_QA_PUBLICATION_2026-10-25.md).
+
+Tactical PNG/SVG follow-up,2026-10-25: user requests actual exported-file
+comparison. Existing QA tactic cmvo8mkpo000l2ytchrorpagy remains unchanged on
+bd424a6. IAB SVG downloads; IAB PNG has no download/error. Normal authenticated
+Chrome downloads PNG1600×1200 and repeat SVG/PNG at125% with selected ball. Event
+observer misses Chrome downloads, but on-disk timestamps/decoding/hashes confirm
+them; each repeat is byte-identical to baseline. Downloaded JSON verifies all
+nine SVG transforms/rotation. Offline sharp render and screen/PNG/SVG contact
+sheet show matching geometry/colors; SVG font substitution slightly changes
+numeral strokes. Direct file:// browser inspection was policy-blocked; no bypass,
+local offline renderer used. Focused2-suite35 tests and links/CDSK/whitespace pass.
+No source/config/data/ADR change or full root rerun. Artifacts under
+apps/frontend/qa/tactical-exports-2026-10-25 are included in the authorized evidence publication. See
+[record](docs/30-quality/TACTICAL_EXPORT_ACCEPTANCE_2026-10-25.md).
+
+Main restart/browser smoke,2026-10-25: explicit user request runs bd424a6 on
+canonical4000/3132 against retained ngcs_local_session_dev. Normal backend build,
+loopbackHTTP200 and existing persistent session after restart/reload pass. Actual
+IAB library120/filtered16/search/preview, library→create→explicit add and existing
+plan picker→preview→add pass. Retained QA training cmvo8ixzn00052ytchl8n46ph has
+two phases32+18=50min, frozen SENIOR content/boards and linked day50 confirmed
+read-only. Separate CLUB QA tactic cmvo8mkpo000l2ytchrorpagy reloads nine equipment
+on half800×600 after property edits/drag/rotation/pitch undo-redo. These named QA
+records remain, without editing real plans/source content. Screenshots in
+apps/frontend/qa/main-smoke-2026-10-25 and ignored launch/read-only receipts in
+output/main-browser-smoke-*-20261025.*. Preserve concurrent isolated acceptance
+artifacts/docs. Desktop only; optional download-event probe times out, export
+completion unverified. Existing root17/17 applies to unchanged runtime; no new
+full root run, code patch, migration or ADR. Evidence publication is now authorized. Canonical services stay
+running and two result tabs remain. [Record](docs/30-quality/MAIN_BROWSER_SMOKE_2026-10-25.md).
 
 Main ready-plan acceptance,2026-10-25: user requests running main and actual UI
 ready-exercise attachment/source-change verification. Build succeeds; canonical
