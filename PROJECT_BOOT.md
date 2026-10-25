@@ -1,6 +1,6 @@
 # Next Generation Coaching System — Project Boot
 
-- **Document version:** 2.162
+- **Document version:** 2.163
 - **CDSK version:** 0.1.0
 - **Last updated:** 2026-10-25
 
@@ -8,6 +8,14 @@
 > gerekçeyle `N/A` bırakılır.
 
 ## Project Compass
+
+- **Post-merge cleanup (2026-10-25):** user explicitly requests removing merged
+  codex/mvp-stabilization and the old PR review checkout. Feature/review commits
+  are contained in main; local and expected-tip remote branch deletion complete.
+  Managed review archive preserves staged documents; ignored build config and
+  patches separately backed up. Primary dependency junction targets remain intact.
+  Final docs/ref/worktree checks and main sync close the operation. No runtime change.
+  [Record](docs/30-quality/POST_MERGE_CLEANUP_2026-10-25.md).
 
 - **PR#1 main merge (2026-10-25):** user authorizes final check and merge when
   clear. Fresh scoped reviewer confirms no Important/Critical blocker and136
@@ -1008,6 +1016,21 @@ altı migration güncel, iki kulüp IN_SYNC ve yerel browser smoke geçti. Ayrı
 - [x] MVP kabul kapısı geçiyor; F-001–F-006 kapalı ve remediation hükmü **Pass**.
 
 ## 11. AI Handoff
+
+Post-merge cleanup,2026-10-25: explicit user request authorizes deletion of merged
+codex/mvp-stabilization locally/remotely and safe removal of attached review
+worktree C:/Users/fcelebigil/.codex/worktrees/pr-main-review/next-gen-coaching-system.
+Main begins at7de694c; feature6fb5fb6/reviewd65f799 are ancestors. Four staged
+review documents and ignored output/pr-review-build.json are preserved with
+patches/hashes in output/merged-branch-cleanup-20261025. Manual junction unlink
+was policy-blocked with no mutation; native archive_worktree succeeds, preserves
+recoverable app state and removes the checkout/registration. Three primary
+node_modules targets and package hashes remain unchanged. Expected-tip lease
+protects remote deletion; local branch -d succeeds. Earlier preserve-branch/
+worktree notes remain historical. These closure docs are the only main changes;
+verify final remote/local main equality, zero ahead/behind, no feature refs and
+only primary worktree. No source/test/runtime/data/migration/production operation.
+[Record](docs/30-quality/POST_MERGE_CLEANUP_2026-10-25.md).
 
 PR#1 final integration,2026-10-25: explicit user instruction authorizes final
 review and merge to main if clear. Separate final scoped reviewer confirms prior
@@ -2839,6 +2862,9 @@ Do not mark roster binding, animation, offline match-day or 3D complete.
   rollout kendi karar kapılarında `TBD` kalır.
 
 ## Revision History
+
+2.163 — 2026-10-25: User-authorized merged branch cleanup and recoverable PR review
+worktree archive; documents/config preserved and main synchronization verified.
 
 2.161 — 2026-10-25: Fix frozen plan-board absence across reads/projection/preservation;
 red/green regressions, quality/publication and conditional PR readiness recorded.

@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-10-25 — Post-merge branch and review cleanup
+
+- Deleted merged codex/mvp-stabilization locally and remotely after ancestry/tip
+  checks. Archived and removed the old managed PR review checkout with its four
+  staged documents preserved; review-only ignored config/patches separately saved.
+- Primary dependency junction targets remain intact. Documentation and final
+  Git/worktree/ref checks verify clean synchronized main; no runtime/data change.
+  [Cleanup record](docs/30-quality/POST_MERGE_CLEANUP_2026-10-25.md).
+
 ## 2026-10-25 — PR #1 merged into main
 
 - Final scoped review found no Important/Critical blocker; prior P1/P2 findings
