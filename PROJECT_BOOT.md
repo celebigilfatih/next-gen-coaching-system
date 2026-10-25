@@ -1,6 +1,6 @@
 # Next Generation Coaching System — Project Boot
 
-- **Document version:** 2.161
+- **Document version:** 2.162
 - **CDSK version:** 0.1.0
 - **Last updated:** 2026-10-25
 
@@ -8,6 +8,14 @@
 > gerekçeyle `N/A` bırakılır.
 
 ## Project Compass
+
+- **PR#1 main merge (2026-10-25):** user authorizes final check and merge when
+  clear. Fresh scoped reviewer confirms no Important/Critical blocker and136
+  affected tests pass. Root17/17 and PostgreSQL HTTP11 cover reviewed6fb5fb6;
+  exact-head GitHub merge produces a90123a with the identical tested tree.
+  GitHub closed/merged and remote/local main alignment verified. Subsequent
+  closure records are docs only; feature branch and review worktree preserved.
+  [Record](docs/30-quality/PR_1_MAIN_MERGE_2026-10-25.md).
 
 - **Frozen plan-board correction (2026-10-25):** explicit user request fixes the
   PR#1 P2: non-null contentSnapshot freezes board absence in both readers, full
@@ -1000,6 +1008,20 @@ altı migration güncel, iki kulüp IN_SYNC ve yerel browser smoke geçti. Ayrı
 - [x] MVP kabul kapısı geçiyor; F-001–F-006 kapalı ve remediation hükmü **Pass**.
 
 ## 11. AI Handoff
+
+PR#1 final integration,2026-10-25: explicit user instruction authorizes final
+review and merge to main if clear. Separate final scoped reviewer confirms prior
+P1/P2 closure, no Important/Critical finding,136 affected tests and whitespace.
+Root17/17 (941/556/Sites4/tooling8) and PostgreSQL HTTP11 remain valid for the
+unchanged seven-file source/test hashes at6fb5fb6. GitHub has no reviews, threads,
+check runs or statuses; this is local verification, not CI or human approval.
+Exact-head merge via existing Git authentication succeeds as a90123a at19:27:06
+UTC. Merge tree equals reviewed tree c48f146; both parent SHAs verified. Remote
+main and local main advanced from1b831e0; branch/worktree history is preserved.
+This report/Boot/changelog follow-up is documentation only. No retained-data,
+migration, configuration or production action. Final operation evidence is in
+output/pr1-final-merge-20261025/result.json.
+[Record](docs/30-quality/PR_1_MAIN_MERGE_2026-10-25.md).
 
 Frozen plan-board correction,2026-10-25: user authorizes P2 fix, regression/root
 quality, push codex/mvp-stabilization and draft removal only after blockers clear.

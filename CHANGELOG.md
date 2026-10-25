@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-10-25 — PR #1 merged into main
+
+- Final scoped review found no Important/Critical blocker; prior P1/P2 findings
+  are closed. The exact reviewed6fb5fb6 head merged as a90123a, with an identical
+  tree and verified GitHub merged state. Root17/17 and PostgreSQL HTTP11 evidence
+  cover the unchanged code. Local main was advanced safely; closure changes are
+  documentation only. [Merge record](docs/30-quality/PR_1_MAIN_MERGE_2026-10-25.md).
+
 ## 2026-10-25 — Frozen plan-board absence
 
 - Versioned plan phases preserve an absent saved board after source edits or
