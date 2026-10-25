@@ -1,6 +1,6 @@
 # Next Generation Coaching System — Project Boot
 
-- **Document version:** 2.163
+- **Document version:** 2.164
 - **CDSK version:** 0.1.0
 - **Last updated:** 2026-10-25
 
@@ -8,6 +8,14 @@
 > gerekçeyle `N/A` bırakılır.
 
 ## Project Compass
+
+- **Main ready-plan browser acceptance (2026-10-25):** normal build/main API/UI
+  run; retained library shows120. Isolated real UI add yields1 phase/20min;
+  actual source v2 publication changes seven elements to zero, while full plan
+  reload keeps all seven/content v1. Boardless source edit also stays absent.
+  Original41-table fingerprints match excluding the separate concurrent QA
+  plan's new rows. Main remains running; isolated QA services stop. Evidence/docs
+  only, no runtime patch or new ADR. [Record](docs/30-quality/MAIN_READY_PLAN_ACCEPTANCE_2026-10-25.md).
 
 - **Post-merge cleanup (2026-10-25):** user explicitly requests removing merged
   codex/mvp-stabilization and the old PR review checkout. Feature/review commits
@@ -1016,6 +1024,24 @@ altı migration güncel, iki kulüp IN_SYNC ve yerel browser smoke geçti. Ayrı
 - [x] MVP kabul kapısı geçiyor; F-001–F-006 kapalı ve remediation hükmü **Pass**.
 
 ## 11. AI Handoff
+
+Main ready-plan acceptance,2026-10-25: user requests running main and actual UI
+ready-exercise attachment/source-change verification. Build succeeds; canonical
+localhost3132/API4000 starts with retained DB/settings and shows120 ready items.
+Separate loopback ngcs_main_ui_20261025, API4016/UI3516, contains only copied
+synthetic HTTP fixtures plus its own club/accounts/team/plans. Actual browser
+selection/preview/add yields1 phase/20min. Source senior-01 synthetic-approved
+v2 publication has zero elements; full browser plan reload still shows seven,
+content v1 and unchanged phase row/board SHA. A separate boardless migrated
+CLUB fixture stays absent after source gains seven elements, full reload, and
+both service readers/token verification. Before/intermediate41 retained business
+fingerprints match; final drift comes only from the other authorized chat's new
+QA — Main kontrolü 25.10.2026 plan/two phases/day, preserved and excluded by exact
+new ID/time for the final identical comparison. No old rows/catalog changed.
+Only this task's QA tabs/services close; main stays open/running. Screenshots in
+apps/frontend/qa/main-ready-plan-2026-10-25; ignored operator/results in
+output/main-ui-acceptance-20261025. No runtime edits/migration/new ADR/production.
+[Record](docs/30-quality/MAIN_READY_PLAN_ACCEPTANCE_2026-10-25.md).
 
 Post-merge cleanup,2026-10-25: explicit user request authorizes deletion of merged
 codex/mvp-stabilization locally/remotely and safe removal of attached review

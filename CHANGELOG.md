@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-10-25 — Main ready-plan browser acceptance
+
+- Started merged main and verified its120-item library. In a separate synthetic
+  database, actual UI attachment saves1 phase/20 minutes; after source v2 is
+  published with zero elements, a full reload preserves the plan's original
+  seven-element board/content v1. Boardless source-edit/reload also stays absent.
+- Existing41 business-table fingerprints match after excluding a separately
+  authorized concurrent smoke plan's new rows. Main stays running; this task's
+  isolated services stop. [Evidence](docs/30-quality/MAIN_READY_PLAN_ACCEPTANCE_2026-10-25.md).
+
 ## 2026-10-25 — Post-merge branch and review cleanup
 
 - Deleted merged codex/mvp-stabilization locally and remotely after ancestry/tip
