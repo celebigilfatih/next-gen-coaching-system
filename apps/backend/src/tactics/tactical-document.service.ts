@@ -12,6 +12,7 @@ import { Prisma } from '@prisma/client';
 import type { AuthPrincipal } from '../auth/auth-principal';
 import { AuthorizationService } from '../auth/authorization.service';
 import { PrismaService } from '../prisma/prisma.service';
+import { effectivePlanBoard } from '../training-plans/plan-drill-content';
 import { validateVersionedTacticalDocument } from './tactical-document';
 import {
   drillMetadataSelect,
@@ -267,6 +268,7 @@ export class TacticalDocumentService {
       select: {
         drillId: true,
         boardSnapshot: true,
+        contentSnapshot: true,
         drill: { select: { jsonData: true } },
       },
     });
@@ -275,9 +277,12 @@ export class TacticalDocumentService {
       identity: {
         ...resource,
         sourceId: phase.drillId,
-        origin: phase.boardSnapshot == null ? 'drill' : 'snapshot',
+        origin:
+          phase.boardSnapshot != null || phase.contentSnapshot != null
+            ? 'snapshot'
+            : 'drill',
       },
-      document: phase.boardSnapshot ?? phase.drill.jsonData,
+      document: effectivePlanBoard(phase),
     };
   }
 

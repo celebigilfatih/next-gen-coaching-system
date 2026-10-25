@@ -1,13 +1,29 @@
 # Next Generation Coaching System — Project Boot
 
-- **Document version:** 2.159
+- **Document version:** 2.161
 - **CDSK version:** 0.1.0
-- **Last updated:** 2026-10-20
+- **Last updated:** 2026-10-25
 
 > Bu belge güncel çalışma özetidir. Bilinmeyen alan `TBD`, geçersiz alan kısa
 > gerekçeyle `N/A` bırakılır.
 
 ## Project Compass
+
+- **Frozen plan-board correction (2026-10-25):** explicit user request fixes the
+  PR#1 P2: non-null contentSnapshot freezes board absence in both readers, full
+  projection and first-save/replacement guards; old rows retain source fallback.
+  Red regressions then136 affected tests and PostgreSQL HTTP11 pass. Complete
+  root17/17 passes (backend941/frontend556/Sites4/tooling8); scoped reviewer
+  reports no Important/Critical issue. Ready transition is authorized after
+  same-branch push and final GitHub checks. Concurrent independent notes are preserved. No migration/retained write.
+  [Evidence](docs/30-quality/FROZEN_PLAN_BOARD_FIX_2026-10-25.md).
+
+- **Frozen-board independent verification (2026-10-25):** user requests the
+  source-independent plan-board fix. Concurrent shared implementation is preserved;
+  this chat independently confirms136 affected tests/11 PostgreSQL HTTP cases and
+  SQL/JSON-null CLUB source V1/V2 edit, replacement and explicit board-save cases.
+  No retained-data write or new ADR. Full publication/readiness work remains in
+  the separately authorized chat. [Evidence](docs/30-quality/FROZEN_BOARD_INDEPENDENT_2026-10-25.md).
 
 - **PR#1 readiness re-review (2026-10-20):**069f459/main has no merge conflict,
   external reviews or CI statuses. Original legacy-attachment P1 is fixed; one
@@ -984,6 +1000,37 @@ altı migration güncel, iki kulüp IN_SYNC ve yerel browser smoke geçti. Ayrı
 - [x] MVP kabul kapısı geçiyor; F-001–F-006 kapalı ve remediation hükmü **Pass**.
 
 ## 11. AI Handoff
+
+Frozen plan-board correction,2026-10-25: user authorizes P2 fix, regression/root
+quality, push codex/mvp-stabilization and draft removal only after blockers clear.
+Base dc24eb4. New effectivePlanBoard distinguishes non-null frozen content from
+legacy fallback; used in tactical reader, full plan projection and legacy write/
+replacement guards. Single-board SQL matches SQL/JSON-null behavior. Metadata
+stays lightweight. Explicit first saves work with stable absent token even after
+source V2; existing V2/source/tenant/publication guards remain. Unit red captured
+then136 affected tests and actual PostgreSQL HTTP11 pass, including add/replace,
+GLOBAL v2 publish, both readers, projection, reorder, null parity and first save.
+All7 source/test hashes remain pinned; root17/17 passes (941/556/Sites4/tooling8,
+both builds,205-file links/CDSK/whitespace). Scoped review has no Important/Critical
+finding; P2 is closed. Proceed with the user-authorized ready transition only after
+pushing the reviewed head and checking GitHub state; perform no merge.
+Concurrent independent verification docs are preserved. No new ADR/model/schema/
+migration/dependency/retained write or merge. See the final report for fresh results
+and GitHub publication/readiness verification.
+[Evidence](docs/30-quality/FROZEN_PLAN_BOARD_FIX_2026-10-25.md).
+
+Independent frozen-board verification,2026-10-25: this chat's user also explicitly
+requests that source changes leave saved plan boards unchanged. Another active
+chat implements the same correction; its source/tests are preserved. Fresh136
+affected tests and11 dedicated PostgreSQL HTTP cases pass here. A separate
+TypeScript-service verifier confirms both SQL/JSON null, add/replacement, actual
+CLUB source V1/V2 edits, unchanged frozen rows/tokens, notes-only replacement,
+explicit legacy/versioned plan-board saves and old pre-snapshot fallback. Uses
+only ngcs_ready_drills_test; no retained data or runtime service changed. Logs are
+in output/frozen-board-independent-20261025. No new ADR/migration/dependency or
+publication action from this chat. Full quality/publication belongs to the
+separately authorized concurrent task.
+[Evidence](docs/30-quality/FROZEN_BOARD_INDEPENDENT_2026-10-25.md).
 
 PR#1 readiness re-review,2026-10-20: user conditionally requests draft removal
 only if blockers are gone. Reviewed069f459/base1b831e0, incremental d65f799..HEAD
@@ -2770,6 +2817,9 @@ Do not mark roster binding, animation, offline match-day or 3D complete.
   rollout kendi karar kapılarında `TBD` kalır.
 
 ## Revision History
+
+2.161 — 2026-10-25: Fix frozen plan-board absence across reads/projection/preservation;
+red/green regressions, quality/publication and conditional PR readiness recorded.
 
 2.159 — 2026-10-20: PR#1 re-review closes old P1, reproduces frozen-absence P2;
 keep draft with current validation and a concrete correction/regression handoff.

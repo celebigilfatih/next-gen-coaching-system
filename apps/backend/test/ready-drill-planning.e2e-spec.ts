@@ -626,6 +626,144 @@ describe('ready drill planning (dedicated PostgreSQL)', () => {
     expect(replaced.body.drills[0].contentSnapshot.sourceVersionId).toBe(
       version.id,
     );
+    const phases = [
+      { plan: planId, phase: attached.id },
+      { plan: replacement.id, phase: replaced.body.drills[0].id },
+    ];
+    const readPhase = async (entry: (typeof phases)[number]) => ({
+      legacy: (
+        await get(
+          `/training-plans/${entry.plan}/drills/${entry.phase}/board`,
+        ).expect(200)
+      ).body,
+      versioned: (
+        await get(
+          `/training-plans/${entry.plan}/drills/${entry.phase}/tactical-document`,
+        ).expect(200)
+      ).body,
+    });
+    const beforePublication = await Promise.all(phases.map(readPhase));
+    for (const result of beforePublication) {
+      expect(result.legacy).toMatchObject({
+        status: 'absent',
+        origin: null,
+        document: null,
+      });
+      expect(result.versioned.document).toBeNull();
+    }
+    const template = await db.drillVersion.findUniqueOrThrow({
+      where: { id: versionId },
+    });
+    const { id: _id, drillId: _drillId, version: _version, ...copy } = template;
+    const next = await db.drillVersion.create({
+      data: {
+        ...copy,
+        steps: copy.steps as Prisma.InputJsonValue,
+        coachingPoints: copy.coachingPoints as Prisma.InputJsonValue,
+        progressions: copy.progressions as Prisma.InputJsonValue,
+        regressions: copy.regressions as Prisma.InputJsonValue,
+        constraints: copy.constraints as Prisma.InputJsonValue,
+        boardDocument: copy.boardDocument as Prisma.InputJsonValue,
+        drillId: legacy.id,
+        version: 2,
+        status: 'APPROVED',
+        reviewedById: reviewerId,
+        publishedAt: null,
+        publishedById: null,
+        archivedAt: null,
+        ageVariants: {
+          create: {
+            ageGroup: 'U14',
+            durationMin: 9,
+            rules: [],
+            coachingPoints: [],
+          },
+        },
+      },
+    });
+    await post(`/drills/content/${next.id}/publish`).expect(201);
+    for (let i = 0; i < phases.length; i++) {
+      expect(await readPhase(phases[i])).toEqual(beforePublication[i]);
+      const saved = await db.planDrill.findUniqueOrThrow({
+        where: { id: phases[i].phase },
+      });
+      expect(saved.contentSnapshot).toMatchObject({
+        sourceVersionId: version.id,
+        durationMin: 5,
+      });
+      expect(saved.boardSnapshot).toBeNull();
+      const full = (await get(`/training-plans/${phases[i].plan}`).expect(200))
+        .body;
+      expect(
+        full.drills.find((row: { id: string }) => row.id === phases[i].phase)
+          .drill.jsonData,
+      ).toBeNull();
+    }
+    const reordered = (
+      await request(app.getHttpServer())
+        .put(`/training-plans/${replacement.id}/drills`)
+        .set('Authorization', `Bearer ${adminToken}`)
+        .send({
+          drills: [{ ...body, order: 1, notes: 'Frozen phase retained' }],
+        })
+        .expect(200)
+    ).body;
+    expect(reordered.totalDuration).toBe(5);
+    expect(reordered.drills[0].notes).toBe('Frozen phase retained');
+    expect(reordered.drills[0].contentSnapshot.sourceVersionId).toBe(
+      version.id,
+    );
+    expect(reordered.drills[0].boardSnapshot).toBeNull();
+    const retained = await readPhase({
+      plan: replacement.id,
+      phase: reordered.drills[0].id,
+    });
+    expect(retained.legacy.status).toBe('absent');
+    expect(retained.versioned.document).toBeNull();
+    const oldPlan = await db.trainingPlan.create({
+      data: {
+        title: 'TEST old nullable row',
+        clubId: before.clubId,
+        groupId,
+        coachId: before.coachId,
+      },
+    });
+    const oldPhase = await db.planDrill.create({
+      data: {
+        trainingPlanId: oldPlan.id,
+        drillId: legacy.id,
+        phase: 'WARM_UP',
+        order: 0,
+      },
+    });
+    const old = { plan: oldPlan.id, phase: oldPhase.id };
+    for (const nullKind of [Prisma.DbNull, Prisma.JsonNull]) {
+      await db.planDrill.update({
+        where: { id: oldPhase.id },
+        data: { contentSnapshot: nullKind, boardSnapshot: nullKind },
+      });
+      const result = await readPhase(old);
+      expect(result.legacy).toMatchObject({
+        origin: 'drill',
+        status: 'ready',
+        document: copy.boardDocument,
+      });
+      expect(result.versioned.document).toEqual(copy.boardDocument);
+    }
+    await request(app.getHttpServer())
+      .put(
+        `/training-plans/${replacement.id}/drills/${reordered.drills[0].id}/tactical-document`,
+      )
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({
+        document: copy.boardDocument,
+        expectedWriteToken: retained.versioned.writeToken,
+      })
+      .expect(200);
+    expect(
+      (await readPhase({ plan: replacement.id, phase: reordered.drills[0].id }))
+        .legacy.origin,
+    ).toBe('snapshot');
   });
   it('keeps saved plan content readable after the source is archived while rejecting new attachments', async () => {
     await post(`/drills/content/${versionId}/archive`).expect(201);

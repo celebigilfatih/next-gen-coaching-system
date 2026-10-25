@@ -340,4 +340,33 @@ describe('ready drill plan content', () => {
     expect(s.tx.planDrill.create).not.toHaveBeenCalled();
     expect(s.tx.trainingPlan.update).not.toHaveBeenCalled();
   });
+  it('projects frozen board absence without changing legacy source fallback or light metadata', () => {
+    const contentSnapshot = {
+      schemaVersion: 1,
+      title: 'Frozen',
+      durationMin: 5,
+    };
+    const result = projectPlanContent({
+      drills: [
+        {
+          contentSnapshot,
+          boardSnapshot: null,
+          drill: { title: 'Changed', durationMin: 9, jsonData: board },
+        },
+        {
+          contentSnapshot: null,
+          boardSnapshot: null,
+          drill: { title: 'Legacy', durationMin: 9, jsonData: board },
+        },
+        { contentSnapshot, drill: { title: 'Light', durationMin: 9 } },
+      ],
+    });
+    expect(result.drills[0].drill).toEqual({
+      title: 'Frozen',
+      durationMin: 5,
+      jsonData: null,
+    });
+    expect(result.drills[1].drill.jsonData).toEqual(board);
+    expect(result.drills[2].drill).toEqual({ title: 'Frozen', durationMin: 5 });
+  });
 });

@@ -1,5 +1,26 @@
 # Changelog
 
+## 2026-10-25 — Frozen plan-board absence
+
+- Versioned plan phases preserve an absent saved board after source edits or
+  publication. Both board APIs, full legacy projection and preservation guards
+  use the existing content snapshot; pre-snapshot source fallback remains.
+- Stable absent tokens permit explicit first-board saves independently of later
+  source V2. Regression failures were reproduced before the correction; affected
+  backend136 and dedicated PostgreSQL HTTP11 pass. Fresh root17/17 passes with
+  backend941/frontend556/Sites4/tooling8 and both builds; scoped review has no
+  Important/Critical finding. Publication state is in the [report](docs/30-quality/FROZEN_PLAN_BOARD_FIX_2026-10-25.md).
+  No migration/dependency/retained-data write or automatic merge.
+
+## 2026-10-25 — Independent frozen plan-board verification
+
+- Independently verified the concurrent source-independent plan-board correction:
+  136 affected backend tests/11 dedicated PostgreSQL HTTP cases pass. A separate
+  actual-service SQL/JSON-null matrix covers source V1/V2 edits, replacement,
+  stable absence/tokens, explicit plan-board saves and old fallback compatibility.
+  No retained-data write or publication action in this verification.
+  [Evidence](docs/30-quality/FROZEN_BOARD_INDEPENDENT_2026-10-25.md).
+
 ## 2026-10-20 — PR #1 readiness re-review
 
 - Re-reviewed069f459 against main and the previous d65f799 review. The original

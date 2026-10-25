@@ -159,6 +159,49 @@ describe('Versioned tactical persistence', () => {
     expect(result.document).toBeNull();
     expect(result.phase?.origin).toBeNull();
   });
+  it('keeps a frozen boardless phase and its write token unchanged after a source edit', async () => {
+    const { service, phase, drill } = fixture();
+    Object.assign(phase, {
+      contentSnapshot: { schemaVersion: 1, title: 'Frozen', durationMin: 5 },
+    });
+    drill.jsonData = null;
+    const before = await service.read(coach, resources[1]);
+    expect(before.document).toBeNull();
+    drill.jsonData = v1;
+    expect(await service.read(coach, resources[1])).toEqual(before);
+    expect(phase.boardSnapshot).toBeNull();
+  });
+  it('permits an explicit first plan board using the absent token after the source becomes V2', async () => {
+    const { service, phase, drill } = fixture();
+    Object.assign(phase, {
+      contentSnapshot: { schemaVersion: 1, title: 'Frozen', durationMin: 5 },
+    });
+    drill.jsonData = null;
+    const before = await service.read(coach, resources[1]);
+    drill.jsonData = v2;
+    const saved = await service.write(coach, resources[1], {
+      document: v1,
+      expectedWriteToken: before.writeToken,
+    });
+    expect(saved.document).toEqual(v1);
+    expect(saved.phase?.origin).toBe('snapshot');
+    expect(phase.boardSnapshot).toEqual(v1);
+    drill.jsonData = null;
+    expect(await service.read(coach, resources[1])).toEqual(saved);
+  });
+  it('allows the legacy first-board save for frozen absence even when the source is V2', async () => {
+    const { prisma, phase, drill } = fixture();
+    Object.assign(phase, {
+      contentSnapshot: { schemaVersion: 1, title: 'Frozen', durationMin: 5 },
+    });
+    drill.jsonData = v2;
+    const saved = await new TrainingPlansService(
+      prisma as unknown as PrismaService,
+    ).updateBoardSnapshot('plan', 'phase', v1);
+    expect(saved.boardSnapshot).toEqual(v1);
+    expect(phase.boardSnapshot).toEqual(v1);
+    expect(drill.jsonData).toEqual(v2);
+  });
   it('does not add plan identities to unrelated resource responses', async () => {
     const { service } = fixture();
     expect(await service.read(coach, resources[0])).not.toHaveProperty('phase');

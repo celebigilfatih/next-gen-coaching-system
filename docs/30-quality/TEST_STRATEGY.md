@@ -1,5 +1,13 @@
 # Test Strategy
 
+Frozen plan-board regressions distinguish contentSnapshot-present absence from
+old pre-snapshot source fallback, with SQL/JSON null parity. Real PostgreSQL
+add/replacement + later GLOBAL publication must leave both board readers/tokens,
+full-plan projection, duration and instructions unchanged. Notes/order replacement
+must retain that absence. Unit tests cover irrelevant source V2 and explicit
+first legacy/token-bound snapshot saves; existing V2/authorization guards remain.
+[Correction evidence](FROZEN_PLAN_BOARD_FIX_2026-10-25.md).
+
 Publication regressions cover boardless migrated LEGACY/LEGACY_UNVERIFIED add and
 replacement with frozen content/plan/day totals, and reject missing professional
 or malformed legacy boards. Attendance retains serialized explicit marking,

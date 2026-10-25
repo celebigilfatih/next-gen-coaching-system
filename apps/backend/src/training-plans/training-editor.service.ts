@@ -109,11 +109,13 @@ export class TrainingEditorService {
           pd."drillId",
           CASE
             WHEN NULLIF(pd."boardSnapshot", 'null'::jsonb) IS NOT NULL THEN 'snapshot'
-            WHEN NULLIF(d."jsonData", 'null'::jsonb) IS NOT NULL THEN 'drill'
+            WHEN NULLIF(pd."contentSnapshot", 'null'::jsonb) IS NULL
+              AND NULLIF(d."jsonData", 'null'::jsonb) IS NOT NULL THEN 'drill'
             ELSE NULL
           END AS origin,
           COALESCE(NULLIF(pd."boardSnapshot", 'null'::jsonb),
-                   NULLIF(d."jsonData", 'null'::jsonb)) AS document
+                   CASE WHEN NULLIF(pd."contentSnapshot", 'null'::jsonb) IS NULL
+                     THEN NULLIF(d."jsonData", 'null'::jsonb) END) AS document
         FROM "PlanDrill" pd JOIN "Drill" d ON d.id = pd."drillId"
         WHERE pd."trainingPlanId" = ${planId} AND pd.id = ${planDrillId}
           AND pd."drillId" = ${source.drill.id}

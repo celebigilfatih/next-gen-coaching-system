@@ -30,6 +30,7 @@ import {
   resolvePlanContent,
   planDrillDuration,
   projectPlanContent,
+  effectivePlanBoard,
 } from './plan-drill-content';
 
 @Injectable()
@@ -374,9 +375,7 @@ export class TrainingPlansService {
             },
           });
           for (const phase of currentPhases) {
-            assertLegacyTacticalWrite(
-              phase.boardSnapshot ?? phase.drill.jsonData,
-            );
+            assertLegacyTacticalWrite(effectivePlanBoard(phase));
           }
           const remaining = [...currentPhases];
           const resolved = entries.map((entry) => {
@@ -467,6 +466,7 @@ export class TrainingPlansService {
             select: {
               id: true,
               boardSnapshot: true,
+              contentSnapshot: true,
               drill: { select: { jsonData: true } },
             },
           });
@@ -475,9 +475,7 @@ export class TrainingPlansService {
               'Plan drill does not belong to the training plan',
             );
           }
-          assertLegacyTacticalWrite(
-            planDrill.boardSnapshot ?? planDrill.drill.jsonData,
-          );
+          assertLegacyTacticalWrite(effectivePlanBoard(planDrill));
           return await tx.planDrill.update({
             where: { id: planDrillId },
             data: { boardSnapshot } as never,

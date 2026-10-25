@@ -114,11 +114,24 @@ export function planDrillDuration(entry: {
   );
 }
 
+/** New versioned attachments freeze absence too; only pre-snapshot rows follow the source. */
+export function effectivePlanBoard(entry: {
+  boardSnapshot?: unknown;
+  contentSnapshot?: unknown;
+  drill: { jsonData?: unknown };
+}) {
+  return (
+    entry.boardSnapshot ??
+    (entry.contentSnapshot != null ? null : entry.drill.jsonData)
+  );
+}
+
 export function projectPlanContent<
   T extends {
     drills: Array<{
       contentSnapshot?: unknown;
-      drill: { title: string; durationMin: number };
+      boardSnapshot?: unknown;
+      drill: { title: string; durationMin: number; jsonData?: unknown };
     }>;
   },
 >(plan: T): T {
@@ -127,7 +140,13 @@ export function projectPlanContent<
     ...plan,
     drills: plan.drills.map((entry) => ({
       ...entry,
-      drill: { ...entry.drill, ...frozenContent(entry.contentSnapshot) },
+      drill: {
+        ...entry.drill,
+        ...frozenContent(entry.contentSnapshot),
+        ...(entry.contentSnapshot != null && 'jsonData' in entry.drill
+          ? { jsonData: effectivePlanBoard(entry) }
+          : {}),
+      },
     })),
   };
 }

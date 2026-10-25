@@ -1,5 +1,10 @@
 # PR #1 readiness re-review — 2026-10-20
 
+2026-10-25 follow-up: the user requested correction of the P2 below. The
+[frozen-absence fix report](FROZEN_PLAN_BOARD_FIX_2026-10-25.md) records the
+implementation, failing/passing regressions and current publication/readiness
+checks. The verdict below describes the historical069f459 revision.
+
 PR: [#1](https://github.com/celebigilfatih/next-gen-coaching-system/pull/1),
 `codex/mvp-stabilization` → `main`.
 

@@ -152,6 +152,12 @@ calendar days, interpreted at +03:00; max 80-week season, 20 academy teams,
 
 ## Professional drill content
 
+- A plan phase with non-null contentSnapshot freezes board absence as well as
+  content. The board reader, tactical-document token/read and full legacy plan
+  projection use boardSnapshot even when absent; only null-contentSnapshot old
+  rows retain source fallback. SQL NULL/JSON null are equivalent. Explicit plan
+  board saves remain supported and replace that frozen absence independently.
+
 - Migrated published versions with SQL-NULL boardDocument may attach without a
   synthetic board only when source kind is LEGACY and license LEGACY_UNVERIFIED.
   Exact-age content/version/duration are still frozen. Actual legacy diagrams and

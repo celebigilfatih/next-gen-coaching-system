@@ -16,6 +16,13 @@ The optional expectedVersionId protects against silently attaching a replacement
 version. New attachments recheck publication, exact age and ownership inside a
 Serializable transaction. No nearest-age fallback is allowed.
 
+Implementation correction,2026-10-25: a non-null contentSnapshot also freezes an
+absent board. Both board readers, full legacy plan projection and preservation/
+first-save guards use that distinction; only pre-snapshot rows retain source
+fallback. No new field or migration is needed. Explicit plan-board saves remain
+independent of later source edits/publications. This restores the original
+snapshot boundary. [Verification](../30-quality/FROZEN_PLAN_BOARD_FIX_2026-10-25.md).
+
 The library and plan picker share filters and lazy detail preview. Library detail
 can select an existing plan or create one, then explicitly attach the exercise.
 No full-session or weekly templates, external content service or dependency is
