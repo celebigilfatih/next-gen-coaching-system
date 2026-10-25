@@ -1,5 +1,40 @@
 # Changelog
 
+## 2026-10-25 — PNG compatibility publication
+
+- User-authorized final review/commit/push on codex/png-download-compatibility
+  includes the PNG Blob transport fix, V1/V2 regression tests, ADR-0035 note and
+  complete linked smoke/export/download evidence. Scoped re-review has no
+  Important/Critical finding; unchanged source retains root17/17 evidence.
+  [Publication checks](docs/30-quality/PNG_DOWNLOAD_COMPATIBILITY_2026-10-25.md#publication-review--2026-10-25).
+
+## 2026-10-25 — In-app browser PNG download fix
+
+- PNG now downloads through the same Blob path as SVG/JSON, retaining the exact
+  encoded bytes,2× resolution, scene filename and selection-free image. Actual
+  IAB and Chrome downloads match the original PNG hash. V1/V2 regressions fail
+  before the fix, then37 scoped tests pass. Fresh root17/17 passes (941 backend,
+  558 frontend, Sites4/tooling8); focused review has no Important/Critical finding.
+  [Evidence](docs/30-quality/PNG_DOWNLOAD_COMPATIBILITY_2026-10-25.md).
+
+## 2026-10-25 — Tactical exported-file verification
+
+- Actual PNG/SVG downloads match the nine-object half-pitch QA board. Selection
+  and125% zoom repeats yield identical hashes;35 export/editor tests pass.
+  In-app PNG has no download in this session; Chrome succeeds. Offline SVG
+  render preserves geometry with minor font substitution. No runtime/data change.
+  [Evidence and files](docs/30-quality/TACTICAL_EXPORT_ACCEPTANCE_2026-10-25.md).
+
+## 2026-10-25 — Main restart and browser smoke
+
+- Rebuilt/restarted canonical main API/UI and verified session restoration,
+  ready-library filtering/preview and both exercise attachment paths in IAB.
+- Named retained QA training saves two phases/50 minutes with frozen content and
+  boards; a separate nine-object half-pitch QA tactic survives save/reload.
+  Read-only database checks confirm both records and linked day duration.
+  Desktop evidence only; downloads unverified after control timeout. No runtime
+  patch or migration. [Report](docs/30-quality/MAIN_BROWSER_SMOKE_2026-10-25.md).
+
 ## 2026-10-25 — Main ready-plan browser acceptance
 
 - Started merged main and verified its120-item library. In a separate synthetic
@@ -457,7 +492,6 @@
   write, API/schema/dependency or new ADR; lifecycle/PLAYER boundaries preserved.
   [Evidence](docs/30-quality/TRAININGS_LIST_UX_2026-10-19.md).
 
-
 ## 2026-10-19 — Ready-drill tablet and mobile acceptance
 
 - Verified actual tablet1024/mobile390 filters, preview, paginated plan selection
@@ -495,7 +529,6 @@
   lint/format, build and Sites 4/4 pass;
   actual desktop/tablet/mobile QA passes. No retained data writes or new ADR.
   [Evidence](docs/30-quality/TRAINING_DETAIL_UX_2026-10-19.md).
-
 
 ## 2026-10-19 — Retained A Takım ready-drill browser acceptance
 

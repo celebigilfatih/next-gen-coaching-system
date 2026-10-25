@@ -1,6 +1,6 @@
 # Next Generation Coaching System — Project Boot
 
-- **Document version:** 2.164
+- **Document version:** 2.168
 - **CDSK version:** 0.1.0
 - **Last updated:** 2026-10-25
 
@@ -8,6 +8,37 @@
 > gerekçeyle `N/A` bırakılır.
 
 ## Project Compass
+
+- **PNG fix publication (2026-10-25):** user authorizes final review/commit/push
+  to codex/png-download-compatibility. Scoped re-review has no Important/Critical
+  issue; unchanged runtime retains root17/17 evidence. Fresh scoped tests and
+  staged docs/artifact checks cover delivery. Include all three linked local QA
+  reports and15 assets; keep ignored operators/logs/config outside Git. Final
+  remote/local equality and clean tree are delivery checks; no main merge/PR.
+  [Record](docs/30-quality/PNG_DOWNLOAD_COMPATIBILITY_2026-10-25.md#publication-review--2026-10-25).
+
+- **PNG browser compatibility (2026-10-25):** user-requested narrow fix replaces
+  PNG data-URL download with existing Blob transport. V1/V2 regressions fail
+  first, then37 scoped tests pass. Actual IAB and Chrome files now download and
+  equal the original PNG hash/resolution. Root17/17 (941/558/Sites4/tooling8)
+  passes; focused review has no Important/Critical finding.
+  No retained write, schema/dependency/new ADR. On codex/png-download-compatibility;
+  prior local evidence preserved. [Record](docs/30-quality/PNG_DOWNLOAD_COMPATIBILITY_2026-10-25.md).
+
+- **Tactical export acceptance (2026-10-25):** actual downloaded PNG1600×1200
+  and SVG800×600 match the saved nine-object half pitch. Selection/125% zoom
+  repeats produce byte-identical files;35 export/editor tests pass. In-app PNG
+  does not download in this run; Chrome does. Offline SVG rendering confirms
+  geometry with minor font-substitution variance. No runtime/data change.
+  [Record](docs/30-quality/TACTICAL_EXPORT_ACCEPTANCE_2026-10-25.md).
+
+- **Main browser smoke (2026-10-25):** rebuilt/restarted canonical main API/UI;
+  persistent session restores after reload. Library120, SENIOR/tactical16,
+  preview and both attachment paths pass. Explicitly named retained QA plan
+  saves two frozen phases/50min with linked day50; separate QA tactic saves and
+  reloads half-pitch/nine equipment. Desktop smoke only; export-event probe
+  times out, so downloads remain unverified. No runtime/migration/new ADR.
+  [Evidence](docs/30-quality/MAIN_BROWSER_SMOKE_2026-10-25.md).
 
 - **Main ready-plan browser acceptance (2026-10-25):** normal build/main API/UI
   run; retained library shows120. Isolated real UI add yields1 phase/20min;
@@ -149,20 +180,17 @@
   Output baselines/env/Python caches excluded, staged text scan has no findings.
   [Review](docs/30-quality/PRE_PUSH_REVIEW_2026-10-19.md).
 
-
 - **Five-match senior microcycles (2026-10-19):** ADR-0047 / REQ-033 / CR-034 /
   BL-068 accepts five SENIOR fixtures using existing actual-hour presets and manual
   protections. Backend918/focused48/HTTP21, all21 weekday combinations and restored
   UI pass.36 retained fixture dates unchanged; no migration/re-enrollment.
   [Evidence](docs/30-quality/FIVE_MATCH_PROGRAM_2026-10-19.md).
 
-
 - **Four-match senior microcycles (2026-10-19):** ADR-0045 / REQ-032 / CR-033 /
   BL-067 extends existing elapsed-hour planning to four SENIOR fixtures, retaining
   manual decisions and transaction guards. Backend913/focused43/HTTP19 and all35
   weekday combinations pass; restored UI/retained preservation verified. No migration.
   [Evidence](docs/30-quality/FOUR_MATCH_PROGRAM_2026-10-19.md).
-
 
 - **Exercise detail UI/UX (2026-10-19):** compact library/Matches heading,
   four-fact summary and one Uygulama/Saha/Kaynak guide. Full numbered steps,
@@ -190,7 +218,6 @@
   to three SENIOR fixtures. Manual/time/deletion protections remain. Backend908 /
   focused38 / HTTP17 and restored UI pass;36 retained dates unchanged, no migration.
   [Evidence](docs/30-quality/THREE_MATCH_PROGRAM_2026-10-19.md).
-
 
 - **Two-match senior microcycles (2026-10-19):** ADR-0043 extends existing
   preview/apply and date reconciliation to two SENIOR fixtures using actual hour
@@ -1025,6 +1052,62 @@ altı migration güncel, iki kulüp IN_SYNC ve yerel browser smoke geçti. Ayrı
 
 ## 11. AI Handoff
 
+PNG publication,2026-10-25: explicit user request authorizes final review, commit
+and normal upstream push on codex/png-download-compatibility, base aff1cb7. The
+runtime/test diff is unchanged since root17/17 (941/558/Sites4/tooling8); fresh
+scoped tests and docs/index/artifact checks cover this publication. Read-only
+re-review again finds no Important/Critical issue. Include prior linked smoke,
+export and fix reports plus15 QA files to avoid broken evidence references.
+Never stage ignored output operators/logs or local configuration. Earlier
+no-commit/local-only statements describe their original closure, superseded by
+this authorization. Verify final remote/local equality, upstream and clean tree;
+no main merge, PR creation, migration or retained write requested.
+[Record](docs/30-quality/PNG_DOWNLOAD_COMPATIBILITY_2026-10-25.md#publication-review--2026-10-25).
+
+PNG compatibility fix,2026-10-25: explicit user request fixes prior IAB silent
+PNG download. Branch codex/png-download-compatibility from aff1cb7; previous
+local docs/QA preserved. Existing encoded2× PNG bytes are decoded into a typed
+array and passed to existing image/png Blob download, avoiding data: anchor.
+Two V1/V2 editor-control regressions observed red then focused2 suites/37 tests
+green. Actual IAB (2).png and Chrome (3).png downloads each102568 bytes/1600×1200
+with original4f08684a hash. IAB download-event now succeeds; Chrome disk file is
+verified despite its event observer limitation. Both browser logs clean; no
+retained write/config/schema/dependency/new ADR. Fresh root17/17 passes with
+backend941/frontend558/Sites4/tooling8 and both builds; focused read-only reviewer
+has no Important/Critical finding. Final closure docs checks pass.
+Evidence in apps/frontend/qa/png-download-fix-2026-10-25; quality log in output.
+No commit/push requested. [Record](docs/30-quality/PNG_DOWNLOAD_COMPATIBILITY_2026-10-25.md).
+
+Tactical PNG/SVG follow-up,2026-10-25: user requests actual exported-file
+comparison. Existing QA tactic cmvo8mkpo000l2ytchrorpagy remains unchanged on
+bd424a6. IAB SVG downloads; IAB PNG has no download/error. Normal authenticated
+Chrome downloads PNG1600×1200 and repeat SVG/PNG at125% with selected ball. Event
+observer misses Chrome downloads, but on-disk timestamps/decoding/hashes confirm
+them; each repeat is byte-identical to baseline. Downloaded JSON verifies all
+nine SVG transforms/rotation. Offline sharp render and screen/PNG/SVG contact
+sheet show matching geometry/colors; SVG font substitution slightly changes
+numeral strokes. Direct file:// browser inspection was policy-blocked; no bypass,
+local offline renderer used. Focused2-suite35 tests and links/CDSK/whitespace pass.
+No source/config/data/ADR change or full root rerun. Artifacts under
+apps/frontend/qa/tactical-exports-2026-10-25 remain local, no commit/push. See
+[record](docs/30-quality/TACTICAL_EXPORT_ACCEPTANCE_2026-10-25.md).
+
+Main restart/browser smoke,2026-10-25: explicit user request runs bd424a6 on
+canonical4000/3132 against retained ngcs_local_session_dev. Normal backend build,
+loopbackHTTP200 and existing persistent session after restart/reload pass. Actual
+IAB library120/filtered16/search/preview, library→create→explicit add and existing
+plan picker→preview→add pass. Retained QA training cmvo8ixzn00052ytchl8n46ph has
+two phases32+18=50min, frozen SENIOR content/boards and linked day50 confirmed
+read-only. Separate CLUB QA tactic cmvo8mkpo000l2ytchrorpagy reloads nine equipment
+on half800×600 after property edits/drag/rotation/pitch undo-redo. These named QA
+records remain, without editing real plans/source content. Screenshots in
+apps/frontend/qa/main-smoke-2026-10-25 and ignored launch/read-only receipts in
+`output/main-browser-smoke-*-20261025.*`. Preserve concurrent isolated acceptance
+artifacts/docs. Desktop only; optional download-event probe times out, export
+completion unverified. Existing root17/17 applies to unchanged runtime; no new
+full root run, code patch, migration, ADR or commit/push. Canonical services stay
+running and two result tabs remain. [Record](docs/30-quality/MAIN_BROWSER_SMOKE_2026-10-25.md).
+
 Main ready-plan acceptance,2026-10-25: user requests running main and actual UI
 ready-exercise attachment/source-change verification. Build succeeds; canonical
 localhost3132/API4000 starts with retained DB/settings and shows120 ready items.
@@ -1374,7 +1457,6 @@ zero errors and whitespace pass; final read-only verification passes after UI QA
 Next: reopen this exact plan for further user-directed changes.
 [Evidence](docs/30-quality/COACH_TRAINING_FLOW_2026-10-19.md).
 
-
 Training-dialog publication follow-up,2026-10-19: user explicitly requested commit
 and push. The earlier combined package3d5d758 is already on the remote branch.
 Remaining attachment/training-form/coach-refresh changes and original QA are being
@@ -1408,7 +1490,6 @@ links184/CDSK36-documents47-ADRs/zero errors/whitespace pass. No new ADR/schema/
 Next: select the new coach and explicitly create the desired training.
 [Evidence](docs/30-quality/LOCAL_COACH_PLAYER_2026-10-19.md).
 
-
 Training-plan form UI,2026-10-19: latest user request extends the compact library/
 attachment-dialog language to new training. Shared create/edit form has Inter
 header/team context, paired desktop/stacked mobile fields,48px/16px inputs and
@@ -1425,7 +1506,6 @@ No retained writes, account/grant, API/schema/dependency or new ADR requirement.
 Next: user review; no automatic creation/attachment/publication.
 [Evidence](docs/30-quality/TRAINING_PLAN_DIALOG_UX_2026-10-19.md).
 
-
 Add-exercise dialog UI,2026-10-19: latest user request extends compact Matches/
 library styling to the existing plan attachment window. Published exercise/team/
 phase context, native select/cursors, full plan summary/purpose and fixed footer
@@ -1439,7 +1519,6 @@ pass. Links182/0 broken, CDSK36 required/47 ADRs/0 errors and whitespace pass.
 Final source/result equal800px contact sheet and responsive captures inspected.
 Next: user review of this dialog; no automatic attachment or publication.
 [Evidence](docs/30-quality/ADD_DRILL_DIALOG_UX_2026-10-19.md).
-
 
 Final publication check,2026-10-19: user explicitly requests commit/push of all
 accumulated approved changes to codex/mvp-stabilization; main stays unchanged.
@@ -1458,7 +1537,6 @@ verified. Commit uses command-scoped prior repository identity; no hooksPath/act
 Git hook configured, no bypass override. Push only HEAD:refs/heads/codex/mvp-stabilization,
 without force. Final commit/upstream/clean-tree/unchanged-main checks come from Git.
 [Review](docs/30-quality/PRE_PUSH_REVIEW_2026-10-19.md).
-
 
 Five-match senior increment,2026-10-19: explicit request implemented under
 ADR-0047 / REQ-033 / CR-034 / BL-068. BALANCED_WEEK_V6 raises SENIOR ceiling to five
@@ -1484,7 +1562,6 @@ Existing repo-owned CDSK is ADR-0046. Current profile47 ADRs and180-file links
 have zero errors; earlier library closing duplicate/missing-report warnings resolve.
 Use existing date dialog/fresh-week preview; never remove checkpoint/slot markers.
 [Evidence](docs/30-quality/FIVE_MATCH_PROGRAM_2026-10-19.md).
-
 
 Four-match senior increment,2026-10-19: explicit request implemented under
 ADR-0045 / REQ-032 / CR-033 / BL-067. BALANCED_WEEK_V5 raises the SENIOR ceiling to
@@ -1512,7 +1589,6 @@ QA legacy-memory auth can end on dev reload; valid screenshots are result-deskto
 and week-desktop under output/playwright/four-match. No migration/reset/commit/push.
 Use existing date dialog or fresh-week preview; never delete audit/slot markers.
 [Evidence](docs/30-quality/FOUR_MATCH_PROGRAM_2026-10-19.md).
-
 
 Exercise detail extension, 2026-10-19: `/app/library/:drillId` now uses the compact
 library/Matches language: text heading, semantic four-fact strip and one guide
@@ -1584,7 +1660,6 @@ DB/private backup remain. No migration/new endpoint/enrollment/reset/commit/push
 Use existing match-date dialog and empty-week preview; never delete audit markers.
 [Evidence](docs/30-quality/THREE_MATCH_PROGRAM_2026-10-19.md).
 
-
 Two-match senior microcycles,2026-10-19: explicit request implemented under
 ADR-0043 / REQ-030 / CR-031 / BL-065, superseding only the earlier two-match refusal.
 BALANCED_WEEK_V3 uses actual elapsed kickoff hours including adjacent weeks;
@@ -1605,7 +1680,6 @@ Frontend3132 and retained persistent login work; real Beşiktaş remains25Oct16:
 QA4014/3500 stopped after proof; restored DB/backup remain. No commit/push/reset.
 Use existing match-date dialog or fresh-week preview; never erase audit markers.
 [Evidence](docs/30-quality/TWO_MATCH_PROGRAM_2026-10-19.md).
-
 
 Windows root quality follow-up,2026-10-19: use `node scripts/quality-gate.mjs`
 or `--continue-on-error` to attempt all checks and retain a failing status. npm

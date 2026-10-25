@@ -1,0 +1,20 @@
+{
+  "boardId": "cmvo8mkpo000l2ytchrorpagy",
+  "png": [
+    {
+      "file": "in-app-browser.png",
+      "bytes": 102568,
+      "sha256": "4f08684a919825439ca48239f87ca5ab30356c5483162a6a048c0c22c24c22bc"
+    },
+    {
+      "file": "chrome.png",
+      "bytes": 102568,
+      "sha256": "4f08684a919825439ca48239f87ca5ab30356c5483162a6a048c0c22c24c22bc"
+    }
+  ],
+  "svgAfterFixSha256": [
+    "8d4f057630bed251633b152f44766dbd8417ca6100e4270bbbc85fbdbcea458a",
+    "8d4f057630bed251633b152f44766dbd8417ca6100e4270bbbc85fbdbcea458a"
+  ],
+  "retainedWrite": false
+}
