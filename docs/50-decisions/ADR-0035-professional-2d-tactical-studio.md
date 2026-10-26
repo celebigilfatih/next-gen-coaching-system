@@ -23,6 +23,11 @@ gösteriliyordu. SVG exporter tüm nesneleri daire olarak dışa aktarıyordu.
   veya undo geçmişini değiştirmez. Yeniden açılış varsayılan forma görünümüdür.
 - PNG seçimi/transformer'ı içermez; çıktı çözünürlüğü viewport zoom'una bağlı değildir.
 
+2026-10-25 implementation correction: PNG uses the existing Blob/object-URL
+download transport rather than a data-URL anchor so embedded browsers also
+receive the unchanged2× image. V1/V2 filenames and clone cleanup remain intact.
+[Regression and actual browser verification](../30-quality/PNG_DOWNLOAD_COMPATIBILITY_2026-10-25.md).
+
 V1 şeması, 250 eleman/100 KB limiti, save/dirty navigation, tenant/sahiplik,
 plan snapshot ve maç tahtası sözleşmeleri korunur. Yeni bağımlılık veya migration
 eklenmez. Bu dilim masaüstü/tablet öncelikli, mobilde kaydırılabilir araçlar ve
@@ -72,7 +77,6 @@ editor shortcuts. [Evidence](../30-quality/TACTICAL_SLOT_ASSIGNMENT_2026-09-19.m
 [Dilim doğrulaması](../30-quality/TACTICAL_STUDIO_2026-09-19.md).
 Formal WCAG ve gerçek saha kenarı cihaz/kullanıcı pilotu TBD. V1 özel saha
 türlerinin mevcut yön/ölçü semantiği bu sunum diliminde yeniden tanımlanmaz.
-
 
 ## Approved extension — modern pitch templates (2026-10-20)
 

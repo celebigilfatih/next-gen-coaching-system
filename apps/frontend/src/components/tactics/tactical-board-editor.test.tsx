@@ -17,6 +17,9 @@ import { createSequence, editScenes } from '../../lib/tactical-scenes';
 import type { TacticalDocument } from '../../lib/tactical-document-core';
 import { Blob as NodeBlob } from 'node:buffer';
 import { toast } from 'sonner';
+import { useImperativeHandle, type Ref } from 'react';
+
+const pngStage = vi.hoisted(() => ({ current: null as unknown }));
 
 // These tests exercise real editor state and controls, not canvas rendering.
 // Styles/layout are verified in browser QA; avoid a large CSS cascade for every
@@ -30,7 +33,10 @@ vi.mock('react-konva', () => ({
   Layer: () => null,
   Line: () => null,
   Rect: () => null,
-  Stage: () => null,
+  Stage: ({ ref }: { ref: Ref<unknown> }) => {
+    useImperativeHandle(ref, () => pngStage.current);
+    return null;
+  },
   Text: () => null,
   Transformer: () => null,
 }));
@@ -38,6 +44,7 @@ vi.mock('sonner', () => ({ toast: { success: vi.fn(), error: vi.fn() } }));
 vi.mock('../../lib/api', () => ({ getSportingPlayerPage: vi.fn() }));
 
 beforeEach(() => {
+  pngStage.current = null;
   Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', {
     configurable: true,
     value: vi.fn(),
@@ -105,6 +112,86 @@ function openScenes(
 }
 
 describe('document-wide scene editor', () => {
+  it.each([false, true])(
+    'downloads PNG bytes through a Blob URL without saving the board (scenes=%s)',
+    async (scenes) => {
+      const destroyTransformer = vi.fn();
+      const destroyHint = vi.fn();
+      const destroyClone = vi.fn();
+      const pngBase64 =
+        'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+j9WQAAAAASUVORK5CYII=';
+      const encode = vi.fn(() => `data:image/png;base64,${pngBase64}`);
+      const clone = vi.fn(() => ({
+        find: (selector: string) =>
+          selector === 'Transformer'
+            ? [{ destroy: destroyTransformer }]
+            : [{ destroy: destroyHint }],
+        toDataURL: encode,
+        destroy: destroyClone,
+      }));
+      pngStage.current = { clone };
+      const blobs: NodeBlob[] = [];
+      const BrowserURL = globalThis.URL;
+      vi.stubGlobal('Blob', NodeBlob);
+      vi.stubGlobal(
+        'URL',
+        class extends BrowserURL {
+          static createObjectURL(blob: unknown) {
+            expect(blob).toBeInstanceOf(NodeBlob);
+            blobs.push(blob as NodeBlob);
+            return 'blob:png-download';
+          }
+          static revokeObjectURL() {}
+        },
+      );
+      const links: { filename: string; href: string }[] = [];
+      const click = vi
+        .spyOn(HTMLAnchorElement.prototype, 'click')
+        .mockImplementation(function (this: HTMLAnchorElement) {
+          links.push({ filename: this.download, href: this.href });
+        });
+      try {
+        const board = emptyBoard();
+        const document = scenes ? createSequence(board, 'one') : board;
+        const before = JSON.stringify(document);
+        const save = openScenes(document);
+        fireEvent.click(
+          screen.getByRole('button', {
+            name: scenes ? 'Seçili sahne PNG' : 'PNG',
+          }),
+        );
+        expect(links).toEqual([
+          {
+            filename: scenes ? 'ngcs-scene-one.png' : 'ngcs-tactical-board.png',
+            href: 'blob:png-download',
+          },
+        ]);
+        expect(blobs).toHaveLength(1);
+        expect(blobs[0].type).toBe('image/png');
+        expect(new Uint8Array(await blobs[0].arrayBuffer())).toEqual(
+          Uint8Array.from(atob(pngBase64), (character) =>
+            character.charCodeAt(0),
+          ),
+        );
+        expect(clone).toHaveBeenCalledWith({
+          width: board.pitch.width,
+          height: board.pitch.height,
+          scaleX: 1,
+          scaleY: 1,
+        });
+        expect(encode).toHaveBeenCalledWith({ pixelRatio: 2 });
+        expect(destroyTransformer).toHaveBeenCalledOnce();
+        expect(destroyHint).toHaveBeenCalledOnce();
+        expect(destroyClone).toHaveBeenCalledOnce();
+        expect(JSON.stringify(document)).toBe(before);
+        expect(screen.getByText('Kaydedildi')).toBeInTheDocument();
+        expect(save).not.toHaveBeenCalled();
+      } finally {
+        click.mockRestore();
+      }
+    },
+  );
+
   it('adds all nine labeled equipment tools through the existing history and save flow', async () => {
     const save = openEditor(false);
     for (const name of [

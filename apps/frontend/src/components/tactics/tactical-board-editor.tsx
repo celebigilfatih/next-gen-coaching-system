@@ -1930,7 +1930,7 @@ function labelFor(element: BoardElement) {
     tools.find((tool) => tool.type === element.type)?.label ?? element.type
   );
 }
-function download(name: string, content: string, type: string) {
+function download(name: string, content: BlobPart, type: string) {
   const link = window.document.createElement('a');
   link.href = URL.createObjectURL(new Blob([content], { type }));
   link.download = name;
@@ -1952,10 +1952,13 @@ function exportPng(
   try {
     exported.find('Transformer').forEach((node) => node.destroy());
     exported.find('.selection-hint').forEach((node) => node.destroy());
-    const link = window.document.createElement('a');
-    link.download = filename;
-    link.href = exported.toDataURL({ pixelRatio: 2 });
-    link.click();
+    const encoded = exported.toDataURL({ pixelRatio: 2 });
+    // Embedded browsers can ignore data-URL downloads. Keep the encoded PNG
+    // unchanged and use the same Blob download path as SVG/JSON.
+    const bytes = Uint8Array.from(atob(encoded.split(',')[1]), (character) =>
+      character.charCodeAt(0),
+    );
+    download(filename, bytes, 'image/png');
   } finally {
     exported.destroy();
   }

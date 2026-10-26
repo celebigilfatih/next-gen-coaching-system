@@ -1,5 +1,32 @@
 # Changelog
 
+## 2026-10-26 — PNG compatibility PR readiness
+
+- Opened main-targeted PR#2; reconciled the independent main QA publication with
+  the PNG branch by resolving four documentation conflicts and retaining both
+  histories. Runtime/test source remains identical to the tested PNG fix.
+- Fresh37 tests and independent final review have no Important/Critical blocker;
+  existing root17/17 evidence remains applicable. Push/mergeability/status checks
+  gate ready-for-review; merging main is outside this request.
+  [Review record](docs/30-quality/PR_2_PNG_READINESS_2026-10-26.md).
+
+## 2026-10-25 — PNG compatibility publication
+
+- User-authorized final review/commit/push on codex/png-download-compatibility
+  includes the PNG Blob transport fix, V1/V2 regression tests, ADR-0035 note and
+  complete linked smoke/export/download evidence. Scoped re-review has no
+  Important/Critical finding; unchanged source retains root17/17 evidence.
+  [Publication checks](docs/30-quality/PNG_DOWNLOAD_COMPATIBILITY_2026-10-25.md#publication-review--2026-10-25).
+
+## 2026-10-25 — In-app browser PNG download fix
+
+- PNG now downloads through the same Blob path as SVG/JSON, retaining the exact
+  encoded bytes,2× resolution, scene filename and selection-free image. Actual
+  IAB and Chrome downloads match the original PNG hash. V1/V2 regressions fail
+  before the fix, then37 scoped tests pass. Fresh root17/17 passes (941 backend,
+  558 frontend, Sites4/tooling8); focused review has no Important/Critical finding.
+  [Evidence](docs/30-quality/PNG_DOWNLOAD_COMPATIBILITY_2026-10-25.md).
+
 ## 2026-10-25 — Reviewed pending QA evidence publication
 
 - Reviewed main smoke/export reports and12 evidence files. Independent artifact
@@ -22,7 +49,7 @@
 - Named retained QA training saves two phases/50 minutes with frozen content and
   boards; a separate nine-object half-pitch QA tactic survives save/reload.
   Read-only database checks confirm both records and linked day duration.
-  Desktop evidence only; the subsequent export acceptance verifies actual files. No runtime
+  Desktop evidence only; downloads unverified after control timeout. No runtime
   patch or migration. [Report](docs/30-quality/MAIN_BROWSER_SMOKE_2026-10-25.md).
 
 ## 2026-10-25 — Main ready-plan browser acceptance
@@ -482,7 +509,6 @@
   write, API/schema/dependency or new ADR; lifecycle/PLAYER boundaries preserved.
   [Evidence](docs/30-quality/TRAININGS_LIST_UX_2026-10-19.md).
 
-
 ## 2026-10-19 — Ready-drill tablet and mobile acceptance
 
 - Verified actual tablet1024/mobile390 filters, preview, paginated plan selection
@@ -520,7 +546,6 @@
   lint/format, build and Sites 4/4 pass;
   actual desktop/tablet/mobile QA passes. No retained data writes or new ADR.
   [Evidence](docs/30-quality/TRAINING_DETAIL_UX_2026-10-19.md).
-
 
 ## 2026-10-19 — Retained A Takım ready-drill browser acceptance
 

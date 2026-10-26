@@ -83,9 +83,12 @@ No runtime/test/dependency/schema change or new ADR. Prior root17/17 covers the
 unchanged merged runtime; it was not needlessly repeated for restart/evidence.
 Normal build, HTTP readiness, real browser flows, read-only DB assertions and
 documentation links/CDSK/whitespace checks form this task's verification.
-The later user request authorizes publishing reviewed evidence to main.
-[Publication review](POST_MERGE_QA_PUBLICATION_2026-10-25.md) records the completed
-scope and preserves the separate ongoing PNG implementation.
+Reviewed smoke/export evidence was independently published to main in6c78681;
+[publication review](POST_MERGE_QA_PUBLICATION_2026-10-25.md) records that scope.
+At this smoke's original closure, documentation/screenshots remained local without a
+commit/push request. The subsequent [PNG fix publication](PNG_DOWNLOAD_COMPATIBILITY_2026-10-25.md#publication-review--2026-10-25)
+includes this report and its linked evidence. The in-app PNG limitation above
+was fixed and verified in both browsers in that follow-up.
 
 ## Screenshots
 

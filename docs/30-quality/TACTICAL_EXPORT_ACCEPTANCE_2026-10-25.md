@@ -28,6 +28,8 @@ documentation/evidence publication; the running application source is unchanged.
 
 The actual downloaded PNG/SVG files are copied unchanged into the evidence folder.
 The JSON reference is formatted without changing its values.
+Reviewed baseline evidence was separately published to main in6c78681;
+[publication review](POST_MERGE_QA_PUBLICATION_2026-10-25.md) records that scope.
 PNG decodes at2× canonical pitch resolution; SVG has width800, height600 and
 viewBox0 0 800 600, with no script, foreignObject or external resource reference.
 All nine SVG groups match downloaded JSON positions and rotations, including
@@ -60,9 +62,10 @@ limitation in this session; Chrome PNG and both file formats are verified.
   transforms and absence of external resources.
 - Warn/error logs captured in tested browser tabs are empty.
 - Markdown links, CDSK and whitespace checks pass after documentation updates.
-- Unchanged runtime: no new ADR, dependency, migration, application patch or full
-  root-quality rerun. The later user request authorizes evidence publication;
-  [review](POST_MERGE_QA_PUBLICATION_2026-10-25.md) records its scope.
+- Unchanged runtime at this acceptance: no new ADR, dependency, migration,
+  application patch or full root-quality rerun. Evidence initially stayed local;
+  the later [PNG fix publication](PNG_DOWNLOAD_COMPATIBILITY_2026-10-25.md#publication-review--2026-10-25)
+  includes this report and its evidence after explicit user authorization.
 
 PNG SHA-256:4f08684a919825439ca48239f87ca5ab30356c5483162a6a048c0c22c24c22bc.
 SVG SHA-256:8d4f057630bed251633b152f44766dbd8417ca6100e4270bbbc85fbdbcea458a.
@@ -79,3 +82,7 @@ output/verify-tactical-exports-20261025.cjs.
 This follow-up closes the file-content verification left pending by the
 [earlier browser smoke](MAIN_BROWSER_SMOKE_2026-10-25.md), while retaining the
 host-specific in-app PNG limitation above.
+
+Subsequent user-authorized [PNG compatibility correction](PNG_DOWNLOAD_COMPATIBILITY_2026-10-25.md)
+replaces data-URL transport with Blob transport and verifies actual byte-identical
+PNG downloads in both browsers. The host limitation described above is historical.
