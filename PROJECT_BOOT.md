@@ -1,13 +1,27 @@
 # Next Generation Coaching System — Project Boot
 
-- **Document version:** 2.168
+- **Document version:** 2.169
 - **CDSK version:** 0.1.0
-- **Last updated:** 2026-10-25
+- **Last updated:** 2026-10-26
 
 > Bu belge güncel çalışma özetidir. Bilinmeyen alan `TBD`, geçersiz alan kısa
 > gerekçeyle `N/A` bırakılır.
 
 ## Project Compass
+
+- **PR#2 PNG readiness (2026-10-26):** main-targeted draft opened on explicit
+  user request; reconcile evidence-only main6c78681 into feature21ea790. Four
+  docs conflicts resolved preserving both histories; runtime/test blobs unchanged.
+  Fresh37 tests and independent review show no Important/Critical blocker.
+  Existing root17/17 covers identical code; fresh docs/static checks cover closure.
+  Final push/mergeability checks precede ready transition; no main merge requested.
+  [Record](docs/30-quality/PR_2_PNG_READINESS_2026-10-26.md).
+
+- **Pending QA evidence publication (2026-10-25):** user authorizes reviewing
+  and publishing ready work to main. Smoke/export reports and12 proof files pass
+  artifact checks; immutable aff1cb7 baseline passes35 SVG/editor tests. Ongoing
+  PNG code/tests stay separate. Temporary-index publication preserves the active
+  checkout. [Review](docs/30-quality/POST_MERGE_QA_PUBLICATION_2026-10-25.md).
 
 - **PNG fix publication (2026-10-25):** user authorizes final review/commit/push
   to codex/png-download-compatibility. Scoped re-review has no Important/Critical
@@ -1051,6 +1065,32 @@ altı migration güncel, iki kulüp IN_SYNC ve yerel browser smoke geçti. Ayrı
 - [x] MVP kabul kapısı geçiyor; F-001–F-006 kapalı ve remediation hükmü **Pass**.
 
 ## 11. AI Handoff
+
+PR#2 readiness,2026-10-26: user authorizes opening main-targeted PR for
+codex/png-download-compatibility, final review and ready if clear, not merge.
+Draft PR2 attached to this chat. Current main6c78681 independently publishes
+baseline QA; merge into feature21ea790 resolves four docs conflicts, preserving
+both histories and main's POST_MERGE_QA_PUBLICATION report. Runtime/test blobs
+remain1b4cb3d/9218cf3, so previous root17/17 remains applicable dated evidence.
+Fresh2-suite37 pass; independent read-only review finds no Important/Critical
+blocker. Fresh formatter/links/CDSK/whitespace cover closure. Initial CI/status/
+review/thread lists are empty, not human approval or CI success. Connected GitHub
+write returned403; existing Git credential helper supports authorized PR writes
+in memory. Normal branch push and exact-head/base/mergeability checks gate ready;
+no main push, auto-merge, migration, permission or retained-data operation.
+Receipts: output/png-pr-20261026. [Record](docs/30-quality/PR_2_PNG_READINESS_2026-10-26.md).
+
+Reviewed QA publication,2026-10-25: explicit user request publishes completed
+main smoke/export reports and12 evidence files plus review/changelog/Boot,17
+files. Independent read-only decoding/hash/SVG checks and archived aff1cb7
+SVG/editor35 pass. A concurrent initial editor run failed31 with ReactForStage
+undefined; its log remains, not a current-tree success claim. New PNG source/
+tests, compatibility report/ADR note and png-download-fix evidence are excluded.
+A temporary Git index and archived proposed tree permit publication to main
+without switching or changing the active feature branch/normal index/worktree.
+No runtime/data/migration/dependency change. Receipts in
+output/pending-evidence-publication-20261025.
+[Review](docs/30-quality/POST_MERGE_QA_PUBLICATION_2026-10-25.md).
 
 PNG publication,2026-10-25: explicit user request authorizes final review, commit
 and normal upstream push on codex/png-download-compatibility, base aff1cb7. The

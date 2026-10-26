@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-10-26 — PNG compatibility PR readiness
+
+- Opened main-targeted PR#2; reconciled the independent main QA publication with
+  the PNG branch by resolving four documentation conflicts and retaining both
+  histories. Runtime/test source remains identical to the tested PNG fix.
+- Fresh37 tests and independent final review have no Important/Critical blocker;
+  existing root17/17 evidence remains applicable. Push/mergeability/status checks
+  gate ready-for-review; merging main is outside this request.
+  [Review record](docs/30-quality/PR_2_PNG_READINESS_2026-10-26.md).
+
 ## 2026-10-25 — PNG compatibility publication
 
 - User-authorized final review/commit/push on codex/png-download-compatibility
@@ -16,6 +26,13 @@
   before the fix, then37 scoped tests pass. Fresh root17/17 passes (941 backend,
   558 frontend, Sites4/tooling8); focused review has no Important/Critical finding.
   [Evidence](docs/30-quality/PNG_DOWNLOAD_COMPATIBILITY_2026-10-25.md).
+
+## 2026-10-25 — Reviewed pending QA evidence publication
+
+- Reviewed main smoke/export reports and12 evidence files. Independent artifact
+  checks and fresh35 published-baseline tests pass. Ready evidence is authorized
+  for main publication; concurrent PNG code/tests remain outside this scope.
+  [Review](docs/30-quality/POST_MERGE_QA_PUBLICATION_2026-10-25.md).
 
 ## 2026-10-25 — Tactical exported-file verification
 

@@ -28,6 +28,8 @@ documentation/evidence publication; the running application source is unchanged.
 
 The actual downloaded PNG/SVG files are copied unchanged into the evidence folder.
 The JSON reference is formatted without changing its values.
+Reviewed baseline evidence was separately published to main in6c78681;
+[publication review](POST_MERGE_QA_PUBLICATION_2026-10-25.md) records that scope.
 PNG decodes at2× canonical pitch resolution; SVG has width800, height600 and
 viewBox0 0 800 600, with no script, foreignObject or external resource reference.
 All nine SVG groups match downloaded JSON positions and rotations, including
