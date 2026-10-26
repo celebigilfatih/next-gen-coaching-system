@@ -1,6 +1,6 @@
 # Next Generation Coaching System — Project Boot
 
-- **Document version:** 2.169
+- **Document version:** 2.170
 - **CDSK version:** 0.1.0
 - **Last updated:** 2026-10-26
 
@@ -8,6 +8,13 @@
 > gerekçeyle `N/A` bırakılır.
 
 ## Project Compass
+
+- **PR#2 main merge (2026-10-26):** explicit user authorization merges reviewed
+  e8a4199 as af52b8c; expected parents and identical tested tree verified. Fresh
+  affected37 tests pass; GitHub confirms closed/merged. Local main fast-forwards
+  cleanly and initially matches origin0/0. Closure docs only; verify final sync
+  after publication. Feature branch preserved; no service/data operation.
+  [Record](docs/30-quality/PR_2_MAIN_MERGE_2026-10-26.md).
 
 - **PR#2 PNG readiness (2026-10-26):** main-targeted draft opened on explicit
   user request; reconcile evidence-only main6c78681 into feature21ea790. Four
@@ -1065,6 +1072,19 @@ altı migration güncel, iki kulüp IN_SYNC ve yerel browser smoke geçti. Ayrı
 - [x] MVP kabul kapısı geçiyor; F-001–F-006 kapalı ve remediation hükmü **Pass**.
 
 ## 11. AI Handoff
+
+PR#2 main merge,2026-10-26: explicit new user request authorizes merge and clean
+local main sync, superseding earlier readiness-only boundary. PR head e8a4199
+and base6c78681 remain unchanged/non-draft/clean; fresh2-suite37 pass. No GitHub
+checks/statuses/reviews/threads, so no CI/human approval is claimed. Expected-head
+merge yields af52b8c at07:14:36Z; PR closed/merged, both parents and tree8c37662
+equal reviewed head. Fetch/switch/ff-only update local main from6c78681 safely,
+with clean0/0 verified before docs closure. Report/Boot/changelog are docs only;
+run links/CDSK/format/whitespace, commit/push and verify final remote/local equality
+and clean0/0. Preserve feature branch locally/remotely; deletion not requested.
+No retained write/migration/config/dependency/service restart or new ADR.
+Receipt: output/pr2-merge-20261026/result.json.
+[Record](docs/30-quality/PR_2_MAIN_MERGE_2026-10-26.md).
 
 PR#2 readiness,2026-10-26: user authorizes opening main-targeted PR for
 codex/png-download-compatibility, final review and ready if clear, not merge.

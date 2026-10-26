@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-10-26 — PR #2 merged into main
+
+- User-authorized expected-head merge produces af52b8c from reviewed e8a4199;
+  GitHub closed/merged state, parents and identical tested tree are verified.
+  Fresh37 affected tests pass. Local main fast-forwards cleanly; final closure
+  docs publication includes sync/status checks. Feature branch is preserved.
+  [Merge record](docs/30-quality/PR_2_MAIN_MERGE_2026-10-26.md).
+
 ## 2026-10-26 — PNG compatibility PR readiness
 
 - Opened main-targeted PR#2; reconciled the independent main QA publication with
