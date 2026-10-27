@@ -1,13 +1,41 @@
 # Next Generation Coaching System — Project Boot
 
-- **Document version:** 2.170
+- **Document version:** 2.175
 - **CDSK version:** 0.1.0
-- **Last updated:** 2026-10-26
+- **Last updated:** 2026-10-27
 
 > Bu belge güncel çalışma özetidir. Bilinmeyen alan `TBD`, geçersiz alan kısa
 > gerekçeyle `N/A` bırakılır.
 
 ## Project Compass
+
+- **V2 Git publication review (2026-10-27):** explicit request covers diagram
+  package, local operator, related docs and QA on codex/drill-specific-diagrams.
+  Only scoped files/document sections are selected; earlier product audit stays
+  local. Independent index snapshot passes root18/18, operator11/11 and
+  lint-staged;120 SVG/28 images validated. JPEG suffixes corrected without
+  pixel edits; approved historical DRAFT wording is deferred to a new revision.
+  Commit/push this verified scope and confirm remote equality. No new retained
+  operation, PR or main merge.
+  [Review](docs/30-quality/DRILL_DIAGRAM_PUSH_REVIEW_2026-10-27.md).
+
+- **Local v2 publication (2026-10-27):** Fatih Çelebigil explicitly approves all120
+  and extends same-account local exception through Accepted ADR-0048. Exact-hash
+  maintenance operator publishes120 v2/archives120 v1 atomically with600 truthful
+  audits. Private backup/42-table restore parity and43-table original-row
+  protection pass;55 frozen ready-plan references unchanged. Replay0, operator11
+  and root18/18 pass. Canonical browser shows distinct v2 boards and unchanged
+  existing v1 plan. No API/model/migration/grant/production change or commit/push.
+  [Publication](docs/30-quality/DRILL_DIAGRAM_LOCAL_PUBLICATION_2026-10-27.md).
+
+- **Drill diagram revision (2026-10-27):** user-approved implementation prepares
+  24 organizations ×5 ages/120 new DRAFT revisions. Actual DTO/SVG and14 regressions,
+  disposable import/replay/publish/snapshot checks, six real Konva previews,
+  responsive/PNG/SVG and existing-plan addition pass. Final root18/18
+  (941 backend/558 frontend);41 retained business tables unchanged. Canonical
+  initial preparation kept v1 pending approval; the subsequent ADR-0048 release
+  above now publishes v2 locally. Other revisions remain excluded. No commit/push.
+  [Report/gallery](docs/30-quality/DRILL_DIAGRAM_REVISION_2026-10-27.md).
 
 - **PR#2 main merge (2026-10-26):** explicit user authorization merges reviewed
   e8a4199 as af52b8c; expected parents and identical tested tree verified. Fresh
@@ -1072,6 +1100,50 @@ altı migration güncel, iki kulüp IN_SYNC ve yerel browser smoke geçti. Ayrı
 - [x] MVP kabul kapısı geçiyor; F-001–F-006 kapalı ve remediation hükmü **Pass**.
 
 ## 11. AI Handoff
+
+2026-10-27 Git delivery request: review/commit/push only V2 diagram package,
+ADR-0048 local operator and matching documentation/QA to codex/drill-specific-diagrams.
+Selected Git index is the delivery boundary: isolated root18/18, final fresh
+operator11/11 (skip0), lint-staged,120 SVG/28 images and147 audit preservation
+fingerprints pass. Windows lint-staged linked-worktree patch failure was
+recovered from byte-exact backups; the same configured check passes in a normal
+Git validation copy with identical index tree, no hook/dependency changes.
+Earlier product audit/matrix/QA and unrelated document hunks remain
+uncommitted. Preserve all user changes and original checkout. Do not rerun
+retained publication or create/merge a PR. Verify final HEAD/remote equality.
+[Review](docs/30-quality/DRILL_DIAGRAM_PUSH_REVIEW_2026-10-27.md).
+
+2026-10-27 publication closure: explicit named approval and same-account extension
+recorded as Accepted ADR-0048, exacthash b6b38673f328b6ab6f6d5b4850c9ee1c031076c501535b00d996716cff880f0c.
+New separate publish-local-diagram-revision.js imports/publishes120 second versions,
+archives120 first versions, verifies600 audits and full postcondition in one
+Serializable tx. Stricttarget/hash/actor/partial/legacy-fallback/replay guards;
+operator11 PostgreSQL tests, root18/18, scopedlint/format pass. Backup restored
+to fresh DB with42 table parity; original43-table row hashes preserve all plans,
+sources, historical contents and non-target data except declared projections/
+archive fields.55 ready PlanDrill refs are frozen; no guessed backfill.
+Retained apply and explicit replay0 verified. Browser canonical v2 final-zone32/
+pas22/pres35; existing103dk/6phase plan retains v1 seven-object snapshot.
+No canonical restart, API/security/model/migration/grant or production change.
+Previous pending audit/diagram files preserved. No commit/push requested.
+[Publication evidence](docs/30-quality/DRILL_DIAGRAM_LOCAL_PUBLICATION_2026-10-27.md).
+
+Earlier preparation, before the explicit publication approval:2026-10-27 BL-077
+implemented in managed codex/drill-specific-diagrams worktree.
+New pack ngcs-starter-diagrams-v2 has120 stable IDs and24 distinct organizations
+per primary age; v1 immutable. No app/model/migration/dependency change. Review
+fixed goal orientation, crossing labels, age-rule leakage and cooldown pressure;
+14 regressions + final18 root gates pass. Fresh PostgreSQL b fixture proves
+120 DRAFT/replay0, normal approval/self-review guards, immutable history and plan
+snapshots. Synthetic browser coach adds new pas v2 to existing plan: old v1 stays,
+32+26=58dk. Six Konva previews and responsive/export evidence saved. Canonical
+3132/4000 preserved; no retained import/publication. Human sporting review and
+explicit retained import remain next; ADR-0041 unchanged-v1 exception cannot be
+reused for v2. Preserve original checkout audit changes. No commit/push.
+Closure: QA3518/4018 stopped, temporary app tab closed, viewport reset; read-only
+gallery3537 remains for human review. Runtime credential config removed;
+canonical39636/27748 listeners unchanged. Final docs/link/CDSK/format pass.
+[Report](docs/30-quality/DRILL_DIAGRAM_REVISION_2026-10-27.md).
 
 PR#2 main merge,2026-10-26: explicit new user request authorizes merge and clean
 local main sync, superseding earlier readiness-only boundary. PR head e8a4199

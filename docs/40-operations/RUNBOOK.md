@@ -647,6 +647,27 @@ yazılmadı.
 
 ## Escalation and Ownership
 
+### Hazır çizim revizyonu — 2026-10-27
+
+Yeni içerik üretimi/teknik kontrol/galeri için kökten content:diagrams:generate,
+content:diagrams:validate ve content:diagrams:review npm scriptleri kullanılır.
+Tarihî content:drills:generate v1'i yeniden yazabilir; bu revizyon için çalıştırma.
+v2 manifesti DRAFT/reviewer TBD kalır. Mevcut importer --file ile yeni sürüm
+ekler; kalıcı hedefe uygulamadan önce yeni sportif onay, özel yedek ve somut
+aktarımı kapsayan kullanıcı onayı gerekir. ADR-0041 yalnız değişmemiş v1 ilk
+yayınını kapsar. Yeni yayın geçmiş plan snapshot'larını değiştirmez.
+Temiz kurulum, tekrar0 ve normal yayın kapısı sentetik DB'de doğrulandı.
+[Adımlar ve kabul kanıtı](../30-quality/DRILL_DIAGRAM_REVISION_2026-10-27.md).
+
+Sonraki kullanıcı onayı ADR-0048 ile v2 için ayrıca verildi ve2026-10-27'de
+uygulandı. Yeni publish-local-diagram-revision.js yalnız sabit v1→v2 ve
+loopback5433/ngcs_local_session_dev için default dry-run'dır; apply özel process
+opt-in ve exact ADR-0048 reference ister. Önceki yayın aracı ve normal API
+değişmez. Aynı120 PUBLISHED v2/ARCHIVED v1,600 audit ve replay0 doğrulanmıştır.
+Mevcut55 hazır plan referansı ve bütün plan/gün kopyaları korunur; unfrozen
+referansta işlem durur. Sonraki revizyon için bu araç/hash/onay genişletilmez.
+[Yayın ve recovery kanıtı](../30-quality/DRILL_DIAGRAM_LOCAL_PUBLICATION_2026-10-27.md).
+
 Ürün, operasyon, veri ve güvenlik sahipleri `TBD`.
 
 ## P0.1 sporting-foundation rollback

@@ -1,5 +1,10 @@
 # Next Generation Coaching System
 
+Hazır120 egzersizin çalışmaya özgü yeni çizim ve rehber sürümleri, Fatih
+Çelebigil'in açık onayı ve ADR-0048 yerel istisnasıyla2026-10-27'de yayımlandı.
+Mevcut planlar kendi önceki içerik/tahta/süre kopyalarını korur; yeni seçimler
+v2'yi kullanır. [Yerel yayın kanıtı](docs/30-quality/DRILL_DIAGRAM_LOCAL_PUBLICATION_2026-10-27.md).
+
 Egzersiz Kütüphanesi yalnız hazırlanan **120 hazır egzersizi** listeler.
 Varsayılan görünüm tüm yaşları kapsar; yaş ve faz filtreleri bu paketi daraltır.
 Sezon programının kulüp egzersizleri mevcut planlarda korunur.
@@ -35,7 +40,6 @@ otomatik uyarlar. Elle düzenlenen/silinen, geçmiş ve tamamlandı işaretli ka
 A Takım haftada beş maça kadar gerçek maç aralığına göre kısa toparlanma, teknik/
 aktivasyon ve toplantı programı kullanır. Önizlemede seçtiğiniz saatler dahil elle
 yapılan değişiklikler korunur. [Güncel karar ve doğrulama](docs/30-quality/FIVE_MATCH_PROGRAM_2026-10-19.md).
-
 
 Bu proje **CDSK 0.1.0** standardını kullanır.
 

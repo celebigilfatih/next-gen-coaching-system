@@ -1,0 +1,13 @@
+{
+  "syntheticOnly": true,
+  "browserAddedNewVersion": true,
+  "existingPlanPreservedOldVersion": true,
+  "oldBoardElements": 7,
+  "newBoardElements": 22,
+  "oldDuration": 32,
+  "newDuration": 26,
+  "totalDuration": 58,
+  "oldNoteAndPhasePreserved": true,
+  "newPhase": "TECHNICAL",
+  "boardMatchesReviewedManifest": true
+}

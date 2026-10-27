@@ -68,3 +68,5 @@
 - [ADR-0047 — Five-match senior microcycles](ADR-0047-five-match-microcycles.md): Accepted; five SENIOR fixtures with actual-hour adaptation, existing manual protections and atomic reconciliation.
 
 - [ADR-0046 — Repository-owned CDSK validator](ADR-0046-repository-owned-cdsk-validator.md): Accepted; pinned CDSK 0.1.0 project profile, local default and real CLI regression fixtures.
+
+- [ADR-0048 — Yerel v2 çizim revizyonu onay istisnası](ADR-0048-local-diagram-revision-review-exception.md): Accepted; Fatih Çelebigil'in yeni120 içerik için açık onayı, tam hedef/hash ile aynı-hesap yerel atomic aktarım/yayın; normal API kuralları korunur.

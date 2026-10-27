@@ -54,3 +54,10 @@ operation published all 120 atomically, with truthful exception audits. Ordinary
 API review guards remain unchanged; future releases require independent review.
 The separate weekly planning migration was not included.
 [Local publication evidence](../30-quality/READY_DRILL_LOCAL_PUBLICATION_2026-10-19.md).
+
+2026-10-27: Subsequent explicit user approval extends the local named same-account
+exception to the exact120 diagram revisions only, through
+[ADR-0048](ADR-0048-local-diagram-revision-review-exception.md). Their atomic
+import/publication archives original versions and preserves all plan snapshots;
+unfrozen ready-drill references must block this maintenance release. Ordinary
+runtime guards and other releases retain independent review.

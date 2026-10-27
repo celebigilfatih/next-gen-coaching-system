@@ -1,5 +1,11 @@
 # Backlog
 
+## Hazır egzersiz çizim revizyonu — 2026-10-27
+
+| ID     | İş                                                                                 | Öncelik / durum                                                                          | Kabul kanıtı                                                                                                                                                                         | Sonuç                                                                                                                                                                                                         |
+| ------ | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| BL-077 | Hazır egzersizlerde çalışma ile eşleşen çizimler — REQ-023/027, ADR-0034/0039/0048 | **P2 — yerel kabul tamamlandı**. Her yaş24 organizasyon, aynı120 kimlikte yeni v2 yayın. | 14 çizim regresyonu, operator11 PostgreSQL, backup/restore ve43-tablo koruması, canonical browser ve kök18/18. [Yayın](../30-quality/DRILL_DIAGRAM_LOCAL_PUBLICATION_2026-10-27.md). | **Tamamlandı —2026-10-27 yerel120 v2 PUBLISHED**. Kullanıcının yeni named/same-account onayı ADR-0048; v1 geçmişi,55 hazır plan kopyası ve bütün planlar korunur. Production/sonraki revizyonlar kapsam dışı. |
+
 ## BL-068 — Beş maçlı yoğun fikstür (Implemented, 2026-10-19)
 
 ADR-0047 / CR-034 / REQ-033. Five SENIOR fixtures accepted through existing
