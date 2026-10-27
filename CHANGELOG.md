@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-10-27 — Ürün denetimi PR #4 son kontrolleri
+
+- Kullanıcı isteğiyle mevcut branch'ten main hedefli PR #4 draft açıldı ve sohbete
+  bağlandı. Bağımsız163 dosyalık belge/kanıt incelemesinde Critical/Important engel
+  yok;137 görüntü/14 JSON ve tarihsel HTTP/kalite sonuçları doğrulandı.
+- Yeni belge/CDSK/whitespace ve salt okunur25/25 sezon kontrolleri geçti.
+  GitHub çakışma göstermiyor; check/status/review yokluğu başarı sayılmıyor.
+  Final sync ve ready kontrolü kapanış kapısıdır; merge istenmedi.
+  [Son inceleme](docs/30-quality/PR_4_FINAL_REVIEW_2026-10-27.md).
+
 ## 2026-10-27 — Bekleyen ürün denetimi belgelerinin yayını
 
 - Açık kullanıcı isteğiyle26 Ekim ürün raporu, route/bileşen matrisi, açık
