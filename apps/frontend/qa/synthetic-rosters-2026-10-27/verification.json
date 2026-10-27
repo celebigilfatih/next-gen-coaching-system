@@ -1,0 +1,61 @@
+{
+  "verifiedAt": "2026-10-27T06:24:29.125Z",
+  "source": "USER_REQUEST_SYNTHETIC_ROSTERS_2026_10_27",
+  "created": 186,
+  "teams": [
+    {
+      "team": "A Takım",
+      "players": 25,
+      "seasonPlayerAssignments": 24
+    },
+    {
+      "team": "U8 Takımı",
+      "players": 18,
+      "seasonPlayerAssignments": 18
+    },
+    {
+      "team": "U9 Takımı",
+      "players": 18,
+      "seasonPlayerAssignments": 18
+    },
+    {
+      "team": "U10 Takımı",
+      "players": 18,
+      "seasonPlayerAssignments": 18
+    },
+    {
+      "team": "U11 Takımı",
+      "players": 18,
+      "seasonPlayerAssignments": 18
+    },
+    {
+      "team": "U12 Takımı",
+      "players": 18,
+      "seasonPlayerAssignments": 18
+    },
+    {
+      "team": "U13 Takımı",
+      "players": 18,
+      "seasonPlayerAssignments": 18
+    },
+    {
+      "team": "U14 Takımı",
+      "players": 18,
+      "seasonPlayerAssignments": 18
+    },
+    {
+      "team": "U15 Takımı",
+      "players": 18,
+      "seasonPlayerAssignments": 18
+    },
+    {
+      "team": "U16 Takımı",
+      "players": 18,
+      "seasonPlayerAssignments": 18
+    }
+  ],
+  "existingTablesPreserved": 42,
+  "concurrentSessionRefreshAudits": 4,
+  "replayWouldCreate": 0,
+  "newAccounts": 0
+}

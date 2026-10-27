@@ -1,13 +1,35 @@
 # Next Generation Coaching System — Project Boot
 
-- **Document version:** 2.170
+- **Document version:** 2.175
 - **CDSK version:** 0.1.0
-- **Last updated:** 2026-10-26
+- **Last updated:** 2026-10-27
 
 > Bu belge güncel çalışma özetidir. Bilinmeyen alan `TBD`, geçersiz alan kısa
 > gerekçeyle `N/A` bırakılır.
 
 ## Project Compass
+
+- **Player evidence publication (2026-10-27):** user authorizes commit/push of
+  roster/season-link reports with five screenshots and two sanitized JSON receipts.
+  Fresh read-only season verification remains25/25 with42-table expected-diff
+  checks. Exact publication tree contains only this delivery's docs/assets;
+  uncommitted product-audit work is preserved separately. No runtime/data write.
+  [Publication checks](docs/30-quality/FIRST_TEAM_SEASON_LINK_2026-10-27.md#yayın-kontrolü).
+
+- **Existing first-team season link (2026-10-27):** explicit follow-up links the
+  original player to the same team's2026–2027 TeamSeason via existing primary
+  transition. Old assignment closes27 October, history and legacy membership stay
+  intact; one new primary/two audit records, no new people/accounts. Rollback and
+  42-table preservation checks pass; directory/season roster now25/25, replay zero.
+  [Record](docs/30-quality/FIRST_TEAM_SEASON_LINK_2026-10-27.md).
+
+- **Synthetic team rosters (2026-10-27):** user explicitly selects sample players.
+  Local Spor Manage2026–2027 receives186 accountless people/profiles/season-bound
+  primary assignments: first team24 new/25 directory total; U8–U16 each18. Rollback
+  rehearsal,42-table prior-row preservation, existing services and zero-write replay
+  verified. Initial season roster24/directory25 difference is resolved by the
+  subsequent explicitly requested season-link operation above. No runtime/model/new ADR.
+  [Record](docs/30-quality/SYNTHETIC_TEAM_ROSTERS_2026-10-27.md).
 
 - **PR#2 main merge (2026-10-26):** explicit user authorization merges reviewed
   e8a4199 as af52b8c; expected parents and identical tested tree verified. Fresh
@@ -1072,6 +1094,34 @@ altı migration güncel, iki kulüp IN_SYNC ve yerel browser smoke geçti. Ayrı
 - [x] MVP kabul kapısı geçiyor; F-001–F-006 kapalı ve remediation hükmü **Pass**.
 
 ## 11. AI Handoff
+
+2026-10-27 user-authorized evidence publication: publish only the two roster/link
+reports, five screenshots, two sanitized verification JSONs and their Boot/changelog
+sections on codex/product-audit-20261026. Keep all unrelated audit modifications
+and QA assets local. Fresh season verifier25/25, artifact checks and exact-tree
+docs/CDSK/whitespace are the publication gates; verify remote/local branch equality
+after push. No runtime changes, retained writes, new ADR, PR or main merge requested.
+
+2026-10-27 explicit season-link follow-up: original A player now has one active
+primary in the correct2026–2027 TeamSeason. Standard transition preserves old
+assignment history and legacy member; only old validTo/updatedAt change, plus one
+new primary/two audit events. Directory and exact-season roster25/25, unique player
+IDs25. Rollback rehearsal and42-table preservation pass. Use newer ignored
+output/first-team-season-link-20261027 receipt/verifier for current state; older
+roster verifier deliberately expects the former unchanged primary and is historical.
+No runtime/model/new ADR. Subsequent evidence publication is explicitly authorized
+above; prior audit/roster docs and assets preserved.
+
+2026-10-27 sample-player request: only the local retained Spor Manage season was
+populated;186 new accountless synthetic players,25 first-team directory/18 per
+U8–U16 team. Existing42-table rows and prior audit docs preserved. All new primary
+assignments carry exact TeamSeason and source reason; original A player was
+seasonless at that stage (resolved by the subsequent follow-up above). No accounts/legacy memberships/health facts created;
+account-based attendance is unchanged. Ignored operator/receipts under
+output/synthetic-rosters-20261027, private backup outside repo in LOCALAPPDATA/NGCS.
+Read receipt and verify rather than rerun creation/naturalization. UI3132 restarted
+on127.0.0.1; existing API4000 preserved. Subsequent report/QA publication is now
+explicitly authorized above. Existing audit branch/work remains intact.
 
 PR#2 main merge,2026-10-26: explicit new user request authorizes merge and clean
 local main sync, superseding earlier readiness-only boundary. PR head e8a4199
@@ -3022,6 +3072,9 @@ Do not mark roster binding, animation, offline match-day or 3D complete.
   rollout kendi karar kapılarında `TBD` kalır.
 
 ## Revision History
+
+2.175 — 2026-10-27: User-authorized roster/season-link evidence publication;
+sample players, history-preserving season transition and scoped validation records.
 
 2.163 — 2026-10-25: User-authorized merged branch cleanup and recoverable PR review
 worktree archive; documents/config preserved and main synchronization verified.

@@ -1,5 +1,35 @@
 # Changelog
 
+## 2026-10-27 — Oyuncu kadro kanıtlarının yayını
+
+- Açık kullanıcı isteğiyle örnek oyuncu ekleme ve eski oyuncunun sezon bağlantısı
+  raporları, beş ekran görüntüsü ve iki temizlenmiş doğrulama özeti incelendi.
+  Mevcut branch'e yayın kapsamı yalnız bu teslimin belge/kanıtlarıdır; önceki ürün
+  auditinin bekleyen değişiklikleri korunur.
+- Yeni salt okunur sezon doğrulaması25/25 ve42 tablo korumasını doğrular;
+  tarihli ilk24 sezon ataması kanıtı, sonraki25 sonucuyla birlikte açıklanır.
+  Runtime, retained veri veya yeni ADR değişikliği yoktur.
+  [Yayın kontrolü](docs/30-quality/FIRST_TEAM_SEASON_LINK_2026-10-27.md#yayın-kontrolü).
+
+## 2026-10-27 — Eski A takım oyuncusunun sezon bağlantısı
+
+- Açık kullanıcı isteğiyle mevcut oyuncu, aynı A takımın2026–2027 TeamSeason'ına
+  standart primary geçişiyle bağlandı. Eski atama geçmişi ve legacy üyelik korundu;
+  yeni kişi/hesap oluşturulmadı. Dizin ve sezon kadrosu artık25/25.
+- Rollback provası,42 tabloda yalnız izin verilen tek eski atama değişikliği,
+  standart iki audit ve sıfır yazımlı tekrar kontrol edildi. Runtime/model değişmedi.
+  [Kayıt](docs/30-quality/FIRST_TEAM_SEASON_LINK_2026-10-27.md).
+
+## 2026-10-27 — Örnek takım kadroları
+
+- Kullanıcının örnek oyuncu seçimiyle Spor Manage2026–2027 sezonunda186 hesapsız
+  sentetik oyuncu eklendi: A takım24 yeni/25 toplam, U8–U16 dokuz takımın her biri18.
+  Doğru sezon ataması, pozisyon/ayak ve sentetik kaynak gerekçesi kaydedildi.
+- Transaction rollback provası,42 tabloda önceki satırların korunması ve sıfır
+  yazımlı tekrar doğrulandı. Hesap, klinik veri, şema veya runtime değişmedi.
+  Eski sezonsuz A takım ataması korunur; sezon kadrosu24/dizin25 farkı açıktır.
+  [Doğrulama](docs/30-quality/SYNTHETIC_TEAM_ROSTERS_2026-10-27.md).
+
 ## 2026-10-26 — PR #2 merged into main
 
 - User-authorized expected-head merge produces af52b8c from reviewed e8a4199;

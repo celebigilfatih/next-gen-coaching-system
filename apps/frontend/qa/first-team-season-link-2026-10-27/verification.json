@@ -1,0 +1,22 @@
+{
+  "source": "USER_REQUEST_FIRST_TEAM_SEASON_LINK_2026_10_27",
+  "verifiedAt": "2026-10-27T06:31:56.198Z",
+  "club": "Spor Manage",
+  "season": "2026-2027",
+  "team": "A Takım",
+  "directoryPlayers": 25,
+  "seasonPlayers": 25,
+  "uniqueSeasonPlayers": 25,
+  "existingPlayerOccurrences": 1,
+  "activePrimaryAssignments": 1,
+  "historicalAssignmentPreserved": true,
+  "legacyMembershipUnchanged": true,
+  "existingTablesChecked": 42,
+  "allowedExistingChanges": 1,
+  "newAssignments": 1,
+  "newAuditEvents": 2,
+  "newPeople": 0,
+  "newAccounts": 0,
+  "replayWrites": 0,
+  "concurrentRefreshAudits": 1
+}
