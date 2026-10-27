@@ -1,0 +1,167 @@
+{
+  "approval": {
+    "reviewerName": "Fatih Çelebigil",
+    "independentReview": false,
+    "exceptionAdr": "ADR-0048",
+    "manifestSha256": "b6b38673f328b6ab6f6d5b4850c9ee1c031076c501535b00d996716cff880f0c"
+  },
+  "tests": {
+    "operator": 11,
+    "diagram": 14,
+    "backend": 941,
+    "frontend": 558,
+    "rootPassedStages": [
+      "Quality tooling tests",
+      "Repository script format",
+      "Backend Prisma client",
+      "Drill diagram content tests",
+      "Backend typecheck",
+      "Backend lint",
+      "Backend format",
+      "Backend unit tests",
+      "Backend build",
+      "Frontend typecheck",
+      "Frontend lint",
+      "Frontend format",
+      "Frontend unit tests",
+      "Frontend build",
+      "Frontend Sites tests",
+      "Markdown links",
+      "CDSK",
+      "Git whitespace"
+    ],
+    "rootExitCode": 0,
+    "rootLogSha256": "c0583ca3218ceaebd745450a8a36988ce905d1ae39f22c33b87989f413365055"
+  },
+  "backup": {
+    "file": "before-diagram-revision-20261027T053600.dump",
+    "bytes": 1137047,
+    "sha256": "959359afa2619322f7c03cac280c5fbc9a94259ba1c0e55713b7aef73cd2bea0",
+    "verifiedTables": 42,
+    "restoredDatabase": "ngcs_diagram_publication_restore_test_20261027"
+  },
+  "restore": {
+    "database": "ngcs_diagram_publication_restore_test_20261027",
+    "dryRun": {
+      "dryRun": true,
+      "ready": 120,
+      "imported": 0,
+      "published": 0,
+      "archived": 0,
+      "alreadyPublished": 0
+    },
+    "apply": {
+      "dryRun": false,
+      "ready": 120,
+      "imported": 120,
+      "published": 120,
+      "archived": 120,
+      "alreadyPublished": 0
+    },
+    "postReadOnly": {
+      "dryRun": true,
+      "ready": 120,
+      "imported": 0,
+      "published": 0,
+      "archived": 0,
+      "alreadyPublished": 120
+    },
+    "replay": {
+      "dryRun": false,
+      "ready": 120,
+      "imported": 0,
+      "published": 0,
+      "archived": 0,
+      "alreadyPublished": 120
+    },
+    "additions": {
+      "DrillSource": 120,
+      "DrillVersion": 120,
+      "DrillAgeVariant": 312,
+      "SecurityAuditEvent": 600
+    },
+    "exceptionAudits": 600,
+    "originalRowsUnchangedTables": 43,
+    "allExistingPlansAndSnapshotsUnchanged": true,
+    "backupSha256": "959359afa2619322f7c03cac280c5fbc9a94259ba1c0e55713b7aef73cd2bea0"
+  },
+  "retained": {
+    "database": "ngcs_local_session_dev",
+    "dryRun": {
+      "dryRun": true,
+      "ready": 120,
+      "imported": 0,
+      "published": 0,
+      "archived": 0,
+      "alreadyPublished": 0
+    },
+    "apply": {
+      "dryRun": false,
+      "ready": 120,
+      "imported": 120,
+      "published": 120,
+      "archived": 120,
+      "alreadyPublished": 0
+    },
+    "postReadOnly": {
+      "dryRun": true,
+      "ready": 120,
+      "imported": 0,
+      "published": 0,
+      "archived": 0,
+      "alreadyPublished": 120
+    },
+    "replay": {
+      "dryRun": false,
+      "ready": 120,
+      "imported": 0,
+      "published": 0,
+      "archived": 0,
+      "alreadyPublished": 120
+    },
+    "additions": {
+      "DrillSource": 120,
+      "DrillVersion": 120,
+      "DrillAgeVariant": 312,
+      "SecurityAuditEvent": 600
+    },
+    "exceptionAudits": 600,
+    "originalRowsUnchangedTables": 43,
+    "allExistingPlansAndSnapshotsUnchanged": true,
+    "backupSha256": "959359afa2619322f7c03cac280c5fbc9a94259ba1c0e55713b7aef73cd2bea0"
+  },
+  "finalPlans": {
+    "allExistingPlansUnchangedAfterBrowser": true,
+    "counts": {
+      "TrainingPlan": 2063,
+      "PlanDrill": 8295,
+      "DayPlan": 3631
+    },
+    "readyReferences": 55,
+    "statuses": [
+      {
+        "_count": 120,
+        "version": 1,
+        "status": "ARCHIVED"
+      },
+      {
+        "_count": 120,
+        "version": 2,
+        "status": "PUBLISHED"
+      }
+    ]
+  },
+  "browser": {
+    "canonicalOrigin": "http://localhost:3132",
+    "libraryFinalZoneBeforeElements": 7,
+    "libraryFinalZoneAfterElements": 32,
+    "pasAfterElements": 22,
+    "presAfterElements": 35,
+    "sourceVersion": 2,
+    "existingPlanContentVersion": 1,
+    "existingPlanBoardElements": 7,
+    "existingPlanDuration": 103,
+    "existingPlanPhases": 6,
+    "realPlanMutations": false
+  }
+}

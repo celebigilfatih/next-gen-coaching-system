@@ -35,3 +35,9 @@ Windows yerel başlangıç paketinin değişmemiş 120 ilk sürümü için açı
 aynı-hesap istisnasıdır. Fatih Çelebigil'in onayı ve istisna audit edilir;
 bağımsız inceleme olarak sunulmaz. Genel runtime kuralları, production ve
 gelecekteki sürümlerin bağımsız inceleme gereksinimi korunur.
+
+2026-10-27: Kullanıcı tüm120 yeni v2 içeriği Fatih Çelebigil olarak açıkça
+onayladı ve aynı-hesap yerel istisnasını bu revizyona genişletti.
+[ADR-0048](ADR-0048-local-diagram-revision-review-exception.md) yalnız sabit
+v2 hash'i ve mevcut yerel DB için bu yeni istisnayı kaydeder. Genel API,
+diğer revizyonlar ve production için bağımsız inceleme kuralı sürer.

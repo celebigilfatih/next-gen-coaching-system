@@ -195,3 +195,18 @@ sayılmaz; BL-043 In progress kalır.
 | REQ-021 | A Takım kadrosuna doğrudan ve kullanılabilir oyuncu diziniyle eriş         | ADR-0030                     | A Takım route'u çalışma takımını bozulmadan eşitler; responsive liste, URL filtre/sıra, deterministik cursor, Player 360 ve PLAYER self-scope testleri geçer                                                                 | Implemented — backend/frontend/E2E regression and Chrome route smoke verified                                                                                                                                               |
 | REQ-022 | Hesaptan bağımsız oyuncuya sürümlü ve takım kapsamlı teknik not ekle       | ADR-0031                     | Notlar Person'a bağlanır; rol/capability/tenant/grant sınırları, revision/409, arşiv/restore, gövde-log gizliliği ve anlaşılır Player 360 akışı testleri geçer                                                               | Implemented — unit/frontend, disposable PostgreSQL E2E, additive local migration and authenticated Chrome desktop flow verified; exact-size responsive evidence TBD                                                         |
 | REQ-023 | Profesyonel, sürümlü ve kaynak doğrulamalı egzersiz kütüphanesi sun        | ADR-0032–0034                | 120 özgün Türkçe taslak zorunlu profesyonel alanları/yaş dağılımını/tahtayı/checksum'u geçer; legacy kayıtlar korunur; self-review ve onaysız yayın reddedilir; katalog yalnız yayınlanmış sürümü gösterir                   | Partial — model, API/UI foundation, 120 DRAFT manifest, unit/disposable verification and idempotent retained DRAFT import implemented; independent review for other releases TBD; local publication complete under ADR-0041 |
+
+## Hazır egzersiz çizim revizyonu — 2026-10-27
+
+2026-10-27: REQ-023/027 için24 çalışma ×5 yaş/120 yeni DRAFT revizyon hazır;
+14 regresyon, gerçek DTO/SVG, disposable aktarım/snapshot, altı Konva önizlemesi,
+responsive/örnek indirme ve mevcut plana ekleme geçer. Kök18/18. Kalıcı içerik
+yeni sportif onay/aktarımı beklediğinden BL-077 yayın kabulü açık kalır.
+[Güncel kanıt](../30-quality/DRILL_DIAGRAM_REVISION_2026-10-27.md).
+
+2026-10-27 sonraki açık onay: REQ-023/027 çizim revizyonu ADR-0048 ile yerel
+katalogda120 v2 olarak yayımlandı,120 v1 geçmişte korundu.55 hazır-egzersiz plan
+kopyası ve tüm plan/gün süreleri değişmedi. Operator11, kök18/18 ve oturumlu
+canonical browser geçti; BL-077 yerel kabulü kapandı. Genel API ve diğer audit
+bulguları bu işlemle kapatılmaz.
+[Yayın kanıtı](../30-quality/DRILL_DIAGRAM_LOCAL_PUBLICATION_2026-10-27.md).

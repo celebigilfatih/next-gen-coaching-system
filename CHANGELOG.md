@@ -1,5 +1,46 @@
 # Changelog
 
+## 2026-10-27 — PR #3 çizim paketi son incelemesi
+
+- main hedefli PR #3 taslak açıldı ve göreve bağlandı. db7c894/main9e9b109
+  bağımsız incelemesi engelleyici bulmadı; taze kök18/18, PostgreSQL yayın aracı
+  11/11 (skip0),120 SVG/28 görsel doğrulaması geçti. Yeni başlık/kapanış belgeleri
+  uygulama, içerik hash'i ve QA baytlarını değiştirmez. GitHub durumları yeniden
+  kontrol edilerek hazır geçişi yapılır; merge ve yerel yayın tekrarı kapsam dışı.
+  [İnceleme](docs/30-quality/PR_3_DIAGRAM_READINESS_2026-10-27.md).
+
+## 2026-10-27 — V2 commit/push teslim incelemesi
+
+- Kullanıcının açık isteğiyle V2 paket, yayın aracı, ilgili belgeler ve QA için
+  codex/drill-specific-diagrams Git teslimi hazırlanır; önceki ürün audit'i
+  ayrı korunur. Bağımsız index kopyasında kök18/18, yayın aracı11/11 ve
+  lint-staged geçti;120 SVG ve28 görsel doğrulandı.26 JPEG ekran görüntüsünün
+  uzantısı baytları korunarak düzeltildi. Onaylı içerikteki eski DRAFT cümlesi
+  sonraki içerik revizyonu notudur; immutable paket değiştirilmedi.
+  [İnceleme kaydı](docs/30-quality/DRILL_DIAGRAM_PUSH_REVIEW_2026-10-27.md).
+
+## 2026-10-27 — V2 çizim paketi yerel yayını
+
+- Fatih Çelebigil'in120 içerik ve aynı-hesap yerel istisnası için yeni açık onayı
+  ADR-0048'e kaydedildi. Yeni exact-hash maintenance aracı tek transaction ile
+  120 v2 yayımladı,120 v1 arşivledi;600 audit ve sıfır-yazılı tekrar doğrulandı.
+- Özel backup/restore42 tablo,43 tablodaki eski satır koruması ve55 sabit
+  PlanDrill referansı kontrol edildi. Operator11 PostgreSQL ve kök18/18 geçti.
+  Canonical kütüphanede ayrı v2 çizimler, mevcut planda korunmuş v1 görüldü.
+  Normal API/roller/migration/production değişmedi.
+  [Yayın kanıtı](docs/30-quality/DRILL_DIAGRAM_LOCAL_PUBLICATION_2026-10-27.md).
+
+## 2026-10-27 — Çalışmaya özgü hazır egzersiz çizimleri
+
+- BL-077 için24 organizasyon ×5 yaş/120 yeni DRAFT revizyon, deterministik
+  üretici ve ortak SVG inceleme galerisi hazırlandı. v1 ve mevcut planlar korunur;
+  yeni migration/API/dependency yok. Yaş kuralı, kale yönü ve soğuma baskısı
+  regresyonları dahil14 kontrol ve kök18/18 geçti (backend941/frontend558).
+- Disposable PostgreSQL ilk120 aktarım, tekrar0 ve normal yayın/snapshot kapıları;
+  gerçek sentetik browser'da altı önizleme, responsive ve plana ekleme doğrulandı.
+  Kalıcı aktarım/yayın yeni sportif onayı bekliyor; ADR-0041 genişletilmedi.
+  [Kanıt ve galeri](docs/30-quality/DRILL_DIAGRAM_REVISION_2026-10-27.md).
+
 ## 2026-10-26 — PR #2 merged into main
 
 - User-authorized expected-head merge produces af52b8c from reviewed e8a4199;

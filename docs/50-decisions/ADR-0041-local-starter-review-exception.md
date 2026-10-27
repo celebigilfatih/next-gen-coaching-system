@@ -55,3 +55,14 @@ private backup/restore rehearsal. All 120 are PUBLISHED with explicit same-accou
 exception metadata and 360 transition audits; replay writes zero. No runtime
 guard, account/grant, migration or tactical flag changed.
 [Evidence](../30-quality/READY_DRILL_LOCAL_PUBLICATION_2026-10-19.md).
+
+## Subsequent explicit v2 approval — 2026-10-27
+
+The user explicitly extended the same-account local exception to the120 new
+diagram revisions after approving them as Fatih Çelebigil. This is a new,
+separately pinned authorization in
+[ADR-0048](ADR-0048-local-diagram-revision-review-exception.md); the v1 operation
+and its original hash/guards remain unchanged. Earlier statements excluding
+future revisions described the original authorization. Only the exact v2 hash
+is now additionally authorized; other revisions, targets and production remain
+excluded.

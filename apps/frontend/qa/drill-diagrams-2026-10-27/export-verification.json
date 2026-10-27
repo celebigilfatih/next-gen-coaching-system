@@ -1,0 +1,21 @@
+{
+  "galleryU12": {
+    "svgByteIdentical": true,
+    "svgSha256": "17dd3e7ecdcfbeb6462416689b9691495790c791bc594a31186c6aa4c841a6db",
+    "png": {
+      "width": 1500,
+      "height": 1100
+    }
+  },
+  "actualPlanPas": {
+    "svgByteIdentical": false,
+    "svgNumericallyEquivalentAtDecimalPlaces": 9,
+    "note": "Node and browser trigonometric arrowhead coordinates differ at approximately 1e-14. All serialized SVG structure and values match after rounding decimals to9 places.",
+    "png": {
+      "width": 1500,
+      "height": 1100
+    },
+    "svgSha256": "17674b8a15e67518878c751f37d78652c1fc5e343861ac0968cb810c01756cbf"
+  },
+  "visualPngInspection": true
+}

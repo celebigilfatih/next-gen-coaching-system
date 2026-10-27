@@ -9,6 +9,7 @@ export const steps = [
   ["Quality tooling tests", "node", ["--test", "scripts/quality-tools.test.mjs"]],
   ["Repository script format", "npm", ["run", "format:repo"]],
   ["Backend Prisma client", "node", ["scripts/generate-quality-client.mjs"]],
+  ["Drill diagram content tests", "node", ["--test", "scripts/drill-diagrams.test.mjs"]],
   ["Backend typecheck", "npm", ["--prefix", "apps/backend", "run", "typecheck:quality"]],
   ["Backend lint", "npm", ["--prefix", "apps/backend", "run", "lint"]],
   ["Backend format", "npm", ["--prefix", "apps/backend", "run", "format:check"]],

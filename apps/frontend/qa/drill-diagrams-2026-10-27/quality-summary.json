@@ -1,0 +1,29 @@
+{
+  "exitCode": 0,
+  "passedSteps": [
+    "Quality tooling tests",
+    "Repository script format",
+    "Backend Prisma client",
+    "Drill diagram content tests",
+    "Backend typecheck",
+    "Backend lint",
+    "Backend format",
+    "Backend unit tests",
+    "Backend build",
+    "Frontend typecheck",
+    "Frontend lint",
+    "Frontend format",
+    "Frontend unit tests",
+    "Frontend build",
+    "Frontend Sites tests",
+    "Markdown links",
+    "CDSK",
+    "Git whitespace"
+  ],
+  "backendTests": 941,
+  "frontendTests": 558,
+  "diagramTests": 14,
+  "toolingTests": 8,
+  "sitesTests": 4,
+  "logSha256": "5e2f94f6cf22b5d541650307b5e657439ab3883911390f2be2fcfdb0b36efe81"
+}

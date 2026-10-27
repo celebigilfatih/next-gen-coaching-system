@@ -1,0 +1,19 @@
+{
+  "database": "ngcs_diagram_revision_test_20261027b",
+  "syntheticOnly": true,
+  "retainedDatabase": "ngcs_local_session_dev",
+  "retainedBusinessTablesUnchanged": 41,
+  "baselinePublished": 120,
+  "revisionDraftsImported": 120,
+  "repeatCreated": 0,
+  "repeatSkipped": 120,
+  "normalPublishBeforeApprovalRejected": 400,
+  "selfReviewRejected": 403,
+  "syntheticIndependentWorkflowPublished": 120,
+  "historicVersionsArchivedWithoutContentMutation": 120,
+  "oldPlanSnapshotNotesDurationUnchanged": true,
+  "newAttachmentResolvesNewVersion": true,
+  "staleVersionRejected": 409,
+  "humanSportingApproval": false,
+  "retainedImport": false
+}
