@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-10-27 — PR #3 çizim paketi son incelemesi
+
+- main hedefli PR #3 taslak açıldı ve göreve bağlandı. db7c894/main9e9b109
+  bağımsız incelemesi engelleyici bulmadı; taze kök18/18, PostgreSQL yayın aracı
+  11/11 (skip0),120 SVG/28 görsel doğrulaması geçti. Yeni başlık/kapanış belgeleri
+  uygulama, içerik hash'i ve QA baytlarını değiştirmez. GitHub durumları yeniden
+  kontrol edilerek hazır geçişi yapılır; merge ve yerel yayın tekrarı kapsam dışı.
+  [İnceleme](docs/30-quality/PR_3_DIAGRAM_READINESS_2026-10-27.md).
+
 ## 2026-10-27 — V2 commit/push teslim incelemesi
 
 - Kullanıcının açık isteğiyle V2 paket, yayın aracı, ilgili belgeler ve QA için
