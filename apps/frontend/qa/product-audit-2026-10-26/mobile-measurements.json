@@ -1,0 +1,88 @@
+{
+  "overflow": [
+    {
+      "cls": "player-profile-header",
+      "right": 381,
+      "tag": "SECTION",
+      "width": 387
+    }
+  ],
+  "smallTargets": [
+    {
+      "height": 40,
+      "name": "Menüyü aç",
+      "width": 40
+    },
+    {
+      "height": 34,
+      "name": "Menüde ara",
+      "width": 34
+    },
+    {
+      "height": 42,
+      "name": "Menülerde ara",
+      "width": 207
+    },
+    {
+      "height": 42,
+      "name": "Aktif kulüp",
+      "width": 319
+    },
+    {
+      "height": 42,
+      "name": "Aktif sezon",
+      "width": 156
+    },
+    {
+      "height": 42,
+      "name": "Aktif takım",
+      "width": 156
+    },
+    {
+      "height": 40,
+      "name": "Bildirimler",
+      "width": 40
+    },
+    {
+      "height": 42,
+      "name": "Kullanıcı menüsü",
+      "width": 40
+    },
+    {
+      "height": 40,
+      "name": "Not ekle",
+      "width": 343
+    },
+    {
+      "height": 40,
+      "name": "Atama ekle",
+      "width": 343
+    },
+    {
+      "height": 40,
+      "name": "Oyunculara dön",
+      "width": 343
+    },
+    {
+      "height": 36,
+      "name": "Notlar",
+      "width": 70
+    },
+    {
+      "height": 36,
+      "name": "Aktivite",
+      "width": 80
+    },
+    {
+      "height": 36,
+      "name": "Yolculuk",
+      "width": 88
+    }
+  ],
+  "viewport": {
+    "clientWidth": 375,
+    "height": 844,
+    "scrollWidth": 381,
+    "width": 390
+  }
+}

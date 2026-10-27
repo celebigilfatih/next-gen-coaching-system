@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-10-27 — Bekleyen ürün denetimi belgelerinin yayını
+
+- Açık kullanıcı isteğiyle26 Ekim ürün raporu, route/bileşen matrisi, açık
+  remediation takibi ve ADR'lerle uyumlu belge düzeltmeleri yayın için incelendi.
+  122 özgün ekran dosyasının hash/piksel eşleşmesi,132 görüntünün decode'u ve
+  tarihli JSON/kalite sonuçları doğrulandı. Uzantı/gerçek JPEG kodlama ayrımı ve
+  tarihsel manifest metin encoding sınırı açıklandı; orijinal baytlar korundu.
+- Kod/veri düzeltmesi yapılmadı; P1 bulguları açık, yeni ürün kapsamı/ADR onayı yok.
+  Sonraki kullanıcı onaylı kadro işlemleriyle tarihli audit izolasyonu ayrıldı.
+  [Yayın incelemesi](docs/30-quality/PRODUCT_AUDIT_2026-10-26.md#yayın-incelemesi--27-ekim-2026).
+
 ## 2026-10-27 — Oyuncu kadro kanıtlarının yayını
 
 - Açık kullanıcı isteğiyle örnek oyuncu ekleme ve eski oyuncunun sezon bağlantısı
@@ -29,6 +40,17 @@
   yazımlı tekrar doğrulandı. Hesap, klinik veri, şema veya runtime değişmedi.
   Eski sezonsuz A takım ataması korunur; sezon kadrosu24/dizin25 farkı açıktır.
   [Doğrulama](docs/30-quality/SYNTHETIC_TEAM_ROSTERS_2026-10-27.md).
+
+## 2026-10-26 — Repeated ready-drill board diagnosis
+
+- User report confirmed through read-only source/retained comparison:120 published exercises and24 SENIOR entries share only4 geometric layouts, each with the same7 elements. Generator offsets repeat independently of objectives. A16/BL-077 records the current content defect; no content publication, runtime or data change.
+  [Diagnosis](docs/30-quality/PRODUCT_AUDIT_2026-10-26.md#a16--p2--hazır120-içerikte-yalnız-dört-tekrarlanan-çizim-geometrisi).
+
+## 2026-10-26 — Product and component audit
+
+- Added Turkish route/component matrix and evidence-backed existing-gap/future-opportunity report;122 accepted fresh screenshots,30 planning assertion groups and41 people/admin HTTP checks. PLAYER roster self-scope, ended-note-share recovery, activity cursor and note draft conflicts remain open; no application fix or new scope implemented.
+- Root quality ran once17/17 (941 backend,558 frontend,Sites4/tooling8). Retained41 business table fingerprints are unchanged; isolated test services stopped, canonical3132/4000 preserved. Requirements/backlog, local120 publication trackers and current operating summaries reconciled. Browser date/export fault limits are explicit.
+  [Audit](docs/30-quality/PRODUCT_AUDIT_2026-10-26.md).
 
 ## 2026-10-26 — PR #2 merged into main
 

@@ -1,6 +1,6 @@
 # Next Generation Coaching System — Project Boot
 
-- **Document version:** 2.175
+- **Document version:** 2.176
 - **CDSK version:** 0.1.0
 - **Last updated:** 2026-10-27
 
@@ -8,6 +8,14 @@
 > gerekçeyle `N/A` bırakılır.
 
 ## Project Compass
+
+- **Product audit publication (2026-10-27):** user authorizes remaining ready
+  audit docs/assets on the current branch. Fresh122 screenshot hash/pixel checks,
+  132 image decodes and11 historical JSON checks pass; original `.png` filenames
+  contain JPEG bytes and remain unchanged. Manifest text encoding caveat recorded.
+  Historical17/17 quality is verified from its log, not rerun. Known P1 issues stay
+  open; later authorized roster operations are separate from26 October isolation.
+  [Publication review](docs/30-quality/PRODUCT_AUDIT_2026-10-26.md#yayın-incelemesi--27-ekim-2026).
 
 - **Player evidence publication (2026-10-27):** user authorizes commit/push of
   roster/season-link reports with five screenshots and two sanitized JSON receipts.
@@ -30,6 +38,10 @@
   verified. Initial season roster24/directory25 difference is resolved by the
   subsequent explicitly requested season-link operation above. No runtime/model/new ADR.
   [Record](docs/30-quality/SYNTHETIC_TEAM_ROSTERS_2026-10-27.md).
+
+- **Repeated ready-drill boards (2026-10-26):** user screenshot corroborated by read-only retained source comparison:120 PUBLISHED/24 SENIOR records,4 geometries after removing element IDs, all7elements, source equality. Generator uses four coordinate offsets irrespective of drill objective. A16/BL-077 records an existing content defect, not merely future polish. No runtime/data write; v1 provenance and plan snapshots must be preserved; new revisions need normal review, ADR-0041 not extended. [Evidence](apps/frontend/qa/product-audit-2026-10-26/drill-board-diagnosis.json).
+
+- **Product/component audit (2026-10-26):** baseline9e9b109; assessment only, no runtime/model/dependency fix.122 accepted new synthetic browser captures,30 planning HTTP assertion groups and41 people/admin checks; PLAYER roster self-scope P1 and note grant recovery P1 remain open, plus activity/draft/primary-team/dashboard/editorial gaps. Root quality once17/17;41 retained business tables unchanged at audit closure; QA3517/4017 stopped, canonical3132/4000 preserved then. Date-input/new-plan/wizard completion and PNG/SVG file verification limits are explicit. Next: BL-069,070,071,075,072; subsequent27 October publication is authorized above. [Report](docs/30-quality/PRODUCT_AUDIT_2026-10-26.md) and [matrix](docs/30-quality/PRODUCT_AUDIT_MATRIX_2026-10-26.md).
 
 - **PR#2 main merge (2026-10-26):** explicit user authorization merges reviewed
   e8a4199 as af52b8c; expected parents and identical tested tree verified. Fresh
@@ -1095,6 +1107,17 @@ altı migration güncel, iki kulüp IN_SYNC ve yerel browser smoke geçti. Ayrı
 
 ## 11. AI Handoff
 
+2026-10-27 product audit publication: user now explicitly authorizes remaining
+ready audit report/matrix, trackers and QA assets. Preserve original122 screenshot
+bytes/hashes; all have JPEG content despite `.png` suffix.132 total images decode,
+11 historical JSONs parse and credential pattern scan passes. Manifest headings
+have a historical encoding caveat; actual pixel/URL/hash proof is authoritative.
+Existing root17/17 log checked, no new runtime test or retained mutation. Keep
+P1 findings open and later authorized186-player/season operations distinct from
+audit's26 October41-table isolation receipt. Current-branch commit/push only;
+main merge/PR/fixes not requested. Final exact-tree docs/format/CDSK/whitespace
+and local/remote equality checks close publication.
+
 2026-10-27 user-authorized evidence publication: publish only the two roster/link
 reports, five screenshots, two sanitized verification JSONs and their Boot/changelog
 sections on codex/product-audit-20261026. Keep all unrelated audit modifications
@@ -1122,6 +1145,10 @@ output/synthetic-rosters-20261027, private backup outside repo in LOCALAPPDATA/N
 Read receipt and verify rather than rerun creation/naturalization. UI3132 restarted
 on127.0.0.1; existing API4000 preserved. Subsequent report/QA publication is now
 explicitly authorized above. Existing audit branch/work remains intact.
+
+User board-repetition report,2026-10-26: source and read-only retained120 PUBLISHED each have only4 geometries; SENIOR24 also4, all7elements. Root cause scripts/generate-drill-starter-pack.mjs board() only index%4 offset, frontend renders supplied version board. A16/BL-077 open; no content revision/runtime fix/DB write. Previous F05 suggestion refined into confirmed existing-scope content defect. Preserve all uncommitted audit docs/evidence and historic v1/snapshots.
+
+Product audit,2026-10-26: user authorized review without fixes/redesign. Work on codex/product-audit-20261026, source9e9b109. Main report/matrix and QA README hold evidence degrees and unmet checks. BL-069–076 open; prioritize PLAYER roster self-scope then former-team note grant recovery, activity cursor/UI,409 draft preservation and primary identity. No policy/model/vendor/production approval inferred. Root17/17 ran once; sanitized HTTP30+41, one PLAYER authorization mismatch. Before/after41 business-table fingerprints equal. Only disposable DB/test accounts mutated; synthetic DBs retained; QA37996/35480/14508 stopped, real39636/27748 listeners unchanged. Temporary tab closed, viewport reset. Do not report PNG/SVG file acceptance or browser native-date create/wizard completion as passed. No app code changed, commit/push not requested. Final docs/link/format review closes this delivery.
 
 PR#2 main merge,2026-10-26: explicit new user request authorizes merge and clean
 local main sync, superseding earlier readiness-only boundary. PR head e8a4199
@@ -3065,16 +3092,23 @@ Do not mark roster binding, animation, offline match-day or 3D complete.
 - **Remaining risk:** Global log retention,
   production provider, registry/orchestrator, ayrı DB rolleri, readiness ve
   operasyon sözleşmesi M4 veya ayrı karar kapılarında sürer.
-- **Recommended next step:** BL-048 Settings sayfasını aynı beyaz görsel sisteme
-  taşı; kapsam, oturum, rol/yetki ve kullanıcı tercih davranışları korunur.
+- **Recommended next step:** Güncel audit BL-069 PLAYER roster self-scope,
+  BL-070 eski not paylaşımını geri alma, BL-071 aktivite bütünlüğü, BL-075
+  taslak kurtarma ve BL-072 primary kimlik sırasıyla ele alınır; Settings
+  görsel taşıması tarihsel olarak tamamlanmıştır.
   Global log retention/
   veri sınıflandırma kararı, provider hesabı, ücretli kaynak, DNS ve production
   rollout kendi karar kapılarında `TBD` kalır.
 
 ## Revision History
 
+2.176 — 2026-10-27: User-authorized pending product-audit publication; original
+image/JSON evidence rechecked, historical results and current open issues clarified.
+
 2.175 — 2026-10-27: User-authorized roster/season-link evidence publication;
 sample players, history-preserving season transition and scoped validation records.
+
+2.171 — 2026-10-26: Product/component audit; current browser/HTTP evidence, open remediation/future scope, quality and retained-data isolation receipts.
 
 2.163 — 2026-10-25: User-authorized merged branch cleanup and recoverable PR review
 worktree archive; documents/config preserved and main synchronization verified.

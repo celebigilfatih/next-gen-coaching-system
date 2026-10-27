@@ -1,0 +1,236 @@
+{
+  "run": "PS-TACT-6cfd29a4",
+  "startedAt": "2026-10-26T13:43:18.514Z",
+  "database": "ngcs_product_audit_20261026_v2",
+  "api": "http://127.0.0.1:4017",
+  "cases": [
+    {
+      "id": "Q01",
+      "title": "Editorial queue exposes only100 of total matching versions with no continuation",
+      "state": "PASS",
+      "evidence": {
+        "returned": 100,
+        "total": 149,
+        "limit": 100,
+        "nextCursor": null,
+        "classification": "Confirmed current truncation, not a complete-catalog pass"
+      }
+    },
+    {
+      "id": "T01",
+      "title": "Tactical create/reopen/update retains exact board and advances token",
+      "state": "PASS",
+      "evidence": {
+        "id": "cmvpb4f20008k2ybgecwkj82e",
+        "originalElements": 7,
+        "reopenedElements": 0,
+        "duration": 26,
+        "tokenAdvanced": true
+      }
+    },
+    {
+      "id": "T02",
+      "title": "Old tactical token409 preserves last saved document and metadata",
+      "state": "PASS",
+      "evidence": {
+        "status": 409,
+        "lastDocumentUnchanged": true,
+        "metadataUnchanged": true
+      }
+    },
+    {
+      "id": "T03",
+      "title": "Repeated new tactical POST creates distinct objects (uncertain-create characterization)",
+      "state": "PASS",
+      "evidence": {
+        "distinctIds": [
+          "cmvpb4f6w008m2ybg9j09x2ih",
+          "cmvpb4f7q008o2ybgcs2oftc2"
+        ],
+        "sameRequestBody": true,
+        "caveat": "Explicit HTTP replay, no browser response-loss injection; new-create response loss remains a conditional UI failure path"
+      }
+    },
+    {
+      "id": "T04",
+      "title": "Global source copy saves only own CLUB object and leaves original unchanged",
+      "state": "PASS",
+      "evidence": {
+        "copyId": "cmvpb4f8y008q2ybgsjt6dw81",
+        "scope": "CLUB",
+        "sourceUnchanged": true
+      }
+    },
+    {
+      "id": "T05",
+      "title": "Delete only newly owned tactics; read afterwards returns404",
+      "state": "PASS",
+      "evidence": {
+        "deleted": 4,
+        "allReopen404": true
+      }
+    }
+  ],
+  "requests": [
+    {
+      "who": null,
+      "method": "POST",
+      "route": "/auth/login",
+      "status": 201
+    },
+    {
+      "who": null,
+      "method": "POST",
+      "route": "/auth/login",
+      "status": 201
+    },
+    {
+      "who": "system",
+      "method": "GET",
+      "route": "/drills/content/queue?status=PUBLISHED",
+      "status": 200
+    },
+    {
+      "who": "coach",
+      "method": "GET",
+      "route": "/drills/ngcs-starter-v1-senior-01/content?ageGroup=SENIOR",
+      "status": 200
+    },
+    {
+      "who": "coach",
+      "method": "POST",
+      "route": "/drills/tactical-editor",
+      "status": 201
+    },
+    {
+      "who": "coach",
+      "method": "GET",
+      "route": "/drills/cmvpb4f20008k2ybgecwkj82e/tactical-document",
+      "status": 200
+    },
+    {
+      "who": "coach",
+      "method": "PUT",
+      "route": "/drills/cmvpb4f20008k2ybgecwkj82e/tactical-editor",
+      "status": 200
+    },
+    {
+      "who": "coach",
+      "method": "GET",
+      "route": "/drills/cmvpb4f20008k2ybgecwkj82e/tactical-document",
+      "status": 200
+    },
+    {
+      "who": "coach",
+      "method": "PUT",
+      "route": "/drills/cmvpb4f20008k2ybgecwkj82e/tactical-editor",
+      "status": 409,
+      "error": "TACTICAL_DOCUMENT_WRITE_CONFLICT"
+    },
+    {
+      "who": "coach",
+      "method": "GET",
+      "route": "/drills/cmvpb4f20008k2ybgecwkj82e/tactical-document",
+      "status": 200
+    },
+    {
+      "who": "coach",
+      "method": "GET",
+      "route": "/drills/cmvpb4f20008k2ybgecwkj82e/tactical-editor",
+      "status": 200
+    },
+    {
+      "who": "coach",
+      "method": "POST",
+      "route": "/drills/tactical-editor",
+      "status": 201
+    },
+    {
+      "who": "coach",
+      "method": "POST",
+      "route": "/drills/tactical-editor",
+      "status": 201
+    },
+    {
+      "who": "coach",
+      "method": "GET",
+      "route": "/drills/ngcs-starter-v1-senior-01/tactical-document",
+      "status": 200
+    },
+    {
+      "who": "coach",
+      "method": "POST",
+      "route": "/drills/tactical-editor",
+      "status": 201
+    },
+    {
+      "who": "coach",
+      "method": "GET",
+      "route": "/drills/ngcs-starter-v1-senior-01/tactical-document",
+      "status": 200
+    },
+    {
+      "who": "coach",
+      "method": "DELETE",
+      "route": "/drills/cmvpb4f20008k2ybgecwkj82e",
+      "status": 200
+    },
+    {
+      "who": "coach",
+      "method": "GET",
+      "route": "/drills/cmvpb4f20008k2ybgecwkj82e/tactical-editor",
+      "status": 404,
+      "error": "Drill not found"
+    },
+    {
+      "who": "coach",
+      "method": "DELETE",
+      "route": "/drills/cmvpb4f6w008m2ybg9j09x2ih",
+      "status": 200
+    },
+    {
+      "who": "coach",
+      "method": "GET",
+      "route": "/drills/cmvpb4f6w008m2ybg9j09x2ih/tactical-editor",
+      "status": 404,
+      "error": "Drill not found"
+    },
+    {
+      "who": "coach",
+      "method": "DELETE",
+      "route": "/drills/cmvpb4f7q008o2ybgcs2oftc2",
+      "status": 200
+    },
+    {
+      "who": "coach",
+      "method": "GET",
+      "route": "/drills/cmvpb4f7q008o2ybgcs2oftc2/tactical-editor",
+      "status": 404,
+      "error": "Drill not found"
+    },
+    {
+      "who": "coach",
+      "method": "DELETE",
+      "route": "/drills/cmvpb4f8y008q2ybgsjt6dw81",
+      "status": 200
+    },
+    {
+      "who": "coach",
+      "method": "GET",
+      "route": "/drills/cmvpb4f8y008q2ybgsjt6dw81/tactical-editor",
+      "status": 404,
+      "error": "Drill not found"
+    }
+  ],
+  "ownDrillIds": [
+    "cmvpb4f20008k2ybgecwkj82e",
+    "cmvpb4f6w008m2ybg9j09x2ih",
+    "cmvpb4f7q008o2ybgcs2oftc2",
+    "cmvpb4f8y008q2ybgsjt6dw81"
+  ],
+  "completedAt": "2026-10-26T13:43:19.293Z",
+  "summary": {
+    "pass": 6,
+    "fail": 0
+  }
+}

@@ -1,0 +1,255 @@
+{
+  "date": "2026-10-26",
+  "method": "READ ONLY PostgreSQL transaction; geometry ignores only element IDs, keeps coordinates/types/team/style/pitch",
+  "source": {
+    "records": 120,
+    "distinctGeometry": 4,
+    "allSevenElements": true,
+    "groups": [
+      {
+        "hash": "48456b7f728f584644d4bd2feafc819b2a97f146d65fe3ce90293ccdf7b190e7",
+        "count": 30,
+        "representative": "ngcs-starter-v1-u12-01",
+        "titles": [
+          "U12 · Dinamik Hareket Koridoru — Keşif Oyunu",
+          "U12 · Hareketli Pas Kapıları — Keşif Oyunu",
+          "U12 · Kanat Bağlantısı ve Orta — Keşif Oyunu"
+        ],
+        "elementTypes": [
+          "player",
+          "player",
+          "player",
+          "cone",
+          "cone",
+          "ball",
+          "arrow"
+        ]
+      },
+      {
+        "hash": "94a381961453eaf83143c83fafa958262fa402c971d9583b09135217080c013b",
+        "count": 30,
+        "representative": "ngcs-starter-v1-u12-02",
+        "titles": [
+          "U12 · Renk ve Yön Reaksiyonu — Keşif Oyunu",
+          "U12 · Yönlü İlk Kontrol Elması — Keşif Oyunu",
+          "U12 · Baskı Altında Dönüş — Keşif Oyunu"
+        ],
+        "elementTypes": [
+          "player",
+          "player",
+          "player",
+          "cone",
+          "cone",
+          "ball",
+          "arrow"
+        ]
+      },
+      {
+        "hash": "6d2aa31f51f315e09af7ba8129155ed0daf1fff4939642e43f41165f28ac81e1",
+        "count": 30,
+        "representative": "ngcs-starter-v1-u12-03",
+        "titles": [
+          "U12 · Topla Aktivasyon Çemberi — Keşif Oyunu",
+          "U12 · Dar Alanda Top Sürme Kaçışı — Keşif Oyunu",
+          "U12 · Zayıf Ayak Devresi — Keşif Oyunu"
+        ],
+        "elementTypes": [
+          "player",
+          "player",
+          "player",
+          "cone",
+          "cone",
+          "ball",
+          "arrow"
+        ]
+      },
+      {
+        "hash": "2be95ba2ad39e1ebb4fe8ee0caaf845e7c94431c2f698522042889368d891e6c",
+        "count": 30,
+        "representative": "ngcs-starter-v1-u12-04",
+        "titles": [
+          "U12 · Koordinasyon ve Pas Akışı — Keşif Oyunu",
+          "U12 · Üç Koridor Bitiricilik — Keşif Oyunu",
+          "U12 · Üçüncü Oyuncu Kombinasyonu — Keşif Oyunu"
+        ],
+        "elementTypes": [
+          "player",
+          "player",
+          "player",
+          "cone",
+          "cone",
+          "ball",
+          "arrow"
+        ]
+      }
+    ]
+  },
+  "published": {
+    "records": 120,
+    "distinctGeometry": 4,
+    "allSevenElements": true,
+    "groups": [
+      {
+        "hash": "48456b7f728f584644d4bd2feafc819b2a97f146d65fe3ce90293ccdf7b190e7",
+        "count": 30,
+        "representative": "ngcs-starter-v1-senior-01",
+        "titles": [
+          "A Takım · Dinamik Hareket Koridoru — Rol Senaryosu",
+          "A Takım · Hareketli Pas Kapıları — Rol Senaryosu",
+          "A Takım · Kanat Bağlantısı ve Orta — Rol Senaryosu"
+        ],
+        "elementTypes": [
+          "player",
+          "player",
+          "player",
+          "cone",
+          "cone",
+          "ball",
+          "arrow"
+        ]
+      },
+      {
+        "hash": "94a381961453eaf83143c83fafa958262fa402c971d9583b09135217080c013b",
+        "count": 30,
+        "representative": "ngcs-starter-v1-senior-02",
+        "titles": [
+          "A Takım · Renk ve Yön Reaksiyonu — Rol Senaryosu",
+          "A Takım · Yönlü İlk Kontrol Elması — Rol Senaryosu",
+          "A Takım · Baskı Altında Dönüş — Rol Senaryosu"
+        ],
+        "elementTypes": [
+          "player",
+          "player",
+          "player",
+          "cone",
+          "cone",
+          "ball",
+          "arrow"
+        ]
+      },
+      {
+        "hash": "6d2aa31f51f315e09af7ba8129155ed0daf1fff4939642e43f41165f28ac81e1",
+        "count": 30,
+        "representative": "ngcs-starter-v1-senior-03",
+        "titles": [
+          "A Takım · Topla Aktivasyon Çemberi — Rol Senaryosu",
+          "A Takım · Dar Alanda Top Sürme Kaçışı — Rol Senaryosu",
+          "A Takım · Zayıf Ayak Devresi — Rol Senaryosu"
+        ],
+        "elementTypes": [
+          "player",
+          "player",
+          "player",
+          "cone",
+          "cone",
+          "ball",
+          "arrow"
+        ]
+      },
+      {
+        "hash": "2be95ba2ad39e1ebb4fe8ee0caaf845e7c94431c2f698522042889368d891e6c",
+        "count": 30,
+        "representative": "ngcs-starter-v1-senior-04",
+        "titles": [
+          "A Takım · Koordinasyon ve Pas Akışı — Rol Senaryosu",
+          "A Takım · Üç Koridor Bitiricilik — Rol Senaryosu",
+          "A Takım · Üçüncü Oyuncu Kombinasyonu — Rol Senaryosu"
+        ],
+        "elementTypes": [
+          "player",
+          "player",
+          "player",
+          "cone",
+          "cone",
+          "ball",
+          "arrow"
+        ]
+      }
+    ]
+  },
+  "publishedEqualsSource": true,
+  "senior": {
+    "records": 24,
+    "distinctGeometry": 4,
+    "allSevenElements": true,
+    "groups": [
+      {
+        "hash": "48456b7f728f584644d4bd2feafc819b2a97f146d65fe3ce90293ccdf7b190e7",
+        "count": 6,
+        "representative": "ngcs-starter-v1-senior-01",
+        "titles": [
+          "A Takım · Dinamik Hareket Koridoru — Rol Senaryosu",
+          "A Takım · Hareketli Pas Kapıları — Rol Senaryosu",
+          "A Takım · Kanat Bağlantısı ve Orta — Rol Senaryosu"
+        ],
+        "elementTypes": [
+          "player",
+          "player",
+          "player",
+          "cone",
+          "cone",
+          "ball",
+          "arrow"
+        ]
+      },
+      {
+        "hash": "94a381961453eaf83143c83fafa958262fa402c971d9583b09135217080c013b",
+        "count": 6,
+        "representative": "ngcs-starter-v1-senior-02",
+        "titles": [
+          "A Takım · Renk ve Yön Reaksiyonu — Rol Senaryosu",
+          "A Takım · Yönlü İlk Kontrol Elması — Rol Senaryosu",
+          "A Takım · Baskı Altında Dönüş — Rol Senaryosu"
+        ],
+        "elementTypes": [
+          "player",
+          "player",
+          "player",
+          "cone",
+          "cone",
+          "ball",
+          "arrow"
+        ]
+      },
+      {
+        "hash": "6d2aa31f51f315e09af7ba8129155ed0daf1fff4939642e43f41165f28ac81e1",
+        "count": 6,
+        "representative": "ngcs-starter-v1-senior-03",
+        "titles": [
+          "A Takım · Topla Aktivasyon Çemberi — Rol Senaryosu",
+          "A Takım · Dar Alanda Top Sürme Kaçışı — Rol Senaryosu",
+          "A Takım · Zayıf Ayak Devresi — Rol Senaryosu"
+        ],
+        "elementTypes": [
+          "player",
+          "player",
+          "player",
+          "cone",
+          "cone",
+          "ball",
+          "arrow"
+        ]
+      },
+      {
+        "hash": "2be95ba2ad39e1ebb4fe8ee0caaf845e7c94431c2f698522042889368d891e6c",
+        "count": 6,
+        "representative": "ngcs-starter-v1-senior-04",
+        "titles": [
+          "A Takım · Koordinasyon ve Pas Akışı — Rol Senaryosu",
+          "A Takım · Üç Koridor Bitiricilik — Rol Senaryosu",
+          "A Takım · Üçüncü Oyuncu Kombinasyonu — Rol Senaryosu"
+        ],
+        "elementTypes": [
+          "player",
+          "player",
+          "player",
+          "cone",
+          "cone",
+          "ball",
+          "arrow"
+        ]
+      }
+    ]
+  },
+  "databaseWrites": 0
+}
