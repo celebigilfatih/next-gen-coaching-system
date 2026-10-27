@@ -1,0 +1,15 @@
+{
+  "command": "npm run quality",
+  "runs": 1,
+  "exitCode": 0,
+  "gatesPassed": 17,
+  "backendTests": 941,
+  "frontendTests": 558,
+  "frontendTestFiles": 63,
+  "sitesTests": 4,
+  "toolingTests": 8,
+  "markdownFilesAtRun": 214,
+  "cdskRequiredDocuments": 36,
+  "adrs": 47,
+  "rawLog": "ignored output/product-audit-20261026/quality.log"
+}

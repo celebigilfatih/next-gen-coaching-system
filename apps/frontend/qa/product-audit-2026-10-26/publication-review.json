@@ -1,0 +1,26 @@
+{
+  "reviewedAt": "2026-10-27T06:43:53.138Z",
+  "auditDate": "2026-10-26",
+  "baseline": "9e9b109831f7e67b729ea9ba2e27cfff1619d13c",
+  "runtimeUnchangedSinceAudit": true,
+  "acceptedScreenshots": 122,
+  "actualImageFormats": {
+    "jpeg": 122
+  },
+  "pngSuffixIsFilenameOnly": true,
+  "rejectedCapturesExcluded": 3,
+  "allScreenshotHashesMatch": true,
+  "allScreenshotPixelsMatch": true,
+  "allImagesDecoded": true,
+  "comparisonJpegs": 10,
+  "historicalPlanningAssertionGroups": 30,
+  "historicalPeopleHttpChecks": 41,
+  "expectedPolicyMismatchPreserved": 1,
+  "historicalRootQualityGates": 17,
+  "rawHistoricalQualityLogConfirmed": true,
+  "credentialPatternScan": "No raw JWT, credential-bearing PostgreSQL URL, private key or raw credential-field value detected in 11 JSON files.",
+  "historicalMetadataEncodingCaveatFiles": ["manifest.json"],
+  "freshRuntimeOrMutationTestsRun": false,
+  "retainedDatabaseWritten": false,
+  "knownP1FindingsRemainOpen": true
+}

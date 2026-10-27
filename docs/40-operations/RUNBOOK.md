@@ -320,8 +320,8 @@ node --test apps/backend/scripts/setup-spor-manage-local.test.js
 
 That test requires an empty dedicated database, creates its own non-login
 operator and injects a conflict by modifying/deleting its own disposable rows.
-Never point it at retained data. Product wizard remains Proposed in ADR-0037;
-this script is not a public setup API.
+Never point it at retained data. The product wizard is Accepted/implemented under ADR-0037;
+this earlier fixture script remains separate from the public setup API.
 
 ## Windows local environment — 2026-10-19
 

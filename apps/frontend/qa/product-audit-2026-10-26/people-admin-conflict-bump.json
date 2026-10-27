@@ -1,0 +1,10 @@
+{
+  "api": "http://127.0.0.1:4017",
+  "database": "ngcs_product_audit_20261026_v2",
+  "time": "2026-10-26T13:45:09.670Z",
+  "method": "Normal admin login then PATCH; no UI",
+  "noteId": "cmvpaxumo00152ybgkcmc8wab",
+  "status": 200,
+  "priorVersion": 3,
+  "nextVersion": 4
+}

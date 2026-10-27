@@ -1,0 +1,10 @@
+{
+  "imagesVerified": 122,
+  "rejectedCaptures": 3,
+  "screenshotHashesValid": true,
+  "httpPeopleControls": 41,
+  "planningAssertionGroups": 30,
+  "rootQualityPassGates": 17,
+  "credentialPatternScan": "no raw JWT, database credential URL or fixture password in versioned JSON",
+  "runtimeSourceChanges": 0
+}

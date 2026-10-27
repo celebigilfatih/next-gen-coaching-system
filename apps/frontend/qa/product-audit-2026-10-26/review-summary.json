@@ -1,0 +1,13 @@
+{
+  "review": "independent read-only audit delivery review",
+  "remainingCritical": 0,
+  "remainingImportant": 0,
+  "resolved": [
+    "shared matrix tested-subset consistency",
+    "reject three distorted captures",
+    "remove unsupported directory HTTP self-scope assertion",
+    "unique non-self Persons3 versus assignment rows5",
+    "current tracker closure wording"
+  ],
+  "applicationFixReview": false
+}

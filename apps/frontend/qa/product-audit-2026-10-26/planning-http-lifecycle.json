@@ -1,0 +1,712 @@
+{
+  "run": "PS-LIFE-75ece63b",
+  "startedAt": "2026-10-26T13:41:42.621Z",
+  "baseline": "9e9b109831f7e67b729ea9ba2e27cfff1619d13c",
+  "database": "ngcs_product_audit_20261026_v2",
+  "api": "http://127.0.0.1:4017",
+  "scope": "Only newly created synthetic audit records; no canonical service or fixture-source writes.",
+  "cases": [
+    {
+      "id": "AUTH-coach",
+      "title": "Normal login coach",
+      "state": "PASS",
+      "evidence": {
+        "role": "COACH",
+        "status": 201
+      }
+    },
+    {
+      "id": "AUTH-admin",
+      "title": "Normal login admin",
+      "state": "PASS",
+      "evidence": {
+        "role": "CLUB_ADMIN",
+        "status": 201
+      }
+    },
+    {
+      "id": "AUTH-player",
+      "title": "Normal login player",
+      "state": "PASS",
+      "evidence": {
+        "role": "PLAYER",
+        "status": 201
+      }
+    },
+    {
+      "id": "AUTH-viewer",
+      "title": "Normal login viewer",
+      "state": "PASS",
+      "evidence": {
+        "role": "COACH",
+        "status": 201
+      }
+    },
+    {
+      "id": "AUTH-system",
+      "title": "Normal login system",
+      "state": "PASS",
+      "evidence": {
+        "role": "SYSTEM_ADMIN",
+        "status": 201
+      }
+    },
+    {
+      "id": "L01",
+      "title": "COACH creates own assigned-team plan; DB and metadata reopen agree",
+      "state": "PASS",
+      "evidence": {
+        "id": "cmvpb2dfm006f2ybg7vcr8amz",
+        "groupId": "cmvpan8eu00032yxkhgqocmqt",
+        "totalDuration": 0,
+        "linkedDayCount": 1
+      }
+    },
+    {
+      "id": "L02",
+      "title": "Edit title/date/notes updates linked calendar projection and survives reopen",
+      "state": "PASS",
+      "evidence": {
+        "title": "PS-LIFE-75ece63b Updated lifecycle",
+        "date": "2026-10-31T08:30:00.000Z",
+        "notes": "TEST Updated purpose",
+        "calendarTitle": "PS-LIFE-75ece63b Updated lifecycle",
+        "calendarDate": "2026-10-31T08:30:00.000Z"
+      }
+    },
+    {
+      "id": "L03",
+      "title": "Out-of-season linked-plan edit fails atomically",
+      "state": "PASS",
+      "evidence": {
+        "status": 400,
+        "unchanged": true,
+        "error": "Training plan date must belong to every linked season week"
+      }
+    },
+    {
+      "id": "L04",
+      "title": "Attach exact-age published ready exercise freezes title/duration and board",
+      "state": "PASS",
+      "evidence": {
+        "phaseId": "cmvpb2dk3006j2ybgpegrku3o",
+        "title": "A Takım · Dinamik Hareket Koridoru — Rol Senaryosu",
+        "duration": 20,
+        "calendarDuration": 20,
+        "sourceVersionId": "cmvf32sym00kq2y2491vcuc6l",
+        "hasBoard": true
+      }
+    },
+    {
+      "id": "L05",
+      "title": "Sequential duplicate attachment returns409 and preserves totals/phase count",
+      "state": "PASS",
+      "evidence": {
+        "status": 409,
+        "unchanged": true,
+        "error": "Egzersiz bu planda zaten bulunuyor. Planı yenileyin."
+      }
+    },
+    {
+      "id": "L06",
+      "title": "Stale expectedVersion rejects without changing plan",
+      "state": "PASS",
+      "evidence": {
+        "status": 409,
+        "unchanged": true,
+        "error": "Egzersiz sürümü değişti. İçeriği yeniden inceleyin."
+      }
+    },
+    {
+      "id": "L07",
+      "title": "Second valid ready exercise updates full plan/day duration sum",
+      "state": "PASS",
+      "evidence": {
+        "phaseCount": 2,
+        "total": 38,
+        "calendarDuration": 38
+      }
+    },
+    {
+      "id": "L08",
+      "title": "Bulk replacement with invalid source/version rolls back all phases/totals",
+      "state": "PASS",
+      "evidence": {
+        "status": 404,
+        "unchanged": true,
+        "error": "Drill not found"
+      }
+    },
+    {
+      "id": "L09",
+      "title": "Staff attendance on own plan persists once; PLAYER self-read scopes roster",
+      "state": "PASS",
+      "evidence": {
+        "rows": 1,
+        "status": "ABSENT",
+        "selfTotal": 1,
+        "selfStatus": "ABSENT"
+      }
+    },
+    {
+      "id": "PERM-viewer",
+      "title": "Denied viewer write leaves plan unchanged",
+      "state": "PASS",
+      "evidence": {
+        "status": 403,
+        "unchanged": true
+      }
+    },
+    {
+      "id": "PERM-player",
+      "title": "Denied player write leaves plan unchanged",
+      "state": "PASS",
+      "evidence": {
+        "status": 403,
+        "unchanged": true
+      }
+    },
+    {
+      "id": "PERM-READ",
+      "title": "Unassigned coach cannot read owned-plan metadata",
+      "state": "PASS",
+      "evidence": [
+        {
+          "who": "viewer",
+          "status": 403
+        }
+      ]
+    },
+    {
+      "id": "L10",
+      "title": "CLUB_ADMIN explicitly assigns active coach and creates/deletes its own audit plan",
+      "state": "PASS",
+      "evidence": {
+        "id": "cmvpb2dur006r2ybgkgdsr2kn",
+        "coachId": "cmvpan8f0000b2yxkbttb0vf7",
+        "deleted": true
+      }
+    },
+    {
+      "id": "L11",
+      "title": "New-plan POST replay lacks idempotency: identical body creates two IDs (characterization)",
+      "state": "PASS",
+      "evidence": {
+        "distinctIds": [
+          "cmvpb2dw8006v2ybgo7t4p7hm",
+          "cmvpb2dww006z2ybg9zfvjirw"
+        ],
+        "sameRequestBody": true,
+        "createdRows": 2,
+        "cleanupDeletedBoth": true,
+        "caveat": "HTTP characterization only; no browser response-loss fault injection. Supports static uncertain-create finding."
+      }
+    },
+    {
+      "id": "F01",
+      "title": "Create/submit/independently approve/publish new synthetic global source through API",
+      "state": "PASS",
+      "evidence": {
+        "drillId": "cmvpb2dzh00722ybg30tp3uhd",
+        "versionId": "cmvpb2dzo00762ybgjjc5l6if",
+        "status": "PUBLISHED",
+        "syntheticReviewer": true,
+        "planId": "cmvpb2e3s007h2ybgoee7b43z"
+      }
+    },
+    {
+      "id": "F02",
+      "title": "Publishing synthetic sourceV2 changes source but preserves attached title/duration/boardV1",
+      "state": "PASS",
+      "evidence": {
+        "sourceTitle": "PS-LIFE-75ece63b Version2",
+        "sourceDuration": 29,
+        "snapshotTitle": "PS-LIFE-75ece63b Version1",
+        "snapshotDuration": 17,
+        "snapshotVersion": "cmvpb2dzo00762ybgjjc5l6if",
+        "boardEqualV1": true
+      }
+    },
+    {
+      "id": "F03",
+      "title": "Old published version is rejected on a new attachment after actualV2 publication",
+      "state": "PASS",
+      "evidence": {
+        "staleStatus": 409,
+        "unchangedOnReject": true,
+        "newVersionDuration": 29
+      }
+    },
+    {
+      "id": "N01",
+      "title": "Owned synthetic LEGACY null-board source attaches with frozen content",
+      "state": "PASS",
+      "evidence": {
+        "drillId": "cmvpb2ef500012ydg29j1989s",
+        "planId": "cmvpb2efw00862ybgo6zvo425",
+        "snapshotTitle": "PS-LIFE-75ece63b LegacyV1",
+        "snapshotDuration": 13,
+        "sourceDuration": 31,
+        "newDocumentReader": null,
+        "legacyReader": "absent",
+        "fullReader": null,
+        "changeMethod": "Direct isolated fixture for legacy boundary; attachments and reads via authenticated HTTP"
+      }
+    },
+    {
+      "id": "L12",
+      "title": "Permanent delete cascades plan phases, attendance and linked calendar only",
+      "state": "PASS",
+      "evidence": {
+        "before": {
+          "phases": 2,
+          "attendance": 1,
+          "dayPlans": 1
+        },
+        "after": {
+          "phases": 0,
+          "attendance": 0,
+          "dayPlans": 0
+        },
+        "reopenStatus": 404
+      }
+    }
+  ],
+  "requests": [
+    {
+      "who": null,
+      "method": "POST",
+      "route": "/auth/login",
+      "status": 201
+    },
+    {
+      "who": null,
+      "method": "POST",
+      "route": "/auth/login",
+      "status": 201
+    },
+    {
+      "who": null,
+      "method": "POST",
+      "route": "/auth/login",
+      "status": 201
+    },
+    {
+      "who": null,
+      "method": "POST",
+      "route": "/auth/login",
+      "status": 201
+    },
+    {
+      "who": null,
+      "method": "POST",
+      "route": "/auth/login",
+      "status": 201
+    },
+    {
+      "who": "coach",
+      "method": "GET",
+      "route": "/drills/ngcs-starter-v1-senior-01/content?ageGroup=SENIOR",
+      "status": 200
+    },
+    {
+      "who": "coach",
+      "method": "POST",
+      "route": "/training-plans",
+      "status": 201
+    },
+    {
+      "who": "coach",
+      "method": "GET",
+      "route": "/training-plans/cmvpb2dfm006f2ybg7vcr8amz/editor-metadata",
+      "status": 200
+    },
+    {
+      "who": "coach",
+      "method": "PUT",
+      "route": "/training-plans/cmvpb2dfm006f2ybg7vcr8amz",
+      "status": 200
+    },
+    {
+      "who": "coach",
+      "method": "GET",
+      "route": "/training-plans/cmvpb2dfm006f2ybg7vcr8amz/editor-metadata",
+      "status": 200
+    },
+    {
+      "who": "coach",
+      "method": "PUT",
+      "route": "/training-plans/cmvpb2dfm006f2ybg7vcr8amz",
+      "status": 400,
+      "error": {
+        "message": "Training plan date must belong to every linked season week",
+        "error": "Bad Request",
+        "statusCode": 400
+      }
+    },
+    {
+      "who": "coach",
+      "method": "POST",
+      "route": "/training-plans/cmvpb2dfm006f2ybg7vcr8amz/drills",
+      "status": 201
+    },
+    {
+      "who": "coach",
+      "method": "GET",
+      "route": "/training-plans/cmvpb2dfm006f2ybg7vcr8amz/editor-metadata",
+      "status": 200
+    },
+    {
+      "who": "coach",
+      "method": "POST",
+      "route": "/training-plans/cmvpb2dfm006f2ybg7vcr8amz/drills",
+      "status": 409,
+      "error": {
+        "message": "Egzersiz bu planda zaten bulunuyor. Planı yenileyin.",
+        "error": "Conflict",
+        "statusCode": 409
+      }
+    },
+    {
+      "who": "coach",
+      "method": "POST",
+      "route": "/training-plans/cmvpb2dfm006f2ybg7vcr8amz/drills",
+      "status": 409,
+      "error": {
+        "message": "Egzersiz sürümü değişti. İçeriği yeniden inceleyin.",
+        "error": "Conflict",
+        "statusCode": 409
+      }
+    },
+    {
+      "who": "coach",
+      "method": "GET",
+      "route": "/drills/ngcs-starter-v1-senior-24/content?ageGroup=SENIOR",
+      "status": 200
+    },
+    {
+      "who": "coach",
+      "method": "POST",
+      "route": "/training-plans/cmvpb2dfm006f2ybg7vcr8amz/drills",
+      "status": 201
+    },
+    {
+      "who": "coach",
+      "method": "GET",
+      "route": "/training-plans/cmvpb2dfm006f2ybg7vcr8amz/editor-metadata",
+      "status": 200
+    },
+    {
+      "who": "coach",
+      "method": "PUT",
+      "route": "/training-plans/cmvpb2dfm006f2ybg7vcr8amz/drills",
+      "status": 404,
+      "error": {
+        "message": "Drill not found",
+        "error": "Not Found",
+        "statusCode": 404
+      }
+    },
+    {
+      "who": "coach",
+      "method": "POST",
+      "route": "/attendance",
+      "status": 201
+    },
+    {
+      "who": "coach",
+      "method": "POST",
+      "route": "/attendance",
+      "status": 201
+    },
+    {
+      "who": "player",
+      "method": "GET",
+      "route": "/attendance/page?planId=cmvpb2dfm006f2ybg7vcr8amz&limit=25",
+      "status": 200
+    },
+    {
+      "who": "viewer",
+      "method": "PUT",
+      "route": "/training-plans/cmvpb2dfm006f2ybg7vcr8amz",
+      "status": 403,
+      "error": {
+        "message": "Resource is outside the authorized scope",
+        "error": "Forbidden",
+        "statusCode": 403
+      }
+    },
+    {
+      "who": "player",
+      "method": "PUT",
+      "route": "/training-plans/cmvpb2dfm006f2ybg7vcr8amz",
+      "status": 403,
+      "error": {
+        "message": "Forbidden resource",
+        "error": "Forbidden",
+        "statusCode": 403
+      }
+    },
+    {
+      "who": "viewer",
+      "method": "GET",
+      "route": "/training-plans/cmvpb2dfm006f2ybg7vcr8amz/editor-metadata",
+      "status": 403,
+      "error": {
+        "message": "Resource is outside the authorized scope",
+        "error": "Forbidden",
+        "statusCode": 403
+      }
+    },
+    {
+      "who": "admin",
+      "method": "POST",
+      "route": "/training-plans",
+      "status": 201
+    },
+    {
+      "who": "admin",
+      "method": "DELETE",
+      "route": "/training-plans/cmvpb2dur006r2ybgkgdsr2kn",
+      "status": 200
+    },
+    {
+      "who": "coach",
+      "method": "POST",
+      "route": "/training-plans",
+      "status": 201
+    },
+    {
+      "who": "coach",
+      "method": "POST",
+      "route": "/training-plans",
+      "status": 201
+    },
+    {
+      "who": "coach",
+      "method": "DELETE",
+      "route": "/training-plans/cmvpb2dw8006v2ybgo7t4p7hm",
+      "status": 200
+    },
+    {
+      "who": "coach",
+      "method": "DELETE",
+      "route": "/training-plans/cmvpb2dww006z2ybg9zfvjirw",
+      "status": 200
+    },
+    {
+      "who": "coach",
+      "method": "POST",
+      "route": "/drills/content/drafts",
+      "status": 201
+    },
+    {
+      "who": "coach",
+      "method": "POST",
+      "route": "/drills/content/cmvpb2dzo00762ybgjjc5l6if/submit",
+      "status": 201
+    },
+    {
+      "who": "viewer",
+      "method": "POST",
+      "route": "/drills/content/cmvpb2dzo00762ybgjjc5l6if/approve",
+      "status": 201
+    },
+    {
+      "who": "system",
+      "method": "POST",
+      "route": "/drills/content/cmvpb2dzo00762ybgjjc5l6if/publish",
+      "status": 201
+    },
+    {
+      "who": "coach",
+      "method": "GET",
+      "route": "/drills/cmvpb2dzh00722ybg30tp3uhd/content?ageGroup=SENIOR",
+      "status": 200
+    },
+    {
+      "who": "coach",
+      "method": "POST",
+      "route": "/training-plans",
+      "status": 201
+    },
+    {
+      "who": "coach",
+      "method": "POST",
+      "route": "/training-plans/cmvpb2e3s007h2ybgoee7b43z/drills",
+      "status": 201
+    },
+    {
+      "who": "coach",
+      "method": "GET",
+      "route": "/training-plans/cmvpb2e3s007h2ybgoee7b43z/editor-metadata",
+      "status": 200
+    },
+    {
+      "who": "coach",
+      "method": "POST",
+      "route": "/drills/content/drafts",
+      "status": 201
+    },
+    {
+      "who": "coach",
+      "method": "POST",
+      "route": "/drills/content/cmvpb2e6d007p2ybgk5dwmz77/submit",
+      "status": 201
+    },
+    {
+      "who": "viewer",
+      "method": "POST",
+      "route": "/drills/content/cmvpb2e6d007p2ybgk5dwmz77/approve",
+      "status": 201
+    },
+    {
+      "who": "system",
+      "method": "POST",
+      "route": "/drills/content/cmvpb2e6d007p2ybgk5dwmz77/publish",
+      "status": 201
+    },
+    {
+      "who": "coach",
+      "method": "GET",
+      "route": "/drills/cmvpb2dzh00722ybg30tp3uhd/content?ageGroup=SENIOR",
+      "status": 200
+    },
+    {
+      "who": "coach",
+      "method": "GET",
+      "route": "/training-plans/cmvpb2e3s007h2ybgoee7b43z/editor-metadata",
+      "status": 200
+    },
+    {
+      "who": "coach",
+      "method": "GET",
+      "route": "/training-plans/cmvpb2e3s007h2ybgoee7b43z/drills/cmvpb2e4v007l2ybgo8w3w09q/tactical-document",
+      "status": 200
+    },
+    {
+      "who": "coach",
+      "method": "POST",
+      "route": "/training-plans",
+      "status": 201
+    },
+    {
+      "who": "coach",
+      "method": "POST",
+      "route": "/training-plans/cmvpb2ece00802ybghddai5fz/drills",
+      "status": 409,
+      "error": {
+        "message": "Egzersiz sürümü değişti. İçeriği yeniden inceleyin.",
+        "error": "Conflict",
+        "statusCode": 409
+      }
+    },
+    {
+      "who": "coach",
+      "method": "POST",
+      "route": "/training-plans/cmvpb2ece00802ybghddai5fz/drills",
+      "status": 201
+    },
+    {
+      "who": "coach",
+      "method": "GET",
+      "route": "/training-plans/cmvpb2ece00802ybghddai5fz/editor-metadata",
+      "status": 200
+    },
+    {
+      "who": "coach",
+      "method": "POST",
+      "route": "/training-plans",
+      "status": 201
+    },
+    {
+      "who": "coach",
+      "method": "POST",
+      "route": "/training-plans/cmvpb2efw00862ybgo6zvo425/drills",
+      "status": 201
+    },
+    {
+      "who": "coach",
+      "method": "GET",
+      "route": "/training-plans/cmvpb2efw00862ybgo6zvo425/editor-metadata",
+      "status": 200
+    },
+    {
+      "who": "coach",
+      "method": "GET",
+      "route": "/training-plans/cmvpb2efw00862ybgo6zvo425/drills/cmvpb2ehj008a2ybgg6l4nl22/tactical-document",
+      "status": 200
+    },
+    {
+      "who": "coach",
+      "method": "GET",
+      "route": "/training-plans/cmvpb2efw00862ybgo6zvo425/editor-metadata",
+      "status": 200
+    },
+    {
+      "who": "coach",
+      "method": "GET",
+      "route": "/training-plans/cmvpb2efw00862ybgo6zvo425/drills/cmvpb2ehj008a2ybgg6l4nl22/tactical-document",
+      "status": 200
+    },
+    {
+      "who": "coach",
+      "method": "GET",
+      "route": "/training-plans/cmvpb2efw00862ybgo6zvo425/drills/cmvpb2ehj008a2ybgg6l4nl22/board",
+      "status": 200
+    },
+    {
+      "who": "coach",
+      "method": "GET",
+      "route": "/training-plans/cmvpb2efw00862ybgo6zvo425/editor",
+      "status": 200
+    },
+    {
+      "who": "coach",
+      "method": "DELETE",
+      "route": "/training-plans/cmvpb2dfm006f2ybg7vcr8amz",
+      "status": 200
+    },
+    {
+      "who": "coach",
+      "method": "GET",
+      "route": "/training-plans/cmvpb2dfm006f2ybg7vcr8amz/editor-metadata",
+      "status": 404,
+      "error": {
+        "message": "Training plan not found",
+        "error": "Not Found",
+        "statusCode": 404
+      }
+    }
+  ],
+  "ownedPlanIds": [
+    "cmvpb2dfm006f2ybg7vcr8amz",
+    "cmvpb2dur006r2ybgkgdsr2kn",
+    "cmvpb2dw8006v2ybgo7t4p7hm",
+    "cmvpb2dww006z2ybg9zfvjirw",
+    "cmvpb2e3s007h2ybgoee7b43z",
+    "cmvpb2ece00802ybghddai5fz",
+    "cmvpb2efw00862ybgo6zvo425"
+  ],
+  "ownedDrillIds": ["cmvpb2dzh00722ybg30tp3uhd", "cmvpb2ef500012ydg29j1989s"],
+  "directFixtureChanges": [
+    {
+      "scope": "NEW OWNED SOURCE ONLY",
+      "kind": "Create LEGACY/LEGACY_UNVERIFIED synthetic source/version with JsonNull board",
+      "drillId": "cmvpb2ef500012ydg29j1989s",
+      "versionId": "cmvpb2efe00042ydgmgx3docl"
+    },
+    {
+      "scope": "NEW OWNED SOURCE ONLY",
+      "kind": "Change own legacy source title,duration,board after attachment",
+      "drillId": "cmvpb2ef500012ydg29j1989s"
+    }
+  ],
+  "completedAt": "2026-10-26T13:41:44.988Z",
+  "summary": {
+    "pass": 24,
+    "fail": 0,
+    "blocked": 0
+  },
+  "evidenceNormalization": "L02 DB Date was sanitized to empty object by initial scrubber; normalized to ISO string equal to metadata.date, as asserted during the run. PERM-READ title corrected to the single actually tested unassigned COACH. No tests rerun for this normalization."
+}

@@ -1,0 +1,562 @@
+{
+  "baseline": "9e9b109831f7e67b729ea9ba2e27cfff1619d13c",
+  "database": "ngcs_product_audit_20261026_v2",
+  "api": "http://127.0.0.1:4017",
+  "time": "2026-10-26T13:38:11.704Z",
+  "method": "Authenticated HTTP only; no direct DB and no UI",
+  "tests": [
+    {
+      "name": "anonymous player read",
+      "status": 401,
+      "expectedStatus": 401,
+      "matchedExpected": true
+    },
+    {
+      "name": "player account directory boundary",
+      "status": 403,
+      "expectedStatus": 403,
+      "matchedExpected": true
+    },
+    {
+      "name": "coach account directory boundary",
+      "status": 403,
+      "expectedStatus": 403,
+      "matchedExpected": true
+    },
+    {
+      "name": "foreign account directory boundary",
+      "status": 403,
+      "expectedStatus": 403,
+      "matchedExpected": true
+    },
+    {
+      "name": "club admin foreign query is forced to own club",
+      "status": 200,
+      "returned": 5,
+      "allOwnClub": true,
+      "expectedStatus": 200,
+      "matchedExpected": true
+    },
+    {
+      "name": "foreign note read boundary",
+      "status": 403,
+      "expectedStatus": 403,
+      "matchedExpected": true
+    },
+    {
+      "name": "player note read boundary",
+      "status": 403,
+      "expectedStatus": 403,
+      "matchedExpected": true
+    },
+    {
+      "name": "foreign coach player profile boundary",
+      "status": 403,
+      "expectedStatus": 403,
+      "matchedExpected": true
+    },
+    {
+      "name": "player own profile read",
+      "status": 200,
+      "returnedOwnId": true,
+      "expectedStatus": 200,
+      "matchedExpected": true
+    },
+    {
+      "name": "player other profile denied",
+      "status": 403,
+      "expectedStatus": 403,
+      "matchedExpected": true
+    },
+    {
+      "name": "player team roster denied",
+      "status": 200,
+      "expectedStatus": 403,
+      "matchedExpected": false
+    },
+    {
+      "name": "coach creates native Person note",
+      "status": 201,
+      "version": 1,
+      "authorIsCoach": true,
+      "expectedStatus": 201,
+      "matchedExpected": true
+    },
+    {
+      "name": "team B cannot read unshared origin A note",
+      "status": 200,
+      "containsNote": false,
+      "expectedStatus": 200,
+      "matchedExpected": true
+    },
+    {
+      "name": "coach cannot grant note shares",
+      "status": 403,
+      "expectedStatus": 403,
+      "matchedExpected": true
+    },
+    {
+      "name": "admin grants current guest team B",
+      "status": 200,
+      "grantTeamIds": ["cmvpan8ev00052yxkn014octr"],
+      "version": 2,
+      "expectedStatus": 200,
+      "matchedExpected": true
+    },
+    {
+      "name": "team B can read explicitly shared note",
+      "status": 200,
+      "containsNote": true,
+      "canEdit": false,
+      "expectedStatus": 200,
+      "matchedExpected": true
+    },
+    {
+      "name": "viewer cannot edit another author note",
+      "status": 403,
+      "expectedStatus": 403,
+      "matchedExpected": true
+    },
+    {
+      "name": "admin updates shared note",
+      "status": 200,
+      "priorVersion": 2,
+      "nextVersion": 3,
+      "expectedStatus": 200,
+      "matchedExpected": true
+    },
+    {
+      "name": "stale note version fails closed",
+      "status": 409,
+      "errorCode": "PLAYER_NOTE_VERSION_CONFLICT",
+      "unchangedExpectedVersion": 2,
+      "expectedStatus": 409,
+      "matchedExpected": true
+    },
+    {
+      "name": "primary and newer guest remain active for root UI capture",
+      "status": 200,
+      "assignments": [
+        {
+          "id": "cmvpan8mb002j2yxkj25jln3d",
+          "type": "TRAINING_GUEST",
+          "teamId": "cmvpan8ev00052yxkn014octr",
+          "validFrom": "2026-10-01T00:00:00.000Z",
+          "validTo": null
+        },
+        {
+          "id": "sa_f203a340fa4cc9d003508ee1cdf309ba",
+          "type": "LEGACY_MEMBER",
+          "teamId": "cmvpan8eu00032yxkhgqocmqt",
+          "validFrom": "2026-07-01T00:00:00.000Z",
+          "validTo": null
+        },
+        {
+          "id": "cmvpan8m9002f2yxkrpzhm3tm",
+          "type": "PRIMARY_REGISTERED",
+          "teamId": "cmvpan8eu00032yxkhgqocmqt",
+          "validFrom": "2026-07-01T00:00:00.000Z",
+          "validTo": null
+        }
+      ],
+      "guestActive": true,
+      "expectedStatus": 200,
+      "matchedExpected": true
+    },
+    {
+      "name": "activity first page >20 same-time history",
+      "status": 200,
+      "items": 20,
+      "nextCursorPresent": true,
+      "seededEventsOnPage": 20,
+      "expectedStatus": 200,
+      "matchedExpected": true
+    },
+    {
+      "name": "activity second page equal-time traversal",
+      "status": 200,
+      "items": 2,
+      "nextCursorPresent": false,
+      "seededTotal": 25,
+      "seededSeen": 20,
+      "seededMissing": 5,
+      "observation": "Boundary skips remaining events sharing first-page timestamp if seededMissing>0",
+      "expectedStatus": 200,
+      "matchedExpected": true
+    },
+    {
+      "name": "accountless Person is a native sporting player",
+      "status": 200,
+      "accountLinked": false,
+      "assignmentCount": 1,
+      "attendanceEvidence": {},
+      "expectedStatus": 200,
+      "matchedExpected": true
+    },
+    {
+      "name": "coach invitation denied",
+      "status": 403,
+      "expectedStatus": 403,
+      "matchedExpected": true
+    },
+    {
+      "name": "club admin system invitation denied",
+      "status": 403,
+      "expectedStatus": 403,
+      "matchedExpected": true
+    },
+    {
+      "name": "operator invitation scopes to own club without external mail",
+      "status": 201,
+      "tokenReturnedOnce": true,
+      "clubForcedOwn": true,
+      "cacheControl": "no-store",
+      "expectedStatus": 201,
+      "matchedExpected": true
+    },
+    {
+      "name": "public invitation completion",
+      "status": 201,
+      "role": "PLAYER",
+      "clubId": "cmvpan8ep00002yxk07krhph2",
+      "expectedStatus": 201,
+      "matchedExpected": true,
+      "personLinkExposedInResponse": false,
+      "projectionCaveat": "publicUserSelect excludes personId; absence in response does not establish persisted linkage"
+    },
+    {
+      "name": "invitation single-use replay",
+      "status": 400,
+      "expectedStatus": [400, 401, 409],
+      "matchedExpected": true
+    },
+    {
+      "name": "reissue creates replacement operator token",
+      "status": 201,
+      "differentToken": true,
+      "noStore": true,
+      "expectedStatus": 201,
+      "matchedExpected": true
+    },
+    {
+      "name": "reissued old invitation rejected",
+      "status": 400,
+      "expectedStatus": [400, 401, 409],
+      "matchedExpected": true
+    },
+    {
+      "name": "admin can revoke pending invitation",
+      "status": 201,
+      "expectedStatus": [200, 201],
+      "matchedExpected": true
+    },
+    {
+      "name": "revoked invitation rejected",
+      "status": 400,
+      "expectedStatus": [400, 401, 409],
+      "matchedExpected": true
+    },
+    {
+      "name": "PLAYER roster projection verification",
+      "status": 200,
+      "rows": 7,
+      "nonSelfPersonIds": [
+        "cmvpan8f4000h2yxkyplpq88o",
+        "cmvpan8f0000b2yxkbttb0vf7",
+        "cmvpan8m4002b2yxktagolm8b"
+      ],
+      "includesAccountless": true,
+      "fields": [
+        "id",
+        "displayName",
+        "birthDate",
+        "playerProfile",
+        "staffProfile"
+      ],
+      "page": {
+        "limit": 100,
+        "nextCursor": null,
+        "total": 7,
+        "playerAssignments": 5,
+        "staffAssignments": 2
+      },
+      "rowsSummary": [
+        {
+          "assignmentId": "sa_f203a340fa4cc9d003508ee1cdf309ba",
+          "personId": "cmvpan8f2000f2yxk66gj6kwn",
+          "isSelf": true,
+          "type": "LEGACY_MEMBER",
+          "personFields": [
+            "id",
+            "displayName",
+            "birthDate",
+            "playerProfile",
+            "staffProfile"
+          ],
+          "namePresent": true,
+          "birthDatePresent": false,
+          "primaryPosition": null,
+          "staffTitlePresent": false
+        },
+        {
+          "assignmentId": "sa_ccd2a5fbbbadde549163b7231779a8b1",
+          "personId": "cmvpan8f4000h2yxkyplpq88o",
+          "isSelf": false,
+          "type": "LEGACY_MEMBER",
+          "personFields": [
+            "id",
+            "displayName",
+            "birthDate",
+            "playerProfile",
+            "staffProfile"
+          ],
+          "namePresent": true,
+          "birthDatePresent": false,
+          "primaryPosition": null,
+          "staffTitlePresent": false
+        },
+        {
+          "assignmentId": "sa_497315462cb03a3f3a477d9b37cdf131",
+          "personId": "cmvpan8f0000b2yxkbttb0vf7",
+          "isSelf": false,
+          "type": "LEGACY_MEMBER",
+          "personFields": [
+            "id",
+            "displayName",
+            "birthDate",
+            "playerProfile",
+            "staffProfile"
+          ],
+          "namePresent": true,
+          "birthDatePresent": false,
+          "primaryPosition": null,
+          "staffTitlePresent": false
+        },
+        {
+          "assignmentId": "cmvpan8ma002h2yxkb3gdgdkx",
+          "personId": "cmvpan8f4000h2yxkyplpq88o",
+          "isSelf": false,
+          "type": "PRIMARY_REGISTERED",
+          "personFields": [
+            "id",
+            "displayName",
+            "birthDate",
+            "playerProfile",
+            "staffProfile"
+          ],
+          "namePresent": true,
+          "birthDatePresent": false,
+          "primaryPosition": null,
+          "staffTitlePresent": false
+        },
+        {
+          "assignmentId": "cmvpan8m9002f2yxkrpzhm3tm",
+          "personId": "cmvpan8f2000f2yxk66gj6kwn",
+          "isSelf": true,
+          "type": "PRIMARY_REGISTERED",
+          "personFields": [
+            "id",
+            "displayName",
+            "birthDate",
+            "playerProfile",
+            "staffProfile"
+          ],
+          "namePresent": true,
+          "birthDatePresent": false,
+          "primaryPosition": null,
+          "staffTitlePresent": false
+        },
+        {
+          "assignmentId": "cmvpan8m7002d2yxkwv3k6kmr",
+          "personId": "cmvpan8m4002b2yxktagolm8b",
+          "isSelf": false,
+          "type": "PRIMARY_REGISTERED",
+          "personFields": [
+            "id",
+            "displayName",
+            "birthDate",
+            "playerProfile",
+            "staffProfile"
+          ],
+          "namePresent": true,
+          "birthDatePresent": false,
+          "primaryPosition": null,
+          "staffTitlePresent": false
+        },
+        {
+          "assignmentId": "cmvpan8m000272yxkrs6okt6r",
+          "personId": "cmvpan8f0000b2yxkbttb0vf7",
+          "isSelf": false,
+          "type": "STAFF",
+          "personFields": [
+            "id",
+            "displayName",
+            "birthDate",
+            "playerProfile",
+            "staffProfile"
+          ],
+          "namePresent": true,
+          "birthDatePresent": false,
+          "primaryPosition": null,
+          "staffTitlePresent": false
+        }
+      ],
+      "expectedStatus": 200,
+      "matchedExpected": true
+    },
+    {
+      "name": "assignment teamSeason fixture inspection",
+      "status": 200,
+      "assignments": [
+        {
+          "id": "cmvpan8mb002j2yxkj25jln3d",
+          "type": "TRAINING_GUEST",
+          "teamId": "cmvpan8ev00052yxkn014octr",
+          "teamSeasonId": null,
+          "teamSeason": null,
+          "validTo": null
+        },
+        {
+          "id": "sa_f203a340fa4cc9d003508ee1cdf309ba",
+          "type": "LEGACY_MEMBER",
+          "teamId": "cmvpan8eu00032yxkhgqocmqt",
+          "teamSeasonId": null,
+          "teamSeason": null,
+          "validTo": null
+        },
+        {
+          "id": "cmvpan8m9002f2yxkrpzhm3tm",
+          "type": "PRIMARY_REGISTERED",
+          "teamId": "cmvpan8eu00032yxkhgqocmqt",
+          "teamSeasonId": null,
+          "teamSeason": null,
+          "validTo": null
+        }
+      ],
+      "expectedStatus": 200,
+      "matchedExpected": true
+    },
+    {
+      "name": "selected season teamSeason resolution",
+      "status": 200,
+      "teamSeasonId": "cmvpan8me002n2yxkobfez9b0",
+      "seasonId": "cmvpan8mg002p2yxkc26z3kt0",
+      "expectedStatus": 200,
+      "matchedExpected": true
+    },
+    {
+      "name": "roster without teamSeason",
+      "status": 200,
+      "page": {
+        "limit": 100,
+        "nextCursor": null,
+        "total": 7,
+        "playerAssignments": 5,
+        "staffAssignments": 2
+      },
+      "personIds": [
+        "cmvpan8f2000f2yxk66gj6kwn",
+        "cmvpan8f4000h2yxkyplpq88o",
+        "cmvpan8f0000b2yxkbttb0vf7",
+        "cmvpan8m4002b2yxktagolm8b"
+      ],
+      "expectedStatus": 200,
+      "matchedExpected": true
+    },
+    {
+      "name": "roster with exact selected teamSeason",
+      "status": 200,
+      "page": {
+        "limit": 100,
+        "nextCursor": null,
+        "total": 0,
+        "playerAssignments": 0,
+        "staffAssignments": 0
+      },
+      "personIds": [],
+      "expectedStatus": 200,
+      "matchedExpected": true
+    },
+    {
+      "name": "end guest after explicit root capture-complete signal",
+      "status": 201,
+      "assignmentId": "cmvpan8mb002j2yxkj25jln3d",
+      "validTo": "2026-10-25T12:00:00.000Z",
+      "expectedStatus": 201,
+      "matchedExpected": true
+    },
+    {
+      "name": "former destination UI-equivalent hidden selection is rejected",
+      "status": 403,
+      "existingGrantRetained": true,
+      "expectedStatus": 403,
+      "matchedExpected": true
+    },
+    {
+      "name": "explicit empty-ID API revocation succeeds after guest ends",
+      "status": 200,
+      "noteId": "cmvpb0gzn00562ybgnfc9ddp1",
+      "grantCount": 0,
+      "version": 3,
+      "expectedStatus": 200,
+      "matchedExpected": true
+    },
+    {
+      "name": "original former-team grant preserved for root UI",
+      "status": 200,
+      "noteId": "cmvpaxumo00152ybgkcmc8wab",
+      "grantIds": ["cmvpan8ev00052yxkn014octr"],
+      "currentVersion": 3,
+      "expectedStatus": 200,
+      "matchedExpected": true
+    }
+  ],
+  "state": {
+    "guestEnded": true,
+    "noteId": "cmvpaxumo00152ybgkcmc8wab",
+    "noteVersion": 3,
+    "createdHistoryAssignmentIds": [
+      "cmvpaxuup001k2ybg1amd71j4",
+      "cmvpaxuvg001o2ybgxktygxgs",
+      "cmvpaxuwb001s2ybg11tmnzu0",
+      "cmvpaxuws001w2ybgx1phrx3j",
+      "cmvpaxuxl00202ybgqvo67ubs",
+      "cmvpaxuyf00242ybg5pg74h08",
+      "cmvpaxuyw00282ybgotmo9b8w",
+      "cmvpaxuzr002c2ybgwriuef74",
+      "cmvpaxv0i002g2ybgdi8qd3j8",
+      "cmvpaxv12002k2ybgcr8jm6mu",
+      "cmvpaxv1r002o2ybga6gicv78",
+      "cmvpaxv2a002s2ybg85ytr5ks",
+      "cmvpaxv2p002w2ybgwc7ofcue",
+      "cmvpaxv3700302ybgshps3jbn",
+      "cmvpaxv3y00342ybgenroolm6",
+      "cmvpaxv4700382ybg3e3681vg",
+      "cmvpaxv4z003c2ybgk4ia13yu",
+      "cmvpaxv5b003g2ybghhsvtbsg",
+      "cmvpaxv5p003k2ybgplu2x4xe",
+      "cmvpaxv6a003o2ybgkrr9odgo",
+      "cmvpaxv73003s2ybg9bfdty7e",
+      "cmvpaxv7e003w2ybg84ew93os",
+      "cmvpaxv7v00402ybgw0r9fyhs",
+      "cmvpaxv8b00442ybg9d1avthf",
+      "cmvpaxv8s00482ybgbvz3d653"
+    ],
+    "explicitRevokeProofNoteId": "cmvpb0gzn00562ybgnfc9ddp1"
+  },
+  "finishedAt": "2026-10-26T13:38:13.599Z",
+  "confirmedPlayerRosterLeak": {
+    "nonSelfPersons": 3,
+    "teamTotal": 7,
+    "policy": "SECURITY_MODEL.md149 says player only own Person; ADR0030:35-36 says PLAYER team total unavailable; squad.tsx47 denies roster UI",
+    "nonSelfAssignmentRows": 5,
+    "summaryNormalization": "Original nonSelfPersons5 counted assignment rows; unique nonSelfPersonIds has3. Actual HTTP response unchanged."
+  },
+  "phase2FinishedAt": "2026-10-26T13:40:14.890Z",
+  "evidenceLimitations": [
+    "HTTP-only, not UI automation",
+    "Birth dates NULL in synthetic fixture; exposed projection field is not proof of non-null DOB returned",
+    "Initial roster assignments have no teamSeasonId; exact-season zero is fixture/query semantics, not independently a defect",
+    "Invitation acceptance response excludes personId; no inference on persisted linkage"
+  ]
+}

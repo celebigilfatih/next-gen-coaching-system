@@ -1,5 +1,35 @@
 # Requirements
 
+## Ürün audit izlenebilirliği — 2026-10-26
+
+`9e9b109` tabanındaki coach/club-admin ürün incelemesi
+[audit raporunda](../30-quality/PRODUCT_AUDIT_2026-10-26.md) ve
+[bütün route/bileşen matrisinde](../30-quality/PRODUCT_AUDIT_MATRIX_2026-10-26.md)
+izlenir. Bu kayıt yeni özellik, veri modeli, güvenlik politikası veya production
+onayı değildir. Aşağıdaki tarihsel `Implemented` kanıtları korunur; yeni bulgunun
+etkilediği davranışın güncel kapanışı, ilgili açık backlog kabulüyle ayrıca
+doğrulanmalıdır. Audit'in kendisi remediation tamamlandı anlamına gelmez.
+
+Kanıt dereceleri: **HTTP** izole sentetik ortamda yetkili gerçek HTTP sonucu;
+**Browser** gerçek ekran/etkileşim gözlemi; **Statik** kaynak kontratı/akış
+incelemesi. Bir katmandaki kanıt diğer katmanın kabulü sayılmaz. Ayrıntılı hedef,
+revision, sınırlar ve artefaktlar audit raporundadır.
+
+| Mevcut gereksinim                                                  | Audit ile açılan doğrulama / tamamlama                                                                                                                                                                                                            | Kanıt derecesi                                                                                                                                                   | Takip durumu                                                                                |
+| ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| REQ-014 / REQ-021 — capability ve PLAYER self-scope                | Sporting roster çağrısı PLAYER'a başka Person kayıtları ve takım toplamı döndürüyor; tarihsel iki-kulüp/self-profile testleri bu farklı endpoint'in sınırını kapatmaz. Mevcut kabul edilmiş self-scope, projection ve toplamdan önce uygulanmalı. | HTTP — başka Person ve toplam dönüşü yeniden üretildi; kaynak/policy eşlendi. Sentetik fixture'da doğum tarihleri null; dolu tarih ifşası iddia edilmez.         | **Açık — BL-069**; güvenlik düzeltmesi ve negatif/regresyon kabulü yapılmadı.               |
+| REQ-022 — kontrollü not paylaşımı                                  | Oyuncunun eski takım ataması bittikten sonra var olan grant UI'da görünmez seçili değer olarak kalabilir; grant'i geri alma normal yüzeyden tamamlanamıyor.                                                                                       | Browser + Statik UI + HTTP — gizli eski seçimi tekrar göndermek 403; explicit boş-ID revoke 200 ve grant 0. UI üzerinde gerçek revoke kabulü ayrıca gerekir.     | **Açık — BL-070**; API'nin revoke desteklemesi UI kurtarmasını tamamlamaz.                  |
+| REQ-013 / REQ-015 / REQ-022 — tarih ve aktivite kanıtı             | Eşit zamanlı 25 assignment aktivitesinin cursor geçişinde 5'i erişilemez; UI ilk 20 sonrası nextCursor'ı kullanmıyor.                                                                                                                             | HTTP — 25 kayıt / 20 erişilen / 5 atlanan; Statik — UI continuation yok.                                                                                         | **Açık — BL-071**; saklı geçmişin silindiği iddia edilmez, tam traversal kabulü gerekir.    |
+| REQ-015 / REQ-021 — doğru oyuncu/takım bağlamı                     | Yeni guest ataması ana takım yerine header'a çıkar; current identity ve not hedefleri history page/asOf sonucuna bağımlı.                                                                                                                         | Browser — primary+newer guest header sapması; Statik — history page/current seçim ortak kaynaktan türetiliyor. History page/date varyantları ayrıca kabul ister. | **Açık — BL-072**; primary/guest ve tarihli okuma birbirinden dürüstçe ayrılmalı.           |
+| REQ-011 / REQ-028 — dashboard ile karma haftalık programın kapsamı | “Bugünün Programı” paneli training-only; aynı gün toplantı/maç Week'te var olsa da panelde yok. ADR-0040 karma görünümü Week için onaylamıştır; dashboard için kapsamı doğru adlandırmak veya ayrıca karma ajandayı onaylamak gerekir.            | Browser + Statik — sayfalar arası kapsam farkı.                                                                                                                  | **Açık — BL-073**; yeni karma dashboard özelliği kendiliğinden onaylanmış sayılmaz.         |
+| REQ-023 — profesyonel içerik yönetimi                              | Editorial durum kuyruğu status başına 100 ile kesilir ve nextCursor:null döner; UI kalan versiyonlara erişemez.                                                                                                                                   | Statik servis/UI kontratı; HTTP100/149 ve Browser043 kesilme doğrulandı; tam traversal düzeltmesi/kabulü yok.                                                    | **Açık — BL-074**; mevcut published koleksiyonun 120 olması queue acceptance yerine geçmez. |
+
+Person tabanlı katılım/seans review, oyun modeli, match participation, IDP,
+sportif grant edit/Person-account bağlama, medya/rakip, scouting ve player feedback
+artımları matriste **öneri / Proposed** olarak tutulur. Bunlar onaylı mevcut
+gereksinime sessizce eklenmez; kapsam/veri/yetki ve gerekiyorsa vendor/privacy
+kararından sonra ayrı CR/ADR ve kabul kriteri ister.
+
 ## REQ-033 — Beş maçlı A Takım haftası (Implemented, 2026-10-19)
 
 Explicit request / ADR-0047 / CR-034 / BL-068. Existing preview/apply and enrolled
@@ -195,3 +225,10 @@ sayılmaz; BL-043 In progress kalır.
 | REQ-021 | A Takım kadrosuna doğrudan ve kullanılabilir oyuncu diziniyle eriş         | ADR-0030                     | A Takım route'u çalışma takımını bozulmadan eşitler; responsive liste, URL filtre/sıra, deterministik cursor, Player 360 ve PLAYER self-scope testleri geçer                                                                 | Implemented — backend/frontend/E2E regression and Chrome route smoke verified                                                                                                                                               |
 | REQ-022 | Hesaptan bağımsız oyuncuya sürümlü ve takım kapsamlı teknik not ekle       | ADR-0031                     | Notlar Person'a bağlanır; rol/capability/tenant/grant sınırları, revision/409, arşiv/restore, gövde-log gizliliği ve anlaşılır Player 360 akışı testleri geçer                                                               | Implemented — unit/frontend, disposable PostgreSQL E2E, additive local migration and authenticated Chrome desktop flow verified; exact-size responsive evidence TBD                                                         |
 | REQ-023 | Profesyonel, sürümlü ve kaynak doğrulamalı egzersiz kütüphanesi sun        | ADR-0032–0034                | 120 özgün Türkçe taslak zorunlu profesyonel alanları/yaş dağılımını/tahtayı/checksum'u geçer; legacy kayıtlar korunur; self-review ve onaysız yayın reddedilir; katalog yalnız yayınlanmış sürümü gösterir                   | Partial — model, API/UI foundation, 120 DRAFT manifest, unit/disposable verification and idempotent retained DRAFT import implemented; independent review for other releases TBD; local publication complete under ADR-0041 |
+
+## Audit ek kabul izleri — 2026-10-26
+
+- REQ-022:409 sonrası yerel not taslağı kaybı Browser032/033 ile doğrulandı; [BL-075](../20-execution/BACKLOG.md) açık.
+- REQ-011/015/027:390px ortak hedef ve taşma ölçümleri [BL-076](../20-execution/BACKLOG.md) açık kabul işidir; eski responsive Done kayıtları bu yeni kusurları kapatmaz.
+
+- REQ-023/027: kullanıcı bildirimi sonrası hazır120 yayımlı içeriğin yalnız4 çizim geometrisi kullandığı salt okunur doğrulandı. Çalışma/çizim eşleşmesi [A16](../30-quality/PRODUCT_AUDIT_2026-10-26.md) ve [BL-077](../20-execution/BACKLOG.md) mevcut-kapsam tamamlama işidir.

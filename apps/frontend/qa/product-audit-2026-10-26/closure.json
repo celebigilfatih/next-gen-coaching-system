@@ -1,0 +1,24 @@
+{
+  "retainedDatabase": "ngcs_local_session_dev",
+  "businessTablesCompared": 41,
+  "allBeforeAfterCountAndHashesEqual": true,
+  "excludedTables": [
+    "RefreshSession",
+    "SecurityAuditEvent",
+    "_prisma_migrations"
+  ],
+  "temporaryApiPort4017Stopped": true,
+  "temporaryUiPort3517Stopped": true,
+  "temporaryPidsStopped": [37996, 35480, 14508],
+  "canonicalListenersPreserved": {
+    "4000": 39636,
+    "3132": 27748
+  },
+  "disposableDatabasesPreserved": [
+    "ngcs_product_audit_20261026",
+    "ngcs_product_audit_20261026_v2"
+  ],
+  "browserViewportReset": true,
+  "temporaryTabClosed": true,
+  "noCommitOrPush": true
+}

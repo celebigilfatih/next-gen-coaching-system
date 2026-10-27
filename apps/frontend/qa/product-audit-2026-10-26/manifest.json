@@ -1,0 +1,2161 @@
+{
+  "baseline": "9e9b109831f7e67b729ea9ba2e27cfff1619d13c",
+  "accepted": [
+    {
+      "name": "001-login-desktop",
+      "file": "001-login-desktop.png",
+      "url": "http://127.0.0.1:3517/login",
+      "height": 960,
+      "scrollWidth": 1536,
+      "width": 1536,
+      "headings": [
+        "    - heading \"HaftayÄ± planla. Sahaya hazÄ±r Ã§Ä±k.\" [level=1]:",
+        "  - heading \"Ã‡alÄ±ÅŸma alanÄ±na gir\" [level=2]"
+      ],
+      "pixels": [1536, 960],
+      "sha256": "62bffb8fee0ee15e2efed589facc2387cf0d4587b9f5b09567001fd0d34a4134",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1536, 960]
+    },
+    {
+      "name": "001-login-tablet",
+      "file": "001-login-tablet.png",
+      "url": "http://127.0.0.1:3517/login",
+      "height": 768,
+      "scrollWidth": 1024,
+      "width": 1024,
+      "headings": [
+        "    - heading \"HaftayÄ± planla. Sahaya hazÄ±r Ã§Ä±k.\" [level=1]:",
+        "  - heading \"Ã‡alÄ±ÅŸma alanÄ±na gir\" [level=2]"
+      ],
+      "pixels": [1024, 768],
+      "sha256": "84ffd1892dd52fe7758bbba6947b28305c70c6d6732e4630234c192fb99ca2c0",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1024, 768]
+    },
+    {
+      "name": "002-coach-dashboard-desktop",
+      "file": "002-coach-dashboard-desktop.png",
+      "url": "http://127.0.0.1:3517/app/dashboard",
+      "height": 960,
+      "scrollWidth": 1521,
+      "width": 1521,
+      "headings": [
+        "  - heading \"Ä°yi gÃ¼nler, KoÃ§\" [level=1]",
+        "  - heading \"BugÃ¼nÃ¼n ProgramÄ±\" [level=3]",
+        "  - heading \"Son Antrenman KaydÄ±\" [level=3]",
+        "  - heading \"TEST Gelecek Sezon Sonu Aktivasyon\" [level=2]",
+        "  - heading \"Kapsamdaki MaÃ§lar\" [level=3]",
+        "  - heading \"Son Antrenmanlar\" [level=3]",
+        "  - heading \"Planlama Durumu\" [level=3]",
+        "  - heading \"HÄ±zlÄ± EriÅŸim\" [level=3]"
+      ],
+      "pixels": [1521, 951],
+      "sha256": "db3969db32a5333ffb126cb5279a9702e15649e741eb2d3875dcc815ddeca5c3",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1536, 960]
+    },
+    {
+      "name": "002-coach-dashboard-mobile",
+      "file": "002-coach-dashboard-mobile.png",
+      "url": "http://127.0.0.1:3517/app/dashboard",
+      "height": 844,
+      "scrollWidth": 375,
+      "width": 375,
+      "headings": [
+        "  - heading \"Ä°yi gÃ¼nler, KoÃ§\" [level=1]",
+        "  - heading \"BugÃ¼nÃ¼n ProgramÄ±\" [level=3]",
+        "  - heading \"Son Antrenman KaydÄ±\" [level=3]",
+        "  - heading \"TEST Gelecek Sezon Sonu Aktivasyon\" [level=2]",
+        "  - heading \"Kapsamdaki MaÃ§lar\" [level=3]",
+        "  - heading \"Son Antrenmanlar\" [level=3]",
+        "  - heading \"Planlama Durumu\" [level=3]",
+        "  - heading \"HÄ±zlÄ± EriÅŸim\" [level=3]"
+      ],
+      "pixels": [375, 812],
+      "sha256": "f8533155ea22e6825261d755d7498822ba80519fac58d173da00ac8f483c31a0",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [390, 844]
+    },
+    {
+      "name": "002-coach-dashboard-tablet",
+      "file": "002-coach-dashboard-tablet.png",
+      "url": "http://127.0.0.1:3517/app/dashboard",
+      "height": 768,
+      "scrollWidth": 1009,
+      "width": 1009,
+      "headings": [
+        "  - heading \"Ä°yi gÃ¼nler, KoÃ§\" [level=1]",
+        "  - heading \"BugÃ¼nÃ¼n ProgramÄ±\" [level=3]",
+        "  - heading \"Son Antrenman KaydÄ±\" [level=3]",
+        "  - heading \"TEST Gelecek Sezon Sonu Aktivasyon\" [level=2]",
+        "  - heading \"Kapsamdaki MaÃ§lar\" [level=3]",
+        "  - heading \"Son Antrenmanlar\" [level=3]",
+        "  - heading \"Planlama Durumu\" [level=3]",
+        "  - heading \"HÄ±zlÄ± EriÅŸim\" [level=3]"
+      ],
+      "pixels": [1009, 757],
+      "sha256": "466a9686ed447b8a5404a07a8b9fc47f5abe4f98d2cd9c4a4efeb11bf77e6b2d",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1024, 768]
+    },
+    {
+      "name": "003-coach-week-desktop",
+      "file": "003-coach-week-desktop.png",
+      "url": "http://127.0.0.1:3517/app/week",
+      "height": 960,
+      "scrollWidth": 1521,
+      "width": 1521,
+      "headings": [
+        "  - heading \"HaftalÄ±k Plan\" [level=1]",
+        "  - heading \"26\" [level=3]",
+        "  - heading \"27\" [level=3]",
+        "  - heading \"28\" [level=3]",
+        "  - heading \"29\" [level=3]",
+        "  - heading \"30\" [level=3]",
+        "  - heading \"31\" [level=3]",
+        "  - heading \"1\" [level=3]"
+      ],
+      "pixels": [1521, 951],
+      "sha256": "5f9ce67dd59ab8cd79ee4f71682398cfe921b23658dda82ed1a9616c15b53e33",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1536, 960]
+    },
+    {
+      "name": "003-coach-week-mobile",
+      "file": "003-coach-week-mobile.png",
+      "url": "http://127.0.0.1:3517/app/week",
+      "height": 829,
+      "scrollWidth": 381,
+      "width": 375,
+      "headings": [
+        "  - heading \"HaftalÄ±k Plan\" [level=1]",
+        "  - heading \"26\" [level=3]",
+        "  - heading \"27\" [level=3]",
+        "  - heading \"28\" [level=3]",
+        "  - heading \"29\" [level=3]",
+        "  - heading \"30\" [level=3]",
+        "  - heading \"31\" [level=3]",
+        "  - heading \"1\" [level=3]"
+      ],
+      "pixels": [375, 812],
+      "sha256": "75e38ad0062fe32576465c87d0b63df24077fb919147cd46a3539902d1ccacf4",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [390, 844]
+    },
+    {
+      "name": "003-coach-week-tablet",
+      "file": "003-coach-week-tablet.png",
+      "url": "http://127.0.0.1:3517/app/week",
+      "height": 768,
+      "scrollWidth": 1009,
+      "width": 1009,
+      "headings": [
+        "  - heading \"HaftalÄ±k Plan\" [level=1]",
+        "  - heading \"26\" [level=3]",
+        "  - heading \"27\" [level=3]",
+        "  - heading \"28\" [level=3]",
+        "  - heading \"29\" [level=3]",
+        "  - heading \"30\" [level=3]",
+        "  - heading \"31\" [level=3]",
+        "  - heading \"1\" [level=3]"
+      ],
+      "pixels": [1009, 757],
+      "sha256": "d9954a862e2bb44ecacb374e9495034a74d28f64409c30a23f29a8d2ae56b8ca",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1024, 768]
+    },
+    {
+      "name": "004-coach-trainings-desktop",
+      "file": "004-coach-trainings-desktop.png",
+      "url": "http://127.0.0.1:3517/app/trainings",
+      "height": 960,
+      "scrollWidth": 1536,
+      "width": 1536,
+      "headings": [
+        "  - heading \"Antrenman PlanlarÄ±\" [level=1]",
+        "    - heading \"Antrenman AkÄ±ÅŸlarÄ±\" [level=2]"
+      ],
+      "pixels": [1536, 960],
+      "sha256": "0c71479a713e91cc68642244f8a4c3cf3bdb9678f22ed67233983d9c99dfd534",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1536, 960]
+    },
+    {
+      "name": "004-coach-trainings-mobile",
+      "file": "004-coach-trainings-mobile.png",
+      "url": "http://127.0.0.1:3517/app/trainings",
+      "height": 844,
+      "scrollWidth": 375,
+      "width": 375,
+      "headings": [
+        "  - heading \"Antrenman PlanlarÄ±\" [level=1]",
+        "    - heading \"Antrenman AkÄ±ÅŸlarÄ±\" [level=2]"
+      ],
+      "pixels": [375, 812],
+      "sha256": "501e260bae9453d547b1f364aad60f56d21e6ae49160f1f18d7cb16bd30bdea3",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [390, 844]
+    },
+    {
+      "name": "004-coach-trainings-tablet",
+      "file": "004-coach-trainings-tablet.png",
+      "url": "http://127.0.0.1:3517/app/trainings",
+      "height": 768,
+      "scrollWidth": 1009,
+      "width": 1009,
+      "headings": [
+        "  - heading \"Antrenman PlanlarÄ±\" [level=1]",
+        "    - heading \"Antrenman AkÄ±ÅŸlarÄ±\" [level=2]"
+      ],
+      "pixels": [1009, 757],
+      "sha256": "e4f999f34b17f3d583bb5cc51d96844644e8f9f08283d151722f32bf6797e416",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1024, 768]
+    },
+    {
+      "name": "005-coach-library-desktop",
+      "file": "005-coach-library-desktop.png",
+      "url": "http://127.0.0.1:3517/app/library",
+      "height": 960,
+      "scrollWidth": 1521,
+      "width": 1521,
+      "headings": [
+        "  - heading \"Egzersiz KÃ¼tÃ¼phanesi\" [level=1]",
+        "  - heading \"HazÄ±r Egzersizler\" [level=2]"
+      ],
+      "pixels": [1521, 951],
+      "sha256": "0cf44d70f4a07f4227549b657753f68eec0bf385e1de670d204ad1f9e76e174a",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1536, 960]
+    },
+    {
+      "name": "005-coach-library-mobile",
+      "file": "005-coach-library-mobile.png",
+      "url": "http://127.0.0.1:3517/app/library",
+      "height": 844,
+      "scrollWidth": 375,
+      "width": 375,
+      "headings": ["  - heading \"Egzersiz KÃ¼tÃ¼phanesi\" [level=1]"],
+      "pixels": [375, 812],
+      "sha256": "a360da07f467e46a427bb545f6f925567550064ff69497373e2ebad2a56a9ff0",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [390, 844]
+    },
+    {
+      "name": "005-coach-library-tablet",
+      "file": "005-coach-library-tablet.png",
+      "url": "http://127.0.0.1:3517/app/library",
+      "height": 768,
+      "scrollWidth": 1009,
+      "width": 1009,
+      "headings": [
+        "  - heading \"Egzersiz KÃ¼tÃ¼phanesi\" [level=1]",
+        "  - heading \"HazÄ±r Egzersizler\" [level=2]"
+      ],
+      "pixels": [1009, 757],
+      "sha256": "82eb26d8fa0eb0d3e80f9b44ec1f2026952139adcd83e5fc1a76961407313cf4",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1024, 768]
+    },
+    {
+      "name": "006-coach-tactics-desktop",
+      "file": "006-coach-tactics-desktop.png",
+      "url": "http://127.0.0.1:3517/app/tactics",
+      "height": 960,
+      "scrollWidth": 1521,
+      "width": 1521,
+      "headings": [
+        "  - heading \"Taktik TahtasÄ±\" [level=1]",
+        "    - heading \"Taktik Ã‡alÄ±ÅŸmalarÄ±\" [level=2]"
+      ],
+      "pixels": [1521, 951],
+      "sha256": "8f87cf33396314f656d94a476371c61766c83f34aaa9afe62043125fc4da09ac",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1536, 960]
+    },
+    {
+      "name": "006-coach-tactics-mobile",
+      "file": "006-coach-tactics-mobile.png",
+      "url": "http://127.0.0.1:3517/app/tactics",
+      "height": 844,
+      "scrollWidth": 375,
+      "width": 375,
+      "headings": [
+        "  - heading \"Taktik TahtasÄ±\" [level=1]",
+        "    - heading \"Taktik Ã‡alÄ±ÅŸmalarÄ±\" [level=2]"
+      ],
+      "pixels": [375, 812],
+      "sha256": "1591d691f596f996a99df0c25d38614ff6e44e8ec2a6ba64920ffcdd5d93ae1e",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [390, 844]
+    },
+    {
+      "name": "006-coach-tactics-tablet",
+      "file": "006-coach-tactics-tablet.png",
+      "url": "http://127.0.0.1:3517/app/tactics",
+      "height": 768,
+      "scrollWidth": 1009,
+      "width": 1009,
+      "headings": [
+        "  - heading \"Taktik TahtasÄ±\" [level=1]",
+        "    - heading \"Taktik Ã‡alÄ±ÅŸmalarÄ±\" [level=2]"
+      ],
+      "pixels": [1009, 757],
+      "sha256": "04b5a1e77be81c2b159d7673c09e43adeeb4fc7eefc00ae0e9bef5cdd78d5046",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1024, 768]
+    },
+    {
+      "name": "007-coach-matches-desktop",
+      "file": "007-coach-matches-desktop.png",
+      "url": "http://127.0.0.1:3517/app/matches",
+      "height": 960,
+      "scrollWidth": 1536,
+      "width": 1536,
+      "headings": [
+        "  - heading \"MaÃ§ Takvimi\" [level=1]",
+        "    - heading \"Kapsamdaki MaÃ§lar\" [level=2]"
+      ],
+      "pixels": [1536, 960],
+      "sha256": "82d9acbaf4d088ee4b00da5134e60dbd8829eadfa107a555cdc33fb9c685fac9",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1536, 960]
+    },
+    {
+      "name": "007-coach-matches-mobile",
+      "file": "007-coach-matches-mobile.png",
+      "url": "http://127.0.0.1:3517/app/matches",
+      "height": 844,
+      "scrollWidth": 375,
+      "width": 375,
+      "headings": [
+        "  - heading \"MaÃ§ Takvimi\" [level=1]",
+        "    - heading \"Kapsamdaki MaÃ§lar\" [level=2]"
+      ],
+      "pixels": [375, 812],
+      "sha256": "2a92ad56f464a9f9f877494cc4433ee38a91d9177cf79dc8255b7a9d2dfe210a",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [390, 844]
+    },
+    {
+      "name": "007-coach-matches-tablet",
+      "file": "007-coach-matches-tablet.png",
+      "url": "http://127.0.0.1:3517/app/matches",
+      "height": 768,
+      "scrollWidth": 1009,
+      "width": 1009,
+      "headings": [
+        "  - heading \"MaÃ§ Takvimi\" [level=1]",
+        "    - heading \"Kapsamdaki MaÃ§lar\" [level=2]"
+      ],
+      "pixels": [1009, 757],
+      "sha256": "a12a2116c0f93b79207e9d88bf5c47b04666ee0e97d08354e23b1c473222d91f",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1024, 768]
+    },
+    {
+      "name": "008-coach-first-team-desktop",
+      "file": "008-coach-first-team-desktop.png",
+      "url": "http://127.0.0.1:3517/app/teams/first-team",
+      "height": 960,
+      "scrollWidth": 1521,
+      "width": 1521,
+      "headings": [
+        "  - heading \"TEST A TakÄ±m\" [level=1]",
+        "    - heading \"TEST A TakÄ±m\" [level=2]",
+        "    - heading \"A TakÄ±m OyuncularÄ±\" [level=2]"
+      ],
+      "pixels": [1521, 960],
+      "sha256": "58d1bdbcb8f7e22634ac8dc6590fdea54741fb8fa51f731559ca65b7683c1999",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1536, 960]
+    },
+    {
+      "name": "008-coach-first-team-mobile",
+      "file": "008-coach-first-team-mobile.png",
+      "url": "http://127.0.0.1:3517/app/teams/first-team",
+      "height": 844,
+      "scrollWidth": 375,
+      "width": 375,
+      "headings": [
+        "  - heading \"TEST A TakÄ±m\" [level=1]",
+        "    - heading \"TEST A TakÄ±m\" [level=2]",
+        "    - heading \"A TakÄ±m OyuncularÄ±\" [level=2]"
+      ],
+      "pixels": [375, 812],
+      "sha256": "9468668214407c541211b944499fb9c10a9c420165da511419e7b05c6c39292b",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [390, 844]
+    },
+    {
+      "name": "008-coach-first-team-tablet",
+      "file": "008-coach-first-team-tablet.png",
+      "url": "http://127.0.0.1:3517/app/teams/first-team",
+      "height": 768,
+      "scrollWidth": 1009,
+      "width": 1009,
+      "headings": [
+        "  - heading \"TEST A TakÄ±m\" [level=1]",
+        "    - heading \"TEST A TakÄ±m\" [level=2]",
+        "    - heading \"A TakÄ±m OyuncularÄ±\" [level=2]"
+      ],
+      "pixels": [1009, 768],
+      "sha256": "4760d3d2ae2ab8e8d3e20fdae6f2fd36649996dd6723cf7ea9218b8ad663a29c",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1024, 768]
+    },
+    {
+      "name": "009-coach-academy-desktop",
+      "file": "009-coach-academy-desktop.png",
+      "url": "http://127.0.0.1:3517/app/teams/academy",
+      "height": 960,
+      "scrollWidth": 1536,
+      "width": 1536,
+      "headings": [
+        "  - heading \"TakÄ±m YÃ¶netimi\" [level=1]",
+        "    - heading \"AltyapÄ± TakÄ±mlarÄ±\" [level=2]",
+        "    - heading \"Aktif altyapÄ± takÄ±mÄ± yok\" [level=2]"
+      ],
+      "pixels": [1536, 960],
+      "sha256": "480508b85c5cbae95ebc0bdf280d89529797e1d9a5c416e1355b6e35995f6ee7",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1536, 960]
+    },
+    {
+      "name": "009-coach-academy-mobile",
+      "file": "009-coach-academy-mobile.png",
+      "url": "http://127.0.0.1:3517/app/teams/academy",
+      "height": 829,
+      "scrollWidth": 381,
+      "width": 375,
+      "headings": [
+        "  - heading \"TakÄ±m YÃ¶netimi\" [level=1]",
+        "    - heading \"AltyapÄ± TakÄ±mlarÄ±\" [level=2]",
+        "    - heading \"Aktif altyapÄ± takÄ±mÄ± yok\" [level=2]"
+      ],
+      "pixels": [375, 812],
+      "sha256": "a2aec56dd23e798a6589fba0e122d78047cdc1ceebeeadb9d40f79285259fb70",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [390, 844]
+    },
+    {
+      "name": "009-coach-academy-tablet",
+      "file": "009-coach-academy-tablet.png",
+      "url": "http://127.0.0.1:3517/app/teams/academy",
+      "height": 768,
+      "scrollWidth": 1009,
+      "width": 1009,
+      "headings": [
+        "  - heading \"TakÄ±m YÃ¶netimi\" [level=1]",
+        "    - heading \"AltyapÄ± TakÄ±mlarÄ±\" [level=2]",
+        "    - heading \"Aktif altyapÄ± takÄ±mÄ± yok\" [level=2]"
+      ],
+      "pixels": [1009, 757],
+      "sha256": "be32144b677b442e83cbdd04376b7805955a0de182d3c9990f186a9578f00265",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1024, 768]
+    },
+    {
+      "name": "010-coach-players-desktop",
+      "file": "010-coach-players-desktop.png",
+      "url": "http://127.0.0.1:3517/app/players",
+      "height": 960,
+      "scrollWidth": 1536,
+      "width": 1536,
+      "headings": [
+        "  - heading \"TEST A TakÄ±m OyuncularÄ±\" [level=1]",
+        "    - heading \"TakÄ±m OyuncularÄ±\" [level=2]"
+      ],
+      "pixels": [1536, 960],
+      "sha256": "9cee72998eb98bc2452463fe2989bb7d559a4728e04f68e4192fd10a96b107aa",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1536, 960]
+    },
+    {
+      "name": "010-coach-players-mobile",
+      "file": "010-coach-players-mobile.png",
+      "url": "http://127.0.0.1:3517/app/players",
+      "height": 844,
+      "scrollWidth": 375,
+      "width": 375,
+      "headings": [
+        "  - heading \"TEST A TakÄ±m OyuncularÄ±\" [level=1]",
+        "    - heading \"TakÄ±m OyuncularÄ±\" [level=2]"
+      ],
+      "pixels": [375, 812],
+      "sha256": "b0a190bb68ee7d05ee5b557188288b242150f8ad2ccd28217a16e0d06ea212c2",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [390, 844]
+    },
+    {
+      "name": "010-coach-players-tablet",
+      "file": "010-coach-players-tablet.png",
+      "url": "http://127.0.0.1:3517/app/players",
+      "height": 768,
+      "scrollWidth": 1009,
+      "width": 1009,
+      "headings": [
+        "  - heading \"TEST A TakÄ±m OyuncularÄ±\" [level=1]",
+        "    - heading \"TakÄ±m OyuncularÄ±\" [level=2]"
+      ],
+      "pixels": [1009, 757],
+      "sha256": "4732699ce2ec6811beb046d703b63b5650eee148e2ba942edcd3c9fb8708b4b5",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1024, 768]
+    },
+    {
+      "name": "011-coach-squad-desktop",
+      "file": "011-coach-squad-desktop.png",
+      "url": "http://127.0.0.1:3517/app/squad",
+      "height": 960,
+      "scrollWidth": 1521,
+      "width": 1521,
+      "headings": [
+        "  - heading \"Kadro\" [level=1]",
+        "    - heading \"GÃ¼ncel Oyuncular\" [level=2]",
+        "    - heading \"Oyuncu bulunamadÄ±\" [level=2]"
+      ],
+      "pixels": [1521, 951],
+      "sha256": "1c2c69ee0ff0ad2576cc071001385a47416f1227b9cd418045ecb61bd5e1e144",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1536, 960]
+    },
+    {
+      "name": "011-coach-squad-mobile",
+      "file": "011-coach-squad-mobile.png",
+      "url": "http://127.0.0.1:3517/app/squad",
+      "height": 844,
+      "scrollWidth": 375,
+      "width": 375,
+      "headings": [
+        "  - heading \"Kadro\" [level=1]",
+        "    - heading \"GÃ¼ncel Oyuncular\" [level=2]",
+        "    - heading \"Oyuncu bulunamadÄ±\" [level=2]"
+      ],
+      "pixels": [375, 812],
+      "sha256": "c3c914e3c7118bbc01cd3a3701939c041a31434f69133910dc693551263a9542",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [390, 844]
+    },
+    {
+      "name": "011-coach-squad-tablet",
+      "file": "011-coach-squad-tablet.png",
+      "url": "http://127.0.0.1:3517/app/squad",
+      "height": 768,
+      "scrollWidth": 1009,
+      "width": 1009,
+      "headings": [
+        "  - heading \"Kadro\" [level=1]",
+        "    - heading \"GÃ¼ncel Oyuncular\" [level=2]",
+        "    - heading \"Oyuncu bulunamadÄ±\" [level=2]"
+      ],
+      "pixels": [1009, 757],
+      "sha256": "fe6adaa5264518a1b1680016e2f05d10d1c316971a86e33a4d8bbb92d3b534aa",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1024, 768]
+    },
+    {
+      "name": "012-coach-attendance-desktop",
+      "file": "012-coach-attendance-desktop.png",
+      "url": "http://127.0.0.1:3517/app/attendance",
+      "height": 960,
+      "scrollWidth": 1536,
+      "width": 1536,
+      "headings": [
+        "  - heading \"Yoklama\" [level=1]",
+        "    - heading \"Yoklama Listesi\" [level=2]",
+        "    - heading \"TEST Gelecek Sezon Sonu Aktivasyon\" [level=3]",
+        "    - heading \"TEST Egzersiz Ekleme PlanÄ±\" [level=3]",
+        "    - heading \"TEST BugÃ¼nkÃ¼ Teknik Antrenman\" [level=3]"
+      ],
+      "pixels": [1536, 960],
+      "sha256": "862ac99ae345a891ad3c52338efb326aaef597aee9588ba64ee50bfe04669302",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1536, 960]
+    },
+    {
+      "name": "012-coach-attendance-mobile",
+      "file": "012-coach-attendance-mobile.png",
+      "url": "http://127.0.0.1:3517/app/attendance",
+      "height": 844,
+      "scrollWidth": 375,
+      "width": 375,
+      "headings": [
+        "  - heading \"Yoklama\" [level=1]",
+        "    - heading \"Yoklama Listesi\" [level=2]",
+        "    - heading \"TEST Gelecek Sezon Sonu Aktivasyon\" [level=3]",
+        "    - heading \"TEST Egzersiz Ekleme PlanÄ±\" [level=3]",
+        "    - heading \"TEST BugÃ¼nkÃ¼ Teknik Antrenman\" [level=3]"
+      ],
+      "pixels": [375, 812],
+      "sha256": "8402918c3f9821394a7334f05b2cfe0558b7a5adbfe23a1c87b489dd60777370",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [390, 844]
+    },
+    {
+      "name": "012-coach-attendance-tablet",
+      "file": "012-coach-attendance-tablet.png",
+      "url": "http://127.0.0.1:3517/app/attendance",
+      "height": 768,
+      "scrollWidth": 1009,
+      "width": 1009,
+      "headings": [
+        "  - heading \"Yoklama\" [level=1]",
+        "    - heading \"Yoklama Listesi\" [level=2]",
+        "    - heading \"TEST Gelecek Sezon Sonu Aktivasyon\" [level=3]",
+        "    - heading \"TEST Egzersiz Ekleme PlanÄ±\" [level=3]",
+        "    - heading \"TEST BugÃ¼nkÃ¼ Teknik Antrenman\" [level=3]"
+      ],
+      "pixels": [1009, 757],
+      "sha256": "5075f41b7c04b7de34c1efb9afbe978f66ff51fe2927c5b028dbbf94ebdd1e74",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1024, 768]
+    },
+    {
+      "name": "013-coach-settings-desktop",
+      "file": "013-coach-settings-desktop.png",
+      "url": "http://127.0.0.1:3517/app/settings",
+      "height": 960,
+      "scrollWidth": 1536,
+      "width": 1536,
+      "headings": [
+        "  - heading \"Ayarlar\" [level=1]",
+        "  - heading \"Profil Ã¶zeti\" [level=3]",
+        "  - heading \"Aktif baÄŸlam\" [level=3]",
+        "  - heading \"Oturum gÃ¼venliÄŸi\" [level=3]",
+        "    - heading \"GÃ¼venli oturum\" [level=5]"
+      ],
+      "pixels": [1536, 960],
+      "sha256": "56e520c8c7d9e8fc321961635147bbad53800b5e4d7e54e42f962515d7932fdb",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1536, 960]
+    },
+    {
+      "name": "013-coach-settings-mobile",
+      "file": "013-coach-settings-mobile.png",
+      "url": "http://127.0.0.1:3517/app/settings",
+      "height": 844,
+      "scrollWidth": 375,
+      "width": 375,
+      "headings": [
+        "  - heading \"Ayarlar\" [level=1]",
+        "  - heading \"Profil Ã¶zeti\" [level=3]",
+        "  - heading \"Aktif baÄŸlam\" [level=3]",
+        "  - heading \"Oturum gÃ¼venliÄŸi\" [level=3]",
+        "    - heading \"GÃ¼venli oturum\" [level=5]"
+      ],
+      "pixels": [375, 812],
+      "sha256": "686f5274571cf87290743c0d2c808b55dd67902637d37efb6f1eb1e695a2c2b8",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [390, 844]
+    },
+    {
+      "name": "013-coach-settings-tablet",
+      "file": "013-coach-settings-tablet.png",
+      "url": "http://127.0.0.1:3517/app/settings",
+      "height": 768,
+      "scrollWidth": 1009,
+      "width": 1009,
+      "headings": [
+        "  - heading \"Ayarlar\" [level=1]",
+        "  - heading \"Profil Ã¶zeti\" [level=3]",
+        "  - heading \"Aktif baÄŸlam\" [level=3]",
+        "  - heading \"Oturum gÃ¼venliÄŸi\" [level=3]",
+        "    - heading \"GÃ¼venli oturum\" [level=5]"
+      ],
+      "pixels": [1009, 757],
+      "sha256": "d3483c7c35fa5a95671fae95643aa9d847c9ad79488d0185c9575a587c97e96c",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1024, 768]
+    },
+    {
+      "name": "014-player-primary-guest-desktop",
+      "file": "014-player-primary-guest-desktop.png",
+      "url": "http://127.0.0.1:3517/app/players/cmvpan8f2000f2yxk66gj6kwn",
+      "height": 960,
+      "scrollWidth": 1521,
+      "width": 1521,
+      "headings": [
+        "    - heading \"TEST Oyuncu Bir\" [level=1]",
+        "    - heading \"Futbol profili\" [level=3]",
+        "    - heading \"Sportif uygunluk\" [level=3]",
+        "    - heading \"AÃ§Ä±k takipler\" [level=3]",
+        "    - heading \"Son notlar\" [level=3]",
+        "    - heading \"Son aktiviteler\" [level=3]"
+      ],
+      "pixels": [1521, 951],
+      "sha256": "a9358cf81049ae758b23dc0a1523d2735bd3a907fb66273b2af89f3376f4819b",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1536, 960]
+    },
+    {
+      "name": "014-player-primary-guest-mobile",
+      "file": "014-player-primary-guest-mobile.png",
+      "url": "http://127.0.0.1:3517/app/players/cmvpan8f2000f2yxk66gj6kwn",
+      "height": 829,
+      "scrollWidth": 381,
+      "width": 375,
+      "headings": [
+        "    - heading \"TEST Oyuncu Bir\" [level=1]",
+        "    - heading \"Futbol profili\" [level=3]",
+        "    - heading \"Sportif uygunluk\" [level=3]",
+        "    - heading \"AÃ§Ä±k takipler\" [level=3]",
+        "    - heading \"Son notlar\" [level=3]",
+        "    - heading \"Son aktiviteler\" [level=3]"
+      ],
+      "pixels": [375, 812],
+      "sha256": "5ad1a9622f39bd28b439dbec9d073da5343bf73de44d3b23351719bc7ebf28fd",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [390, 844]
+    },
+    {
+      "name": "014-player-primary-guest-tablet",
+      "file": "014-player-primary-guest-tablet.png",
+      "url": "http://127.0.0.1:3517/app/players/cmvpan8f2000f2yxk66gj6kwn",
+      "height": 768,
+      "scrollWidth": 1009,
+      "width": 1009,
+      "headings": [
+        "    - heading \"TEST Oyuncu Bir\" [level=1]",
+        "    - heading \"Futbol profili\" [level=3]",
+        "    - heading \"Sportif uygunluk\" [level=3]",
+        "    - heading \"AÃ§Ä±k takipler\" [level=3]",
+        "    - heading \"Son notlar\" [level=3]",
+        "    - heading \"Son aktiviteler\" [level=3]"
+      ],
+      "pixels": [1009, 757],
+      "sha256": "28bece1f82c05e019fd7d2851f5ef9d6ceb824bec2f82cf84b0bba44464f8bea",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1024, 768]
+    },
+    {
+      "name": "015-library-filters-desktop",
+      "file": "015-library-filters-desktop.png",
+      "url": "http://127.0.0.1:3517/app/library",
+      "height": 960,
+      "scrollWidth": 1536,
+      "width": 1536,
+      "headings": [
+        "  - heading [level=1]: Egzersiz KÃ¼tÃ¼phanesi",
+        "  - heading [level=2]: HazÄ±r Egzersizler",
+        "  - heading \"Egzersiz filtreleri\" [level=2]"
+      ],
+      "pixels": [1536, 960],
+      "sha256": "8bb27c3a712292991dbc7d4dab017a096019bf521c9382c72b6afc1dc75487b9",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1536, 960]
+    },
+    {
+      "name": "015-library-filters-mobile",
+      "file": "015-library-filters-mobile.png",
+      "url": "http://127.0.0.1:3517/app/library",
+      "height": 844,
+      "scrollWidth": 390,
+      "width": 390,
+      "headings": [
+        "  - heading [level=1]: Egzersiz KÃ¼tÃ¼phanesi",
+        "  - heading \"Egzersiz filtreleri\" [level=2]"
+      ],
+      "pixels": [390, 844],
+      "sha256": "578bf1a7a0d4265e98b66d49c65c3675db5d4240d951bc545d61185e4846fe22",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [390, 844]
+    },
+    {
+      "name": "015-library-filters-tablet",
+      "file": "015-library-filters-tablet.png",
+      "url": "http://127.0.0.1:3517/app/library",
+      "height": 768,
+      "scrollWidth": 1024,
+      "width": 1024,
+      "headings": [
+        "  - heading [level=1]: Egzersiz KÃ¼tÃ¼phanesi",
+        "  - heading [level=2]: HazÄ±r Egzersizler",
+        "  - heading \"Egzersiz filtreleri\" [level=2]"
+      ],
+      "pixels": [1024, 768],
+      "sha256": "9f4056d414db32f26077692984456c99c991f4e346a40471fa0324374c2abe37",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1024, 768]
+    },
+    {
+      "name": "016-library-preview-content-desktop",
+      "file": "016-library-preview-content-desktop.png",
+      "url": "http://127.0.0.1:3517/app/library",
+      "height": 960,
+      "scrollWidth": 1536,
+      "width": 1536,
+      "headings": [
+        "  - heading [level=1]: Egzersiz KÃ¼tÃ¼phanesi",
+        "  - heading [level=2]: HazÄ±r Egzersizler",
+        "  - heading \"A TakÄ±m Â· KÄ±sa Oyun ve YansÄ±tma â€” Rol Senaryosu\" [level=2]",
+        "    - heading \"Organizasyon\" [level=3]",
+        "    - heading \"Uygulama\" [level=3]",
+        "    - heading \"KoÃ§luk noktalarÄ±\" [level=3]",
+        "    - heading \"YaÅŸ uyarlamasÄ±\" [level=3]",
+        "    - heading \"Ä°lerletme\" [level=3]"
+      ],
+      "pixels": [1536, 960],
+      "sha256": "f70983e2ef08cb5df71c55899b16069f174065277ff41a32ed42c108fd01ee27",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1536, 960]
+    },
+    {
+      "name": "016-library-preview-content-mobile",
+      "file": "016-library-preview-content-mobile.png",
+      "url": "http://127.0.0.1:3517/app/library",
+      "height": 844,
+      "scrollWidth": 390,
+      "width": 390,
+      "headings": [
+        "  - heading [level=1]: Egzersiz KÃ¼tÃ¼phanesi",
+        "  - heading \"A TakÄ±m Â· KÄ±sa Oyun ve YansÄ±tma â€” Rol Senaryosu\" [level=2]",
+        "    - heading \"Organizasyon\" [level=3]",
+        "    - heading \"Uygulama\" [level=3]",
+        "    - heading \"KoÃ§luk noktalarÄ±\" [level=3]",
+        "    - heading \"YaÅŸ uyarlamasÄ±\" [level=3]",
+        "    - heading \"Ä°lerletme\" [level=3]",
+        "    - heading \"KolaylaÅŸtÄ±rma\" [level=3]"
+      ],
+      "pixels": [390, 844],
+      "sha256": "419d01d4513bdb6f9ce7fb80af49ff40644fb1667ec2f52bb716ce562f6c0723",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [390, 844]
+    },
+    {
+      "name": "016-library-preview-content-tablet",
+      "file": "016-library-preview-content-tablet.png",
+      "url": "http://127.0.0.1:3517/app/library",
+      "height": 768,
+      "scrollWidth": 1024,
+      "width": 1024,
+      "headings": [
+        "  - heading [level=1]: Egzersiz KÃ¼tÃ¼phanesi",
+        "  - heading [level=2]: HazÄ±r Egzersizler",
+        "  - heading \"A TakÄ±m Â· KÄ±sa Oyun ve YansÄ±tma â€” Rol Senaryosu\" [level=2]",
+        "    - heading \"Organizasyon\" [level=3]",
+        "    - heading \"Uygulama\" [level=3]",
+        "    - heading \"KoÃ§luk noktalarÄ±\" [level=3]",
+        "    - heading \"YaÅŸ uyarlamasÄ±\" [level=3]",
+        "    - heading \"Ä°lerletme\" [level=3]"
+      ],
+      "pixels": [1024, 768],
+      "sha256": "8935833ecb2684a73b2102a6f43e3078d3d08132a69fcad50a15b99278765675",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1024, 768]
+    },
+    {
+      "name": "017-library-preview-board-desktop",
+      "file": "017-library-preview-board-desktop.png",
+      "url": "http://127.0.0.1:3517/app/library",
+      "height": 960,
+      "scrollWidth": 1536,
+      "width": 1536,
+      "headings": [
+        "  - heading [level=1]: Egzersiz KÃ¼tÃ¼phanesi",
+        "  - heading [level=2]: HazÄ±r Egzersizler",
+        "  - heading \"A TakÄ±m Â· KÄ±sa Oyun ve YansÄ±tma â€” Rol Senaryosu\" [level=2]"
+      ],
+      "pixels": [1536, 960],
+      "sha256": "65e86909b4d14cfc19acd90f5bf4f96e59236d1fbf272bd9d5a97096e514fae6",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1536, 960]
+    },
+    {
+      "name": "017-library-preview-board-mobile",
+      "file": "017-library-preview-board-mobile.png",
+      "url": "http://127.0.0.1:3517/app/library",
+      "height": 844,
+      "scrollWidth": 390,
+      "width": 390,
+      "headings": [
+        "  - heading [level=1]: Egzersiz KÃ¼tÃ¼phanesi",
+        "  - heading \"A TakÄ±m Â· KÄ±sa Oyun ve YansÄ±tma â€” Rol Senaryosu\" [level=2]"
+      ],
+      "pixels": [390, 844],
+      "sha256": "6f4b758439b5c4f5c98b2293edb6001614eccf79643a575e26f1c06f79402d26",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [390, 844]
+    },
+    {
+      "name": "017-library-preview-board-tablet",
+      "file": "017-library-preview-board-tablet.png",
+      "url": "http://127.0.0.1:3517/app/library",
+      "height": 768,
+      "scrollWidth": 1024,
+      "width": 1024,
+      "headings": [
+        "  - heading [level=1]: Egzersiz KÃ¼tÃ¼phanesi",
+        "  - heading [level=2]: HazÄ±r Egzersizler",
+        "  - heading \"A TakÄ±m Â· KÄ±sa Oyun ve YansÄ±tma â€” Rol Senaryosu\" [level=2]"
+      ],
+      "pixels": [1024, 768],
+      "sha256": "bbb47b156e0b04364105c88d5059d7b7d0926089b67d619b7759ac23d3da7062",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1024, 768]
+    },
+    {
+      "name": "018-library-detail-desktop",
+      "file": "018-library-detail-desktop.png",
+      "url": "http://127.0.0.1:3517/app/library/ngcs-starter-v1-senior-24",
+      "height": 960,
+      "scrollWidth": 1521,
+      "width": 1521,
+      "headings": [
+        "  - heading \"A TakÄ±m Â· KÄ±sa Oyun ve YansÄ±tma â€” Rol Senaryosu\" [level=1]",
+        "  - heading \"Ã‡alÄ±ÅŸma rehberi\" [level=2]",
+        "    - heading \"DÃ¼ÅŸÃ¼k yoÄŸunluklu oyun sonrasÄ± Ã¶ÄŸrenme noktalarÄ±nÄ± sÃ¶zelleÅŸtirme\" [level=3]",
+        "    - heading \"Organizasyon\" [level=3]",
+        "    - heading \"Uygulama adÄ±mlarÄ±\" [level=3]",
+        "      - heading \"A TakÄ±m uyarlamasÄ±\" [level=3]",
+        "      - heading \"Saha ve uygulama notu\" [level=3]"
+      ],
+      "pixels": [1521, 951],
+      "sha256": "d116306ccb6ffe8e3301757db5c0e8f6874ebf82518ab314a02a15f6c7bd231b",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1536, 960]
+    },
+    {
+      "name": "018-library-detail-mobile",
+      "file": "018-library-detail-mobile.png",
+      "url": "http://127.0.0.1:3517/app/library/ngcs-starter-v1-senior-24",
+      "height": 844,
+      "scrollWidth": 375,
+      "width": 375,
+      "headings": [
+        "  - heading \"A TakÄ±m Â· KÄ±sa Oyun ve YansÄ±tma â€” Rol Senaryosu\" [level=1]",
+        "  - heading \"Ã‡alÄ±ÅŸma rehberi\" [level=2]",
+        "    - heading \"DÃ¼ÅŸÃ¼k yoÄŸunluklu oyun sonrasÄ± Ã¶ÄŸrenme noktalarÄ±nÄ± sÃ¶zelleÅŸtirme\" [level=3]",
+        "    - heading \"Organizasyon\" [level=3]",
+        "    - heading \"Uygulama adÄ±mlarÄ±\" [level=3]",
+        "      - heading \"A TakÄ±m uyarlamasÄ±\" [level=3]",
+        "      - heading \"Saha ve uygulama notu\" [level=3]"
+      ],
+      "pixels": [375, 812],
+      "sha256": "735c090984ddffedffd84922f01e72f75857a1c6156c29344f6347c229ddfdfc",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [390, 844]
+    },
+    {
+      "name": "018-library-detail-tablet",
+      "file": "018-library-detail-tablet.png",
+      "url": "http://127.0.0.1:3517/app/library/ngcs-starter-v1-senior-24",
+      "height": 768,
+      "scrollWidth": 1009,
+      "width": 1009,
+      "headings": [
+        "  - heading \"A TakÄ±m Â· KÄ±sa Oyun ve YansÄ±tma â€” Rol Senaryosu\" [level=1]",
+        "  - heading \"Ã‡alÄ±ÅŸma rehberi\" [level=2]",
+        "    - heading \"DÃ¼ÅŸÃ¼k yoÄŸunluklu oyun sonrasÄ± Ã¶ÄŸrenme noktalarÄ±nÄ± sÃ¶zelleÅŸtirme\" [level=3]",
+        "    - heading \"Organizasyon\" [level=3]",
+        "    - heading \"Uygulama adÄ±mlarÄ±\" [level=3]",
+        "      - heading \"A TakÄ±m uyarlamasÄ±\" [level=3]",
+        "      - heading \"Saha ve uygulama notu\" [level=3]"
+      ],
+      "pixels": [1009, 757],
+      "sha256": "ccb2e23bdb9a41ce4a7f0bfc963d1eced7eabebafd0e0a5a7dcddb37bb708985",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1024, 768]
+    },
+    {
+      "name": "019-plan-selection-desktop",
+      "file": "019-plan-selection-desktop.png",
+      "url": "http://127.0.0.1:3517/app/library/ngcs-starter-v1-senior-24",
+      "height": 960,
+      "scrollWidth": 1536,
+      "width": 1536,
+      "headings": [
+        "  - heading [level=1]: A TakÄ±m Â· KÄ±sa Oyun ve YansÄ±tma â€” Rol Senaryosu",
+        "  - heading [level=2]: Ã‡alÄ±ÅŸma rehberi",
+        "    - heading [level=3]: DÃ¼ÅŸÃ¼k yoÄŸunluklu oyun sonrasÄ± Ã¶ÄŸrenme noktalarÄ±nÄ± sÃ¶zelleÅŸtirme",
+        "    - heading [level=3]: Organizasyon",
+        "    - heading [level=3]: Uygulama adÄ±mlarÄ±",
+        "      - heading [level=3]: A TakÄ±m uyarlamasÄ±",
+        "      - heading [level=3]: Saha ve uygulama notu",
+        "  - heading \"Egzersizi antrenmana ekle\" [level=2]"
+      ],
+      "pixels": [1536, 960],
+      "sha256": "a847a1bc223877aae4819e69ee41c2470213bee2b43e9e6ab919b00bd65235a4",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1536, 960]
+    },
+    {
+      "name": "019-plan-selection-mobile",
+      "file": "019-plan-selection-mobile.png",
+      "url": "http://127.0.0.1:3517/app/library/ngcs-starter-v1-senior-24",
+      "height": 844,
+      "scrollWidth": 390,
+      "width": 390,
+      "headings": [
+        "  - heading [level=1]: A TakÄ±m Â· KÄ±sa Oyun ve YansÄ±tma â€” Rol Senaryosu",
+        "  - heading [level=2]: Ã‡alÄ±ÅŸma rehberi",
+        "    - heading [level=3]: DÃ¼ÅŸÃ¼k yoÄŸunluklu oyun sonrasÄ± Ã¶ÄŸrenme noktalarÄ±nÄ± sÃ¶zelleÅŸtirme",
+        "    - heading [level=3]: Organizasyon",
+        "    - heading [level=3]: Uygulama adÄ±mlarÄ±",
+        "      - heading [level=3]: A TakÄ±m uyarlamasÄ±",
+        "      - heading [level=3]: Saha ve uygulama notu",
+        "  - heading \"Egzersizi antrenmana ekle\" [level=2]"
+      ],
+      "pixels": [390, 844],
+      "sha256": "88c885a0e37bdf939c7673b23e5860d912c2cffbb8abaf640dac3c9d59325448",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [390, 844]
+    },
+    {
+      "name": "019-plan-selection-tablet",
+      "file": "019-plan-selection-tablet.png",
+      "url": "http://127.0.0.1:3517/app/library/ngcs-starter-v1-senior-24",
+      "height": 768,
+      "scrollWidth": 1024,
+      "width": 1024,
+      "headings": [
+        "  - heading [level=1]: A TakÄ±m Â· KÄ±sa Oyun ve YansÄ±tma â€” Rol Senaryosu",
+        "  - heading [level=2]: Ã‡alÄ±ÅŸma rehberi",
+        "    - heading [level=3]: DÃ¼ÅŸÃ¼k yoÄŸunluklu oyun sonrasÄ± Ã¶ÄŸrenme noktalarÄ±nÄ± sÃ¶zelleÅŸtirme",
+        "    - heading [level=3]: Organizasyon",
+        "    - heading [level=3]: Uygulama adÄ±mlarÄ±",
+        "      - heading [level=3]: A TakÄ±m uyarlamasÄ±",
+        "      - heading [level=3]: Saha ve uygulama notu",
+        "  - heading \"Egzersizi antrenmana ekle\" [level=2]"
+      ],
+      "pixels": [1024, 768],
+      "sha256": "0647019c234d7992a2f159614c0053ecf2d94261b5fd0657b62168c56251c977",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1024, 768]
+    },
+    {
+      "name": "020-added-success-desktop",
+      "file": "020-added-success-desktop.png",
+      "url": "http://127.0.0.1:3517/app/library/ngcs-starter-v1-senior-24",
+      "metadataRecovery": "File + matching action-time tool receipt; original manifest entry lost during runtime reset",
+      "pixels": [1536, 960],
+      "sha256": "54d6e12cdb83b3f8ffea57c8deefcb7222df6e251317f6c7ebf7709919725621",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1536, 960]
+    },
+    {
+      "name": "021-training-detail-desktop",
+      "file": "021-training-detail-desktop.png",
+      "url": "http://127.0.0.1:3517/app/trainings/cmvpan8nf003e2yxkr1dfjdrp",
+      "height": 960,
+      "scrollWidth": 1536,
+      "width": 1536,
+      "headings": [
+        "  - heading \"TEST Egzersiz Ekleme PlanÄ±\" [level=1]",
+        "  - heading \"Antrenman Ã§alÄ±ÅŸma alanÄ±\" [level=2]:",
+        "      - heading \"Antrenman akÄ±ÅŸÄ±\" [level=3]:",
+        "      - heading \"A TakÄ±m Â· KÄ±sa Oyun ve YansÄ±tma â€” Rol Senaryosu\" [level=3]"
+      ],
+      "pixels": [1536, 960],
+      "sha256": "6e38274e337c6fb985c0f519e3d0c6b228a870a15f6f6004572ce08959486c86",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1536, 960]
+    },
+    {
+      "name": "022-attendance-saved-desktop",
+      "file": "022-attendance-saved-desktop.png",
+      "url": "http://127.0.0.1:3517/app/trainings/cmvpan8nf003e2yxkr1dfjdrp",
+      "height": 960,
+      "scrollWidth": 1536,
+      "width": 1536,
+      "headings": [
+        "  - heading \"TEST Egzersiz Ekleme PlanÄ±\" [level=1]",
+        "  - heading \"Antrenman Ã§alÄ±ÅŸma alanÄ±\" [level=2]:",
+        "      - heading \"KatÄ±lÄ±m Â· 1/2\" [level=3]:"
+      ],
+      "pixels": [1536, 960],
+      "sha256": "99289317c3d3c58cd15585b0d56f2a3ee1c72fe352bb16399b1d12ccced49128",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1536, 960]
+    },
+    {
+      "name": "022-attendance-saved-mobile",
+      "file": "022-attendance-saved-mobile.png",
+      "url": "http://127.0.0.1:3517/app/trainings/cmvpan8nf003e2yxkr1dfjdrp",
+      "height": 844,
+      "scrollWidth": 375,
+      "width": 375,
+      "headings": [
+        "  - heading \"TEST Egzersiz Ekleme PlanÄ±\" [level=1]",
+        "  - heading \"Antrenman Ã§alÄ±ÅŸma alanÄ±\" [level=2]:",
+        "      - heading \"KatÄ±lÄ±m Â· 1/2\" [level=3]:"
+      ],
+      "pixels": [375, 812],
+      "sha256": "a84d9b7971f69033b98371b7795ed323c9b8598755df33755a02ae5034365c3c",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [390, 844]
+    },
+    {
+      "name": "022-attendance-saved-tablet",
+      "file": "022-attendance-saved-tablet.png",
+      "url": "http://127.0.0.1:3517/app/trainings/cmvpan8nf003e2yxkr1dfjdrp",
+      "height": 768,
+      "scrollWidth": 1009,
+      "width": 1009,
+      "headings": [
+        "  - heading \"TEST Egzersiz Ekleme PlanÄ±\" [level=1]",
+        "  - heading \"Antrenman Ã§alÄ±ÅŸma alanÄ±\" [level=2]:",
+        "      - heading \"KatÄ±lÄ±m Â· 1/2\" [level=3]:"
+      ],
+      "pixels": [1009, 757],
+      "sha256": "fad7ec72beca1df5cbac5ab73215081c34883258e3897601d872fbdaec4ae846",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1024, 768]
+    },
+    {
+      "name": "023-tactics-editor-desktop",
+      "file": "023-tactics-editor-desktop.png",
+      "url": "http://127.0.0.1:3517/app/tactics/cmvpan8nj003i2yxkdcekq3a0",
+      "height": 960,
+      "scrollWidth": 1521,
+      "width": 1521,
+      "headings": ["    - heading \"TEST KulÃ¼p Taktik TahtasÄ±\" [level=1]"],
+      "pixels": [1521, 951],
+      "sha256": "81b9a0d3148694b3ae8729f24d739e1439bcbdec62def81ac5b8ca667a1c05d1",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1536, 960]
+    },
+    {
+      "name": "023-tactics-editor-mobile",
+      "file": "023-tactics-editor-mobile.png",
+      "url": "http://127.0.0.1:3517/app/tactics/cmvpan8nj003i2yxkdcekq3a0",
+      "height": 844,
+      "scrollWidth": 375,
+      "width": 375,
+      "headings": ["    - heading \"TEST KulÃ¼p Taktik TahtasÄ±\" [level=1]"],
+      "pixels": [375, 812],
+      "sha256": "fc582b08380d47372a3abad849555bb26a907de865144046cdc8f04c84916f67",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [390, 844]
+    },
+    {
+      "name": "023-tactics-editor-tablet",
+      "file": "023-tactics-editor-tablet.png",
+      "url": "http://127.0.0.1:3517/app/tactics/cmvpan8nj003i2yxkdcekq3a0",
+      "height": 768,
+      "scrollWidth": 1009,
+      "width": 1009,
+      "headings": ["    - heading \"TEST KulÃ¼p Taktik TahtasÄ±\" [level=1]"],
+      "pixels": [1009, 757],
+      "sha256": "15afeb2b5c9d4dddb16efba3ead965b1b00323457d35578d69a903c97a2e6e4d",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1024, 768]
+    },
+    {
+      "name": "024-unsaved-guard-desktop",
+      "file": "024-unsaved-guard-desktop.png",
+      "url": "http://127.0.0.1:3517/app/tactics/cmvpan8nj003i2yxkdcekq3a0",
+      "metadataRecovery": "File + matching action-time tool receipt; original manifest entry lost during runtime reset",
+      "pixels": [1536, 960],
+      "sha256": "3544f8da75458e387e17045c030729090c0c53499a4ae7aedbef9dd01f146b0f",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1536, 960]
+    },
+    {
+      "name": "025-tactics-saved-desktop",
+      "file": "025-tactics-saved-desktop.png",
+      "url": "http://127.0.0.1:3517/app/tactics/cmvpan8nj003i2yxkdcekq3a0",
+      "metadataRecovery": "File + matching action-time tool receipt; original manifest entry lost during runtime reset",
+      "pixels": [1521, 951],
+      "sha256": "d5e5dec72c79d61389c5dd0838e63b0e0d2e26d7fadc59be6641f150f009462b",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1536, 960]
+    },
+    {
+      "name": "026-tactics-scenes-desktop",
+      "file": "026-tactics-scenes-desktop.png",
+      "url": "http://127.0.0.1:3517/app/tactics/cmvpan8nj003i2yxkdcekq3a0",
+      "height": 960,
+      "scrollWidth": 1521,
+      "width": 1521,
+      "headings": ["    - heading \"TEST KulÃ¼p Taktik TahtasÄ±\" [level=1]"],
+      "pixels": [1521, 951],
+      "sha256": "4d30724766fcaee42927d784d560c3aff95c6da202844ba9b7e8f636b93633f7",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1536, 960]
+    },
+    {
+      "name": "026-tactics-scenes-mobile",
+      "file": "026-tactics-scenes-mobile.png",
+      "url": "http://127.0.0.1:3517/app/tactics/cmvpan8nj003i2yxkdcekq3a0",
+      "height": 844,
+      "scrollWidth": 375,
+      "width": 375,
+      "headings": ["    - heading \"TEST KulÃ¼p Taktik TahtasÄ±\" [level=1]"],
+      "pixels": [375, 812],
+      "sha256": "cc383bc9d762cd14bdd16ac9fa93ae7db5cab0f83eeb770ccf83f687baef6d3c",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [390, 844]
+    },
+    {
+      "name": "026-tactics-scenes-tablet",
+      "file": "026-tactics-scenes-tablet.png",
+      "url": "http://127.0.0.1:3517/app/tactics/cmvpan8nj003i2yxkdcekq3a0",
+      "height": 768,
+      "scrollWidth": 1009,
+      "width": 1009,
+      "headings": ["    - heading \"TEST KulÃ¼p Taktik TahtasÄ±\" [level=1]"],
+      "pixels": [1009, 757],
+      "sha256": "5555e4bf1dea792f94b1336adc25635ff806d433f1cb0ccd366b972098d682b6",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1024, 768]
+    },
+    {
+      "name": "027-admin-settings-desktop",
+      "file": "027-admin-settings-desktop.png",
+      "url": "http://127.0.0.1:3517/app/settings",
+      "height": 960,
+      "scrollWidth": 1536,
+      "width": 1536,
+      "headings": [
+        "  - heading \"Ayarlar\" [level=1]",
+        "  - heading \"Profil Ã¶zeti\" [level=3]",
+        "  - heading \"Aktif baÄŸlam\" [level=3]",
+        "  - heading \"Oturum gÃ¼venliÄŸi\" [level=3]",
+        "    - heading \"GÃ¼venli oturum\" [level=5]"
+      ],
+      "pixels": [1536, 960],
+      "sha256": "dbdc3c9256c0c3c27a13d46afcdd65a0cfa434020538657efd41faa8b5986b65",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1536, 960]
+    },
+    {
+      "name": "027-admin-settings-mobile",
+      "file": "027-admin-settings-mobile.png",
+      "url": "http://127.0.0.1:3517/app/settings",
+      "height": 844,
+      "scrollWidth": 375,
+      "width": 375,
+      "headings": [
+        "  - heading \"Ayarlar\" [level=1]",
+        "  - heading \"Profil Ã¶zeti\" [level=3]",
+        "  - heading \"Aktif baÄŸlam\" [level=3]",
+        "  - heading \"Oturum gÃ¼venliÄŸi\" [level=3]",
+        "    - heading \"GÃ¼venli oturum\" [level=5]"
+      ],
+      "pixels": [375, 812],
+      "sha256": "d6e876f7a31c1756aebeeb17cd1069aeace8954e58f6aeb0dd8f597d2d11107f",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [390, 844]
+    },
+    {
+      "name": "027-admin-settings-tablet",
+      "file": "027-admin-settings-tablet.png",
+      "url": "http://127.0.0.1:3517/app/settings",
+      "height": 768,
+      "scrollWidth": 1009,
+      "width": 1009,
+      "headings": [
+        "  - heading \"Ayarlar\" [level=1]",
+        "  - heading \"Profil Ã¶zeti\" [level=3]",
+        "  - heading \"Aktif baÄŸlam\" [level=3]",
+        "  - heading \"Oturum gÃ¼venliÄŸi\" [level=3]",
+        "    - heading \"GÃ¼venli oturum\" [level=5]"
+      ],
+      "pixels": [1009, 757],
+      "sha256": "eaec7be091b69f147b28c679f16a39feac7fbff668492686af87f83b394943ad",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1024, 768]
+    },
+    {
+      "name": "028-admin-users-desktop",
+      "file": "028-admin-users-desktop.png",
+      "url": "http://127.0.0.1:3517/app/settings/users",
+      "height": 960,
+      "scrollWidth": 1521,
+      "width": 1521,
+      "headings": [
+        "  - heading \"KullanÄ±cÄ±lar ve Yetkiler\" [level=1]",
+        "    - heading \"KullanÄ±cÄ± hesaplarÄ±\" [level=2]",
+        "  - heading \"Hesap rolÃ¼ matrisi\" [level=3]",
+        "    - heading \"Sistem yÃ¶neticisi\" [level=3]",
+        "    - heading \"KulÃ¼p yÃ¶neticisi\" [level=3]",
+        "    - heading \"AntrenÃ¶r\" [level=3]",
+        "    - heading \"Oyuncu\" [level=3]",
+        "  - heading \"Sportif gÃ¶rev yetkileri\" [level=3]"
+      ],
+      "pixels": [1521, 951],
+      "sha256": "27388e8fb81864078d1fcb799b1c8f6a13038e3b31972150161cd3c439c2e15a",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1536, 960]
+    },
+    {
+      "name": "028-admin-users-mobile",
+      "file": "028-admin-users-mobile.png",
+      "url": "http://127.0.0.1:3517/app/settings/users",
+      "height": 844,
+      "scrollWidth": 375,
+      "width": 375,
+      "headings": [
+        "  - heading \"KullanÄ±cÄ±lar ve Yetkiler\" [level=1]",
+        "    - heading \"KullanÄ±cÄ± hesaplarÄ±\" [level=2]",
+        "  - heading \"Hesap rolÃ¼ matrisi\" [level=3]",
+        "    - heading \"Sistem yÃ¶neticisi\" [level=3]",
+        "    - heading \"KulÃ¼p yÃ¶neticisi\" [level=3]",
+        "    - heading \"AntrenÃ¶r\" [level=3]",
+        "    - heading \"Oyuncu\" [level=3]",
+        "  - heading \"Sportif gÃ¶rev yetkileri\" [level=3]"
+      ],
+      "pixels": [375, 812],
+      "sha256": "a5bc681cf9ede27c4ae39205bd4f70194572ecda2f1b82e91cbdc025c1b39063",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [390, 844]
+    },
+    {
+      "name": "028-admin-users-tablet",
+      "file": "028-admin-users-tablet.png",
+      "url": "http://127.0.0.1:3517/app/settings/users",
+      "height": 768,
+      "scrollWidth": 1009,
+      "width": 1009,
+      "headings": [
+        "  - heading \"KullanÄ±cÄ±lar ve Yetkiler\" [level=1]",
+        "    - heading \"KullanÄ±cÄ± hesaplarÄ±\" [level=2]",
+        "  - heading \"Hesap rolÃ¼ matrisi\" [level=3]",
+        "    - heading \"Sistem yÃ¶neticisi\" [level=3]",
+        "    - heading \"KulÃ¼p yÃ¶neticisi\" [level=3]",
+        "    - heading \"AntrenÃ¶r\" [level=3]",
+        "    - heading \"Oyuncu\" [level=3]",
+        "  - heading \"Sportif gÃ¶rev yetkileri\" [level=3]"
+      ],
+      "pixels": [1009, 757],
+      "sha256": "b85afa4df4cbb694c037c3ec7ce6483383fc2727c4266944fcf44502ab6a3ffc",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1024, 768]
+    },
+    {
+      "name": "029-admin-invite-form-desktop",
+      "file": "029-admin-invite-form-desktop.png",
+      "url": "http://127.0.0.1:3517/app/settings/users",
+      "height": 960,
+      "scrollWidth": 1536,
+      "width": 1536,
+      "headings": [
+        "  - heading [level=1]: KullanÄ±cÄ±lar ve Yetkiler",
+        "    - heading [level=2]: KullanÄ±cÄ± hesaplarÄ±",
+        "  - heading [level=3]: Hesap rolÃ¼ matrisi",
+        "    - heading [level=3]: Sistem yÃ¶neticisi",
+        "    - heading [level=3]: KulÃ¼p yÃ¶neticisi",
+        "    - heading [level=3]: AntrenÃ¶r",
+        "    - heading [level=3]: Oyuncu",
+        "  - heading [level=3]: Sportif gÃ¶rev yetkileri"
+      ],
+      "pixels": [1536, 960],
+      "sha256": "693327fd536191aa863aad727367cc474ec7b962eec9f185e775902389b1fb76",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1536, 960]
+    },
+    {
+      "name": "029-admin-invite-form-mobile",
+      "file": "029-admin-invite-form-mobile.png",
+      "url": "http://127.0.0.1:3517/app/settings/users",
+      "height": 844,
+      "scrollWidth": 390,
+      "width": 390,
+      "headings": [
+        "  - heading [level=1]: KullanÄ±cÄ±lar ve Yetkiler",
+        "    - heading [level=2]: KullanÄ±cÄ± hesaplarÄ±",
+        "  - heading [level=3]: Hesap rolÃ¼ matrisi",
+        "    - heading [level=3]: Sistem yÃ¶neticisi",
+        "    - heading [level=3]: KulÃ¼p yÃ¶neticisi",
+        "    - heading [level=3]: AntrenÃ¶r",
+        "    - heading [level=3]: Oyuncu",
+        "  - heading [level=3]: Sportif gÃ¶rev yetkileri"
+      ],
+      "pixels": [390, 844],
+      "sha256": "559c64d83570e5c7eeb6f18113b16e6d954c26832b5c93e83156d5c2e037b087",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [390, 844]
+    },
+    {
+      "name": "029-admin-invite-form-tablet",
+      "file": "029-admin-invite-form-tablet.png",
+      "url": "http://127.0.0.1:3517/app/settings/users",
+      "height": 768,
+      "scrollWidth": 1024,
+      "width": 1024,
+      "headings": [
+        "  - heading [level=1]: KullanÄ±cÄ±lar ve Yetkiler",
+        "    - heading [level=2]: KullanÄ±cÄ± hesaplarÄ±",
+        "  - heading [level=3]: Hesap rolÃ¼ matrisi",
+        "    - heading [level=3]: Sistem yÃ¶neticisi",
+        "    - heading [level=3]: KulÃ¼p yÃ¶neticisi",
+        "    - heading [level=3]: AntrenÃ¶r",
+        "    - heading [level=3]: Oyuncu",
+        "  - heading [level=3]: Sportif gÃ¶rev yetkileri"
+      ],
+      "pixels": [1024, 768],
+      "sha256": "742456634b9c4268ce8e6d19bf76be4b936df686c3ca7d5263739d70baa40481",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1024, 768]
+    },
+    {
+      "name": "030-expired-share-dialog-desktop",
+      "file": "030-expired-share-dialog-desktop.png",
+      "url": "http://127.0.0.1:3517/app/players/cmvpan8f2000f2yxk66gj6kwn?tab=notes",
+      "height": 960,
+      "scrollWidth": 1536,
+      "width": 1536,
+      "headings": [
+        "    - heading [level=1]: TEST Oyuncu Bir",
+        "    - heading [level=3]: Oyuncu notlarÄ±",
+        "  - heading \"TakÄ±mla paylaÅŸ\" [level=2]"
+      ],
+      "pixels": [1536, 960],
+      "sha256": "46b7975596a989b48748be4234bef27730ca17ff5b08affb352c920babe50e90",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1536, 960]
+    },
+    {
+      "name": "030-expired-share-dialog-mobile",
+      "file": "030-expired-share-dialog-mobile.png",
+      "url": "http://127.0.0.1:3517/app/players/cmvpan8f2000f2yxk66gj6kwn?tab=notes",
+      "height": 844,
+      "scrollWidth": 396,
+      "width": 390,
+      "headings": [
+        "    - heading [level=1]: TEST Oyuncu Bir",
+        "    - heading [level=3]: Oyuncu notlarÄ±",
+        "  - heading \"TakÄ±mla paylaÅŸ\" [level=2]"
+      ],
+      "pixels": [390, 844],
+      "sha256": "844508b626fe7d3a053404b8fb5cf84acba3d33dad45d0925295750f1c530921",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [390, 844]
+    },
+    {
+      "name": "030-expired-share-dialog-tablet",
+      "file": "030-expired-share-dialog-tablet.png",
+      "url": "http://127.0.0.1:3517/app/players/cmvpan8f2000f2yxk66gj6kwn?tab=notes",
+      "height": 768,
+      "scrollWidth": 1024,
+      "width": 1024,
+      "headings": [
+        "    - heading [level=1]: TEST Oyuncu Bir",
+        "    - heading [level=3]: Oyuncu notlarÄ±",
+        "  - heading \"TakÄ±mla paylaÅŸ\" [level=2]"
+      ],
+      "pixels": [1024, 768],
+      "sha256": "231ab54ee023d7588ec8bb9dba945e58e95663e6fb5426b51fb24c648426c85b",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1024, 768]
+    },
+    {
+      "name": "031-expired-share-error-desktop",
+      "file": "031-expired-share-error-desktop.png",
+      "url": "http://127.0.0.1:3517/app/players/cmvpan8f2000f2yxk66gj6kwn?tab=notes",
+      "height": 960,
+      "scrollWidth": 1536,
+      "width": 1536,
+      "headings": [
+        "    - heading [level=1]: TEST Oyuncu Bir",
+        "    - heading [level=3]: Oyuncu notlarÄ±",
+        "  - heading \"TakÄ±mla paylaÅŸ\" [level=2]"
+      ],
+      "pixels": [1536, 960],
+      "sha256": "47ce7d96fa4c9ac70cc625c4ea412a519336fc950f2629bad0e638f9ba0a8a5a",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1536, 960]
+    },
+    {
+      "name": "032-note-draft-before-conflict-desktop",
+      "file": "032-note-draft-before-conflict-desktop.png",
+      "url": "http://127.0.0.1:3517/app/players/cmvpan8f2000f2yxk66gj6kwn?tab=notes",
+      "height": 960,
+      "scrollWidth": 1536,
+      "width": 1536,
+      "headings": [
+        "    - heading [level=1]: TEST Oyuncu Bir",
+        "    - heading [level=3]: Oyuncu notlarÄ±",
+        "  - heading \"Notu dÃ¼zenle\" [level=2]"
+      ],
+      "pixels": [1536, 960],
+      "sha256": "8eb0e87495fb6ddc0ea73c540d8a4cabde6fc3c52bd5ced2a1809e28bde5be38",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1536, 960]
+    },
+    {
+      "name": "033-note-conflict-draft-lost-desktop",
+      "file": "033-note-conflict-draft-lost-desktop.png",
+      "url": "http://127.0.0.1:3517/app/players/cmvpan8f2000f2yxk66gj6kwn?tab=notes",
+      "height": 960,
+      "scrollWidth": 1536,
+      "width": 1536,
+      "headings": [
+        "    - heading \"TEST Oyuncu Bir\" [level=1]",
+        "    - heading \"Oyuncu notlarÄ±\" [level=3]"
+      ],
+      "pixels": [1536, 960],
+      "sha256": "320df0b23d677f9d41b4fa93a817eb97c3a5970cc8e7afb00cfd2f5ab9ea5200",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1536, 960]
+    },
+    {
+      "name": "034-player-activity-desktop",
+      "file": "034-player-activity-desktop.png",
+      "url": "http://127.0.0.1:3517/app/players/cmvpan8f2000f2yxk66gj6kwn?tab=activity",
+      "height": 960,
+      "scrollWidth": 1536,
+      "width": 1536,
+      "headings": [
+        "    - heading \"TEST Oyuncu Bir\" [level=1]",
+        "    - heading \"Sportif aktivite\" [level=3]"
+      ],
+      "pixels": [1536, 960],
+      "sha256": "7387120368ce0630aeddfd426a00ac759c5e564112d58224a6c23e841464e832",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1536, 960]
+    },
+    {
+      "name": "034-player-activity-mobile",
+      "file": "034-player-activity-mobile.png",
+      "url": "http://127.0.0.1:3517/app/players/cmvpan8f2000f2yxk66gj6kwn?tab=activity",
+      "height": 829,
+      "scrollWidth": 381,
+      "width": 375,
+      "headings": [
+        "    - heading \"TEST Oyuncu Bir\" [level=1]",
+        "    - heading \"Sportif aktivite\" [level=3]"
+      ],
+      "pixels": [375, 812],
+      "sha256": "ce532dbf981c73c87955b96ab8e9f50a06596580ccfccab9df6c41985eb1a001",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [390, 844]
+    },
+    {
+      "name": "034-player-activity-tablet",
+      "file": "034-player-activity-tablet.png",
+      "url": "http://127.0.0.1:3517/app/players/cmvpan8f2000f2yxk66gj6kwn?tab=activity",
+      "height": 768,
+      "scrollWidth": 1009,
+      "width": 1009,
+      "headings": [
+        "    - heading \"TEST Oyuncu Bir\" [level=1]",
+        "    - heading \"Sportif aktivite\" [level=3]"
+      ],
+      "pixels": [1009, 757],
+      "sha256": "a020a6024c1cc035ec48df43817e51cebcb34b2c7ab5abd014d7c59210df2f2a",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1024, 768]
+    },
+    {
+      "name": "035-match-detail-desktop",
+      "file": "035-match-detail-desktop.png",
+      "url": "http://127.0.0.1:3517/app/matches/cmvpan8nl003k2yxk2p0k21ez",
+      "height": 960,
+      "scrollWidth": 1521,
+      "width": 1521,
+      "headings": [
+        "  - heading \"TEST Rakip\" [level=1]",
+        "  - heading \"HazÄ±rlÄ±k ve taktik planÄ±\" [level=2]",
+        "      - heading \"Rakip ve oyun planÄ±\" [level=3]"
+      ],
+      "pixels": [1521, 951],
+      "sha256": "5f4435cf8912326447b96ba040fa411994b0902582403951626317727245a59e",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1536, 960]
+    },
+    {
+      "name": "035-match-detail-mobile",
+      "file": "035-match-detail-mobile.png",
+      "url": "http://127.0.0.1:3517/app/matches/cmvpan8nl003k2yxk2p0k21ez",
+      "height": 844,
+      "scrollWidth": 375,
+      "width": 375,
+      "headings": [
+        "  - heading \"TEST Rakip\" [level=1]",
+        "  - heading \"HazÄ±rlÄ±k ve taktik planÄ±\" [level=2]",
+        "      - heading \"Rakip ve oyun planÄ±\" [level=3]"
+      ],
+      "pixels": [375, 812],
+      "sha256": "7eae6de0af468b4f669a52e70059ffa54dd73a9047f1783f4e765283bea02498",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [390, 844]
+    },
+    {
+      "name": "035-match-detail-tablet",
+      "file": "035-match-detail-tablet.png",
+      "url": "http://127.0.0.1:3517/app/matches/cmvpan8nl003k2yxk2p0k21ez",
+      "height": 768,
+      "scrollWidth": 1009,
+      "width": 1009,
+      "headings": [
+        "  - heading \"TEST Rakip\" [level=1]",
+        "  - heading \"HazÄ±rlÄ±k ve taktik planÄ±\" [level=2]",
+        "      - heading \"Rakip ve oyun planÄ±\" [level=3]"
+      ],
+      "pixels": [1009, 757],
+      "sha256": "2db25e6a80a3f89d7bf08d761028c81c0d6dbc8730486ab1b67afdfa99587ce5",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1024, 768]
+    },
+    {
+      "name": "036-match-board-desktop",
+      "file": "036-match-board-desktop.png",
+      "url": "http://127.0.0.1:3517/app/matches/cmvpan8nl003k2yxk2p0k21ez",
+      "height": 960,
+      "scrollWidth": 1521,
+      "width": 1521,
+      "headings": [
+        "  - heading \"TEST Rakip\" [level=1]",
+        "  - heading \"HazÄ±rlÄ±k ve taktik planÄ±\" [level=2]",
+        "    - heading \"MaÃ§ taktik tahtasÄ±\" [level=3]"
+      ],
+      "pixels": [1521, 951],
+      "sha256": "158091eebbc5798a1833b3db640bfcdc552be8239a0b1c77c084df67ee751110",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1536, 960]
+    },
+    {
+      "name": "036-match-board-mobile",
+      "file": "036-match-board-mobile.png",
+      "url": "http://127.0.0.1:3517/app/matches/cmvpan8nl003k2yxk2p0k21ez",
+      "height": 844,
+      "scrollWidth": 375,
+      "width": 375,
+      "headings": [
+        "  - heading \"TEST Rakip\" [level=1]",
+        "  - heading \"HazÄ±rlÄ±k ve taktik planÄ±\" [level=2]",
+        "    - heading \"MaÃ§ taktik tahtasÄ±\" [level=3]"
+      ],
+      "pixels": [375, 812],
+      "sha256": "eb20c7a5c02df3bc6460f7552ed11911d3311119097d88a07e76d95c697088dd",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [390, 844]
+    },
+    {
+      "name": "036-match-board-tablet",
+      "file": "036-match-board-tablet.png",
+      "url": "http://127.0.0.1:3517/app/matches/cmvpan8nl003k2yxk2p0k21ez",
+      "height": 768,
+      "scrollWidth": 1009,
+      "width": 1009,
+      "headings": [
+        "  - heading \"TEST Rakip\" [level=1]",
+        "  - heading \"HazÄ±rlÄ±k ve taktik planÄ±\" [level=2]",
+        "    - heading \"MaÃ§ taktik tahtasÄ±\" [level=3]"
+      ],
+      "pixels": [1009, 757],
+      "sha256": "8d1e50c35c0b9f56cae271e5f54ef03a6808473900315973f19a237e82d9ddc0",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1024, 768]
+    },
+    {
+      "name": "037-new-plan-form-desktop",
+      "file": "037-new-plan-form-desktop.png",
+      "url": "http://127.0.0.1:3517/app/trainings",
+      "height": 960,
+      "scrollWidth": 1536,
+      "width": 1536,
+      "headings": [
+        "  - heading [level=1]: Antrenman PlanlarÄ±",
+        "    - heading [level=2]: Antrenman AkÄ±ÅŸlarÄ±",
+        "  - heading \"Yeni antrenman planÄ±\" [level=2]",
+        "    - heading \"TEST A TakÄ±m\" [level=3]"
+      ],
+      "pixels": [1536, 960],
+      "sha256": "456b4c763862b9807dd4e950478f252e75c1d48f07c008fce2e30c38f3d391c0",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1536, 960]
+    },
+    {
+      "name": "037-new-plan-form-mobile",
+      "file": "037-new-plan-form-mobile.png",
+      "url": "http://127.0.0.1:3517/app/trainings",
+      "height": 844,
+      "scrollWidth": 390,
+      "width": 390,
+      "headings": [
+        "  - heading [level=1]: Antrenman PlanlarÄ±",
+        "    - heading [level=2]: Antrenman AkÄ±ÅŸlarÄ±",
+        "  - heading \"Yeni antrenman planÄ±\" [level=2]",
+        "    - heading \"TEST A TakÄ±m\" [level=3]"
+      ],
+      "pixels": [390, 844],
+      "sha256": "2e0501f00349e8b515dd11e4b270f9fac137a2263bd21a5129211b105fad07f6",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [390, 844]
+    },
+    {
+      "name": "037-new-plan-form-tablet",
+      "file": "037-new-plan-form-tablet.png",
+      "url": "http://127.0.0.1:3517/app/trainings",
+      "height": 768,
+      "scrollWidth": 1024,
+      "width": 1024,
+      "headings": [
+        "  - heading [level=1]: Antrenman PlanlarÄ±",
+        "    - heading [level=2]: Antrenman AkÄ±ÅŸlarÄ±",
+        "  - heading \"Yeni antrenman planÄ±\" [level=2]",
+        "    - heading \"TEST A TakÄ±m\" [level=3]"
+      ],
+      "pixels": [1024, 768],
+      "sha256": "39659478e0e722707fab45ae7917ce709a7dd7c3f2dde4b1dba88bec24e1f93d",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1024, 768]
+    },
+    {
+      "name": "038-admin-academy-desktop",
+      "file": "038-admin-academy-desktop.png",
+      "url": "http://127.0.0.1:3517/app/teams/academy",
+      "height": 960,
+      "scrollWidth": 1536,
+      "width": 1536,
+      "headings": [
+        "  - heading \"TakÄ±m YÃ¶netimi\" [level=1]",
+        "    - heading \"AltyapÄ± TakÄ±mlarÄ±\" [level=2]"
+      ],
+      "pixels": [1536, 960],
+      "sha256": "4beab54630610c723e4917a7b6c51b247c2149b33494b17d216869bc567d8cf8",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1536, 960]
+    },
+    {
+      "name": "038-admin-academy-mobile",
+      "file": "038-admin-academy-mobile.png",
+      "url": "http://127.0.0.1:3517/app/teams/academy",
+      "height": 829,
+      "scrollWidth": 381,
+      "width": 375,
+      "headings": [
+        "  - heading \"TakÄ±m YÃ¶netimi\" [level=1]",
+        "    - heading \"AltyapÄ± TakÄ±mlarÄ±\" [level=2]"
+      ],
+      "pixels": [375, 812],
+      "sha256": "e1ca8e485b50891171675976af86958534b38501c7dbc47bd3995076e25ea425",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [390, 844]
+    },
+    {
+      "name": "038-admin-academy-tablet",
+      "file": "038-admin-academy-tablet.png",
+      "url": "http://127.0.0.1:3517/app/teams/academy",
+      "height": 768,
+      "scrollWidth": 1009,
+      "width": 1009,
+      "headings": [
+        "  - heading \"TakÄ±m YÃ¶netimi\" [level=1]",
+        "    - heading \"AltyapÄ± TakÄ±mlarÄ±\" [level=2]"
+      ],
+      "pixels": [1009, 757],
+      "sha256": "7c27f138e048c0f2482f651a2d1806819c9ee458e141503307f912a546847221",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1024, 768]
+    },
+    {
+      "name": "039-team-detail-desktop",
+      "file": "039-team-detail-desktop.png",
+      "url": "http://127.0.0.1:3517/app/teams/cmvpan8ev00052yxkn014octr",
+      "height": 960,
+      "scrollWidth": 1536,
+      "width": 1536,
+      "headings": [
+        "  - heading \"TEST U14\" [level=1]",
+        "  - heading \"Oyuncular\" [level=2]",
+        "  - heading \"Teknik ekip\" [level=2]",
+        "  - heading \"TEST U14 KoÃ§u\" [level=3]",
+        "  - heading \"TEST U14 KoÃ§u\" [level=3]"
+      ],
+      "pixels": [1536, 960],
+      "sha256": "1969bce3bb875161a0750cd8284cf172505172671bd92ffcc00acc1cf2d64f05",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1536, 960]
+    },
+    {
+      "name": "039-team-detail-mobile",
+      "file": "039-team-detail-mobile.png",
+      "url": "http://127.0.0.1:3517/app/teams/cmvpan8ev00052yxkn014octr",
+      "height": 844,
+      "scrollWidth": 375,
+      "width": 375,
+      "headings": [
+        "  - heading \"TEST U14\" [level=1]",
+        "  - heading \"Oyuncular\" [level=2]",
+        "  - heading \"Teknik ekip\" [level=2]",
+        "  - heading \"TEST U14 KoÃ§u\" [level=3]",
+        "  - heading \"TEST U14 KoÃ§u\" [level=3]"
+      ],
+      "pixels": [375, 812],
+      "sha256": "83311c342d8a6c9b3465e63930bbdba67cf9d61d69b25648de9e005483befa43",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [390, 844]
+    },
+    {
+      "name": "039-team-detail-tablet",
+      "file": "039-team-detail-tablet.png",
+      "url": "http://127.0.0.1:3517/app/teams/cmvpan8ev00052yxkn014octr",
+      "height": 768,
+      "scrollWidth": 1024,
+      "width": 1024,
+      "headings": [
+        "  - heading \"TEST U14\" [level=1]",
+        "  - heading \"Oyuncular\" [level=2]",
+        "  - heading \"Teknik ekip\" [level=2]",
+        "  - heading \"TEST U14 KoÃ§u\" [level=3]",
+        "  - heading \"TEST U14 KoÃ§u\" [level=3]"
+      ],
+      "pixels": [1024, 768],
+      "sha256": "b0bc5ab4e5e595796cc318c2e69bfdf66ca020e8c6bff438b25767b809d98a85",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1024, 768]
+    },
+    {
+      "name": "040-unsupported-age-desktop",
+      "file": "040-unsupported-age-desktop.png",
+      "url": "http://127.0.0.1:3517/app/library?ngcsClub=cmvpan8ep00002yxk07krhph2&ngcsSeason=cmvpan8mc002l2yxky9mqsmkw&ngcsTeam=cmvpan8ew00072yxkpw4loz1b",
+      "height": 960,
+      "scrollWidth": 1521,
+      "width": 1521,
+      "headings": [
+        "  - heading \"Egzersiz KÃ¼tÃ¼phanesi\" [level=1]",
+        "  - heading \"HazÄ±r Egzersizler\" [level=2]"
+      ],
+      "pixels": [1521, 951],
+      "sha256": "e0980c5280557e24d90e8218ba38402098e32f3cc2a3c67456879b414a2f92d6",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1536, 960]
+    },
+    {
+      "name": "040-unsupported-age-mobile",
+      "file": "040-unsupported-age-mobile.png",
+      "url": "http://127.0.0.1:3517/app/library?ngcsClub=cmvpan8ep00002yxk07krhph2&ngcsSeason=cmvpan8mc002l2yxky9mqsmkw&ngcsTeam=cmvpan8ew00072yxkpw4loz1b",
+      "height": 844,
+      "scrollWidth": 375,
+      "width": 375,
+      "headings": ["  - heading \"Egzersiz KÃ¼tÃ¼phanesi\" [level=1]"],
+      "pixels": [375, 812],
+      "sha256": "db1bb60ee17716ec1aabd9542b340422423716179a24a7f3a79c24e36a6bb8c7",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [390, 844]
+    },
+    {
+      "name": "040-unsupported-age-tablet",
+      "file": "040-unsupported-age-tablet.png",
+      "url": "http://127.0.0.1:3517/app/library?ngcsClub=cmvpan8ep00002yxk07krhph2&ngcsSeason=cmvpan8mc002l2yxky9mqsmkw&ngcsTeam=cmvpan8ew00072yxkpw4loz1b",
+      "height": 768,
+      "scrollWidth": 1009,
+      "width": 1009,
+      "headings": [
+        "  - heading \"Egzersiz KÃ¼tÃ¼phanesi\" [level=1]",
+        "  - heading \"HazÄ±r Egzersizler\" [level=2]"
+      ],
+      "pixels": [1009, 768],
+      "sha256": "839d654655e8cff7266838998e90237058135dde37fcbe24b5bee286dca6e225",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1024, 768]
+    },
+    {
+      "name": "041-unsupported-age-detail-desktop",
+      "file": "041-unsupported-age-detail-desktop.png",
+      "url": "http://127.0.0.1:3517/app/library/ngcs-starter-v1-senior-24",
+      "height": 960,
+      "scrollWidth": 1521,
+      "width": 1521,
+      "headings": [
+        "  - heading \"A TakÄ±m Â· KÄ±sa Oyun ve YansÄ±tma â€” Rol Senaryosu\" [level=1]",
+        "  - heading \"Ã‡alÄ±ÅŸma rehberi\" [level=2]",
+        "    - heading \"DÃ¼ÅŸÃ¼k yoÄŸunluklu oyun sonrasÄ± Ã¶ÄŸrenme noktalarÄ±nÄ± sÃ¶zelleÅŸtirme\" [level=3]",
+        "    - heading \"Organizasyon\" [level=3]",
+        "    - heading \"Uygulama adÄ±mlarÄ±\" [level=3]",
+        "      - heading \"Saha ve uygulama notu\" [level=3]"
+      ],
+      "pixels": [1521, 951],
+      "sha256": "c84cf44b3f7a2df5e693e49fa2e854cd1f49e8a624e49b04efa3ecb916759705",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1536, 960]
+    },
+    {
+      "name": "041-unsupported-age-detail-mobile",
+      "file": "041-unsupported-age-detail-mobile.png",
+      "url": "http://127.0.0.1:3517/app/library/ngcs-starter-v1-senior-24",
+      "height": 844,
+      "scrollWidth": 375,
+      "width": 375,
+      "headings": [
+        "  - heading \"A TakÄ±m Â· KÄ±sa Oyun ve YansÄ±tma â€” Rol Senaryosu\" [level=1]",
+        "  - heading \"Ã‡alÄ±ÅŸma rehberi\" [level=2]",
+        "    - heading \"DÃ¼ÅŸÃ¼k yoÄŸunluklu oyun sonrasÄ± Ã¶ÄŸrenme noktalarÄ±nÄ± sÃ¶zelleÅŸtirme\" [level=3]",
+        "    - heading \"Organizasyon\" [level=3]",
+        "    - heading \"Uygulama adÄ±mlarÄ±\" [level=3]",
+        "      - heading \"Saha ve uygulama notu\" [level=3]"
+      ],
+      "pixels": [375, 812],
+      "sha256": "d4d437a36caccd4b39ad6074864bde485674c52328c0a47dbd93d9688ba6eac9",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [390, 844]
+    },
+    {
+      "name": "041-unsupported-age-detail-tablet",
+      "file": "041-unsupported-age-detail-tablet.png",
+      "url": "http://127.0.0.1:3517/app/library/ngcs-starter-v1-senior-24",
+      "height": 768,
+      "scrollWidth": 1009,
+      "width": 1009,
+      "headings": [
+        "  - heading \"A TakÄ±m Â· KÄ±sa Oyun ve YansÄ±tma â€” Rol Senaryosu\" [level=1]",
+        "  - heading \"Ã‡alÄ±ÅŸma rehberi\" [level=2]",
+        "    - heading \"DÃ¼ÅŸÃ¼k yoÄŸunluklu oyun sonrasÄ± Ã¶ÄŸrenme noktalarÄ±nÄ± sÃ¶zelleÅŸtirme\" [level=3]",
+        "    - heading \"Organizasyon\" [level=3]",
+        "    - heading \"Uygulama adÄ±mlarÄ±\" [level=3]",
+        "      - heading \"Saha ve uygulama notu\" [level=3]"
+      ],
+      "pixels": [1009, 757],
+      "sha256": "7318c2a526a862fb660259939fcecd57544d5067016576dca560385fc8d5dcb7",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1024, 768]
+    },
+    {
+      "name": "042-activity-truncation-desktop",
+      "file": "042-activity-truncation-desktop.png",
+      "url": "http://127.0.0.1:3517/app/players/cmvpan8f4000h2yxkyplpq88o?tab=activity",
+      "height": 960,
+      "scrollWidth": 1521,
+      "width": 1521,
+      "headings": [
+        "    - heading \"TEST Oyuncu Ä°ki\" [level=1]",
+        "    - heading \"Sportif aktivite\" [level=3]"
+      ],
+      "pixels": [1521, 951],
+      "sha256": "26be97ab51a2bf674423b462bdbd2719454dda0bd4e70b99d66491e94d749740",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1536, 960]
+    },
+    {
+      "name": "042-activity-truncation-mobile",
+      "file": "042-activity-truncation-mobile.png",
+      "url": "http://127.0.0.1:3517/app/players/cmvpan8f4000h2yxkyplpq88o?tab=activity",
+      "height": 829,
+      "scrollWidth": 381,
+      "width": 375,
+      "headings": [
+        "    - heading \"TEST Oyuncu Ä°ki\" [level=1]",
+        "    - heading \"Sportif aktivite\" [level=3]"
+      ],
+      "pixels": [375, 812],
+      "sha256": "f39b3f6d6bb7a3321d1ef76e2d39c55a130a460ff15a33ccba30075b6eae5704",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [390, 844]
+    },
+    {
+      "name": "042-activity-truncation-tablet",
+      "file": "042-activity-truncation-tablet.png",
+      "url": "http://127.0.0.1:3517/app/players/cmvpan8f4000h2yxkyplpq88o?tab=activity",
+      "height": 768,
+      "scrollWidth": 1009,
+      "width": 1009,
+      "headings": [
+        "    - heading \"TEST Oyuncu Ä°ki\" [level=1]",
+        "    - heading \"Sportif aktivite\" [level=3]"
+      ],
+      "pixels": [1009, 757],
+      "sha256": "5d7771dbf13c6bf8e63adaa9763d29fbe435aacde1436d96f51c13aa8a2e0599",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1024, 768]
+    },
+    {
+      "name": "043-editorial-queue-desktop",
+      "file": "043-editorial-queue-desktop.png",
+      "url": "http://127.0.0.1:3517/app/library/manage",
+      "height": 960,
+      "scrollWidth": 1521,
+      "width": 1521,
+      "headings": [
+        "  - heading \"Ä°Ã§erik YÃ¶netimi\" [level=1]",
+        "  - heading \"PS-LIFE-75ece63b LegacyV1\" [level=3]",
+        "  - heading \"PS-LIFE-75ece63b Version2\" [level=3]",
+        "  - heading \"U14 Â· YÃ¶nlÃ¼ Sahip Olma Oyunu â€” Karar KapÄ±larÄ±\" [level=3]",
+        "  - heading \"TEST source JSON\" [level=3]",
+        "  - heading \"TEST source SQL\" [level=3]",
+        "  - heading \"U14 Â· YÃ¶nlÃ¼ Sahip Olma Oyunu â€” Karar KapÄ±larÄ±\" [level=3]",
+        "  - heading \"U14 Â· Kanat BaÄŸlantÄ±sÄ± ve Orta â€” Karar KapÄ±larÄ±\" [level=3]"
+      ],
+      "pixels": [1521, 951],
+      "sha256": "d228f2913d1362d454f6f1fa5d68ba98ec213c554bd78c08ee5c9866e24328a0",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1536, 960]
+    },
+    {
+      "name": "043-editorial-queue-mobile",
+      "file": "043-editorial-queue-mobile.png",
+      "url": "http://127.0.0.1:3517/app/library/manage",
+      "height": 829,
+      "scrollWidth": 524,
+      "width": 375,
+      "headings": [
+        "  - heading \"Ä°Ã§erik YÃ¶netimi\" [level=1]",
+        "  - heading \"PS-LIFE-75ece63b LegacyV1\" [level=3]",
+        "  - heading \"PS-LIFE-75ece63b Version2\" [level=3]",
+        "  - heading \"U14 Â· YÃ¶nlÃ¼ Sahip Olma Oyunu â€” Karar KapÄ±larÄ±\" [level=3]",
+        "  - heading \"TEST source JSON\" [level=3]",
+        "  - heading \"TEST source SQL\" [level=3]",
+        "  - heading \"U14 Â· YÃ¶nlÃ¼ Sahip Olma Oyunu â€” Karar KapÄ±larÄ±\" [level=3]",
+        "  - heading \"U14 Â· Kanat BaÄŸlantÄ±sÄ± ve Orta â€” Karar KapÄ±larÄ±\" [level=3]"
+      ],
+      "pixels": [375, 812],
+      "sha256": "516fffdd656b684fe7803abd11cf5fe988e964c2810e96bb9341ff06e116e471",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [390, 844]
+    },
+    {
+      "name": "043-editorial-queue-tablet",
+      "file": "043-editorial-queue-tablet.png",
+      "url": "http://127.0.0.1:3517/app/library/manage",
+      "height": 768,
+      "scrollWidth": 1009,
+      "width": 1009,
+      "headings": [
+        "  - heading \"Ä°Ã§erik YÃ¶netimi\" [level=1]",
+        "  - heading \"PS-LIFE-75ece63b LegacyV1\" [level=3]",
+        "  - heading \"PS-LIFE-75ece63b Version2\" [level=3]",
+        "  - heading \"U14 Â· YÃ¶nlÃ¼ Sahip Olma Oyunu â€” Karar KapÄ±larÄ±\" [level=3]",
+        "  - heading \"TEST source JSON\" [level=3]",
+        "  - heading \"TEST source SQL\" [level=3]",
+        "  - heading \"U14 Â· YÃ¶nlÃ¼ Sahip Olma Oyunu â€” Karar KapÄ±larÄ±\" [level=3]",
+        "  - heading \"U14 Â· Kanat BaÄŸlantÄ±sÄ± ve Orta â€” Karar KapÄ±larÄ±\" [level=3]"
+      ],
+      "pixels": [1009, 757],
+      "sha256": "2e22c16962a98363a20ed1683f3d36e20256397571ae8bff8181ad5f7cebbc81",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1024, 768]
+    },
+    {
+      "name": "044-setup-club-desktop",
+      "file": "044-setup-club-desktop.png",
+      "url": "http://127.0.0.1:3517/app/setup",
+      "height": 960,
+      "scrollWidth": 1521,
+      "width": 1521,
+      "headings": [
+        "  - heading \"KulÃ¼bÃ¼nÃ¼zÃ¼ kurun\" [level=1]",
+        "  - heading \"KulÃ¼p kimliÄŸi\" [active] [level=2]",
+        "    - heading \"Birlikte geliÅŸelim.\" [level=3]"
+      ],
+      "pixels": [1521, 951],
+      "sha256": "a0ee35dcdebc9e88d972e5d09d3ce90f8d10e2a50284e39ef87267b81c63d8fb",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1536, 960]
+    },
+    {
+      "name": "044-setup-club-mobile",
+      "file": "044-setup-club-mobile.png",
+      "url": "http://127.0.0.1:3517/app/setup",
+      "height": 844,
+      "scrollWidth": 375,
+      "width": 375,
+      "headings": [
+        "  - heading \"KulÃ¼bÃ¼nÃ¼zÃ¼ kurun\" [level=1]",
+        "  - heading \"KulÃ¼p kimliÄŸi\" [active] [level=2]",
+        "    - heading \"Birlikte geliÅŸelim.\" [level=3]"
+      ],
+      "pixels": [375, 812],
+      "sha256": "01040e9c3b22651015a312288e4033f43c89a0454795c1c45a200c0b38a3cf47",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [390, 844]
+    },
+    {
+      "name": "044-setup-club-tablet",
+      "file": "044-setup-club-tablet.png",
+      "url": "http://127.0.0.1:3517/app/setup",
+      "height": 768,
+      "scrollWidth": 1009,
+      "width": 1009,
+      "headings": [
+        "  - heading \"KulÃ¼bÃ¼nÃ¼zÃ¼ kurun\" [level=1]",
+        "  - heading \"KulÃ¼p kimliÄŸi\" [active] [level=2]",
+        "    - heading \"Birlikte geliÅŸelim.\" [level=3]"
+      ],
+      "pixels": [1009, 757],
+      "sha256": "584982e022f90ed740c636ed0c625491b3f9339add20675e83659f62199b5f2b",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1024, 768]
+    },
+    {
+      "name": "045-setup-dirty-guard-desktop",
+      "file": "045-setup-dirty-guard-desktop.png",
+      "url": "http://127.0.0.1:3517/app/setup",
+      "height": 960,
+      "scrollWidth": 1536,
+      "width": 1536,
+      "headings": [
+        "  - heading [level=1]: KulÃ¼bÃ¼nÃ¼zÃ¼ kurun",
+        "  - heading [level=2]: Sezonu tanÄ±mlayÄ±n",
+        "    - heading [level=3]: Birlikte geliÅŸelim.",
+        "  - heading \"Kurulumdan ayrÄ±lsÄ±n mÄ±?\" [level=2]"
+      ],
+      "pixels": [1536, 960],
+      "sha256": "0a7115444585ff2a07605c82ae861ef6f3f1f9c3a025d49c22ee821dba0dd275",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1536, 960]
+    },
+    {
+      "name": "046-tactics-new-desktop",
+      "file": "046-tactics-new-desktop.png",
+      "url": "http://127.0.0.1:3517/app/tactics/new",
+      "height": 960,
+      "scrollWidth": 1521,
+      "width": 1521,
+      "headings": ["    - heading \"Yeni taktik egzersizi\" [level=1]"],
+      "pixels": [1521, 951],
+      "sha256": "c211aa43e5fc73103a37b65be8d77945829afb44f7e120d3e354d4e477852f15",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1536, 960]
+    },
+    {
+      "name": "046-tactics-new-mobile",
+      "file": "046-tactics-new-mobile.png",
+      "url": "http://127.0.0.1:3517/app/tactics/new",
+      "height": 844,
+      "scrollWidth": 375,
+      "width": 375,
+      "headings": ["    - heading \"Yeni taktik egzersizi\" [level=1]"],
+      "pixels": [375, 812],
+      "sha256": "e48a49b83876102ef84c55238bde10d24d776b3eba718ae72ef59111d00e52f3",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [390, 844]
+    },
+    {
+      "name": "046-tactics-new-tablet",
+      "file": "046-tactics-new-tablet.png",
+      "url": "http://127.0.0.1:3517/app/tactics/new",
+      "height": 768,
+      "scrollWidth": 1009,
+      "width": 1009,
+      "headings": ["    - heading \"Yeni taktik egzersizi\" [level=1]"],
+      "pixels": [1009, 757],
+      "sha256": "258e8ccb77619cec3d66cb6ed3db9b42bec280f31cde48919846d7b65c9846a2",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1024, 768]
+    },
+    {
+      "name": "047-half-pitch-desktop",
+      "file": "047-half-pitch-desktop.png",
+      "url": "http://127.0.0.1:3517/app/tactics/new",
+      "height": 960,
+      "scrollWidth": 1521,
+      "width": 1521,
+      "headings": ["    - heading \"Yeni taktik egzersizi\" [level=1]"],
+      "pixels": [1521, 951],
+      "sha256": "183b2a33d6b459d1aac9c343b330c6d77a6cbb4f27f08f5810def49c7d8142aa",
+      "inspection": "accepted: saved image visually inspected in this audit, individually or on contact sheet",
+      "requestedViewport": [1536, 960]
+    }
+  ],
+  "rejected": [
+    {
+      "file": "021-training-detail-mobile.png",
+      "reason": "375x234 anomalous capture; requested390x844. Preserved ignored output/rejected; not product evidence."
+    },
+    {
+      "file": "001-login-mobile.png",
+      "reason": "390x293 capture, requested390x844; distorted layout, not responsive evidence.",
+      "originalPreserved": "ignored output/product-audit-20261026/rejected"
+    },
+    {
+      "file": "021-training-detail-tablet.png",
+      "reason": "1009x631 distorted capture, requested1024x768; not responsive evidence.",
+      "originalPreserved": "ignored output/product-audit-20261026/rejected"
+    }
+  ],
+  "note": "001-047 are capture sequence IDs, not number of complete page or role combinations. Viewport captures may include scrolling content below fold."
+}

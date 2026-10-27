@@ -96,10 +96,12 @@
 - **Outcome:** Global kütüphane immutable sürüm, yaş varyantı, kaynak/lisans
   kanıtı ve ayrık author-reviewer-publisher akışıyla yönetilir.
 - **Dependencies:** M3, M5; ADR-0032, ADR-0033, ADR-0034; named football expert.
-- **Exit criteria:** 120 özgün Türkçe kayıt üç 40'lık dalgada uzman incelemesi
-  alır; migration/backfill, strict API, katalog/detail/manage UI, idempotent
+- **Exit criteria:** 120 özgün Türkçe kaydın tamamı ilk yayından önce onaylanır
+  (ADR-0039; yalnız yerel paket için ADR-0041 istisnası); migration/backfill, strict API, katalog/detail/manage UI, idempotent
   import, E2E ve responsive kalite kapıları geçer.
-- **Risks:** Futbol uzmanı ve hukuk/production sahipleri `TBD`; bu kişiler
-  atanmadıkça taslaklar doğrulanmış veya yayınlanmış içerik sayılmaz.
-- **Status:** In progress — repository foundation ve 120 DRAFT manifest hazır;
-  uzman incelemesi, retained import ve yayın yapılmadı.
+- **Risks:** Gelecek bağımsız futbol incelemesi ve hukuk/production sahipleri `TBD`;
+  ADR-0041 yerel aynı-hesap istisnası diğer yayınlara genellenmez.
+- **Status:** Yerel aktarım/yayın ADR-0039/0041 kapsamında tamamlandı;120 PUBLISHED.
+  Manifest başlangıç DRAFT tanımıdır. Production kapıları ve güncel
+  [audit remediation](../30-quality/PRODUCT_AUDIT_2026-10-26.md) açık; bu satır
+  yeni bağımsız uzman/production kabulü değildir.
